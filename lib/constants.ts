@@ -225,8 +225,11 @@ export const CATEGORY_CONTENTS: Record<string, Array<{ id: string; title: string
 
 // Thông tin cấu hình site
 export const SITE_CONFIG = {
+  name: 'Top10.com',
   siteName: 'Top10.com',
+  url: 'https://www.top10.com',
   siteUrl: 'https://www.top10.com',
+  description: 'Compare and shop the Top10 best services & products for you. Expert reviews and ratings.',
   footerLinks: [
     { name: 'About', href: '/about' },
     { name: 'Contact', href: '/contact' },

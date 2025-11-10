@@ -126,103 +126,103 @@ export const healthTop10: Top10Item[] = [
 ];
 
 // ========================
-// 🏠 HOME CATEGORY
+// 💻 TECHNOLOGY CATEGORY
 // ========================
 
-export const homeTop10: Top10Item[] = [
+export const technologyTop10: Top10Item[] = [
   {
     id: 1,
     rank: 1,
-    title: 'ADT - Best Home Security System',
-    description: 'Trusted home security with 24/7 monitoring.',
+    title: 'Bluehost - Best Web Hosting',
+    description: 'Reliable web hosting with 24/7 support.',
     image: '/top10/1.jpg',
     rating: 4.5,
-    price: '$45.99/month',
+    price: '$2.95/month',
     features: [
-      'Professional installation',
-      '24/7 monitoring',
-      'Smart home integration',
-      'Mobile app'
+      'Free domain for 1 year',
+      'Free SSL certificate',
+      '24/7 support',
+      'WordPress optimized'
     ],
     pros: [
-      'Established brand',
-      'Comprehensive coverage',
-      'Fast response'
+      'Easy to use',
+      'Affordable pricing',
+      'Great uptime'
     ],
     cons: [
-      'Contract required',
-      'Higher costs'
+      'Renewal rates higher',
+      'Upsells during checkout'
     ],
-    category: 'home',
-    affiliateLink: 'https://www.adt.com',
+    category: 'technology',
+    affiliateLink: 'https://www.bluehost.com',
     featured: true
   }
 ];
 
 // ========================
-// 🏢 BUSINESS CATEGORY
+// 💰 FINANCE CATEGORY
 // ========================
 
-export const businessTop10: Top10Item[] = [
+export const financeTop10: Top10Item[] = [
   {
     id: 1,
     rank: 1,
-    title: 'Salesforce - Best CRM Platform',
-    description: 'World\'s #1 CRM platform.',
+    title: 'Mint - Best Budgeting App',
+    description: 'Free budgeting and finance tracking.',
     image: '/top10/1.jpg',
     rating: 4.4,
-    price: '$25/user/month',
+    price: 'Free',
     features: [
-      'Contact management',
-      'Sales forecasting',
-      'Custom dashboards',
-      'Mobile app'
+      'Budget tracking',
+      'Bill reminders',
+      'Credit score monitoring',
+      'Investment tracking'
     ],
     pros: [
-      'Highly customizable',
-      'Extensive integrations',
-      'Scalable'
+      'Completely free',
+      'Easy to use',
+      'Comprehensive features'
     ],
     cons: [
-      'Steep learning curve',
-      'Expensive for small biz'
+      'Ads present',
+      'US only'
     ],
-    category: 'business',
-    affiliateLink: 'https://www.salesforce.com',
+    category: 'finance',
+    affiliateLink: 'https://www.mint.com',
     featured: true
   }
 ];
 
 // ========================
-// 🔒 SECURITY CATEGORY
+// 🎬 ENTERTAINMENT CATEGORY
 // ========================
 
-export const securityTop10: Top10Item[] = [
+export const entertainmentTop10: Top10Item[] = [
   {
     id: 1,
     rank: 1,
-    title: 'NordVPN - Best VPN Service Overall',
-    description: 'Secure your internet with military-grade encryption.',
+    title: 'Netflix - Best Streaming Service',
+    description: 'Unlimited movies and TV shows.',
     image: '/top10/1.jpg',
     rating: 4.9,
-    price: '$3.99/month',
+    price: '$15.49/month',
     features: [
-      '5,500+ servers',
-      'No-logs policy',
-      'Kill switch',
-      'Double VPN'
+      'Ad-free experience',
+      'Original content',
+      'Multiple profiles',
+      'Download offline'
     ],
     pros: [
-      'Excellent speed',
-      'Strong security',
-      'User-friendly'
+      'Huge content library',
+      'High-quality originals',
+      'User-friendly interface'
     ],
     cons: [
-      'Slow to connect',
-      'No dedicated IP on basic'
+      'Price increases',
+      'Content rotation'
     ],
-    category: 'security',
-    affiliateLink: 'https://www.nordvpn.com',
+    category: 'entertainment',
+    affiliateLink: 'https://www.netflix.com',
     featured: true
   }
 ];
@@ -233,8 +233,8 @@ export const securityTop10: Top10Item[] = [
 
 export const TOP10_DATA = {
   lifestyle: lifestyleTop10,
+  technology: technologyTop10,
   health: healthTop10,
-  home: homeTop10,
-  business: businessTop10,
-  security: securityTop10
+  finance: financeTop10,
+  entertainment: entertainmentTop10
 };
