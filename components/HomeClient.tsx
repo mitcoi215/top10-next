@@ -4,6 +4,7 @@ import { useState } from 'react';
 import CategoryPills from './CategoryPills';
 import Top10List from './Top10List';
 import { CATEGORY_CONTENTS } from '@/lib/constants';
+import { lifestyleTop10 } from '@/data/top10Data';
 
 interface HomeClientProps {
   initialCategory?: string;
@@ -19,7 +20,7 @@ export default function HomeClient({ initialCategory = 'lifestyle' }: HomeClient
       {/* Category Pills */}
       <CategoryPills activeCategory={activeCategory} onSelectCategory={setActiveCategory} />
 
-      {/* Nội dung con dưới mỗi category */}
+      {/* Nội dung con dưới mỗi category - Chỉ thay đổi khi click category */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-12">
         {contents.map((item) => (
           <div
@@ -35,16 +36,8 @@ export default function HomeClient({ initialCategory = 'lifestyle' }: HomeClient
         ))}
       </div>
 
-      {/* Top10 List */}
-      <Top10List items={contents.map((c, i) => ({
-        id: i + 1,
-        rank: i + 1,
-        title: c.title,
-        description: c.description,
-        features: [],
-        image: c.image,
-        affiliateLink: c.link,
-      }))} />
+      {/* Top10 List - Nội dung cố định, không thay đổi */}
+      <Top10List items={lifestyleTop10} />
     </section>
   );
 }

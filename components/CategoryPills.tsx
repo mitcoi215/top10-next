@@ -14,21 +14,21 @@ export default function CategoryPills({ activeCategory, onSelectCategory }: Cate
         <div
           key={cat.id}
           onClick={() => onSelectCategory(cat.id)}
-          className="flex flex-col items-center cursor-pointer transition-transform hover:scale-105"
+          className="group flex flex-col items-center cursor-pointer transition-all"
           style={{ width: '120px', flexShrink: 0 }}
         >
           {/* Nút vuông với logo */}
           <div
-            className={`flex items-center justify-center rounded-lg ${cat.color} w-full h-24 ${
-              activeCategory === cat.id ? 'ring-4 ring-gray-900' : ''
-            }`}
+            className={`flex items-center justify-center rounded-lg ${cat.color} w-full h-24 transition-all
+              ${activeCategory === cat.id ? 'ring-4 ring-gray-900' : ''}
+              group-hover:ring-4 group-hover:ring-red-500 group-hover:bg-red-500`}
           >
             <img src={cat.icon} alt={cat.name} className="h-12 w-12" />
           </div>
           {/* Chữ bên dưới */}
-          <span className={`mt-2 font-bold text-center break-words ${
+          <span className={`mt-2 font-bold text-center break-words transition-colors ${
             activeCategory === cat.id ? 'text-gray-900' : 'text-gray-600'
-          }`}>
+          } group-hover:text-red-600`}>
             {cat.name}
           </span>
         </div>
