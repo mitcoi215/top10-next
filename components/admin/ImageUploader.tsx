@@ -18,6 +18,13 @@ export default function ImageUploader({ currentImageUrl, onImageUploaded }: Imag
   const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
 
   const handleFileSelect = (file: File) => {
+    // Check if Cloudinary credentials are available
+    if (!cloudName || !uploadPreset) {
+      setError('Cloudinary configuration missing. Please check .env.local file and restart the dev server.');
+      console.error('Missing Cloudinary config:', { cloudName, uploadPreset });
+      return;
+    }
+
     // Validate file type
     if (!file.type.startsWith('image/')) {
       setError('Please select an image file');
@@ -31,6 +38,7 @@ export default function ImageUploader({ currentImageUrl, onImageUploaded }: Imag
     }
 
     setError('');
+    console.log('Starting upload to Cloudinary...', { cloudName, uploadPreset, fileName: file.name });
     uploadToCloudinary(file);
   };
 
@@ -59,18 +67,21 @@ export default function ImageUploader({ currentImageUrl, onImageUploaded }: Imag
         if (xhr.status === 200) {
           const response = JSON.parse(xhr.responseText);
           const imageUrl = response.secure_url;
+          console.log('Upload successful!', { imageUrl });
           setPreviewUrl(imageUrl);
           onImageUploaded(imageUrl);
           setUploading(false);
           setUploadProgress(0);
         } else {
-          setError('Upload failed. Please try again.');
+          console.error('Upload failed with status:', xhr.status, xhr.responseText);
+          setError(`Upload failed (${xhr.status}). Please check your Cloudinary settings.`);
           setUploading(false);
         }
       });
 
       // Handle error
       xhr.addEventListener('error', () => {
+        console.error('Network error during upload');
         setError('Upload failed. Please check your connection.');
         setUploading(false);
       });
