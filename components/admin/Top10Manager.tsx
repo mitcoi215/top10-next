@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Top10Item, CategoryType } from '@/types';
 import { lifestyleTop10, healthTop10, homeTop10, businessTop10, securityTop10 } from '@/data/top10Data';
 import { CATEGORIES } from '@/lib/constants';
+import ImageUploader from './ImageUploader';
 
 const initialData = {
   lifestyle: lifestyleTop10,
@@ -224,27 +225,28 @@ export default function Top10Manager() {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium mb-1">Image URL</label>
-                  <input
-                    name="image"
-                    defaultValue={editingItem.image}
-                    className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-1">Rating (0-5)</label>
-                  <input
-                    name="rating"
-                    type="number"
-                    step="0.1"
-                    min="0"
-                    max="5"
-                    defaultValue={editingItem.rating}
-                    className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none"
-                  />
-                </div>
+              {/* Image Uploader */}
+              <ImageUploader
+                currentImageUrl={editingItem.image}
+                onImageUploaded={(url) => {
+                  setEditingItem({ ...editingItem, image: url });
+                }}
+              />
+
+              {/* Hidden input to store image URL for form submission */}
+              <input type="hidden" name="image" value={editingItem.image} />
+
+              <div>
+                <label className="block text-sm font-medium mb-1">Rating (0-5)</label>
+                <input
+                  name="rating"
+                  type="number"
+                  step="0.1"
+                  min="0"
+                  max="5"
+                  defaultValue={editingItem.rating}
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none"
+                />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
