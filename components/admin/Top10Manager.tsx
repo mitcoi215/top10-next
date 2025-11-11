@@ -55,7 +55,7 @@ export default function Top10Manager() {
   const handleAddNew = () => {
     setEditingItem({
       id: Date.now(),
-      rank: items[selectedCategory].length + 1,
+      rank: (items[selectedCategory] || []).length + 1,
       title: '',
       description: '',
       image: '/top10/1.jpg',
@@ -80,7 +80,7 @@ export default function Top10Manager() {
     if (confirm('Are you sure you want to delete this item?')) {
       const newItems = {
         ...items,
-        [selectedCategory]: items[selectedCategory].filter((item) => item.id !== itemId),
+        [selectedCategory]: (items[selectedCategory] || []).filter((item) => item.id !== itemId),
       };
       saveItems(newItems);
     }
@@ -105,7 +105,7 @@ export default function Top10Manager() {
       featured: formData.get('featured') === 'on',
     };
 
-    const categoryItems = items[selectedCategory];
+    const categoryItems = items[selectedCategory] || [];
     const existingIndex = categoryItems.findIndex((item) => item.id === updatedItem.id);
 
     let newCategoryItems;
