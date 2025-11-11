@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { CategoryType } from '@/types';
 import { CATEGORIES } from '@/lib/constants';
+import ImageUploader from './ImageUploader';
 
 type CategoryButton = {
   id: CategoryType;
@@ -215,19 +216,16 @@ export default function CategoryButtonManager() {
                 />
               </div>
 
-              <div>
-                <label className="block text-sm font-medium mb-1">Icon Path *</label>
-                <input
-                  name="icon"
-                  defaultValue={editingCategory.icon}
-                  required
-                  placeholder="e.g., /icons/lifestyle.svg"
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none"
-                />
-                <p className="text-xs text-gray-500 mt-1">
-                  Path to SVG icon in public/icons/ folder
-                </p>
-              </div>
+              {/* Icon/Logo Uploader */}
+              <ImageUploader
+                currentImageUrl={editingCategory.icon}
+                onImageUploaded={(url) => {
+                  setEditingCategory({ ...editingCategory, icon: url });
+                }}
+              />
+
+              {/* Hidden input to store icon URL for form submission */}
+              <input type="hidden" name="icon" value={editingCategory.icon} />
 
               {/* Preview */}
               <div className="border-t pt-4">
