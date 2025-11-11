@@ -202,7 +202,7 @@ export default function CategoryButtonManager() {
                   name="id"
                   type="text"
                   defaultValue={editingCategory.id}
-                  disabled={editingCategory.id !== ''}
+                  readOnly={editingCategory.id !== ''}
                   required
                   placeholder="e.g., lifestyle, technology"
                   className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none ${
