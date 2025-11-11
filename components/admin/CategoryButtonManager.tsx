@@ -48,7 +48,7 @@ export default function CategoryButtonManager() {
       id: editingCategory.id,
       name: formData.get('name') as string,
       icon: formData.get('icon') as string,
-      color: formData.get('color') as string,
+      color: 'bg-white', // Fixed white background
     };
 
     const newCategories = categories.map((cat) =>
@@ -59,17 +59,6 @@ export default function CategoryButtonManager() {
     setIsFormOpen(false);
     setEditingCategory(null);
   };
-
-  const colorOptions = [
-    { value: 'bg-red-500', label: 'Red' },
-    { value: 'bg-blue-500', label: 'Blue' },
-    { value: 'bg-green-500', label: 'Green' },
-    { value: 'bg-yellow-500', label: 'Yellow' },
-    { value: 'bg-purple-500', label: 'Purple' },
-    { value: 'bg-pink-500', label: 'Pink' },
-    { value: 'bg-indigo-500', label: 'Indigo' },
-    { value: 'bg-orange-500', label: 'Orange' },
-  ];
 
   return (
     <div>
@@ -87,7 +76,7 @@ export default function CategoryButtonManager() {
             <div className="flex items-start gap-4">
               {/* Preview */}
               <div
-                className={`flex items-center justify-center rounded-lg ${cat.color} w-20 h-20 flex-shrink-0`}
+                className="flex items-center justify-center rounded-lg bg-white border-2 border-gray-300 w-20 h-20 flex-shrink-0"
               >
                 <img src={cat.icon} alt={cat.name} className="h-10 w-10" />
               </div>
@@ -95,8 +84,7 @@ export default function CategoryButtonManager() {
               {/* Info */}
               <div className="flex-1">
                 <h4 className="font-bold text-lg mb-1">{cat.name}</h4>
-                <p className="text-sm text-gray-500 mb-1">ID: {cat.id}</p>
-                <p className="text-sm text-gray-500 mb-2">Color: {cat.color}</p>
+                <p className="text-sm text-gray-500 mb-2">ID: {cat.id}</p>
                 <button
                   onClick={() => handleEdit(cat)}
                   className="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700"
@@ -152,28 +140,12 @@ export default function CategoryButtonManager() {
                 </p>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium mb-1">Color *</label>
-                <select
-                  name="color"
-                  defaultValue={editingCategory.color}
-                  required
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none"
-                >
-                  {colorOptions.map((opt) => (
-                    <option key={opt.value} value={opt.value}>
-                      {opt.label} ({opt.value})
-                    </option>
-                  ))}
-                </select>
-              </div>
-
               {/* Preview */}
               <div className="border-t pt-4">
                 <label className="block text-sm font-medium mb-2">Preview:</label>
                 <div className="flex items-center gap-4">
                   <div
-                    className={`flex items-center justify-center rounded-lg ${editingCategory.color} w-24 h-24`}
+                    className="flex items-center justify-center rounded-lg bg-white border-2 border-gray-300 w-24 h-24"
                   >
                     <img
                       src={editingCategory.icon}

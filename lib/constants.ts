@@ -6,31 +6,31 @@ export const CATEGORIES = [
     id: 'lifestyle',
     name: 'Lifestyle',
     icon: '/icons/lifestyle.svg',
-    color: 'bg-red-500',
+    color: 'bg-white',
   },
   {
     id: 'health',
     name: 'Health & Wellness',
     icon: '/icons/health.svg',
-    color: 'bg-green-500',
+    color: 'bg-white',
   },
   {
     id: 'home',
     name: 'Home',
     icon: '/icons/home.svg',
-    color: 'bg-blue-500',
+    color: 'bg-white',
   },
   {
     id: 'business',
     name: 'Business',
     icon: '/icons/business.svg',
-    color: 'bg-yellow-500',
+    color: 'bg-white',
   },
   {
     id: 'security',
     name: 'Security',
     icon: '/icons/security.svg',
-    color: 'bg-purple-500',
+    color: 'bg-white',
   },
 ];
 

@@ -42,9 +42,9 @@ export default function CategoryPills({ activeCategory, onSelectCategory }: Cate
         >
           {/* Nút vuông với logo */}
           <div
-            className={`flex items-center justify-center rounded-lg ${cat.color} w-full h-24 transition-all
+            className={`flex items-center justify-center rounded-lg bg-white border-2 border-gray-300 w-full h-24 transition-all
               ${activeCategory === cat.id ? 'ring-4 ring-gray-900' : ''}
-              group-hover:ring-4 group-hover:ring-red-500 group-hover:bg-red-500`}
+              group-hover:ring-4 group-hover:ring-red-500`}
           >
             <img src={cat.icon} alt={cat.name} className="h-12 w-12" />
           </div>
