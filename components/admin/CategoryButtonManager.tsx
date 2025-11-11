@@ -10,6 +10,7 @@ type CategoryButton = {
   name: string;
   icon: string;
   color: string;
+  featured?: boolean; // Show in header navigation
 };
 
 export default function CategoryButtonManager() {
@@ -46,6 +47,7 @@ export default function CategoryButtonManager() {
       name: '',
       icon: '/icons/new-category.svg',
       color: 'bg-white',
+      featured: false,
     });
     setIsFormOpen(true);
   };
@@ -81,6 +83,7 @@ export default function CategoryButtonManager() {
     const categoryId = formData.get('id') as string;
     const categoryName = formData.get('name') as string;
     const categoryIcon = formData.get('icon') as string;
+    const categoryFeatured = formData.get('featured') === 'on';
 
     // Validation
     if (!categoryId.trim()) {
@@ -97,6 +100,7 @@ export default function CategoryButtonManager() {
       name: categoryName,
       icon: categoryIcon,
       color: 'bg-white',
+      featured: categoryFeatured,
     };
 
     // Check if adding new or editing existing
@@ -153,7 +157,14 @@ export default function CategoryButtonManager() {
 
               {/* Info */}
               <div className="flex-1">
-                <h4 className="font-bold text-lg mb-1">{cat.name}</h4>
+                <div className="flex items-center gap-2 mb-1">
+                  <h4 className="font-bold text-lg">{cat.name}</h4>
+                  {cat.featured && (
+                    <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">
+                      Featured
+                    </span>
+                  )}
+                </div>
                 <p className="text-sm text-gray-500 mb-2">ID: {cat.id}</p>
                 <div className="flex gap-2">
                   <button
@@ -226,6 +237,20 @@ export default function CategoryButtonManager() {
 
               {/* Hidden input to store icon URL for form submission */}
               <input type="hidden" name="icon" value={editingCategory.icon} />
+
+              {/* Featured in Header Checkbox */}
+              <div className="flex items-center gap-2 border-t pt-4">
+                <input
+                  name="featured"
+                  type="checkbox"
+                  defaultChecked={editingCategory.featured || false}
+                  className="w-4 h-4"
+                />
+                <label className="text-sm font-medium">Show in Header Navigation</label>
+                <span className="text-xs text-gray-500 ml-2">
+                  (Featured categories will appear in the top navigation bar)
+                </span>
+              </div>
 
               {/* Preview */}
               <div className="border-t pt-4">
