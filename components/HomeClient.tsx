@@ -1,10 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import CategoryPills from './CategoryPills';
 import Top10List from './Top10List';
 import { CATEGORY_CONTENTS } from '@/lib/constants';
 import { lifestyleTop10 } from '@/data/top10Data';
+import { Top10Item } from '@/types';
 
 interface HomeClientProps {
   initialCategory?: string;
@@ -12,8 +13,29 @@ interface HomeClientProps {
 
 export default function HomeClient({ initialCategory = 'lifestyle' }: HomeClientProps) {
   const [activeCategory, setActiveCategory] = useState(initialCategory);
+  const [categoryContents, setCategoryContents] = useState(CATEGORY_CONTENTS);
+  const [top10Items, setTop10Items] = useState<Top10Item[]>(lifestyleTop10);
 
-  const contents = CATEGORY_CONTENTS[activeCategory] || [];
+  // Load data from localStorage on mount
+  useEffect(() => {
+    // Load category contents
+    const savedContents = localStorage.getItem('category_contents');
+    if (savedContents) {
+      setCategoryContents(JSON.parse(savedContents));
+    }
+
+    // Load top10 data
+    const savedTop10 = localStorage.getItem('top10_data');
+    if (savedTop10) {
+      const allData = JSON.parse(savedTop10);
+      // Use lifestyle data for Top10List
+      if (allData.lifestyle) {
+        setTop10Items(allData.lifestyle);
+      }
+    }
+  }, []);
+
+  const contents = categoryContents[activeCategory] || [];
 
   return (
     <section className="container mx-auto px-4">
@@ -55,7 +77,7 @@ export default function HomeClient({ initialCategory = 'lifestyle' }: HomeClient
       </div>
 
       {/* Top10 List - Nội dung cố định, không thay đổi */}
-      <Top10List items={lifestyleTop10} />
+      <Top10List items={top10Items} />
     </section>
   );
 }
