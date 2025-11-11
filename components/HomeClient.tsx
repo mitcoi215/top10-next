@@ -61,7 +61,7 @@ export default function HomeClient({ initialCategory }: HomeClientProps) {
       <CategoryPills activeCategory={activeCategory} onSelectCategory={setActiveCategory} />
 
       {/* Top10 List - Thay đổi theo category */}
-      <Top10List items={currentItems} />
+      <Top10List items={currentItems} category={activeCategory} />
     </section>
   );
 }
