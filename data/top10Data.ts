@@ -636,9 +636,14 @@ export const healthTop10: Top10Item[] = [
     category: 'health',
     affiliateLink: 'https://www.tenpercent.com',
     featured: false
-  },
+  }
+];
 
-  // ==================== HOME CATEGORY - 10 ITEMS ====================
+// ========================
+// 🏠 HOME CATEGORY
+// ========================
+
+export const homeTop10: Top10Item[] = [
   {
     id: 1734001,
     rank: 1,
@@ -958,9 +963,14 @@ export const healthTop10: Top10Item[] = [
     category: 'home',
     affiliateLink: 'https://www.arlo.com',
     featured: false
-  },
+  }
+];
 
-  // ==================== BUSINESS CATEGORY - 10 ITEMS ====================
+// ========================
+// 💼 BUSINESS CATEGORY
+// ========================
+
+export const businessTop10: Top10Item[] = [
   {
     id: 1735001,
     rank: 1,
@@ -1298,9 +1308,14 @@ export const healthTop10: Top10Item[] = [
     category: 'business',
     affiliateLink: 'https://www.salesforce.com',
     featured: false
-  },
+  }
+];
 
-  // ==================== SECURITY CATEGORY - 10 ITEMS ====================
+// ========================
+// 🔒 SECURITY CATEGORY
+// ========================
+
+export const securityTop10: Top10Item[] = [
   {
     id: 1736001,
     rank: 1,
@@ -1642,6 +1657,3 @@ export const healthTop10: Top10Item[] = [
     featured: false
   }
 ];
-
-// Export the data
-export default allTop10Data;
