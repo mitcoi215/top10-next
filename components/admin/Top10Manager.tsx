@@ -96,6 +96,7 @@ export default function Top10Manager() {
       ...editingItem,
       title: formData.get('title') as string,
       description: formData.get('description') as string,
+      detailedDescription: formData.get('detailedDescription') as string,
       image: formData.get('image') as string,
       rating: parseFloat(formData.get('rating') as string),
       price: formData.get('price') as string,
@@ -215,14 +216,29 @@ export default function Top10Manager() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">Description</label>
+                <label className="block text-sm font-medium mb-1">Description (Short Summary)</label>
                 <textarea
                   name="description"
                   defaultValue={editingItem.description}
                   required
                   rows={3}
+                  placeholder="Brief summary shown in list view"
                   className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none"
                 />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-1">Detailed Description (Full Review)</label>
+                <textarea
+                  name="detailedDescription"
+                  defaultValue={editingItem.detailedDescription || ''}
+                  rows={8}
+                  placeholder="Write a comprehensive review about this product/service. This will be displayed on the detail page for users to read more about features, benefits, and why they should choose this option."
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none"
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  This detailed content will be displayed on the item detail page to help users learn more
+                </p>
               </div>
 
               {/* Image Uploader */}

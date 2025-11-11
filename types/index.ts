@@ -32,7 +32,8 @@ export interface Top10Item {
   id: number;                             // Unique ID of item (1, 2, 3, ...)
   rank: number;                           // Ranking in top 10 (1-10)
   title: string;                          // Product/service title (e.g., "NordVPN - Best VPN")
-  description: string;                    // Detailed description of product/service
+  description: string;                    // Short description (summary)
+  detailedDescription?: string;           // Long detailed review/description - Optional
   image: string;                          // Thumbnail image path (e.g., "/top10/1.jpg")
   rating?: number;                        // Rating score 0-5 (e.g., 4.8) - Optional
   price?: string;                         // Price as text (e.g., "$9.99/month", "Free") - Optional

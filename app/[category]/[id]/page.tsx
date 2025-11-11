@@ -118,6 +118,18 @@ export default function ItemDetailPage() {
             </div>
           </div>
 
+          {/* Detailed Review Section */}
+          {item.detailedDescription && (
+            <div className="border-t p-8 bg-gray-50">
+              <h2 className="text-2xl font-bold mb-4">Detailed Review</h2>
+              <div className="prose prose-lg max-w-none">
+                <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+                  {item.detailedDescription}
+                </p>
+              </div>
+            </div>
+          )}
+
           {/* Features Section */}
           {item.features && item.features.length > 0 && (
             <div className="border-t p-8">
