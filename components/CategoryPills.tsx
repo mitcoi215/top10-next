@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { CATEGORIES } from '@/lib/constants';
 import { CategoryType } from '@/types';
 
@@ -8,10 +9,31 @@ interface CategoryPillsProps {
   onSelectCategory: (category: CategoryType) => void;
 }
 
+type CategoryButton = {
+  id: CategoryType;
+  name: string;
+  icon: string;
+  color: string;
+};
+
 export default function CategoryPills({ activeCategory, onSelectCategory }: CategoryPillsProps) {
+  const [categories, setCategories] = useState<CategoryButton[]>(CATEGORIES as CategoryButton[]);
+
+  // Load categories from localStorage on mount
+  useEffect(() => {
+    const saved = localStorage.getItem('categories');
+    if (saved) {
+      try {
+        setCategories(JSON.parse(saved));
+      } catch (e) {
+        console.error('Failed to parse categories:', e);
+      }
+    }
+  }, []);
+
   return (
     <div className="flex justify-center gap-6 py-8 flex-wrap">
-      {CATEGORIES.map((cat) => (
+      {categories.map((cat) => (
         <div
           key={cat.id}
           onClick={() => onSelectCategory(cat.id as CategoryType)}

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Top10Manager from '@/components/admin/Top10Manager';
-import CategoryManager from '@/components/admin/CategoryManager';
+import CategoryButtonManager from '@/components/admin/CategoryButtonManager';
 
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -102,13 +102,13 @@ export default function AdminPage() {
                   : 'text-gray-600 hover:text-gray-900'
               }`}
             >
-              Category Contents Manager
+              Category Buttons Manager
             </button>
           </div>
 
           {/* Content */}
           <div className="p-6">
-            {activeTab === 'top10' ? <Top10Manager /> : <CategoryManager />}
+            {activeTab === 'top10' ? <Top10Manager /> : <CategoryButtonManager />}
           </div>
         </div>
       </div>
