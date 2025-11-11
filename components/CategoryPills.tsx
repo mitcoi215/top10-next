@@ -1,10 +1,11 @@
 'use client';
 
 import { CATEGORIES } from '@/lib/constants';
+import { CategoryType } from '@/types';
 
 interface CategoryPillsProps {
-  activeCategory: string;
-  onSelectCategory: (category: string) => void;
+  activeCategory: CategoryType;
+  onSelectCategory: (category: CategoryType) => void;
 }
 
 export default function CategoryPills({ activeCategory, onSelectCategory }: CategoryPillsProps) {
@@ -13,7 +14,7 @@ export default function CategoryPills({ activeCategory, onSelectCategory }: Cate
       {CATEGORIES.map((cat) => (
         <div
           key={cat.id}
-          onClick={() => onSelectCategory(cat.id)}
+          onClick={() => onSelectCategory(cat.id as CategoryType)}
           className="group flex flex-col items-center cursor-pointer transition-all"
           style={{ width: '120px', flexShrink: 0 }}
         >
