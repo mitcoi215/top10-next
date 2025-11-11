@@ -5,6 +5,8 @@ import { useParams, useRouter } from 'next/navigation';
 import { Top10Item, CategoryType } from '@/types';
 import Link from 'next/link';
 import { lifestyleTop10, healthTop10, homeTop10, businessTop10, securityTop10 } from '@/data/top10Data';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 // Default data
 const defaultData: Record<string, Top10Item[]> = {
@@ -104,12 +106,12 @@ export default function ItemDetailPage() {
           />
         </div>
 
-        {/* Detailed Description */}
-        <div className="prose prose-lg max-w-none">
-          <div className="text-gray-800 leading-relaxed text-lg whitespace-pre-line">
+        {/* Detailed Description - Markdown Rendering */}
+        <article className="prose prose-lg prose-headings:font-bold prose-h2:text-3xl prose-h2:mt-8 prose-h2:mb-4 prose-h3:text-2xl prose-h3:mt-6 prose-h3:mb-3 prose-p:text-gray-800 prose-p:leading-relaxed prose-a:text-red-600 prose-a:no-underline hover:prose-a:underline prose-strong:text-gray-900 prose-ul:my-4 prose-li:text-gray-800 prose-li:my-2 max-w-none">
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>
             {item.detailedDescription || item.description}
-          </div>
-        </div>
+          </ReactMarkdown>
+        </article>
       </main>
 
       {/* Related Items */}
