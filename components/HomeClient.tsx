@@ -11,13 +11,14 @@ import {
   businessTop10,
   securityTop10
 } from '@/data/top10Data';
+import { CATEGORIES } from '@/lib/constants';
 
 interface HomeClientProps {
   initialCategory?: string;
 }
 
 // Default data for each category
-const defaultData: Record<CategoryType, Top10Item[]> = {
+const defaultData: Record<string, Top10Item[]> = {
   lifestyle: lifestyleTop10,
   health: healthTop10,
   home: homeTop10,
@@ -25,12 +26,21 @@ const defaultData: Record<CategoryType, Top10Item[]> = {
   security: securityTop10,
 };
 
-export default function HomeClient({ initialCategory = 'lifestyle' }: HomeClientProps) {
-  const [activeCategory, setActiveCategory] = useState<CategoryType>(initialCategory as CategoryType);
-  const [allTop10Data, setAllTop10Data] = useState(defaultData);
+export default function HomeClient({ initialCategory }: HomeClientProps) {
+  const [activeCategory, setActiveCategory] = useState<CategoryType>('');
+  const [allTop10Data, setAllTop10Data] = useState<Record<string, Top10Item[]>>(defaultData);
 
   // Load data from localStorage on mount
   useEffect(() => {
+    // Load categories to determine first category
+    const savedCategories = localStorage.getItem('categories');
+    const categories = savedCategories ? JSON.parse(savedCategories) : CATEGORIES;
+
+    // Set initial category
+    const firstCategoryId = categories[0]?.id || 'lifestyle';
+    setActiveCategory(initialCategory || firstCategoryId);
+
+    // Load top10 data
     const savedTop10 = localStorage.getItem('top10_data');
     if (savedTop10) {
       try {
@@ -40,7 +50,7 @@ export default function HomeClient({ initialCategory = 'lifestyle' }: HomeClient
         console.error('Failed to parse top10 data:', e);
       }
     }
-  }, []);
+  }, [initialCategory]);
 
   // Get current category items
   const currentItems = allTop10Data[activeCategory] || [];

@@ -4,10 +4,9 @@
 // ========================
 // CATEGORY TYPES
 // ========================
-// Type defines 5 category types in the system
-// Only these 5 values are allowed
+// Type defines category types - now dynamic (can be any string)
 
-export type CategoryType = 'lifestyle' | 'health' | 'home' | 'business' | 'security';
+export type CategoryType = string;
 
 // ========================
 // CATEGORY INTERFACE

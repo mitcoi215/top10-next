@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Top10Item, CategoryType } from '@/types';
 import { lifestyleTop10, healthTop10, homeTop10, businessTop10, securityTop10 } from '@/data/top10Data';
+import { CATEGORIES } from '@/lib/constants';
 
 const initialData = {
   lifestyle: lifestyleTop10,
@@ -12,14 +13,33 @@ const initialData = {
   security: securityTop10,
 };
 
+type CategoryButton = {
+  id: CategoryType;
+  name: string;
+  icon: string;
+  color: string;
+};
+
 export default function Top10Manager() {
+  const [categories, setCategories] = useState<CategoryButton[]>(CATEGORIES as CategoryButton[]);
   const [selectedCategory, setSelectedCategory] = useState<CategoryType>('lifestyle');
-  const [items, setItems] = useState<Record<CategoryType, Top10Item[]>>(initialData);
+  const [items, setItems] = useState<Record<string, Top10Item[]>>(initialData);
   const [editingItem, setEditingItem] = useState<Top10Item | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
 
   // Load from localStorage on mount
   useEffect(() => {
+    // Load categories
+    const savedCategories = localStorage.getItem('categories');
+    if (savedCategories) {
+      const parsedCategories = JSON.parse(savedCategories);
+      setCategories(parsedCategories);
+      if (parsedCategories.length > 0) {
+        setSelectedCategory(parsedCategories[0].id);
+      }
+    }
+
+    // Load top10 data
     const saved = localStorage.getItem('top10_data');
     if (saved) {
       setItems(JSON.parse(saved));
@@ -120,11 +140,11 @@ export default function Top10Manager() {
             onChange={(e) => setSelectedCategory(e.target.value as CategoryType)}
             className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none"
           >
-            <option value="lifestyle">Lifestyle</option>
-            <option value="health">Health & Wellness</option>
-            <option value="home">Home</option>
-            <option value="business">Business</option>
-            <option value="security">Security</option>
+            {categories.map((cat) => (
+              <option key={cat.id} value={cat.id}>
+                {cat.name}
+              </option>
+            ))}
           </select>
         </div>
         <button

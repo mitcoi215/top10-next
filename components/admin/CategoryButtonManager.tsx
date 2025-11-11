@@ -39,21 +39,82 @@ export default function CategoryButtonManager() {
     setIsFormOpen(true);
   };
 
+  const handleAddNew = () => {
+    setEditingCategory({
+      id: '',
+      name: '',
+      icon: '/icons/new-category.svg',
+      color: 'bg-white',
+    });
+    setIsFormOpen(true);
+  };
+
+  const handleDelete = (categoryId: CategoryType) => {
+    if (categories.length <= 1) {
+      alert('Cannot delete the last category!');
+      return;
+    }
+    if (confirm(`Are you sure you want to delete "${categoryId}" category?`)) {
+      const newCategories = categories.filter((cat) => cat.id !== categoryId);
+      saveCategories(newCategories);
+
+      // Also delete Top10 data for this category
+      const savedTop10 = localStorage.getItem('top10_data');
+      if (savedTop10) {
+        try {
+          const top10Data = JSON.parse(savedTop10);
+          delete top10Data[categoryId];
+          localStorage.setItem('top10_data', JSON.stringify(top10Data));
+        } catch (e) {
+          console.error('Failed to delete top10 data:', e);
+        }
+      }
+    }
+  };
+
   const handleSave = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!editingCategory) return;
 
     const formData = new FormData(e.currentTarget);
+    const categoryId = formData.get('id') as string;
+    const categoryName = formData.get('name') as string;
+    const categoryIcon = formData.get('icon') as string;
+
+    // Validation
+    if (!categoryId.trim()) {
+      alert('Category ID is required!');
+      return;
+    }
+    if (!categoryName.trim()) {
+      alert('Category Name is required!');
+      return;
+    }
+
     const updatedCategory: CategoryButton = {
-      id: editingCategory.id,
-      name: formData.get('name') as string,
-      icon: formData.get('icon') as string,
-      color: 'bg-white', // Fixed white background
+      id: categoryId.toLowerCase().replace(/\s+/g, '-'),
+      name: categoryName,
+      icon: categoryIcon,
+      color: 'bg-white',
     };
 
-    const newCategories = categories.map((cat) =>
-      cat.id === updatedCategory.id ? updatedCategory : cat
-    );
+    // Check if adding new or editing existing
+    const existingIndex = categories.findIndex((cat) => cat.id === editingCategory.id);
+
+    let newCategories;
+    if (existingIndex >= 0 && editingCategory.id !== '') {
+      // Editing existing
+      newCategories = categories.map((cat) =>
+        cat.id === editingCategory.id ? updatedCategory : cat
+      );
+    } else {
+      // Adding new - check for duplicate ID
+      if (categories.some((cat) => cat.id === updatedCategory.id)) {
+        alert('Category ID already exists! Please use a different ID.');
+        return;
+      }
+      newCategories = [...categories, updatedCategory];
+    }
 
     saveCategories(newCategories);
     setIsFormOpen(false);
@@ -62,11 +123,19 @@ export default function CategoryButtonManager() {
 
   return (
     <div>
-      <div className="mb-6">
-        <h3 className="text-lg font-semibold mb-2">Manage Category Buttons</h3>
-        <p className="text-gray-600 text-sm">
-          Edit the 5 main category buttons that appear on the homepage.
-        </p>
+      <div className="mb-6 flex items-center justify-between">
+        <div>
+          <h3 className="text-lg font-semibold mb-2">Manage Category Buttons</h3>
+          <p className="text-gray-600 text-sm">
+            Create, edit, or delete category buttons that appear on the homepage.
+          </p>
+        </div>
+        <button
+          onClick={handleAddNew}
+          className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition"
+        >
+          + Add New Category
+        </button>
       </div>
 
       {/* Categories List */}
@@ -85,12 +154,20 @@ export default function CategoryButtonManager() {
               <div className="flex-1">
                 <h4 className="font-bold text-lg mb-1">{cat.name}</h4>
                 <p className="text-sm text-gray-500 mb-2">ID: {cat.id}</p>
-                <button
-                  onClick={() => handleEdit(cat)}
-                  className="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700"
-                >
-                  Edit
-                </button>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => handleEdit(cat)}
+                    className="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => handleDelete(cat.id)}
+                    className="px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700"
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -101,18 +178,30 @@ export default function CategoryButtonManager() {
       {isFormOpen && editingCategory && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-lg p-6 max-w-xl w-full">
-            <h2 className="text-2xl font-bold mb-4">Edit Category Button</h2>
+            <h2 className="text-2xl font-bold mb-4">
+              {editingCategory.id ? 'Edit' : 'Add New'} Category
+            </h2>
             <form onSubmit={handleSave} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium mb-1">
-                  Category ID (Read-only)
+                  Category ID * {editingCategory.id && '(Read-only)'}
                 </label>
                 <input
+                  name="id"
                   type="text"
-                  value={editingCategory.id}
-                  disabled
-                  className="w-full px-4 py-2 border rounded-lg bg-gray-100 cursor-not-allowed"
+                  defaultValue={editingCategory.id}
+                  disabled={editingCategory.id !== ''}
+                  required
+                  placeholder="e.g., lifestyle, technology"
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none ${
+                    editingCategory.id ? 'bg-gray-100 cursor-not-allowed' : ''
+                  }`}
                 />
+                {!editingCategory.id && (
+                  <p className="text-xs text-gray-500 mt-1">
+                    Lowercase, no spaces (use dashes). This will be used in URLs.
+                  </p>
+                )}
               </div>
 
               <div>
