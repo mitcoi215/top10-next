@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react';
+import { CLOUDINARY_CONFIG } from '@/lib/cloudinary.config';
 
 interface ImageUploaderProps {
   currentImageUrl?: string;
@@ -14,8 +15,9 @@ export default function ImageUploader({ currentImageUrl, onImageUploaded }: Imag
   const [error, setError] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
-  const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
+  // Use config from lib/cloudinary.config.ts
+  const cloudName = CLOUDINARY_CONFIG.cloudName;
+  const uploadPreset = CLOUDINARY_CONFIG.uploadPreset;
 
   const handleFileSelect = (file: File) => {
     // Check if Cloudinary credentials are available
@@ -48,8 +50,8 @@ export default function ImageUploader({ currentImageUrl, onImageUploaded }: Imag
 
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('upload_preset', uploadPreset!);
-    formData.append('folder', 'top10');
+    formData.append('upload_preset', uploadPreset);
+    formData.append('folder', CLOUDINARY_CONFIG.folder);
 
     try {
       const xhr = new XMLHttpRequest();
