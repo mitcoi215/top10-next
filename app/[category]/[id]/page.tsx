@@ -107,27 +107,14 @@ export default function ItemDetailPage() {
 
             {/* Info */}
             <div className="flex flex-col justify-center">
-              <div className="flex items-center gap-4 mb-4">
-                <span className="text-4xl font-bold text-red-600">#{item.rank}</span>
-                <div className="flex items-center gap-2">
-                  <span className="text-2xl">⭐</span>
-                  <span className="text-3xl font-bold">{item.rating}</span>
-                  <span className="text-gray-500">/5</span>
-                </div>
-              </div>
-
               <h1 className="text-4xl font-bold mb-4">{item.title}</h1>
               <p className="text-xl text-gray-600 mb-6">{item.description}</p>
-
-              <div className="flex items-center gap-4 mb-6">
-                <div className="text-3xl font-bold text-green-600">{item.price}</div>
-              </div>
 
               <a
                 href={item.affiliateLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-red-600 text-white px-8 py-4 rounded-lg text-xl font-bold hover:bg-red-700 transition text-center"
+                className="bg-red-600 text-white px-8 py-4 rounded-lg text-xl font-bold hover:bg-red-700 transition text-center inline-block"
               >
                 Visit Site →
               </a>
@@ -145,54 +132,6 @@ export default function ItemDetailPage() {
               </div>
             </div>
           )}
-
-          {/* Features Section */}
-          {item.features && item.features.length > 0 && (
-            <div className="border-t p-8">
-              <h2 className="text-2xl font-bold mb-4">Key Features</h2>
-              <ul className="grid md:grid-cols-2 gap-3">
-                {item.features.map((feature, idx) => (
-                  <li key={idx} className="flex items-start gap-2">
-                    <span className="text-red-600 mt-1">✓</span>
-                    <span>{feature}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {/* Pros & Cons */}
-          <div className="border-t p-8 grid md:grid-cols-2 gap-8">
-            {/* Pros */}
-            {item.pros && item.pros.length > 0 && (
-              <div>
-                <h2 className="text-2xl font-bold mb-4 text-green-600">Pros</h2>
-                <ul className="space-y-2">
-                  {item.pros.map((pro, idx) => (
-                    <li key={idx} className="flex items-start gap-2">
-                      <span className="text-green-600 mt-1">✓</span>
-                      <span>{pro}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {/* Cons */}
-            {item.cons && item.cons.length > 0 && (
-              <div>
-                <h2 className="text-2xl font-bold mb-4 text-red-600">Cons</h2>
-                <ul className="space-y-2">
-                  {item.cons.map((con, idx) => (
-                    <li key={idx} className="flex items-start gap-2">
-                      <span className="text-red-600 mt-1">✗</span>
-                      <span>{con}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </div>
         </div>
 
         {/* Related Items */}
@@ -207,16 +146,16 @@ export default function ItemDetailPage() {
                   className="border border-gray-200 rounded-lg p-4 hover:shadow-lg transition group"
                 >
                   <div className="flex items-start gap-4">
-                    <span className="text-2xl font-bold text-red-600">#{relatedItem.rank}</span>
+                    <img
+                      src={relatedItem.image}
+                      alt={relatedItem.title}
+                      className="w-16 h-16 object-cover rounded"
+                    />
                     <div className="flex-1">
-                      <h3 className="font-bold text-lg mb-1 group-hover:text-red-600 transition">
+                      <div className="text-lg font-bold text-red-600 mb-1">#{relatedItem.rank}</div>
+                      <h3 className="font-semibold text-base group-hover:text-red-600 transition">
                         {relatedItem.title}
                       </h3>
-                      <div className="flex items-center gap-2 text-sm text-gray-600">
-                        <span>⭐ {relatedItem.rating}</span>
-                        <span>•</span>
-                        <span>{relatedItem.price}</span>
-                      </div>
                     </div>
                   </div>
                 </Link>

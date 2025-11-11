@@ -32,17 +32,12 @@ export default function Top10List({ items, category }: Top10ListProps) {
 
               {/* Body */}
               <div className="p-4 flex flex-col sm:flex-row gap-4">
-                <img src={item.image} alt={item.title} className="w-full sm:w-32 h-32 object-cover rounded" />
-                <div>
-                  <p className="text-gray-600">{item.description}</p>
-                  {item.features && item.features.length > 0 && (
-                    <ul className="list-disc list-inside mt-2 text-gray-600">
-                      {item.features.map((f, idx) => (
-                        <li key={idx}>{f}</li>
-                      ))}
-                    </ul>
-                  )}
-                  <div className="text-red-600 font-bold mt-2 inline-block group-hover:underline">
+                <img src={item.image} alt={item.title} className="w-full sm:w-48 h-48 object-cover rounded" />
+                <div className="flex-1">
+                  <p className="text-gray-700 leading-relaxed">
+                    {item.detailedDescription || item.description}
+                  </p>
+                  <div className="text-red-600 font-bold mt-4 inline-block group-hover:underline">
                     View Details →
                   </div>
                 </div>
