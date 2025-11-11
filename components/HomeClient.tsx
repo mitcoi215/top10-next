@@ -25,12 +25,30 @@ export default function HomeClient({ initialCategory = 'lifestyle' }: HomeClient
         {contents.map((item) => (
           <div
             key={item.id}
-            className="border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition"
+            className="border border-gray-200 rounded-lg p-6 hover:shadow-lg transition flex flex-col justify-between"
           >
-            <img src={item.image} alt={item.title} className="w-full h-32 object-cover" />
-            <div className="p-4">
-              <h4 className="font-bold text-gray-900">{item.title}</h4>
-              <p className="text-gray-600 mt-1 text-sm">{item.description}</p>
+            {/* Title và Description */}
+            <div>
+              <h4 className="font-bold text-gray-900 text-lg mb-3">{item.title}</h4>
+              <p className="text-gray-600 text-sm mb-6">{item.description}</p>
+            </div>
+
+            {/* 2 nút Explore và Compare */}
+            <div className="flex flex-col gap-2">
+              <a
+                href={item.link}
+                className="flex items-center justify-between px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition text-sm font-medium text-gray-900"
+              >
+                <span>Explore</span>
+                <span>→</span>
+              </a>
+              <a
+                href={item.link}
+                className="flex items-center justify-between px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition text-sm font-medium text-gray-900"
+              >
+                <span>Compare</span>
+                <span>→</span>
+              </a>
             </div>
           </div>
         ))}
