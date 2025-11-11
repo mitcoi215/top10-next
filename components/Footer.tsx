@@ -50,21 +50,6 @@ export default function Footer() {
                   About Us
                 </Link>
               </li>
-              <li>
-                <Link href="/how-we-score" className="text-sm text-gray-600 hover:text-purple-600">
-                  How We Score
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact" className="text-sm text-gray-600 hover:text-purple-600">
-                  Contact
-                </Link>
-              </li>
-              <li>
-                <Link href="/careers" className="text-sm text-gray-600 hover:text-purple-600">
-                  Careers
-                </Link>
-              </li>
             </ul>
           </div>
 
@@ -82,11 +67,6 @@ export default function Footer() {
               <li>
                 <Link href="/terms" className="text-sm text-gray-600 hover:text-purple-600">
                   Terms of Service
-                </Link>
-              </li>
-              <li>
-                <Link href="/disclaimer" className="text-sm text-gray-600 hover:text-purple-600">
-                  Disclaimer
                 </Link>
               </li>
             </ul>
