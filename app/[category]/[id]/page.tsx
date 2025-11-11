@@ -77,93 +77,74 @@ export default function ItemDetailPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white border-b">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <Link href="/" className="text-red-600 hover:underline">
-            ← Back to Home
+      <header className="bg-white border-b border-gray-200">
+        <div className="max-w-4xl mx-auto px-4 py-4">
+          <Link href="/" className="text-red-600 hover:underline inline-flex items-center gap-2">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            Back to Home
           </Link>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 py-8">
-        {/* Item Details */}
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden mb-8">
-          {/* Hero Section */}
-          <div className="grid md:grid-cols-2 gap-8 p-8">
-            {/* Image */}
-            <div className="relative h-96 bg-gray-100 rounded-lg overflow-hidden">
-              <img
-                src={item.image}
-                alt={item.title}
-                className="w-full h-full object-cover"
-              />
-              {item.featured && (
-                <div className="absolute top-4 right-4 bg-yellow-400 text-yellow-900 px-4 py-2 rounded-lg font-bold">
-                  Featured
-                </div>
-              )}
-            </div>
+      <main className="max-w-4xl mx-auto px-4 py-12">
+        {/* Title */}
+        <h1 className="text-5xl font-bold text-gray-900 mb-8 leading-tight">
+          {item.title}
+        </h1>
 
-            {/* Info */}
-            <div className="flex flex-col justify-center">
-              <h1 className="text-4xl font-bold mb-4">{item.title}</h1>
-              <p className="text-xl text-gray-600 mb-6">{item.description}</p>
-
-              <a
-                href={item.affiliateLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-red-600 text-white px-8 py-4 rounded-lg text-xl font-bold hover:bg-red-700 transition text-center inline-block"
-              >
-                Visit Site →
-              </a>
-            </div>
-          </div>
-
-          {/* Detailed Review Section */}
-          {item.detailedDescription && (
-            <div className="border-t p-8 bg-gray-50">
-              <h2 className="text-2xl font-bold mb-4">Detailed Review</h2>
-              <div className="prose prose-lg max-w-none">
-                <p className="text-gray-700 leading-relaxed whitespace-pre-line">
-                  {item.detailedDescription}
-                </p>
-              </div>
-            </div>
-          )}
+        {/* Featured Image */}
+        <div className="mb-12">
+          <img
+            src={item.image}
+            alt={item.title}
+            className="w-full h-auto rounded-2xl shadow-lg"
+          />
         </div>
 
-        {/* Related Items */}
-        {relatedItems.length > 0 && (
-          <div className="bg-white rounded-lg shadow-lg p-8">
-            <h2 className="text-2xl font-bold mb-6">Other Top Picks in This Category</h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {/* Detailed Description */}
+        <div className="prose prose-lg max-w-none">
+          <div className="text-gray-800 leading-relaxed text-lg whitespace-pre-line">
+            {item.detailedDescription || item.description}
+          </div>
+        </div>
+      </main>
+
+      {/* Related Items */}
+      {relatedItems.length > 0 && (
+        <section className="bg-white border-t border-gray-200 py-16 mt-16">
+          <div className="max-w-4xl mx-auto px-4">
+            <h2 className="text-3xl font-bold mb-8 text-gray-900">Other Top Picks in This Category</h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {relatedItems.map((relatedItem) => (
                 <Link
                   key={relatedItem.id}
                   href={`/${category}/${relatedItem.id}`}
-                  className="border border-gray-200 rounded-lg p-4 hover:shadow-lg transition group"
+                  className="group"
                 >
-                  <div className="flex items-start gap-4">
-                    <img
-                      src={relatedItem.image}
-                      alt={relatedItem.title}
-                      className="w-16 h-16 object-cover rounded"
-                    />
-                    <div className="flex-1">
-                      <div className="text-lg font-bold text-red-600 mb-1">#{relatedItem.rank}</div>
-                      <h3 className="font-semibold text-base group-hover:text-red-600 transition">
-                        {relatedItem.title}
-                      </h3>
+                  <div className="bg-white border border-gray-200 rounded-xl p-4 hover:shadow-lg hover:border-red-300 transition-all duration-300">
+                    <div className="flex items-start gap-4">
+                      <img
+                        src={relatedItem.image}
+                        alt={relatedItem.title}
+                        className="w-20 h-20 object-cover rounded-lg flex-shrink-0"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <div className="text-lg font-bold text-red-600 mb-1">#{relatedItem.rank}</div>
+                        <h3 className="font-semibold text-base text-gray-900 group-hover:text-red-600 transition line-clamp-2">
+                          {relatedItem.title}
+                        </h3>
+                      </div>
                     </div>
                   </div>
                 </Link>
               ))}
             </div>
           </div>
-        )}
-      </main>
+        </section>
+      )}
     </div>
   );
 }
