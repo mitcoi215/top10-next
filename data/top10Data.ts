@@ -126,103 +126,103 @@ export const healthTop10: Top10Item[] = [
 ];
 
 // ========================
-// 💻 TECHNOLOGY CATEGORY
+// 🏠 HOME CATEGORY
 // ========================
 
-export const technologyTop10: Top10Item[] = [
+export const homeTop10: Top10Item[] = [
   {
     id: 1,
     rank: 1,
-    title: 'Bluehost - Best Web Hosting',
-    description: 'Reliable web hosting with 24/7 support.',
+    title: 'ADT - Best Home Security System',
+    description: 'Trusted home security with 24/7 professional monitoring.',
     image: '/top10/1.jpg',
     rating: 4.5,
-    price: '$2.95/month',
+    price: '$45.99/month',
     features: [
-      'Free domain for 1 year',
-      'Free SSL certificate',
-      '24/7 support',
-      'WordPress optimized'
+      'Professional installation',
+      '24/7 monitoring',
+      'Smart home integration',
+      'Mobile app control'
     ],
     pros: [
-      'Easy to use',
-      'Affordable pricing',
-      'Great uptime'
+      'Established brand reputation',
+      'Comprehensive coverage',
+      'Fast emergency response'
     ],
     cons: [
-      'Renewal rates higher',
-      'Upsells during checkout'
+      'Long-term contract required',
+      'Higher monthly costs'
     ],
-    category: 'technology',
-    affiliateLink: 'https://www.bluehost.com',
+    category: 'home',
+    affiliateLink: 'https://www.adt.com',
     featured: true
   }
 ];
 
 // ========================
-// 💰 FINANCE CATEGORY
+// 🏢 BUSINESS CATEGORY
 // ========================
 
-export const financeTop10: Top10Item[] = [
+export const businessTop10: Top10Item[] = [
   {
     id: 1,
     rank: 1,
-    title: 'Mint - Best Budgeting App',
-    description: 'Free budgeting and finance tracking.',
+    title: 'Salesforce - Best CRM Platform',
+    description: 'World\'s #1 CRM platform for sales and customer management.',
     image: '/top10/1.jpg',
     rating: 4.4,
-    price: 'Free',
+    price: '$25/user/month',
     features: [
-      'Budget tracking',
-      'Bill reminders',
-      'Credit score monitoring',
-      'Investment tracking'
+      'Contact management',
+      'Sales forecasting',
+      'Custom dashboards',
+      'Mobile app access'
     ],
     pros: [
-      'Completely free',
-      'Easy to use',
-      'Comprehensive features'
+      'Highly customizable',
+      'Extensive integrations',
+      'Scalable for growth'
     ],
     cons: [
-      'Ads present',
-      'US only'
+      'Steep learning curve',
+      'Expensive for small businesses'
     ],
-    category: 'finance',
-    affiliateLink: 'https://www.mint.com',
+    category: 'business',
+    affiliateLink: 'https://www.salesforce.com',
     featured: true
   }
 ];
 
 // ========================
-// 🎬 ENTERTAINMENT CATEGORY
+// 🔒 SECURITY CATEGORY
 // ========================
 
-export const entertainmentTop10: Top10Item[] = [
+export const securityTop10: Top10Item[] = [
   {
     id: 1,
     rank: 1,
-    title: 'Netflix - Best Streaming Service',
-    description: 'Unlimited movies and TV shows.',
+    title: 'NordVPN - Best VPN Service Overall',
+    description: 'Secure your internet with military-grade encryption.',
     image: '/top10/1.jpg',
     rating: 4.9,
-    price: '$15.49/month',
+    price: '$3.99/month',
     features: [
-      'Ad-free experience',
-      'Original content',
-      'Multiple profiles',
-      'Download offline'
+      '5,500+ servers worldwide',
+      'No-logs policy',
+      'Kill switch protection',
+      'Double VPN encryption'
     ],
     pros: [
-      'Huge content library',
-      'High-quality originals',
+      'Excellent connection speed',
+      'Strong security features',
       'User-friendly interface'
     ],
     cons: [
-      'Price increases',
-      'Content rotation'
+      'Can be slow to connect',
+      'No dedicated IP on basic plan'
     ],
-    category: 'entertainment',
-    affiliateLink: 'https://www.netflix.com',
+    category: 'security',
+    affiliateLink: 'https://www.nordvpn.com',
     featured: true
   }
 ];
@@ -233,8 +233,8 @@ export const entertainmentTop10: Top10Item[] = [
 
 export const TOP10_DATA = {
   lifestyle: lifestyleTop10,
-  technology: technologyTop10,
   health: healthTop10,
-  finance: financeTop10,
-  entertainment: entertainmentTop10
+  home: homeTop10,
+  business: businessTop10,
+  security: securityTop10
 };

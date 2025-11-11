@@ -7,7 +7,7 @@
 // Type defines 5 category types in the system
 // Only these 5 values are allowed
 
-export type CategoryType = 'lifestyle' | 'technology' | 'health' | 'finance' | 'entertainment';
+export type CategoryType = 'lifestyle' | 'health' | 'home' | 'business' | 'security';
 
 // ========================
 // CATEGORY INTERFACE
