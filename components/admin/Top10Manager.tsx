@@ -98,12 +98,7 @@ export default function Top10Manager() {
       description: formData.get('description') as string,
       detailedDescription: formData.get('detailedDescription') as string,
       image: formData.get('image') as string,
-      rating: parseFloat(formData.get('rating') as string),
-      price: formData.get('price') as string,
       affiliateLink: formData.get('affiliateLink') as string,
-      features: (formData.get('features') as string).split('\n').filter(Boolean),
-      pros: (formData.get('pros') as string).split('\n').filter(Boolean),
-      cons: (formData.get('cons') as string).split('\n').filter(Boolean),
       featured: formData.get('featured') === 'on',
     };
 
@@ -172,11 +167,7 @@ export default function Top10Manager() {
                     </span>
                   )}
                 </div>
-                <p className="text-gray-600 text-sm mb-2">{item.description}</p>
-                <div className="flex items-center gap-4 text-sm text-gray-500">
-                  <span>⭐ {item.rating}</span>
-                  <span>💰 {item.price}</span>
-                </div>
+                <p className="text-gray-600 text-sm">{item.description}</p>
               </div>
               <div className="flex gap-2">
                 <button
@@ -216,7 +207,7 @@ export default function Top10Manager() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">Description (Short Summary)</label>
+                <label className="block text-sm font-medium mb-1">Short Description</label>
                 <textarea
                   name="description"
                   defaultValue={editingItem.description}
@@ -233,11 +224,11 @@ export default function Top10Manager() {
                   name="detailedDescription"
                   defaultValue={editingItem.detailedDescription || ''}
                   rows={8}
-                  placeholder="Write a comprehensive review about this product/service. This will be displayed on the detail page for users to read more about features, benefits, and why they should choose this option."
+                  placeholder="Write a comprehensive review about this product/service. This will be displayed on the detail page and in the list view."
                   className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none"
                 />
                 <p className="text-xs text-gray-500 mt-1">
-                  This detailed content will be displayed on the item detail page to help users learn more
+                  This detailed content will be displayed prominently in the list and on the detail page
                 </p>
               </div>
 
@@ -253,67 +244,14 @@ export default function Top10Manager() {
               <input type="hidden" name="image" value={editingItem.image} />
 
               <div>
-                <label className="block text-sm font-medium mb-1">Rating (0-5)</label>
+                <label className="block text-sm font-medium mb-1">Affiliate Link (Visit Site URL)</label>
                 <input
-                  name="rating"
-                  type="number"
-                  step="0.1"
-                  min="0"
-                  max="5"
-                  defaultValue={editingItem.rating}
+                  name="affiliateLink"
+                  defaultValue={editingItem.affiliateLink}
+                  required
+                  placeholder="https://example.com"
                   className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none"
                 />
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium mb-1">Price</label>
-                  <input
-                    name="price"
-                    defaultValue={editingItem.price}
-                    className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-1">Affiliate Link</label>
-                  <input
-                    name="affiliateLink"
-                    defaultValue={editingItem.affiliateLink}
-                    required
-                    className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-1">Features (one per line)</label>
-                <textarea
-                  name="features"
-                  defaultValue={editingItem.features?.join('\n')}
-                  rows={3}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium mb-1">Pros (one per line)</label>
-                  <textarea
-                    name="pros"
-                    defaultValue={editingItem.pros?.join('\n')}
-                    rows={3}
-                    className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-1">Cons (one per line)</label>
-                  <textarea
-                    name="cons"
-                    defaultValue={editingItem.cons?.join('\n')}
-                    rows={3}
-                    className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none"
-                  />
-                </div>
               </div>
 
               <div className="flex items-center gap-2">
