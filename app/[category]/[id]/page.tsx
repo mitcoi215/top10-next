@@ -4,6 +4,16 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Top10Item, CategoryType } from '@/types';
 import Link from 'next/link';
+import { lifestyleTop10, healthTop10, homeTop10, businessTop10, securityTop10 } from '@/data/top10Data';
+
+// Default data
+const defaultData: Record<string, Top10Item[]> = {
+  lifestyle: lifestyleTop10,
+  health: healthTop10,
+  home: homeTop10,
+  business: businessTop10,
+  security: securityTop10,
+};
 
 export default function ItemDetailPage() {
   const params = useParams();
@@ -16,24 +26,30 @@ export default function ItemDetailPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Load data from localStorage
+    // Load data from localStorage, fallback to default data
+    let allData = defaultData;
+
     const savedData = localStorage.getItem('top10_data');
     if (savedData) {
       try {
-        const allData = JSON.parse(savedData);
-        const categoryItems = allData[category] || [];
-
-        // Find the specific item
-        const foundItem = categoryItems.find((i: Top10Item) => i.id === itemId);
-        setItem(foundItem || null);
-
-        // Get related items (same category, different id)
-        const related = categoryItems.filter((i: Top10Item) => i.id !== itemId);
-        setRelatedItems(related);
+        const parsed = JSON.parse(savedData);
+        // Merge saved data with default data
+        allData = { ...defaultData, ...parsed };
       } catch (e) {
         console.error('Failed to load data:', e);
       }
     }
+
+    const categoryItems = allData[category] || [];
+
+    // Find the specific item
+    const foundItem = categoryItems.find((i: Top10Item) => i.id === itemId);
+    setItem(foundItem || null);
+
+    // Get related items (same category, different id)
+    const related = categoryItems.filter((i: Top10Item) => i.id !== itemId);
+    setRelatedItems(related);
+
     setLoading(false);
   }, [category, itemId]);
 
