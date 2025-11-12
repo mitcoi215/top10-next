@@ -107,7 +107,27 @@ export default function ItemDetailPage() {
         </div>
 
         {/* Detailed Description - Markdown Rendering */}
-        <article className="prose prose-lg prose-headings:font-bold prose-h2:text-3xl prose-h2:mt-8 prose-h2:mb-4 prose-h3:text-2xl prose-h3:mt-6 prose-h3:mb-3 prose-p:text-gray-800 prose-p:leading-relaxed prose-a:text-red-600 prose-a:no-underline hover:prose-a:underline prose-strong:text-gray-900 prose-ul:my-4 prose-li:text-gray-800 prose-li:my-2 max-w-none">
+        <article className="prose prose-lg max-w-none
+          prose-headings:font-bold prose-headings:text-gray-900
+          prose-h1:text-4xl prose-h1:mt-10 prose-h1:mb-6
+          prose-h2:text-3xl prose-h2:mt-10 prose-h2:mb-5
+          prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-4
+          prose-h4:text-xl prose-h4:mt-6 prose-h4:mb-3
+          prose-p:text-gray-800 prose-p:leading-relaxed prose-p:mb-5 prose-p:text-lg
+          prose-a:text-blue-600 prose-a:underline hover:prose-a:text-blue-700 prose-a:font-normal
+          prose-strong:text-gray-900 prose-strong:font-bold
+          prose-em:text-gray-800 prose-em:italic
+          prose-ul:my-6 prose-ul:list-disc prose-ul:pl-6
+          prose-ol:my-6 prose-ol:list-decimal prose-ol:pl-6
+          prose-li:text-gray-800 prose-li:my-2 prose-li:text-lg prose-li:leading-relaxed
+          prose-blockquote:border-l-4 prose-blockquote:border-blue-600 prose-blockquote:pl-4 prose-blockquote:italic prose-blockquote:text-gray-700
+          prose-code:text-red-600 prose-code:bg-gray-100 prose-code:px-1 prose-code:py-0.5 prose-code:rounded
+          prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-pre:p-4 prose-pre:rounded-lg
+          prose-img:rounded-lg prose-img:shadow-md
+          prose-hr:border-gray-300 prose-hr:my-8
+          prose-table:border-collapse prose-table:w-full
+          prose-th:bg-gray-100 prose-th:p-3 prose-th:text-left prose-th:font-bold
+          prose-td:border prose-td:border-gray-300 prose-td:p-3">
           <ReactMarkdown remarkPlugins={[remarkGfm]}>
             {item.detailedDescription || item.description}
           </ReactMarkdown>
