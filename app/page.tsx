@@ -15,7 +15,7 @@ export default function HomePage() {
           <h1 className="text-4xl font-bold text-gray-900">
             Compare and shop the <span className="text-red-600">Top10</span> best services & products for you
           </h1>
-        </div>
+        </div>x`
       </section>
 
       {/* Home Client: Category Pills + Category Content + Top10List */}
