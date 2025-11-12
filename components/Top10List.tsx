@@ -2,6 +2,8 @@
 
 import { Top10Item, CategoryType } from '@/types';
 import Link from 'next/link';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 interface Top10ListProps {
   items: Top10Item[];
@@ -47,9 +49,11 @@ export default function Top10List({ items, category }: Top10ListProps) {
                   )}
                 </div>
                 <div className="flex-1 flex flex-col justify-between">
-                  <p className="text-gray-700 leading-relaxed text-base mb-4 line-clamp-4">
-                    {item.detailedDescription || item.description}
-                  </p>
+                  <div className="markdown-content text-base mb-4 line-clamp-4">
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                      {item.detailedDescription || item.description}
+                    </ReactMarkdown>
+                  </div>
                   <div className="flex items-center gap-3">
                     <span className="inline-flex items-center gap-2 text-red-600 font-bold text-lg group-hover:gap-4 transition-all duration-300">
                       View Details
