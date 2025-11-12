@@ -51,12 +51,15 @@ export default function Header() {
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           {/* Logo - Left Side */}
-          <Link href="/" className="flex items-center">
+          <Link href="/" className="flex items-center space-x-2">
             <img
               src="/icons/logo.png"
               alt="Top10"
               className="h-10 w-auto"
             />
+            <span className="text-xl font-bold text-gray-900">
+              {SITE_CONFIG.name}
+            </span>
           </Link>
 
           {/* Navigation + Search - Right Side */}
