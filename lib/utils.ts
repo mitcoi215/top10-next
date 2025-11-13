@@ -1,4 +1,4 @@
-// 📍 File: D:\top10-next\lib\utils.ts
+// 📍 File: D:\10rating-next\lib\utils.ts
 // 🎯 Mục đích: Helper functions dùng chung
 
 import { type ClassValue, clsx } from 'clsx';

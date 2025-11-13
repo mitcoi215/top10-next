@@ -22,7 +22,7 @@ export default function PrivacyPolicyPage() {
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-4">1. Introduction</h2>
               <p className="text-gray-700 leading-relaxed mb-4">
-                Welcome to Top10.com ("we," "our," or "us"). We are committed to protecting your personal information
+                Welcome to 10rating.com ("we," "our," or "us"). We are committed to protecting your personal information
                 and your right to privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard
                 your information when you visit our website.
               </p>
@@ -161,8 +161,8 @@ export default function PrivacyPolicyPage() {
                 If you have any questions about this Privacy Policy, please contact us:
               </p>
               <ul className="list-none space-y-2 text-gray-700 mb-6">
-                <li><strong>Email:</strong> privacy@top10.com</li>
-                <li><strong>Website:</strong> www.top10.com</li>
+                <li><strong>Email:</strong> privacy@10rating.com</li>
+                <li><strong>Website:</strong> www.10rating.com</li>
               </ul>
               <Link
                 href="/"

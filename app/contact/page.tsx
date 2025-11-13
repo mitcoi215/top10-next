@@ -159,8 +159,8 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <h4 className="font-semibold text-gray-900">Email</h4>
-                      <a href="mailto:contact@top10.com" className="text-gray-600 hover:text-red-600">
-                        contact@top10.com
+                      <a href="mailto:contact@10rating.com" className="text-gray-600 hover:text-red-600">
+                        contact@10rating.com
                       </a>
                     </div>
                   </div>

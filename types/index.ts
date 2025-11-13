@@ -25,7 +25,7 @@ export interface Category {
 // ========================
 // TOP10 ITEM INTERFACE
 // ========================
-// Interface defines the structure of an item in Top10 list
+// Interface defines the structure of an item in 10rating list
 // Each item has full information: title, rating, price, features, etc.
 
 export interface Top10Item {
@@ -34,7 +34,7 @@ export interface Top10Item {
   title: string;                          // Product/service title (e.g., "NordVPN - Best VPN")
   description: string;                    // Short description (summary)
   detailedDescription?: string;           // Long detailed review/description - Optional
-  image: string;                          // Thumbnail image path (e.g., "/top10/1.jpg")
+  image: string;                          // Thumbnail image path (e.g., "/10rating/1.jpg")
   rating?: number;                        // Rating score 0-5 (e.g., 4.8) - Optional
   price?: string;                         // Price as text (e.g., "$9.99/month", "Free") - Optional
   features?: string[];                    // Array of key features - Optional
@@ -56,5 +56,5 @@ export interface SEOData {
   description: string;                    // Meta description (e.g., "Compare the best VPN services...")
   keywords?: string[];                    // Meta keywords (e.g., ["vpn", "security", "privacy"]) - Optional
   ogImage?: string;                       // Open Graph image - Optional (e.g., "/og-image.jpg")
-  canonical?: string;                     // Canonical URL - Optional (e.g., "https://top10.com/vpn")
+  canonical?: string;                     // Canonical URL - Optional (e.g., "https://10rating.com/vpn")
 }

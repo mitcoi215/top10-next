@@ -7,7 +7,7 @@ import CategoryButtonManager from '@/components/admin/CategoryButtonManager';
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
-  const [activeTab, setActiveTab] = useState<'top10' | 'categories'>('top10');
+  const [activeTab, setActiveTab] = useState<'10rating' | 'categories'>('10rating');
 
   useEffect(() => {
     // Check if already authenticated
@@ -85,14 +85,14 @@ export default function AdminPage() {
         <div className="bg-white rounded-lg shadow-sm border">
           <div className="flex border-b">
             <button
-              onClick={() => setActiveTab('top10')}
+              onClick={() => setActiveTab('10rating')}
               className={`px-6 py-3 font-medium transition ${
-                activeTab === 'top10'
+                activeTab === '10rating'
                   ? 'border-b-2 border-red-600 text-red-600'
                   : 'text-gray-600 hover:text-gray-900'
               }`}
             >
-              Top10 Items Manager
+              10rating Items Manager
             </button>
             <button
               onClick={() => setActiveTab('categories')}
@@ -108,7 +108,7 @@ export default function AdminPage() {
 
           {/* Content */}
           <div className="p-6">
-            {activeTab === 'top10' ? <Top10Manager /> : <CategoryButtonManager />}
+            {activeTab === '10rating' ? <Top10Manager /> : <CategoryButtonManager />}
           </div>
         </div>
       </div>

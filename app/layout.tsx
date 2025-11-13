@@ -7,25 +7,25 @@ import Footer from '@/components/Footer';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
-  title: 'Top10 Best Services & Products Comparison',
+  title: '10rating Best Services & Products Comparison',
   description:
-    'Compare and shop the Top10 best services & products for you. Hosting, VPN, Health & Wellness, and more categories with expert reviews.',
+    'Compare and shop the 10rating best services & products for you. Hosting, VPN, Health & Wellness, and more categories with expert reviews.',
   openGraph: {
-    title: 'Top10 Best Services & Products Comparison',
+    title: '10rating Best Services & Products Comparison',
     description:
-      'Compare and shop the Top10 best services & products for you. Hosting, VPN, Health & Wellness, and more categories with expert reviews.',
-    url: 'https://www.top10.com',
+      'Compare and shop the 10rating best services & products for you. Hosting, VPN, Health & Wellness, and more categories with expert reviews.',
+    url: 'https://www.10rating.com',
     type: 'website',
-    images: ['/top10/1.jpg'], // ảnh Open Graph ví dụ
+    images: ['/10rating/1.jpg'], // ảnh Open Graph ví dụ
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Top10 Best Services & Products Comparison',
+    title: '10rating Best Services & Products Comparison',
     description:
-      'Compare and shop the Top10 best services & products for you. Hosting, VPN, Health & Wellness, and more categories with expert reviews.',
-    images: ['/top10/1.jpg'],
+      'Compare and shop the 10rating best services & products for you. Hosting, VPN, Health & Wellness, and more categories with expert reviews.',
+    images: ['/10rating/1.jpg'],
   },
-  metadataBase: new URL('https://www.top10.com'),
+  metadataBase: new URL('https://www.10rating.com'),
 };
 
 export default function RootLayout({

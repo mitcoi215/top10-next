@@ -61,7 +61,7 @@ export default function CategoryButtonManager() {
       const newCategories = categories.filter((cat) => cat.id !== categoryId);
       saveCategories(newCategories);
 
-      // Also delete Top10 data for this category
+      // Also delete 10rating data for this category
       const savedTop10 = localStorage.getItem('top10_data');
       if (savedTop10) {
         try {
@@ -69,7 +69,7 @@ export default function CategoryButtonManager() {
           delete top10Data[categoryId];
           localStorage.setItem('top10_data', JSON.stringify(top10Data));
         } catch (e) {
-          console.error('Failed to delete top10 data:', e);
+          console.error('Failed to delete 10rating data:', e);
         }
       }
     }

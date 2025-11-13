@@ -1,12 +1,13 @@
 {
-  "name": "top10-next",
+  "name": "10rating-next",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "start:3001": "PORT=3001 next start"
   },
   "dependencies": {
     "clsx": "^2.1.1",

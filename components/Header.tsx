@@ -54,7 +54,7 @@ export default function Header() {
           <Link href="/" className="flex items-center space-x-2">
             <img
               src="/icons/logo.png"
-              alt="Top10"
+              alt="10rating"
               className="h-10 w-auto"
             />
             <span className="text-xl font-bold text-gray-900">

@@ -1,4 +1,4 @@
-// 📍 File: D:\top10-next\components\Footer.tsx
+// 📍 File: D:\10rating-next\components\Footer.tsx
 // 🌐 SERVER COMPONENT
 
 import Link from 'next/link';

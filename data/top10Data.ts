@@ -1,5 +1,5 @@
 // 📍 File: data/top10Data.ts
-// 🎯 Mục đích: Mock data cho Top10 items - Full 10 items per category
+// 🎯 Mục đích: Mock data cho 10rating items - Full 10 items per category
 
 import { Top10Item } from '@/types';
 
@@ -14,7 +14,7 @@ export const lifestyleTop10: Top10Item[] = [
     title: 'eHarmony - Best Overall Dating Service',
     description: 'eHarmony uses a scientific approach to match singles based on compatibility. Perfect for those seeking serious relationships.',
     detailedDescription: 'eHarmony stands out as the premier dating platform for individuals serious about finding long-term love. Founded by clinical psychologist Dr. Neil Clark Warren, the service uses a comprehensive Compatibility Matching System that analyzes 32 dimensions of compatibility. With over 2 million people finding love on eHarmony, the platform boasts one of the highest success rates in the industry. The detailed personality assessment takes about 20 minutes to complete but provides incredibly accurate matches based on core values, lifestyle preferences, and relationship goals.',
-    image: '/top10/1.jpg',
+    image: '/10rating/1.jpg',
     rating: 4.8,
     price: '$35.90/month',
     features: [
@@ -45,7 +45,7 @@ export const lifestyleTop10: Top10Item[] = [
     title: 'Match.com - Best for Serious Relationships',
     description: 'Match.com has been connecting singles since 1995. Proven track record with millions of success stories worldwide.',
     detailedDescription: 'As one of the pioneers in online dating, Match.com has helped millions of singles find meaningful connections since 1995. The platform combines traditional profile browsing with advanced matching algorithms to help you find compatible partners. With members in 24 countries and available in 15 languages, Match offers a diverse user base. The platform hosts regular in-person events called "Stir" where members can meet face-to-face in a relaxed, social setting.',
-    image: '/top10/2.jpg',
+    image: '/10rating/2.jpg',
     rating: 4.6,
     price: '$24.99/month',
     features: [
@@ -76,7 +76,7 @@ export const lifestyleTop10: Top10Item[] = [
     title: 'HelloFresh - Top Meal Kit Delivery Service',
     description: 'Fresh, pre-portioned ingredients and easy-to-follow recipes delivered to your door weekly.',
     detailedDescription: 'HelloFresh revolutionizes home cooking by delivering farm-fresh ingredients and chef-designed recipes directly to your doorstep. Each week, choose from over 35 recipes across various dietary preferences including vegetarian, family-friendly, quick & easy, and calorie-smart options. The service eliminates meal planning stress and reduces food waste by providing exactly the right amount of ingredients you need. With step-by-step recipe cards that take 30 minutes or less, even cooking novices can create restaurant-quality meals at home.',
-    image: '/top10/3.jpg',
+    image: '/10rating/3.jpg',
     rating: 4.7,
     price: '$8.99/serving',
     features: [
@@ -107,7 +107,7 @@ export const lifestyleTop10: Top10Item[] = [
     title: 'Blue Apron - Premium Meal Kit Experience',
     description: 'Gourmet meal kits with unique recipes and high-quality, sustainably sourced ingredients.',
     detailedDescription: 'Blue Apron elevates the meal kit experience with restaurant-quality recipes and premium ingredients sourced directly from farms and suppliers. Known for introducing customers to new cooking techniques and global cuisines, Blue Apron offers adventurous recipes that expand your culinary horizons. The company partners with over 150 family-run farms and suppliers, ensuring fresh, seasonal ingredients while supporting sustainable agriculture.',
-    image: '/top10/4.jpg',
+    image: '/10rating/4.jpg',
     rating: 4.5,
     price: '$9.99/serving',
     features: [
@@ -138,7 +138,7 @@ export const lifestyleTop10: Top10Item[] = [
     title: 'Bumble - Best Dating App for Women',
     description: 'Women-first dating app where women make the first move, creating a respectful online dating experience.',
     detailedDescription: 'Bumble disrupts traditional dating dynamics by empowering women to make the first move. Founded by Whitney Wolfe Herd, Bumble creates a more balanced and respectful dating environment. The app extends beyond dating with Bumble BFF for friendships and Bumble Bizz for professional networking. With strict photo verification and AI-powered moderation to detect inappropriate messages, Bumble prioritizes user safety while fostering meaningful connections.',
-    image: '/top10/5.jpg',
+    image: '/10rating/5.jpg',
     rating: 4.4,
     price: 'Free (Premium $24.99/month)',
     features: [
@@ -169,7 +169,7 @@ export const lifestyleTop10: Top10Item[] = [
     title: 'Home Chef - Most Customizable Meal Kit',
     description: 'Highly customizable meal kits with the ability to swap proteins and customize nearly every recipe.',
     detailedDescription: 'Home Chef stands out for its exceptional customization options, allowing you to tailor meals to your exact preferences. Swap proteins, double portions, or upgrade to premium ingredients on most recipes. The "Customize It" feature lets you personalize your meals more than any other service. Home Chef also offers oven-ready meals that require no prep work and fresh & ready meals that are fully prepared - just heat and eat.',
-    image: '/top10/6.jpg',
+    image: '/10rating/6.jpg',
     rating: 4.6,
     price: '$8.99/serving',
     features: [
@@ -200,7 +200,7 @@ export const lifestyleTop10: Top10Item[] = [
     title: 'Hinge - Best App for Meaningful Connections',
     description: 'Designed to be deleted, Hinge focuses on creating meaningful relationships through detailed profiles.',
     detailedDescription: 'Hinge markets itself as "the dating app designed to be deleted," emphasizing its focus on helping users find serious relationships. The app uses detailed profiles with prompts like "The way to win me over is..." to showcase personality beyond photos. Hinge\'s algorithm learns from your interactions to improve match quality over time. The app encourages authentic conversations by highlighting shared interests and mutual connections.',
-    image: '/top10/7.jpg',
+    image: '/10rating/7.jpg',
     rating: 4.5,
     price: 'Free (Premium $19.99/month)',
     features: [
@@ -231,7 +231,7 @@ export const lifestyleTop10: Top10Item[] = [
     title: 'Factor - Best Prepared Meal Delivery',
     description: 'Fully prepared, chef-crafted meals delivered fresh, never frozen. Just heat and eat in minutes.',
     detailedDescription: 'Factor eliminates all cooking and prep work by delivering fully prepared, dietitian-approved meals to your door. Meals are never frozen and ready in just 2 minutes - perfect for busy professionals and anyone who wants healthy eating without the hassle. Choose from various meal preferences including Keto, Paleo, Calorie Smart, and Protein Plus. All meals are prepared by gourmet chefs and approved by dietitians for nutritional balance.',
-    image: '/top10/8.jpg',
+    image: '/10rating/8.jpg',
     rating: 4.3,
     price: '$11.00/meal',
     features: [
@@ -262,7 +262,7 @@ export const lifestyleTop10: Top10Item[] = [
     title: 'Coffee Meets Bagel - Best for Quality Over Quantity',
     description: 'Curated daily matches delivered at noon, focusing on quality connections rather than endless swiping.',
     detailedDescription: 'Coffee Meets Bagel takes a different approach to online dating by sending you a curated selection of matches (called "Bagels") each day at noon. The app uses your Facebook connections and interests to find compatible matches within your extended social network. By limiting daily matches, the app encourages users to give each profile thoughtful consideration rather than mindless swiping.',
-    image: '/top10/9.jpg',
+    image: '/10rating/9.jpg',
     rating: 4.2,
     price: 'Free (Premium $35/month)',
     features: [
@@ -293,7 +293,7 @@ export const lifestyleTop10: Top10Item[] = [
     title: 'EveryPlate - Most Affordable Meal Kit',
     description: 'Budget-friendly meal kits with simple, satisfying recipes starting at just $4.99 per serving.',
     detailedDescription: 'EveryPlate delivers affordable, delicious meal kits without compromising on taste or quality. By focusing on straightforward recipes with fewer ingredients and minimal packaging, EveryPlate keeps costs down while still providing fresh ingredients and satisfying meals. Perfect for budget-conscious families and individuals who want the convenience of meal kits without the premium price tag.',
-    image: '/top10/10.jpg',
+    image: '/10rating/10.jpg',
     rating: 4.4,
     price: '$4.99/serving',
     features: [
@@ -333,7 +333,7 @@ export const healthTop10: Top10Item[] = [
     title: 'BetterHelp - Best Online Therapy Platform',
     description: 'Professional, affordable counseling accessible from anywhere. Connect with licensed therapists online.',
     detailedDescription: 'BetterHelp revolutionizes mental health care by making professional therapy accessible, affordable, and convenient. With over 30,000 licensed therapists covering specialties from depression and anxiety to relationships and trauma, you can find the right match for your needs. The platform offers multiple communication methods including video sessions, phone calls, live chat, and messaging. Unlike traditional therapy that requires scheduling weeks in advance, BetterHelp provides flexible access to your therapist throughout the week.',
-    image: '/top10/1.jpg',
+    image: '/10rating/1.jpg',
     rating: 4.7,
     price: '$60-90/week',
     features: [
@@ -364,7 +364,7 @@ export const healthTop10: Top10Item[] = [
     title: 'Calm - Best Meditation and Sleep App',
     description: 'Award-winning app for meditation, sleep stories, breathing programs, and relaxing music.',
     detailedDescription: 'Calm has become the go-to app for stress reduction and better sleep, with millions of users worldwide. The app offers guided meditations ranging from 3 to 25 minutes, perfect for beginners and experienced meditators alike. Calm\'s Sleep Stories, narrated by celebrities like Matthew McConaughey and LeBron James, help millions fall asleep faster. The app also features breathing exercises, stretching routines, and nature scenes for relaxation.',
-    image: '/top10/2.jpg',
+    image: '/10rating/2.jpg',
     rating: 4.8,
     price: '$14.99/month or $69.99/year',
     features: [
@@ -395,7 +395,7 @@ export const healthTop10: Top10Item[] = [
     title: 'Noom - Best Weight Loss Program',
     description: 'Psychology-based weight loss program combining personal coaching with food tracking and education.',
     detailedDescription: 'Noom takes a unique psychological approach to weight loss, focusing on changing your relationship with food rather than restrictive dieting. The program combines personalized coaching, food logging, and daily lessons based on cognitive behavioral therapy. Noom categorizes foods using a color system (green, yellow, red) to help you make better choices without eliminating any foods. Clinical studies show Noom users lose an average of 5-10% of their body weight.',
-    image: '/top10/3.jpg',
+    image: '/10rating/3.jpg',
     rating: 4.5,
     price: '$59/month',
     features: [
@@ -426,7 +426,7 @@ export const healthTop10: Top10Item[] = [
     title: 'Headspace - Meditation Made Simple',
     description: 'User-friendly meditation app with guided sessions, sleep sounds, and mindfulness exercises.',
     detailedDescription: 'Headspace makes meditation accessible for everyone with its friendly, animated approach to mindfulness. Co-founded by former Buddhist monk Andy Puddicombe, the app offers hundreds of themed meditation sessions covering stress, anxiety, sleep, focus, and more. Headspace Plus includes workout-focused meditations, sleepcasts, and moving meditation exercises. The app uses playful animations to explain meditation concepts in a simple, non-intimidating way.',
-    image: '/top10/4.jpg',
+    image: '/10rating/4.jpg',
     rating: 4.6,
     price: '$12.99/month',
     features: [
@@ -457,7 +457,7 @@ export const healthTop10: Top10Item[] = [
     title: 'MyFitnessPal - Best Calorie Counter',
     description: 'Comprehensive food diary with largest food database and exercise tracking for weight management.',
     detailedDescription: 'MyFitnessPal boasts the world\'s largest food database with over 14 million foods, making calorie tracking easier than ever. The app uses barcode scanning for quick logging and learns your frequent foods for faster entry. Beyond calorie counting, MyFitnessPal tracks macronutrients, provides nutritional insights, and integrates with hundreds of fitness apps and devices. The community features include forums, recipe sharing, and friend connections for motivation.',
-    image: '/top10/5.jpg',
+    image: '/10rating/5.jpg',
     rating: 4.4,
     price: 'Free (Premium $9.99/month)',
     features: [
@@ -488,7 +488,7 @@ export const healthTop10: Top10Item[] = [
     title: 'Peloton - Best Interactive Fitness Platform',
     description: 'Live and on-demand fitness classes including cycling, running, strength, yoga, and more.',
     detailedDescription: 'Peloton brings the boutique fitness studio experience to your home with live and on-demand classes led by world-class instructors. While famous for its bike and tread equipment, the Peloton app offers thousands of classes requiring no equipment - including strength training, yoga, meditation, stretching, and outdoor running. The motivating instructors, curated music, and real-time metrics create an engaging workout experience that keeps members coming back.',
-    image: '/top10/6.jpg',
+    image: '/10rating/6.jpg',
     rating: 4.7,
     price: '$12.99/month (app only) or $44/month (all access)',
     features: [
@@ -519,7 +519,7 @@ export const healthTop10: Top10Item[] = [
     title: 'Talkspace - Online Therapy Alternative',
     description: 'Affordable online therapy with licensed therapists through text, video, and audio messaging.',
     detailedDescription: 'Talkspace provides professional mental health support through a convenient messaging platform. Unlike traditional therapy, you can message your therapist anytime and receive responses throughout the week (typically within a day). This asynchronous format allows you to express thoughts as they occur without waiting for a scheduled appointment. Talkspace offers specialized therapy for teens, couples, and specific conditions like PTSD or eating disorders.',
-    image: '/top10/7.jpg',
+    image: '/10rating/7.jpg',
     rating: 4.3,
     price: '$69/week',
     features: [
@@ -550,7 +550,7 @@ export const healthTop10: Top10Item[] = [
     title: 'Fitbit Premium - Comprehensive Health Insights',
     description: 'Advanced health metrics, guided programs, and personalized insights based on your Fitbit data.',
     detailedDescription: 'Fitbit Premium unlocks advanced analytics and guided health programs using data from your Fitbit device. Get detailed sleep analysis including sleep stages and Sleep Score, stress management scores, guided breathing sessions, and workout intensity maps. The service includes hundreds of guided workouts and mindfulness sessions, plus personalized health insights based on your unique data patterns. Premium members also get advanced goal-based programs for weight loss, better sleep, and stress management.',
-    image: '/top10/8.jpg',
+    image: '/10rating/8.jpg',
     rating: 4.2,
     price: '$9.99/month',
     features: [
@@ -581,7 +581,7 @@ export const healthTop10: Top10Item[] = [
     title: 'WW (Weight Watchers) - Classic Weight Loss Program',
     description: 'Flexible, science-backed weight loss program using the Points system for sustainable results.',
     detailedDescription: 'WW (formerly Weight Watchers) offers a proven points-based system that makes weight loss sustainable and enjoyable. Instead of counting calories, you track Points - a value assigned to foods based on calories, saturated fat, sugar, and protein. The system includes ZeroPoint foods you can enjoy freely. WW provides personal coaching, workshop support (virtual or in-person), and a comprehensive app with meal tracking, recipes, and workout plans. With over 50 years of experience, WW has helped millions achieve lasting weight loss.',
-    image: '/top10/9.jpg',
+    image: '/10rating/9.jpg',
     rating: 4.4,
     price: '$23/month',
     features: [
@@ -612,7 +612,7 @@ export const healthTop10: Top10Item[] = [
     title: 'Ten Percent Happier - Meditation for Skeptics',
     description: 'No-nonsense meditation app designed for people who think meditation is weird or woo-woo.',
     detailedDescription: 'Ten Percent Happier was created specifically for skeptics, with a straightforward, science-based approach to meditation. Founded by ABC News anchor Dan Harris after a panic attack on live TV, the app strips away mystical language and focuses on practical mindfulness techniques. Courses are taught by world-renowned meditation teachers who explain concepts in plain English. The app is perfect for busy professionals, type-A personalities, and anyone who finds traditional meditation apps too "New Age."',
-    image: '/top10/10.jpg',
+    image: '/10rating/10.jpg',
     rating: 4.5,
     price: '$99.99/year',
     features: [
@@ -650,7 +650,7 @@ export const homeTop10: Top10Item[] = [
     title: 'iRobot Roomba j7+ - Best Overall Robot Vacuum',
     description: 'Smart robot vacuum with obstacle avoidance and self-emptying base.',
     detailedDescription: 'The iRobot Roomba j7+ represents the pinnacle of automated home cleaning technology. With advanced AI-powered obstacle recognition, it can identify and avoid common household items like shoes, cords, and pet waste. The PrecisionVision Navigation uses a front-facing camera to map your home and plan efficient cleaning routes. The Clean Base Automatic Dirt Disposal holds up to 60 days of debris, making maintenance nearly hands-free. With smartphone control, voice commands, and customizable cleaning schedules, the j7+ makes daily vacuuming effortless.',
-    image: '/top10/1.jpg',
+    image: '/10rating/1.jpg',
     rating: 4.8,
     price: '$799',
     features: [
@@ -682,7 +682,7 @@ export const homeTop10: Top10Item[] = [
     title: 'Nest Learning Thermostat - Smart Temperature Control',
     description: 'Intelligent thermostat that learns your schedule and saves energy automatically.',
     detailedDescription: 'The Nest Learning Thermostat revolutionizes home climate control by learning your preferences and creating a personalized schedule. Within a week, it understands when you wake up, leave for work, and go to bed, automatically adjusting temperatures for comfort and efficiency. The sleek design features a beautiful display that shows weather, time, or temperature. Remote control via smartphone lets you adjust settings from anywhere, while energy history reports show how much you\'re saving. Compatible with most HVAC systems, Nest typically pays for itself in under two years through energy savings.',
-    image: '/top10/2.jpg',
+    image: '/10rating/2.jpg',
     rating: 4.7,
     price: '$249',
     features: [
@@ -714,7 +714,7 @@ export const homeTop10: Top10Item[] = [
     title: 'Ring Video Doorbell Pro 2 - Best Smart Doorbell',
     description: 'Advanced video doorbell with 3D Motion Detection and package alerts.',
     detailedDescription: 'The Ring Video Doorbell Pro 2 takes home security to the next level with cutting-edge features like 3D Motion Detection and Bird\'s Eye View. Unlike standard motion detection, 3D sensing creates a radar-like view of your property, showing exactly where visitors walked. The 1536p HD+ video with HDR provides crystal-clear footage day and night. Two-way audio with noise cancellation lets you communicate clearly with visitors. Package alerts notify you when deliveries arrive, and Pre-Roll captures 4 seconds before motion is detected. With a Ring Protect subscription, you get video recording, person detection, and package alerts.',
-    image: '/top10/3.jpg',
+    image: '/10rating/3.jpg',
     rating: 4.6,
     price: '$249.99',
     features: [
@@ -746,7 +746,7 @@ export const homeTop10: Top10Item[] = [
     title: 'Philips Hue White and Color Ambiance - Smart Lighting',
     description: 'Premium smart bulbs offering 16 million colors and seamless automation.',
     detailedDescription: 'Philips Hue is the gold standard in smart lighting, offering unmatched color accuracy, reliability, and ecosystem integration. The White and Color Ambiance bulbs produce vibrant, true-to-life colors from a palette of 16 million options, plus all shades of white from warm to cool daylight. Create scenes for every occasion, sync lights to music or movies, and set schedules that gradually wake you up or dim for bedtime. The Hue Bridge connects up to 50 lights and enables advanced features like away-from-home control, geofencing, and integration with virtually every smart home platform.',
-    image: '/top10/4.jpg',
+    image: '/10rating/4.jpg',
     rating: 4.8,
     price: '$199.99 (Starter Kit)',
     features: [
@@ -778,7 +778,7 @@ export const homeTop10: Top10Item[] = [
     title: 'Dyson V15 Detect - Cordless Vacuum with Laser',
     description: 'High-performance cordless vacuum that reveals hidden dust with laser technology.',
     detailedDescription: 'The Dyson V15 Detect brings scientific precision to home cleaning with innovative laser dust detection. A precisely-angled green laser illuminates microscopic dust particles on hard floors, revealing what you can\'t see with the naked eye. The acoustic piezo sensor counts and measures particles, displaying real-time data on the LCD screen—proof your floors are truly clean. With 230 air watts of suction, anti-tangle hair screw tool, and up to 60 minutes of runtime, the V15 handles everything from fine dust to pet hair. The whole-machine HEPA filtration captures 99.99% of particles, making it ideal for allergy sufferers.',
-    image: '/top10/5.jpg',
+    image: '/10rating/5.jpg',
     rating: 4.7,
     price: '$749.99',
     features: [
@@ -810,7 +810,7 @@ export const homeTop10: Top10Item[] = [
     title: 'Instant Pot Duo Plus - Multi-Functional Pressure Cooker',
     description: '9-in-1 programmable pressure cooker that replaces multiple kitchen appliances.',
     detailedDescription: 'The Instant Pot Duo Plus revolutionizes home cooking by combining nine appliances in one space-saving device. As a pressure cooker, it reduces cooking time by up to 70% while maintaining nutrients and flavors. It also functions as a slow cooker, rice cooker, steamer, sauté pan, yogurt maker, warmer, and sterilizer. The upgraded LCD display shows cooking progress and countdown timer. With 15 Smart Programs, you can prepare everything from soup to cake at the touch of a button. Safety features include overheat protection and safety lid lock. The stainless steel inner pot is dishwasher safe for easy cleanup.',
-    image: '/top10/6.jpg',
+    image: '/10rating/6.jpg',
     rating: 4.7,
     price: '$119.95',
     features: [
@@ -842,7 +842,7 @@ export const homeTop10: Top10Item[] = [
     title: 'August Wi-Fi Smart Lock - Keyless Entry System',
     description: 'Retrofit smart lock that works with your existing deadbolt for keyless convenience.',
     detailedDescription: 'The August Wi-Fi Smart Lock transforms your existing deadbolt into a smart, keyless entry system without replacing your entire lock. Installation takes just 10 minutes with a screwdriver—the exterior remains unchanged, maintaining your home\'s aesthetic and security. Built-in Wi-Fi eliminates the need for a separate hub. Lock and unlock from anywhere using your smartphone, or use the Auto-Lock feature to ensure your door locks automatically. DoorSense technology confirms your door is completely closed and locked. Grant temporary access to guests, house cleaners, or contractors with virtual keys that work for specified time periods.',
-    image: '/top10/7.jpg',
+    image: '/10rating/7.jpg',
     rating: 4.5,
     price: '$279.99',
     features: [
@@ -874,7 +874,7 @@ export const homeTop10: Top10Item[] = [
     title: 'Blink Outdoor - Wireless Security Camera System',
     description: 'Affordable wireless security cameras with 2-year battery life and cloud storage.',
     detailedDescription: 'Blink Outdoor delivers reliable home security at an unbeatable price. These wire-free cameras run on two AA lithium batteries that last up to two years, eliminating the need for power outlets or charging. The 1080p HD video captures clear footage day and night with infrared night vision. Customize motion detection zones to reduce false alerts from passing cars or tree branches. Two-way audio lets you speak to visitors or potential intruders. With the included Sync Module 2, you get free cloud storage for thousands of clips, or add local storage with a USB drive. Setup takes minutes with the Blink app.',
-    image: '/top10/8.jpg',
+    image: '/10rating/8.jpg',
     rating: 4.4,
     price: '$99.99 per camera',
     features: [
@@ -906,7 +906,7 @@ export const homeTop10: Top10Item[] = [
     title: 'ecobee SmartThermostat - Thermostat with Voice Control',
     description: 'Premium smart thermostat with built-in Alexa and room sensors for balanced comfort.',
     detailedDescription: 'The ecobee SmartThermostat stands out with built-in Alexa voice control and SmartSensor technology that ensures every room is comfortable. Unlike thermostats that only measure temperature in one location, ecobee\'s remote sensors detect occupancy and temperature in multiple rooms, adjusting your HVAC system accordingly. Ask Alexa to adjust the temperature, play music, or control other smart home devices directly from the thermostat. The premium glass touchscreen is responsive and beautiful. Energy reports show your savings, and Smart Home/Away automatically adjusts when you leave or return. Includes one SmartSensor, with additional sensors available.',
-    image: '/top10/9.jpg',
+    image: '/10rating/9.jpg',
     rating: 4.6,
     price: '$249',
     features: [
@@ -938,7 +938,7 @@ export const homeTop10: Top10Item[] = [
     title: 'Arlo Pro 4 - Wire-Free Security Camera',
     description: 'Wireless 2K security camera with color night vision and integrated spotlight.',
     detailedDescription: 'The Arlo Pro 4 combines wireless convenience with professional-grade security features. The 2K HDR video captures stunning detail, while the integrated spotlight and color night vision ensure you see full-color footage even in complete darkness. Wire-free installation means you can place cameras anywhere within Wi-Fi range, no hub required. The rechargeable battery lasts up to 6 months, depending on usage. Two-way audio with noise cancellation lets you communicate clearly with visitors. Advanced AI distinguishes between people, vehicles, packages, and animals, sending you relevant alerts. With an Arlo Secure subscription, get 30-day cloud recording and emergency call service.',
-    image: '/top10/10.jpg',
+    image: '/10rating/10.jpg',
     rating: 4.5,
     price: '$199.99 per camera',
     features: [
@@ -977,7 +977,7 @@ export const businessTop10: Top10Item[] = [
     title: 'QuickBooks Online - Best Overall Accounting Software',
     description: 'Industry-leading accounting platform for small to medium-sized businesses.',
     detailedDescription: 'QuickBooks Online is the gold standard for small business accounting, trusted by millions of businesses worldwide. It handles everything from invoicing and expense tracking to payroll and tax preparation. The intuitive dashboard gives you a real-time view of your financial health, with customizable reports that make tax time painless. Automatic bank feeds import and categorize transactions, while the mobile app lets you manage finances on the go—snap photos of receipts, send invoices, and check cash flow from anywhere. Integration with 750+ apps including PayPal, Shopify, and Square makes it the hub of your business operations.',
-    image: '/top10/1.jpg',
+    image: '/10rating/1.jpg',
     rating: 4.8,
     price: '$30/month',
     features: [
@@ -1010,7 +1010,7 @@ export const businessTop10: Top10Item[] = [
     title: 'Slack - Team Communication Platform',
     description: 'Modern messaging platform that replaces email for team collaboration.',
     detailedDescription: 'Slack has revolutionized workplace communication by organizing conversations into channels, making it easy to keep discussions focused and searchable. Create channels for projects, teams, or topics, and communicate in real-time with messaging, voice, and video. The powerful search function finds any message, file, or conversation instantly. Integration with 2,400+ apps means you can receive notifications from Google Drive, Trello, Salesforce, and more directly in Slack. Huddles provide spontaneous audio conversations, while Slack Connect enables secure collaboration with external partners and clients. The mobile app ensures your team stays connected from anywhere.',
-    image: '/top10/2.jpg',
+    image: '/10rating/2.jpg',
     rating: 4.7,
     price: 'Free - $12.50/user/month',
     features: [
@@ -1043,7 +1043,7 @@ export const businessTop10: Top10Item[] = [
     title: 'HubSpot CRM - Free Customer Relationship Management',
     description: 'Powerful, free CRM with marketing, sales, and service tools built-in.',
     detailedDescription: 'HubSpot CRM breaks the mold by offering a genuinely free, fully-featured customer relationship management system with no time limits or contact caps. Track every interaction with leads and customers, from emails and calls to meetings and notes—all in one centralized database. The visual sales pipeline makes it easy to see which deals are progressing and which need attention. Email tracking shows when prospects open your emails and click links. Built-in email templates and sequences automate follow-ups. As your business grows, seamlessly upgrade to HubSpot\'s Marketing, Sales, or Service Hubs for advanced automation, reporting, and customer service features.',
-    image: '/top10/3.jpg',
+    image: '/10rating/3.jpg',
     rating: 4.7,
     price: 'Free - $50/user/month',
     features: [
@@ -1076,7 +1076,7 @@ export const businessTop10: Top10Item[] = [
     title: 'Shopify - Best E-Commerce Platform',
     description: 'Complete online store platform with everything needed to sell products online.',
     detailedDescription: 'Shopify is the world\'s leading e-commerce platform, powering over 4 million online stores. It provides everything you need to start, run, and grow an online business: beautiful customizable themes, secure hosting, payment processing, inventory management, and marketing tools. The drag-and-drop store builder requires no coding knowledge. Accept payments through Shopify Payments or 100+ third-party gateways. The Shopify App Store offers 8,000+ apps to extend functionality. Sell across multiple channels including your website, social media, marketplaces like Amazon and eBay, and in-person with Shopify POS. Comprehensive analytics help you understand your business performance.',
-    image: '/top10/4.jpg',
+    image: '/10rating/4.jpg',
     rating: 4.8,
     price: '$39-$399/month',
     features: [
@@ -1110,7 +1110,7 @@ export const businessTop10: Top10Item[] = [
     title: 'Asana - Project Management Software',
     description: 'Flexible work management platform for teams to organize and track projects.',
     detailedDescription: 'Asana helps teams coordinate and manage work, from daily tasks to strategic initiatives. Create projects with tasks, assign them to team members, set due dates, and track progress—all in one place. Multiple viewing options (list, board, timeline, calendar) let each team member work their way. Task dependencies ensure work happens in the right order, while custom fields track any data point important to your workflow. Automation rules eliminate repetitive work by automatically assigning tasks, updating statuses, or sending notifications. Real-time dashboards provide at-a-glance project status. Integration with 200+ apps including Slack, Gmail, and Salesforce keeps everything connected.',
-    image: '/top10/5.jpg',
+    image: '/10rating/5.jpg',
     rating: 4.6,
     price: 'Free - $24.99/user/month',
     features: [
@@ -1144,7 +1144,7 @@ export const businessTop10: Top10Item[] = [
     title: 'Zoom - Video Conferencing Solution',
     description: 'Leading video meeting platform for remote teams and virtual collaboration.',
     detailedDescription: 'Zoom became synonymous with video conferencing by offering reliable, high-quality meetings that just work. Host meetings with up to 1,000 video participants and 10,000 viewers with webinar add-ons. Screen sharing with annotation, virtual backgrounds, and breakout rooms enhance collaboration. The waiting room feature ensures security, while meeting recording captures important discussions. Zoom Rooms transforms conference rooms into video conferencing spaces. Integration with calendars and business tools streamlines scheduling. Zoom Phone provides cloud phone service, and Zoom Chat offers persistent messaging. Whether for daily standups, client presentations, or company-wide town halls, Zoom scales to meet your needs.',
-    image: '/top10/6.jpg',
+    image: '/10rating/6.jpg',
     rating: 4.6,
     price: 'Free - $19.99/host/month',
     features: [
@@ -1178,7 +1178,7 @@ export const businessTop10: Top10Item[] = [
     title: 'Mailchimp - Email Marketing Platform',
     description: 'All-in-one marketing platform for email campaigns, automation, and analytics.',
     detailedDescription: 'Mailchimp has evolved from an email marketing tool into a comprehensive marketing platform for small businesses. Create professional email campaigns with an intuitive drag-and-drop builder and hundreds of templates. Audience segmentation ensures the right message reaches the right people. Marketing automation sends triggered emails based on customer behavior, like welcome series for new subscribers or abandoned cart reminders. A/B testing optimizes subject lines, content, and send times. The platform includes landing page and form builders, social media posting, and basic CRM. Detailed analytics show open rates, click rates, and revenue generated. Integration with e-commerce platforms tracks purchase behavior.',
-    image: '/top10/7.jpg',
+    image: '/10rating/7.jpg',
     rating: 4.5,
     price: 'Free - $350+/month',
     features: [
@@ -1212,7 +1212,7 @@ export const businessTop10: Top10Item[] = [
     title: 'Square - Payment Processing and POS',
     description: 'Complete commerce platform with payment processing, POS, and online store.',
     detailedDescription: 'Square makes it easy for businesses of any size to accept payments and manage sales. Accept credit cards, contactless payments, and digital wallets with transparent pricing and no monthly fees. The free Square POS app turns any smartphone or tablet into a point-of-sale system, with optional hardware for card readers and receipt printers. Built-in inventory management tracks stock levels, and employee management controls access and tracks sales by team member. Square Online creates a free e-commerce website that syncs with in-person sales. Additional tools include invoicing, appointments, payroll, and marketing. Next-day deposits get funds to your account fast.',
-    image: '/top10/8.jpg',
+    image: '/10rating/8.jpg',
     rating: 4.6,
     price: 'Free software, 2.6% + 10¢ per transaction',
     features: [
@@ -1246,7 +1246,7 @@ export const businessTop10: Top10Item[] = [
     title: 'Dropbox Business - Cloud Storage and Collaboration',
     description: 'Secure cloud storage with advanced sharing and collaboration features for teams.',
     detailedDescription: 'Dropbox Business provides secure cloud storage with powerful collaboration features for teams. Store unlimited files with automatic sync across all devices, ensuring your team always has access to the latest version. Advanced sharing controls let you set permissions, expiration dates, and passwords for shared links. Dropbox Paper enables real-time document collaboration, while file comments facilitate feedback without email chains. Version history keeps up to 180 days of file versions, making it easy to recover from mistakes. Integration with Microsoft Office, Google Workspace, Slack, and Zoom streamlines workflows. Advanced admin controls, audit logs, and compliance certifications meet enterprise security requirements.',
-    image: '/top10/9.jpg',
+    image: '/10rating/9.jpg',
     rating: 4.5,
     price: '$15-$25/user/month',
     features: [
@@ -1280,7 +1280,7 @@ export const businessTop10: Top10Item[] = [
     title: 'Salesforce - Enterprise CRM Platform',
     description: 'World\'s #1 CRM with comprehensive sales, service, and marketing cloud solutions.',
     detailedDescription: 'Salesforce is the world\'s most powerful CRM platform, trusted by Fortune 500 companies and growing businesses alike. The Sales Cloud provides complete sales automation—from lead tracking and opportunity management to forecasting and analytics. Service Cloud delivers omnichannel customer service across phone, email, chat, and social media. Marketing Cloud enables sophisticated email campaigns, customer journeys, and advertising. The platform\'s true power comes from customization: create custom objects, fields, and workflows to match your exact business processes. AppExchange offers 5,000+ pre-built apps. AI-powered Einstein provides predictive insights and automation. While complex and expensive, Salesforce scales to handle the most demanding enterprise requirements.',
-    image: '/top10/10.jpg',
+    image: '/10rating/10.jpg',
     rating: 4.4,
     price: '$25-$300+/user/month',
     features: [
@@ -1322,7 +1322,7 @@ export const securityTop10: Top10Item[] = [
     title: 'NordVPN - Best Overall VPN Service',
     description: 'Premium VPN with blazing speeds, military-grade encryption, and 6,000+ servers worldwide.',
     detailedDescription: 'NordVPN is the gold standard for online privacy and security, offering a perfect balance of speed, security, and ease of use. With 6,000+ servers in 60+ countries, you can access content from anywhere while maintaining lightning-fast speeds. Military-grade AES 256-bit encryption protects your data, while the strict no-logs policy ensures your activity remains private. NordLynx protocol delivers exceptional performance without compromising security. Features like Threat Protection block malware and ads, CyberSec prevents phishing, and automatic kill switch prevents data leaks. Works seamlessly across all devices with support for 6 simultaneous connections.',
-    image: '/top10/1.jpg',
+    image: '/10rating/1.jpg',
     rating: 4.9,
     price: '$3.99/month',
     features: [
@@ -1356,7 +1356,7 @@ export const securityTop10: Top10Item[] = [
     title: 'Bitdefender Total Security - Complete Antivirus Protection',
     description: 'Award-winning antivirus with multi-layered ransomware protection and minimal performance impact.',
     detailedDescription: 'Bitdefender Total Security consistently ranks as the top antivirus solution, combining near-perfect malware detection with minimal system impact. The multi-layered approach protects against all types of threats including viruses, ransomware, phishing, and zero-day attacks. Behavioral detection catches threats that signature-based scanning misses. Advanced Threat Defense monitors running applications for suspicious behavior, while ransomware remediation automatically backs up files and restores them if attacked. SafePay browser protects online banking, and the password manager secures credentials. Parental controls, webcam protection, and anti-tracker round out comprehensive protection for up to 5 devices.',
-    image: '/top10/2.jpg',
+    image: '/10rating/2.jpg',
     rating: 4.8,
     price: '$39.99/year (5 devices)',
     features: [
@@ -1390,7 +1390,7 @@ export const securityTop10: Top10Item[] = [
     title: '1Password - Best Password Manager',
     description: 'Secure password manager with Watchtower breach monitoring and family sharing.',
     detailedDescription: '1Password makes password security effortless while providing industry-leading protection. Generate strong, unique passwords for every account and autofill them across all your devices. The encrypted vault stores not just passwords but credit cards, secure notes, and documents. Watchtower monitors for data breaches, vulnerable passwords, and two-factor authentication opportunities. Travel Mode lets you remove sensitive vaults when crossing borders, then restore them with one click. Family plans include 5 accounts with shared vaults for things like Wi-Fi passwords and Netflix logins. Integration with browsers and apps makes secure logins seamless.',
-    image: '/top10/3.jpg',
+    image: '/10rating/3.jpg',
     rating: 4.8,
     price: '$2.99/month',
     features: [
@@ -1424,7 +1424,7 @@ export const securityTop10: Top10Item[] = [
     title: 'Norton 360 Deluxe - All-in-One Security Suite',
     description: 'Comprehensive security package with antivirus, VPN, cloud backup, and parental controls.',
     detailedDescription: 'Norton 360 Deluxe delivers comprehensive digital protection that goes far beyond basic antivirus. Real-time threat protection blocks malware, spyware, and ransomware before they can harm your system. The included Secure VPN protects your privacy with unlimited bandwidth, while 50GB of cloud backup ensures your important files are safe from ransomware and hardware failure. Dark Web Monitoring alerts you if your personal information appears on shady websites. Password Manager secures all your credentials. SafeCam protects your webcam from unauthorized access. Parental controls let you manage kids\' online activities, screen time, and location. Covers up to 5 devices across Windows, Mac, Android, and iOS.',
-    image: '/top10/4.jpg',
+    image: '/10rating/4.jpg',
     rating: 4.7,
     price: '$49.99/year (5 devices)',
     features: [
@@ -1458,7 +1458,7 @@ export const securityTop10: Top10Item[] = [
     title: 'Malwarebytes Premium - Anti-Malware Specialist',
     description: 'Focused anti-malware protection that catches threats traditional antivirus misses.',
     detailedDescription: 'Malwarebytes takes a different approach to security by focusing specifically on malware, ransomware, and exploits that traditional antivirus often misses. The multi-vector protection defends against malware, ransomware, exploits, and malicious websites. Real-time protection prevents infections before they happen, while behavioral detection catches zero-day threats. The lightweight agent has minimal performance impact, making it ideal as either primary protection or a second layer alongside traditional antivirus. Automatic scanning and quarantine require no user intervention. Brute force protection prevents attackers from hacking your passwords. Works on Windows, Mac, Android, and Chromebook.',
-    image: '/top10/5.jpg',
+    image: '/10rating/5.jpg',
     rating: 4.6,
     price: '$44.99/year (1 device)',
     features: [
@@ -1492,7 +1492,7 @@ export const securityTop10: Top10Item[] = [
     title: 'Dashlane - Password Manager with VPN',
     description: 'Feature-rich password manager with built-in VPN, dark web monitoring, and password changer.',
     detailedDescription: 'Dashlane combines best-in-class password management with unique features like automatic password changing and a built-in VPN. Store unlimited passwords, securely share credentials with trusted contacts, and autofill across all devices. The Password Health score identifies weak, reused, or compromised passwords. Dark Web Monitoring scans continuously for breached credentials. The unique Password Changer can automatically update passwords on hundreds of popular websites with one click. Built-in VPN protects your connection on public Wi-Fi. Security alerts notify you of breaches instantly. Biometric login adds an extra layer of convenience and security.',
-    image: '/top10/6.jpg',
+    image: '/10rating/6.jpg',
     rating: 4.7,
     price: '$4.99/month',
     features: [
@@ -1526,7 +1526,7 @@ export const securityTop10: Top10Item[] = [
     title: 'Heimdal Security - Next-Gen Threat Prevention',
     description: 'Proactive security platform that prevents threats before they reach your device.',
     detailedDescription: 'Heimdal Security takes a proactive approach by stopping threats at the network level before they reach your device. Unlike reactive antivirus that waits for malware to attack, Heimdal\'s DNS filtering blocks connections to malicious domains, preventing ransomware, cryptojacking, and data theft. Automated patch management keeps all your software up-to-date, eliminating vulnerabilities. Email fraud prevention stops phishing and business email compromise attacks. The Threat Hunting engine uses machine learning to identify and block emerging threats. DarkLayer Guard provides advanced anti-malware protection. Perfect for both home users and businesses seeking comprehensive, proactive security.',
-    image: '/top10/7.jpg',
+    image: '/10rating/7.jpg',
     rating: 4.5,
     price: '$54.95/year',
     features: [
@@ -1560,7 +1560,7 @@ export const securityTop10: Top10Item[] = [
     title: 'ExpressVPN - Fast VPN for Streaming',
     description: 'Ultra-fast VPN optimized for streaming with servers in 94 countries.',
     detailedDescription: 'ExpressVPN is the fastest VPN on the market, making it ideal for streaming, gaming, and general browsing. With servers in 94 countries, you can access content from anywhere while maintaining speeds suitable for 4K streaming. The proprietary Lightway protocol delivers speed and security simultaneously. TrustedServer technology runs all servers on RAM, wiping all data with every reboot—no data can ever be physically retrieved. MediaStreamer enables VPN protection on devices that don\'t normally support VPNs like smart TVs and game consoles. Network Lock kill switch prevents data leaks if your connection drops. Five simultaneous connections protect all your devices.',
-    image: '/top10/8.jpg',
+    image: '/10rating/8.jpg',
     rating: 4.7,
     price: '$8.32/month',
     features: [
@@ -1594,7 +1594,7 @@ export const securityTop10: Top10Item[] = [
     title: 'Keeper Security - Zero-Knowledge Password Vault',
     description: 'Military-grade password manager with zero-knowledge security and breach monitoring.',
     detailedDescription: 'Keeper Security provides military-grade encryption with a zero-knowledge security architecture, meaning even Keeper cannot access your passwords. The encrypted vault stores unlimited passwords, payment cards, and sensitive files. BreachWatch monitors the dark web 24/7 for compromised credentials and alerts you immediately. KeeperChat provides encrypted messaging for sensitive communications. The password generator creates strong, unique passwords, while autofill makes login seamless. Emergency access allows trusted contacts to access your vault in case of emergency. Two-factor authentication with biometrics adds extra security. Family plans include 5 private vaults plus unlimited shared folders.',
-    image: '/top10/9.jpg',
+    image: '/10rating/9.jpg',
     rating: 4.6,
     price: '$2.92/month',
     features: [
@@ -1628,7 +1628,7 @@ export const securityTop10: Top10Item[] = [
     title: 'Surfshark - Budget VPN with Unlimited Devices',
     description: 'Affordable VPN with unlimited simultaneous connections and strong privacy features.',
     detailedDescription: 'Surfshark delivers premium VPN features at a budget-friendly price, with the unique benefit of unlimited simultaneous device connections—protect every device you own with one subscription. Over 3,200 servers in 100+ countries provide fast, reliable connections worldwide. CleanWeb blocks ads, trackers, and malware across all websites. Camouflage Mode hides the fact you\'re using a VPN, useful in restrictive countries. MultiHop routes your connection through multiple countries for extra privacy. Bypasser (split tunneling) lets you route some apps through the VPN and others directly. NoBorders mode works in restricted regions. Kill switch prevents data leaks. Audited no-logs policy ensures privacy.',
-    image: '/top10/10.jpg',
+    image: '/10rating/10.jpg',
     rating: 4.5,
     price: '$2.49/month',
     features: [

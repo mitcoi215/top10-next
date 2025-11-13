@@ -22,8 +22,8 @@ export default function TermsOfServicePage() {
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-4">1. Agreement to Terms</h2>
               <p className="text-gray-700 leading-relaxed mb-4">
-                These Terms of Service ("Terms") constitute a legally binding agreement between you and Top10.com
-                ("Company," "we," "us," or "our") concerning your access to and use of the Top10.com website
+                These Terms of Service ("Terms") constitute a legally binding agreement between you and 10rating.com
+                ("Company," "we," "us," or "our") concerning your access to and use of the 10rating.com website
                 and any related services (collectively, the "Service").
               </p>
               <p className="text-gray-700 leading-relaxed">
@@ -102,7 +102,7 @@ export default function TermsOfServicePage() {
               <h2 className="text-2xl font-bold text-gray-900 mb-4">6. Third-Party Websites and Content</h2>
               <p className="text-gray-700 leading-relaxed mb-4">
                 The Service may contain links to third-party websites or services that are not owned or controlled by
-                Top10.com. We have no control over, and assume no responsibility for, the content, privacy policies,
+                10rating.com. We have no control over, and assume no responsibility for, the content, privacy policies,
                 or practices of any third-party websites or services.
               </p>
               <p className="text-gray-700 leading-relaxed">
@@ -115,7 +115,7 @@ export default function TermsOfServicePage() {
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-4">7. Affiliate Disclosure</h2>
               <p className="text-gray-700 leading-relaxed">
-                Top10.com participates in affiliate marketing programs. This means we may earn commissions on products
+                10rating.com participates in affiliate marketing programs. This means we may earn commissions on products
                 and services purchased through our affiliate links. These commissions help support our website and allow
                 us to continue providing free content to our users. Our reviews and recommendations are based on our
                 honest opinions and research, and affiliate relationships do not influence our editorial decisions.
@@ -174,7 +174,7 @@ export default function TermsOfServicePage() {
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-4">12. Governing Law</h2>
               <p className="text-gray-700 leading-relaxed">
-                These Terms shall be governed by and defined following the laws of the United States. Top10.com and
+                These Terms shall be governed by and defined following the laws of the United States. 10rating.com and
                 yourself irrevocably consent that the courts shall have exclusive jurisdiction to resolve any dispute
                 which may arise in connection with these Terms.
               </p>
@@ -207,8 +207,8 @@ export default function TermsOfServicePage() {
                 If you have any questions about these Terms of Service, please contact us:
               </p>
               <ul className="list-none space-y-2 text-gray-700 mb-6">
-                <li><strong>Email:</strong> legal@top10.com</li>
-                <li><strong>Website:</strong> www.top10.com</li>
+                <li><strong>Email:</strong> legal@10rating.com</li>
+                <li><strong>Website:</strong> www.10rating.com</li>
               </ul>
               <Link
                 href="/"

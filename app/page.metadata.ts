@@ -1,21 +1,21 @@
 export const metadata = {
-  title: 'Top10 Best Services & Products Comparison',
+  title: '10rating Best Services & Products Comparison',
   description:
-    'Compare and shop the Top10 best services & products for you. Hosting, VPN, Health & Wellness, and more categories with expert reviews.',
-  keywords: ['Top10', 'Hosting', 'VPN', 'Health & Wellness', 'Meal Delivery', 'Online Courses', 'CRM Software'],
-  authors: [{ name: 'Top10.com', url: 'https://top10.com' }],
+    'Compare and shop the 10rating best services & products for you. Hosting, VPN, Health & Wellness, and more categories with expert reviews.',
+  keywords: ['10rating', 'Hosting', 'VPN', 'Health & Wellness', 'Meal Delivery', 'Online Courses', 'CRM Software'],
+  authors: [{ name: '10rating.com', url: 'https://10rating.com' }],
   openGraph: {
-    title: 'Top10 Best Services & Products Comparison',
+    title: '10rating Best Services & Products Comparison',
     description:
-      'Compare and shop the Top10 best services & products for you. Hosting, VPN, Health & Wellness, and more categories with expert reviews.',
-    url: 'https://top10.com',
-    siteName: 'Top10',
+      'Compare and shop the 10rating best services & products for you. Hosting, VPN, Health & Wellness, and more categories with expert reviews.',
+    url: 'https://10rating.com',
+    siteName: '10rating',
     images: [
       {
-        url: 'https://top10.com/og-image.jpg',
+        url: 'https://10rating.com/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'Top10 Best Services & Products',
+        alt: '10rating Best Services & Products',
       },
     ],
     locale: 'en_US',
@@ -23,14 +23,14 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Top10 Best Services & Products Comparison',
+    title: '10rating Best Services & Products Comparison',
     description:
-      'Compare and shop the Top10 best services & products for you. Hosting, VPN, Health & Wellness, and more categories with expert reviews.',
-    images: ['https://top10.com/og-image.jpg'],
+      'Compare and shop the 10rating best services & products for you. Hosting, VPN, Health & Wellness, and more categories with expert reviews.',
+    images: ['https://10rating.com/og-image.jpg'],
     site: '@top10com',
     creator: '@top10com',
   },
   alternates: {
-    canonical: 'https://top10.com',
+    canonical: 'https://10rating.com',
   },
 };

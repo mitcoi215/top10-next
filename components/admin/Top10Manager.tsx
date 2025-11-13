@@ -40,7 +40,7 @@ export default function Top10Manager() {
       }
     }
 
-    // Load top10 data
+    // Load 10rating data
     const saved = localStorage.getItem('top10_data');
     if (saved) {
       setItems(JSON.parse(saved));
@@ -59,7 +59,7 @@ export default function Top10Manager() {
       rank: (items[selectedCategory] || []).length + 1,
       title: '',
       description: '',
-      image: '/top10/1.jpg',
+      image: '/10rating/1.jpg',
       rating: 5,
       price: '$0/month',
       features: [],
@@ -193,7 +193,7 @@ export default function Top10Manager() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-lg p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <h2 className="text-2xl font-bold mb-4">
-              {editingItem.id ? 'Edit' : 'Add'} Top10 Item
+              {editingItem.id ? 'Edit' : 'Add'} 10rating Item
             </h2>
             <form onSubmit={handleSave} className="space-y-4">
               <div>

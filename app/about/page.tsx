@@ -21,7 +21,7 @@ export default function AboutPage() {
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-4">Our Mission</h2>
               <p className="text-gray-700 leading-relaxed">
-                At Top10.com, our mission is to save you time and money by empowering you to make informed decisions.
+                At 10rating.com, our mission is to save you time and money by empowering you to make informed decisions.
                 As a comparison site, we provide all the tools you need to compare options effectively. We are dedicated
                 to thorough research, transparency, and user-focused design, ensuring complex choices are straightforward.
                 We strive to provide you with all the information you need at your fingertips, helping you make decisions

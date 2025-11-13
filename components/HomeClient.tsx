@@ -40,14 +40,14 @@ export default function HomeClient({ initialCategory }: HomeClientProps) {
     const firstCategoryId = categories[0]?.id || 'lifestyle';
     setActiveCategory(initialCategory || firstCategoryId);
 
-    // Load top10 data
+    // Load 10rating data
     const savedTop10 = localStorage.getItem('top10_data');
     if (savedTop10) {
       try {
         const parsed = JSON.parse(savedTop10);
         setAllTop10Data({ ...defaultData, ...parsed });
       } catch (e) {
-        console.error('Failed to parse top10 data:', e);
+        console.error('Failed to parse 10rating data:', e);
       }
     }
   }, [initialCategory]);
@@ -60,7 +60,7 @@ export default function HomeClient({ initialCategory }: HomeClientProps) {
       {/* Category Pills */}
       <CategoryPills activeCategory={activeCategory} onSelectCategory={setActiveCategory} />
 
-      {/* Top10 List - Thay đổi theo category */}
+      {/* 10rating List - Thay đổi theo category */}
       <Top10List items={currentItems} category={activeCategory} />
     </section>
   );

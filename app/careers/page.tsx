@@ -49,7 +49,7 @@ const jobOpenings = [
     department: 'Marketing',
     location: 'New York, NY',
     type: 'Full-time',
-    description: 'Lead our marketing efforts to grow our audience and establish Top10.com as the go-to comparison platform.',
+    description: 'Lead our marketing efforts to grow our audience and establish 10rating.com as the go-to comparison platform.',
     requirements: [
       '5+ years of experience in digital marketing',
       'Experience with SEO, content marketing, and social media',
@@ -110,7 +110,7 @@ export default function CareersPage() {
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4 max-w-6xl">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Why Work at Top10.com?</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Why Work at 10rating.com?</h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
               We're building the most trusted comparison platform in the world. Join us in our mission to help
               people make better decisions.
