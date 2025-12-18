@@ -244,8 +244,8 @@ export default function CategoryButtonManager() {
 
       {/* Edit Form Modal */}
       {isFormOpen && editingCategory && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg p-6 max-w-xl w-full">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 overflow-y-auto">
+          <div className="bg-white rounded-lg p-6 max-w-xl w-full max-h-[90vh] overflow-y-auto my-4">
             <h2 className="text-2xl font-bold mb-4">
               {editingCategory.id ? 'Edit' : 'Add New'} Category
             </h2>
