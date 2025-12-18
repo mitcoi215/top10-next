@@ -1,0 +1,58 @@
+// prisma/schema.prisma
+// MongoDB Database Schema for Top10 Rating
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("MONGODB_URI")
+}
+
+// Admin user for authentication
+model Admin {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  username  String   @unique
+  password  String
+  createdAt DateTime @default(now())
+}
+
+// Category (Lifestyle, Health, Home, Business, Security)
+model Category {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  slug      String    @unique
+  name      String
+  icon      String
+  color     String    @default("bg-white")
+  featured  Boolean   @default(false)
+  order     Int       @default(0)
+  products  Product[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+// Product/Service items in Top10 list
+model Product {
+  id                  String   @id @default(auto()) @map("_id") @db.ObjectId
+  rank                Int
+  title               String
+  description         String
+  detailedDescription String?
+  image               String
+  rating              Float?
+  price               String?
+  features            String[]
+  pros                String[]
+  cons                String[]
+  affiliateLink       String
+  featured            Boolean  @default(false)
+
+  categoryId String   @db.ObjectId
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([categoryId])
+}

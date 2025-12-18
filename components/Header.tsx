@@ -1,41 +1,44 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { SITE_CONFIG, CATEGORIES } from '@/lib/constants';
-import { CategoryType } from '@/types';
+import { SITE_CONFIG } from '@/lib/constants';
 
-type CategoryButton = {
-  id: CategoryType;
+// Type for category from API
+interface Category {
+  id: string;
+  slug: string;
   name: string;
   icon: string;
   color: string;
-  featured?: boolean;
-};
+  featured: boolean;
+}
 
 export default function Header() {
   const router = useRouter();
-  const [featuredCategories, setFeaturedCategories] = useState<CategoryButton[]>([]);
+  const [featuredCategories, setFeaturedCategories] = useState<Category[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Load featured categories from localStorage
-  useEffect(() => {
-    const saved = localStorage.getItem('categories');
-    if (saved) {
-      try {
-        const allCategories: CategoryButton[] = JSON.parse(saved);
-        const featured = allCategories.filter((cat) => cat.featured);
-        setFeaturedCategories(featured);
-      } catch (e) {
-        console.error('Failed to load categories:', e);
-      }
-    } else {
-      // Use default categories if no saved data
-      const featured = (CATEGORIES as CategoryButton[]).slice(0, 4); // First 4 as featured
-      setFeaturedCategories(featured);
+  // Fetch featured categories from API
+  const fetchCategories = useCallback(async () => {
+    try {
+      const res = await fetch('/api/categories');
+      if (!res.ok) throw new Error('Failed to fetch categories');
+      const data: Category[] = await res.json();
+
+      // Filter featured categories, or take first 4 if none are featured
+      const featured = data.filter(cat => cat.featured);
+      setFeaturedCategories(featured.length > 0 ? featured : data.slice(0, 4));
+    } catch (err) {
+      console.error('Failed to fetch categories:', err);
     }
   }, []);
+
+  // Load categories on mount
+  useEffect(() => {
+    fetchCategories();
+  }, [fetchCategories]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -69,7 +72,7 @@ export default function Header() {
               {featuredCategories.map((cat) => (
                 <Link
                   key={cat.id}
-                  href={`/?category=${cat.id}`}
+                  href={`/?category=${cat.slug}`}
                   className="text-sm font-medium text-gray-700 hover:text-red-600 transition"
                 >
                   {cat.name}

@@ -1,133 +1,183 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { CategoryType } from '@/types';
-import { CATEGORIES } from '@/lib/constants';
+import { useState, useEffect, useCallback } from 'react';
 import ImageUploader from './ImageUploader';
 
-type CategoryButton = {
-  id: CategoryType;
+// Type for API response
+interface Category {
+  id: string;
+  slug: string;
   name: string;
   icon: string;
   color: string;
-  featured?: boolean; // Show in header navigation
+  featured: boolean;
+  order: number;
+}
+
+// Helper to get auth header
+const getAuthHeader = (): Record<string, string> => {
+  const token = localStorage.getItem('admin_token');
+  return token ? { Authorization: `Bearer ${token}` } : {};
 };
 
 export default function CategoryButtonManager() {
-  const [categories, setCategories] = useState<CategoryButton[]>(CATEGORIES as CategoryButton[]);
-  const [editingCategory, setEditingCategory] = useState<CategoryButton | null>(null);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [editingCategory, setEditingCategory] = useState<Partial<Category> | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  // Load from localStorage on mount
-  useEffect(() => {
-    const saved = localStorage.getItem('categories');
-    if (saved) {
-      try {
-        setCategories(JSON.parse(saved));
-      } catch (e) {
-        console.error('Failed to parse categories:', e);
-      }
+  // Fetch categories from API
+  const fetchCategories = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const res = await fetch('/api/categories');
+      if (!res.ok) throw new Error('Failed to fetch categories');
+      const data = await res.json();
+      setCategories(data);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to fetch categories');
+    } finally {
+      setIsLoading(false);
     }
   }, []);
 
-  // Save to localStorage whenever categories change
-  const saveCategories = (newCategories: CategoryButton[]) => {
-    setCategories(newCategories);
-    localStorage.setItem('categories', JSON.stringify(newCategories));
-  };
+  // Load categories on mount
+  useEffect(() => {
+    fetchCategories();
+  }, [fetchCategories]);
 
-  const handleEdit = (category: CategoryButton) => {
-    setEditingCategory(category);
+  const handleEdit = (category: Category) => {
+    setEditingCategory({ ...category });
     setIsFormOpen(true);
   };
 
   const handleAddNew = () => {
     setEditingCategory({
-      id: '',
+      slug: '',
       name: '',
       icon: '/icons/new-category.svg',
       color: 'bg-white',
       featured: false,
+      order: categories.length,
     });
     setIsFormOpen(true);
   };
 
-  const handleDelete = (categoryId: CategoryType) => {
+  const handleDelete = async (categoryId: string, categoryName: string) => {
     if (categories.length <= 1) {
       alert('Cannot delete the last category!');
       return;
     }
-    if (confirm(`Are you sure you want to delete "${categoryId}" category?`)) {
-      const newCategories = categories.filter((cat) => cat.id !== categoryId);
-      saveCategories(newCategories);
+    if (!confirm(`Are you sure you want to delete "${categoryName}" category? All products in this category will also be deleted.`)) {
+      return;
+    }
 
-      // Also delete 10rating data for this category
-      const savedTop10 = localStorage.getItem('top10_data');
-      if (savedTop10) {
-        try {
-          const top10Data = JSON.parse(savedTop10);
-          delete top10Data[categoryId];
-          localStorage.setItem('top10_data', JSON.stringify(top10Data));
-        } catch (e) {
-          console.error('Failed to delete 10rating data:', e);
-        }
+    try {
+      const res = await fetch(`/api/categories/${categoryId}`, {
+        method: 'DELETE',
+        headers: {
+          ...getAuthHeader(),
+        },
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'Failed to delete category');
       }
+
+      // Refresh categories list
+      fetchCategories();
+    } catch (err) {
+      alert(err instanceof Error ? err.message : 'Failed to delete category');
     }
   };
 
-  const handleSave = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSave = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!editingCategory) return;
 
+    setIsSaving(true);
+    setError(null);
+
     const formData = new FormData(e.currentTarget);
-    const categoryId = formData.get('id') as string;
+    const categorySlug = formData.get('slug') as string;
     const categoryName = formData.get('name') as string;
     const categoryIcon = formData.get('icon') as string;
     const categoryFeatured = formData.get('featured') === 'on';
 
     // Validation
-    if (!categoryId.trim()) {
-      alert('Category ID is required!');
+    if (!categorySlug.trim()) {
+      setError('Category Slug is required!');
+      setIsSaving(false);
       return;
     }
     if (!categoryName.trim()) {
-      alert('Category Name is required!');
+      setError('Category Name is required!');
+      setIsSaving(false);
       return;
     }
 
-    const updatedCategory: CategoryButton = {
-      id: categoryId.toLowerCase().replace(/\s+/g, '-'),
+    const categoryData = {
+      slug: categorySlug.toLowerCase().replace(/\s+/g, '-'),
       name: categoryName,
       icon: categoryIcon,
       color: 'bg-white',
       featured: categoryFeatured,
+      order: editingCategory.order || categories.length,
     };
 
-    // Check if adding new or editing existing
-    const existingIndex = categories.findIndex((cat) => cat.id === editingCategory.id);
+    try {
+      const isEditing = editingCategory.id;
+      const url = isEditing ? `/api/categories/${editingCategory.id}` : '/api/categories';
+      const method = isEditing ? 'PUT' : 'POST';
 
-    let newCategories;
-    if (existingIndex >= 0 && editingCategory.id !== '') {
-      // Editing existing
-      newCategories = categories.map((cat) =>
-        cat.id === editingCategory.id ? updatedCategory : cat
-      );
-    } else {
-      // Adding new - check for duplicate ID
-      if (categories.some((cat) => cat.id === updatedCategory.id)) {
-        alert('Category ID already exists! Please use a different ID.');
-        return;
+      const res = await fetch(url, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+          ...getAuthHeader(),
+        },
+        body: JSON.stringify(categoryData),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'Failed to save category');
       }
-      newCategories = [...categories, updatedCategory];
-    }
 
-    saveCategories(newCategories);
-    setIsFormOpen(false);
-    setEditingCategory(null);
+      // Refresh categories list and close form
+      fetchCategories();
+      setIsFormOpen(false);
+      setEditingCategory(null);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to save category');
+    } finally {
+      setIsSaving(false);
+    }
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600"></div>
+        <span className="ml-2 text-gray-600">Loading categories...</span>
+      </div>
+    );
+  }
 
   return (
     <div>
+      {error && (
+        <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg text-sm">
+          {error}
+          <button onClick={() => setError(null)} className="ml-2 underline">
+            Dismiss
+          </button>
+        </div>
+      )}
+
       <div className="mb-6 flex items-center justify-between">
         <div>
           <h3 className="text-lg font-semibold mb-2">Manage Category Buttons</h3>
@@ -144,47 +194,53 @@ export default function CategoryButtonManager() {
       </div>
 
       {/* Categories List */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {categories.map((cat) => (
-          <div key={cat.id} className="border border-gray-200 rounded-lg p-4 bg-white">
-            <div className="flex items-start gap-4">
-              {/* Preview */}
-              <div
-                className="flex items-center justify-center rounded-lg bg-white border-2 border-gray-300 w-20 h-20 flex-shrink-0"
-              >
-                <img src={cat.icon} alt={cat.name} className="h-10 w-10" />
-              </div>
-
-              {/* Info */}
-              <div className="flex-1">
-                <div className="flex items-center gap-2 mb-1">
-                  <h4 className="font-bold text-lg">{cat.name}</h4>
-                  {cat.featured && (
-                    <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">
-                      Featured
-                    </span>
-                  )}
+      {categories.length === 0 ? (
+        <div className="text-center py-8 text-gray-500">
+          No categories found. Click &quot;Add New Category&quot; to create one.
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {categories.map((cat) => (
+            <div key={cat.id} className="border border-gray-200 rounded-lg p-4 bg-white">
+              <div className="flex items-start gap-4">
+                {/* Preview */}
+                <div
+                  className="flex items-center justify-center rounded-lg bg-white border-2 border-gray-300 w-20 h-20 flex-shrink-0"
+                >
+                  <img src={cat.icon} alt={cat.name} className="h-10 w-10" />
                 </div>
-                <p className="text-sm text-gray-500 mb-2">ID: {cat.id}</p>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => handleEdit(cat)}
-                    className="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(cat.id)}
-                    className="px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700"
-                  >
-                    Delete
-                  </button>
+
+                {/* Info */}
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <h4 className="font-bold text-lg">{cat.name}</h4>
+                    {cat.featured && (
+                      <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">
+                        Featured
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-sm text-gray-500 mb-2">Slug: {cat.slug}</p>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => handleEdit(cat)}
+                      className="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(cat.id, cat.name)}
+                      className="px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700"
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
 
       {/* Edit Form Modal */}
       {isFormOpen && editingCategory && (
@@ -196,13 +252,13 @@ export default function CategoryButtonManager() {
             <form onSubmit={handleSave} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium mb-1">
-                  Category ID * {editingCategory.id && '(Read-only)'}
+                  Category Slug * {editingCategory.id && '(Read-only)'}
                 </label>
                 <input
-                  name="id"
+                  name="slug"
                   type="text"
-                  defaultValue={editingCategory.id}
-                  readOnly={editingCategory.id !== ''}
+                  defaultValue={editingCategory.slug}
+                  readOnly={!!editingCategory.id}
                   required
                   placeholder="e.g., lifestyle, technology"
                   className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none ${
@@ -229,14 +285,14 @@ export default function CategoryButtonManager() {
 
               {/* Icon/Logo Uploader */}
               <ImageUploader
-                currentImageUrl={editingCategory.icon}
+                currentImageUrl={editingCategory.icon || '/icons/new-category.svg'}
                 onImageUploaded={(url) => {
                   setEditingCategory({ ...editingCategory, icon: url });
                 }}
               />
 
               {/* Hidden input to store icon URL for form submission */}
-              <input type="hidden" name="icon" value={editingCategory.icon} />
+              <input type="hidden" name="icon" value={editingCategory.icon || '/icons/new-category.svg'} />
 
               {/* Featured in Header Checkbox */}
               <div className="flex items-center gap-2 border-t pt-4">
@@ -260,13 +316,13 @@ export default function CategoryButtonManager() {
                     className="flex items-center justify-center rounded-lg bg-white border-2 border-gray-300 w-24 h-24"
                   >
                     <img
-                      src={editingCategory.icon}
-                      alt={editingCategory.name}
+                      src={editingCategory.icon || '/icons/new-category.svg'}
+                      alt={editingCategory.name || 'New Category'}
                       className="h-12 w-12"
                     />
                   </div>
                   <div>
-                    <p className="font-bold text-gray-900">{editingCategory.name}</p>
+                    <p className="font-bold text-gray-900">{editingCategory.name || 'Category Name'}</p>
                   </div>
                 </div>
               </div>
@@ -274,16 +330,20 @@ export default function CategoryButtonManager() {
               <div className="flex gap-2 justify-end">
                 <button
                   type="button"
-                  onClick={() => setIsFormOpen(false)}
+                  onClick={() => {
+                    setIsFormOpen(false);
+                    setEditingCategory(null);
+                  }}
                   className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+                  disabled={isSaving}
+                  className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50"
                 >
-                  Save Changes
+                  {isSaving ? 'Saving...' : 'Save Changes'}
                 </button>
               </div>
             </form>
