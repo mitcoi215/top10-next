@@ -15,7 +15,7 @@ const categoriesData = [
   { slug: 'security', name: 'Security', icon: '/icons/security.svg', color: 'bg-white', featured: false, order: 5 },
 ];
 
-// Sample products data (abbreviated - full data will be imported from existing)
+// Sample products data
 const productsData: Record<string, Array<{
   rank: number;
   title: string;
@@ -124,48 +124,76 @@ const productsData: Record<string, Array<{
 async function main() {
   console.log('🌱 Starting seed...');
 
-  // Clear existing data
-  console.log('🗑️ Clearing existing data...');
-  await prisma.product.deleteMany();
-  await prisma.category.deleteMany();
-  await prisma.admin.deleteMany();
+  // Skip clearing data to avoid replica set requirement
+  // For fresh database, this is fine
+  console.log('📝 Note: Skipping data clear (use MongoDB Compass to clear manually if needed)');
 
-  // Create admin user
+  // Create admin user (upsert to avoid duplicates)
   console.log('👤 Creating admin user...');
   const hashedPassword = await bcrypt.hash('admin123', 10);
-  await prisma.admin.create({
-    data: {
-      username: 'admin',
-      password: hashedPassword,
-    },
+
+  const existingAdmin = await prisma.admin.findUnique({
+    where: { username: 'admin' }
   });
 
-  // Create categories
+  if (!existingAdmin) {
+    await prisma.admin.create({
+      data: {
+        username: 'admin',
+        password: hashedPassword,
+      },
+    });
+    console.log('  ✓ Admin user created');
+  } else {
+    console.log('  ⏭️ Admin user already exists, skipping');
+  }
+
+  // Create categories (check if exists first)
   console.log('📁 Creating categories...');
   const createdCategories: Record<string, string> = {};
 
   for (const cat of categoriesData) {
-    const created = await prisma.category.create({
-      data: cat,
+    const existing = await prisma.category.findUnique({
+      where: { slug: cat.slug }
     });
-    createdCategories[cat.slug] = created.id;
-    console.log(`  ✓ Created category: ${cat.name}`);
+
+    if (!existing) {
+      const created = await prisma.category.create({
+        data: cat,
+      });
+      createdCategories[cat.slug] = created.id;
+      console.log(`  ✓ Created category: ${cat.name}`);
+    } else {
+      createdCategories[cat.slug] = existing.id;
+      console.log(`  ⏭️ Category exists: ${cat.name}`);
+    }
   }
 
-  // Create products
+  // Create products (check by title to avoid duplicates)
   console.log('📦 Creating products...');
   for (const [categorySlug, products] of Object.entries(productsData)) {
     const categoryId = createdCategories[categorySlug];
     if (!categoryId) continue;
 
     for (const product of products) {
-      await prisma.product.create({
-        data: {
-          ...product,
-          categoryId,
-        },
+      const existing = await prisma.product.findFirst({
+        where: {
+          title: product.title,
+          categoryId: categoryId
+        }
       });
-      console.log(`  ✓ Created product: ${product.title}`);
+
+      if (!existing) {
+        await prisma.product.create({
+          data: {
+            ...product,
+            categoryId,
+          },
+        });
+        console.log(`  ✓ Created product: ${product.title}`);
+      } else {
+        console.log(`  ⏭️ Product exists: ${product.title}`);
+      }
     }
   }
 
