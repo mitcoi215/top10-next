@@ -1,20 +1,20 @@
-'use client';
-
-import { useEffect, useState, useCallback } from 'react';
-import { useParams } from 'next/navigation';
-import { Top10Item, CategoryType } from '@/types';
+import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import prisma from '@/lib/db';
 
-// Type for API response
-interface Category {
-  id: string;
-  slug: string;
-  name: string;
+// Types
+interface PageProps {
+  params: Promise<{
+    category: string;
+    id: string;
+  }>;
 }
 
-interface Product {
+// Type for product with category
+interface ProductWithCategory {
   id: string;
   rank: number;
   title: string;
@@ -29,100 +29,99 @@ interface Product {
   affiliateLink: string;
   featured: boolean;
   categoryId: string;
-  category?: Category;
+  category: {
+    id: string;
+    slug: string;
+    name: string;
+  } | null;
 }
 
-// Convert API Product to Top10Item format
-const convertToTop10Item = (product: Product, categorySlug: string): Top10Item => ({
-  id: product.id as unknown as number,
-  rank: product.rank,
-  title: product.title,
-  description: product.description,
-  detailedDescription: product.detailedDescription || undefined,
-  image: product.image,
-  rating: product.rating || undefined,
-  price: product.price || undefined,
-  features: product.features,
-  pros: product.pros,
-  cons: product.cons,
-  category: categorySlug,
-  affiliateLink: product.affiliateLink,
-  featured: product.featured,
-});
+// Fetch product from database
+async function getProduct(id: string) {
+  try {
+    const product = await prisma.product.findUnique({
+      where: { id },
+      include: { category: true },
+    });
+    return product;
+  } catch {
+    return null;
+  }
+}
 
-export default function ItemDetailPage() {
-  const params = useParams();
-  const category = params.category as CategoryType;
-  const itemId = params.id as string;
+// Fetch related products
+async function getRelatedProducts(categoryId: string, excludeId: string) {
+  try {
+    const products = await prisma.product.findMany({
+      where: {
+        categoryId,
+        id: { not: excludeId },
+      },
+      include: { category: true },
+      orderBy: { rank: 'asc' },
+      take: 6,
+    });
+    return products;
+  } catch {
+    return [];
+  }
+}
 
-  const [item, setItem] = useState<Top10Item | null>(null);
-  const [relatedItems, setRelatedItems] = useState<Top10Item[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+// Generate dynamic metadata for SEO
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { id } = await params;
+  const product = await getProduct(id);
 
-  // Fetch product by ID
-  const fetchProduct = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      // Fetch the specific product
-      const res = await fetch(`/api/products/${itemId}`);
-      if (!res.ok) {
-        if (res.status === 404) {
-          setError('Product not found');
-          return;
-        }
-        throw new Error('Failed to fetch product');
-      }
-      const product: Product = await res.json();
-      const categorySlug = product.category?.slug || category;
-      setItem(convertToTop10Item(product, categorySlug));
-
-      // Fetch related products (same category)
-      const relatedRes = await fetch(`/api/products?category=${categorySlug}`);
-      if (relatedRes.ok) {
-        const products: Product[] = await relatedRes.json();
-        const related = products
-          .filter(p => p.id !== itemId)
-          .map(p => convertToTop10Item(p, categorySlug));
-        setRelatedItems(related);
-      }
-    } catch (err) {
-      console.error('Failed to fetch product:', err);
-      setError(err instanceof Error ? err.message : 'Failed to load product');
-    } finally {
-      setLoading(false);
-    }
-  }, [itemId, category]);
-
-  useEffect(() => {
-    fetchProduct();
-  }, [fetchProduct]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="flex items-center gap-2">
-          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-red-600"></div>
-          <span className="text-xl text-gray-600">Loading...</span>
-        </div>
-      </div>
-    );
+  if (!product) {
+    return {
+      title: 'Product Not Found - Top10 Rating',
+      description: 'The requested product could not be found.',
+    };
   }
 
-  if (error || !item) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">{error || 'Item not found'}</h1>
-          <Link href="/" className="text-red-600 hover:underline">
-            Go back to home
-          </Link>
-        </div>
-      </div>
-    );
+  const description = product.description.slice(0, 160);
+
+  return {
+    title: `${product.title} - Top10 Rating`,
+    description,
+    keywords: [product.title, product.category?.name || '', 'review', 'comparison', 'top 10'].filter(Boolean),
+    openGraph: {
+      title: product.title,
+      description,
+      images: [
+        {
+          url: product.image,
+          width: 1200,
+          height: 630,
+          alt: product.title,
+        },
+      ],
+      type: 'article',
+      siteName: 'Top10 Rating',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: product.title,
+      description,
+      images: [product.image],
+    },
+    alternates: {
+      canonical: `/${product.category?.slug || 'product'}/${product.id}`,
+    },
+  };
+}
+
+// Server Component - renders on server with full HTML
+export default async function ItemDetailPage({ params }: PageProps) {
+  const { category, id } = await params;
+  const product = await getProduct(id);
+
+  if (!product) {
+    notFound();
   }
+
+  const relatedProducts = await getRelatedProducts(product.categoryId, product.id);
+  const categorySlug = product.category?.slug || category;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -140,32 +139,32 @@ export default function ItemDetailPage() {
 
       {/* Main Content */}
       <main className="max-w-4xl mx-auto px-4 py-12">
-        {/* Title */}
+        {/* Title - H1 for SEO */}
         <h1 className="text-5xl font-bold text-gray-900 mb-8 leading-tight">
-          {item.title}
+          {product.title}
         </h1>
 
-        {/* Featured Image */}
+        {/* Featured Image with alt text for SEO */}
         <div className="mb-12">
           <img
-            src={item.image}
-            alt={item.title}
+            src={product.image}
+            alt={product.title}
             className="w-full h-auto rounded-2xl shadow-lg"
           />
         </div>
 
         {/* Detailed Description - Markdown Rendering */}
-        <article className="markdown-content">
+        <article className="markdown-content prose prose-lg max-w-none">
           <ReactMarkdown remarkPlugins={[remarkGfm]}>
-            {item.detailedDescription || item.description}
+            {product.detailedDescription || product.description}
           </ReactMarkdown>
         </article>
 
         {/* Visit Site Button */}
-        {item.affiliateLink && (
+        {product.affiliateLink && (
           <div className="mt-8">
             <a
-              href={item.affiliateLink}
+              href={product.affiliateLink}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-6 py-3 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition"
@@ -180,15 +179,15 @@ export default function ItemDetailPage() {
       </main>
 
       {/* Related Items */}
-      {relatedItems.length > 0 && (
+      {relatedProducts.length > 0 && (
         <section className="bg-white border-t border-gray-200 py-16 mt-16">
           <div className="max-w-4xl mx-auto px-4">
             <h2 className="text-3xl font-bold mb-8 text-gray-900">Other Top Picks in This Category</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {relatedItems.map((relatedItem) => (
+              {relatedProducts.map((relatedItem: ProductWithCategory) => (
                 <Link
                   key={relatedItem.id}
-                  href={`/${category}/${relatedItem.id}`}
+                  href={`/${categorySlug}/${relatedItem.id}`}
                   className="group"
                 >
                   <div className="bg-white border border-gray-200 rounded-xl p-4 hover:shadow-lg hover:border-red-300 transition-all duration-300">
@@ -212,6 +211,32 @@ export default function ItemDetailPage() {
           </div>
         </section>
       )}
+
+      {/* JSON-LD Structured Data for SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Product',
+            name: product.title,
+            description: product.description,
+            image: product.image,
+            review: {
+              '@type': 'Review',
+              reviewRating: {
+                '@type': 'Rating',
+                ratingValue: product.rating || 5,
+                bestRating: 5,
+              },
+              author: {
+                '@type': 'Organization',
+                name: 'Top10 Rating',
+              },
+            },
+          }),
+        }}
+      />
     </div>
   );
 }
