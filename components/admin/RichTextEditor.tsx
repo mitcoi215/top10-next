@@ -197,25 +197,28 @@ export default function RichTextEditor({ value, onChange, placeholder = 'Start w
     try {
       const formData = new FormData();
       formData.append('file', file);
-      formData.append('upload_preset', 'ml_default');
+      formData.append('upload_preset', 'top10_images'); // Use the configured preset
+      formData.append('folder', '10rating'); // Upload to 10rating folder
 
-      const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'demo';
       const response = await fetch(
-        `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+        'https://api.cloudinary.com/v1_1/dybrrze0v/image/upload',
         {
           method: 'POST',
           body: formData,
         }
       );
 
-      if (!response.ok) throw new Error('Upload failed');
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error?.message || 'Upload failed');
+      }
 
       const data = await response.json();
       editor.chain().focus().setImage({ src: data.secure_url }).run();
       setShowImageModal(false);
     } catch (error) {
       console.error('Image upload error:', error);
-      alert('Failed to upload image. Please try pasting a URL instead.');
+      alert('Failed to upload image: ' + (error instanceof Error ? error.message : 'Unknown error'));
     } finally {
       setIsUploading(false);
     }

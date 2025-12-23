@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import ImageUploader from './ImageUploader';
 
@@ -14,6 +14,10 @@ const RichTextEditor = dynamic(() => import('./RichTextEditor'), {
     </div>
   ),
 });
+
+// Autosave constants
+const DRAFT_KEY = 'top10_product_draft';
+const AUTOSAVE_INTERVAL = 30000; // 30 seconds
 
 // Types for API responses
 interface Category {
@@ -42,6 +46,7 @@ interface Product {
   featured: boolean;
   categoryId: string;
   category?: Category;
+  savedAt?: string; // For draft autosave
 }
 
 // Helper to get auth header
@@ -59,6 +64,12 @@ export default function Top10Manager() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Autosave states
+  const [showDraftModal, setShowDraftModal] = useState(false);
+  const [savedDraft, setSavedDraft] = useState<Partial<Product> | null>(null);
+  const [lastSaved, setLastSaved] = useState<Date | null>(null);
+  const formRef = useRef<HTMLFormElement>(null);
 
   // Fetch categories from API
   const fetchCategories = useCallback(async () => {
@@ -104,6 +115,82 @@ export default function Top10Manager() {
       fetchProducts();
     }
   }, [selectedCategoryId, fetchProducts]);
+
+  // Save draft to localStorage
+  const saveDraft = useCallback(() => {
+    if (!editingItem || !isFormOpen) return;
+
+    // Get current form values
+    const formData = formRef.current ? new FormData(formRef.current) : null;
+    const draftData = {
+      ...editingItem,
+      title: formData?.get('title') as string || editingItem.title,
+      description: formData?.get('description') as string || editingItem.description,
+      affiliateLink: formData?.get('affiliateLink') as string || editingItem.affiliateLink,
+      featured: formData?.get('featured') === 'on',
+      savedAt: new Date().toISOString(),
+    };
+
+    localStorage.setItem(DRAFT_KEY, JSON.stringify(draftData));
+    setLastSaved(new Date());
+  }, [editingItem, isFormOpen]);
+
+  // Clear draft from localStorage
+  const clearDraft = useCallback(() => {
+    localStorage.removeItem(DRAFT_KEY);
+    setLastSaved(null);
+  }, []);
+
+  // Load draft from localStorage
+  const loadDraft = useCallback(() => {
+    const saved = localStorage.getItem(DRAFT_KEY);
+    if (saved) {
+      try {
+        const draft = JSON.parse(saved);
+        return draft;
+      } catch {
+        return null;
+      }
+    }
+    return null;
+  }, []);
+
+  // Check for saved draft on component mount
+  useEffect(() => {
+    const draft = loadDraft();
+    if (draft && draft.title) {
+      setSavedDraft(draft);
+      setShowDraftModal(true);
+    }
+  }, [loadDraft]);
+
+  // Autosave every 30 seconds when form is open
+  useEffect(() => {
+    if (!isFormOpen || !editingItem) return;
+
+    const interval = setInterval(() => {
+      saveDraft();
+    }, AUTOSAVE_INTERVAL);
+
+    return () => clearInterval(interval);
+  }, [isFormOpen, editingItem, saveDraft]);
+
+  // Restore draft
+  const handleRestoreDraft = () => {
+    if (savedDraft) {
+      setEditingItem(savedDraft);
+      setIsFormOpen(true);
+    }
+    setShowDraftModal(false);
+    setSavedDraft(null);
+  };
+
+  // Discard draft
+  const handleDiscardDraft = () => {
+    clearDraft();
+    setShowDraftModal(false);
+    setSavedDraft(null);
+  };
 
   const handleAddNew = () => {
     setEditingItem({
@@ -195,7 +282,8 @@ export default function Top10Manager() {
         throw new Error(data.error || 'Failed to save product');
       }
 
-      // Refresh products list and close form
+      // Clear draft and refresh products list
+      clearDraft();
       fetchProducts();
       setIsFormOpen(false);
       setEditingItem(null);
@@ -297,14 +385,63 @@ export default function Top10Manager() {
         </div>
       )}
 
+      {/* Draft Recovery Modal */}
+      {showDraftModal && savedDraft && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg p-6 max-w-md w-full">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
+                <svg className="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold">Khôi phục bản nháp?</h3>
+            </div>
+            <p className="text-gray-600 mb-2">
+              Phát hiện có bản nháp chưa lưu:
+            </p>
+            <div className="bg-gray-50 p-3 rounded-lg mb-4">
+              <p className="font-medium text-gray-900">{savedDraft.title || '(Chưa có tiêu đề)'}</p>
+              <p className="text-sm text-gray-500 mt-1">
+                Lưu lúc: {savedDraft.savedAt ? new Date(savedDraft.savedAt as string).toLocaleString('vi-VN') : 'Không rõ'}
+              </p>
+            </div>
+            <div className="flex gap-3">
+              <button
+                onClick={handleDiscardDraft}
+                className="flex-1 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
+              >
+                Bỏ qua
+              </button>
+              <button
+                onClick={handleRestoreDraft}
+                className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+              >
+                Khôi phục
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Edit Form Modal */}
       {isFormOpen && editingItem && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-lg p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <h2 className="text-2xl font-bold mb-4">
-              {editingItem.id ? 'Edit' : 'Add'} Product
-            </h2>
-            <form onSubmit={handleSave} className="space-y-4">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-2xl font-bold">
+                {editingItem.id ? 'Edit' : 'Add'} Product
+              </h2>
+              {lastSaved && (
+                <span className="text-xs text-green-600 flex items-center gap-1">
+                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  Tự động lưu: {lastSaved.toLocaleTimeString('vi-VN')}
+                </span>
+              )}
+            </div>
+            <form ref={formRef} onSubmit={handleSave} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium mb-1">Title</label>
                 <input
