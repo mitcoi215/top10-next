@@ -1,11 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 import HomeClient from '@/components/HomeClient';
-import { CATEGORY_CONTENTS } from '@/lib/constants';
 
-export default function HomePage() {
-  const [activeCategory, setActiveCategory] = useState('lifestyle');
+function HomeContent() {
+  const searchParams = useSearchParams();
+  const categoryFromUrl = searchParams.get('category') || 'lifestyle';
 
   return (
     <>
@@ -19,7 +20,19 @@ export default function HomePage() {
       </section>
 
       {/* Home Client: Category Pills + Category Content + Top10List */}
-      <HomeClient initialCategory={activeCategory} />
+      <HomeClient initialCategory={categoryFromUrl} />
     </>
+  );
+}
+
+export default function HomePage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600"></div>
+      </div>
+    }>
+      <HomeContent />
+    </Suspense>
   );
 }
