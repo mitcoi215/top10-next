@@ -1,7 +1,19 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import dynamic from 'next/dynamic';
 import ImageUploader from './ImageUploader';
+
+// Dynamic import to avoid SSR issues with TipTap
+const RichTextEditor = dynamic(() => import('./RichTextEditor'), {
+  ssr: false,
+  loading: () => (
+    <div className="border rounded-lg p-4 min-h-[300px] bg-gray-50 flex items-center justify-center">
+      <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-red-600"></div>
+      <span className="ml-2 text-gray-600">Loading editor...</span>
+    </div>
+  ),
+});
 
 // Types for API responses
 interface Category {
@@ -152,7 +164,7 @@ export default function Top10Manager() {
       rank: editingItem.rank || 1,
       title: formData.get('title') as string,
       description: formData.get('description') as string,
-      detailedDescription: formData.get('detailedDescription') as string || null,
+      detailedDescription: editingItem.detailedDescription || null, // Get from state (RichTextEditor)
       image: formData.get('image') as string,
       affiliateLink: formData.get('affiliateLink') as string,
       featured: formData.get('featured') === 'on',
@@ -317,15 +329,15 @@ export default function Top10Manager() {
 
               <div>
                 <label className="block text-sm font-medium mb-1">Detailed Description (Full Review)</label>
-                <textarea
-                  name="detailedDescription"
-                  defaultValue={editingItem.detailedDescription || ''}
-                  rows={8}
-                  placeholder="Write a comprehensive review about this product/service."
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none"
+                <RichTextEditor
+                  value={editingItem.detailedDescription || ''}
+                  onChange={(markdown) => {
+                    setEditingItem({ ...editingItem, detailedDescription: markdown });
+                  }}
+                  placeholder="Write a comprehensive review about this product/service..."
                 />
                 <p className="text-xs text-gray-500 mt-1">
-                  This detailed content will be displayed prominently in the list and on the detail page
+                  Use the toolbar to format text, add images, links, tables, and more. Content is saved as Markdown.
                 </p>
               </div>
 
