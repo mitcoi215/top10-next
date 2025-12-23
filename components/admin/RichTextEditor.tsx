@@ -745,7 +745,15 @@ function ToolbarButton({
 }) {
   return (
     <button
-      onClick={onClick}
+      type="button"
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        onClick?.();
+      }}
+      onMouseDown={(e) => {
+        e.preventDefault(); // Prevent editor from losing focus
+      }}
       disabled={disabled}
       title={title}
       className={`
