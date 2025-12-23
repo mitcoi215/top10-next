@@ -128,6 +128,7 @@ export default function RichTextEditor({ value, onChange, placeholder = 'Start w
         class: 'prose prose-sm sm:prose max-w-none focus:outline-none min-h-[300px] p-4',
       },
     },
+    immediatelyRender: false, // Fix SSR hydration mismatch
   });
 
   // Simple markdown to HTML conversion for initial content
