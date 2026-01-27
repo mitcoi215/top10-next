@@ -1,0 +1,42 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <style>
+        body {
+            font-family: "Arial";
+        }
+    </style>
+    <script type="text/javascript">
+    window.awsWafCookieDomainList = [];
+    window.gokuProps = {
+"key":"AQIDAHjcYu/GjX+QlghicBgQ/7bFaQZ+m5FKCMDnO+vTbNg96AE2275dDRr7YmmPEDpDtG9rAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMqZCUXaCmDzXDgJZuAgEQgDsCk3mtb0cGyVB9Z/VfgdncpYec6m0HfVzYblG8nSTnKHkntUPYyGXxf/BB6u7G3LuosQ4ybaCjaVeudA==",
+          "iv":"A6xKSgF5cAAAAEJX",
+          "context":"Gx78m1pzLpbLV3BQP95GhzX78FABnN0XDUFmoreREJlOkGhG+4jlqCpVbDjWfvXyi+MWTaJ/3zc3MQb2XbXOiKUCxO7SQXuVHb/mgDcNHr22Zpttu9RdRrktf8Dum4REdLNq6gYD2bwyZlXhlDUoczgwEriXfTYQwRqTJabqWfW35xMuBtASpZfDPiFN4MgrdGwatnUzybwE4MUDzIOfYf4YqxEuXtmFNDa8/gRXCbVrJUEijNeQM6MOjow381Sx7c8Cmd6w+xSRVYSl4hQLY+S4LMZDJHvEdQk+RaozBhlji+Vbh87ANkIfO14VMS/ZgAx7rIyV7c24jFvED7VyFyLOA2tzsZcxiFnCFGTbH8LsPyRThBxC/dPXRvY8XytJiveiqpRvM+OC07XpXw9I12rGxBkad1ex2VNVyupL0IjCNlZS1o+bfWVC96ucAaemnYPiVNrtQhAH5AM44IcpIx3I4wU9wwOssv6AhgTTek+dsuz5GwcLw/Zo6XyX1zhWZvIleaVFXLBR41ihHkN9EP0P02pTdxLwCSf4k7rapoiWRmm3c0OiUqkeEZgf4fzoItyQ92dUrB5q6znokSkLFHPKzwubiY8lqA=="
+};
+    </script>
+    <script src="js/challenge.js"></script>
+</head>
+<body>
+    <div id="challenge-container"></div>
+    <script type="text/javascript">
+        AwsWafIntegration.saveReferrer();
+        AwsWafIntegration.checkForceRefresh().then((forceRefresh) => {
+            if (forceRefresh) {
+                AwsWafIntegration.forceRefreshToken().then(() => {
+                    window.location.reload(true);
+                });
+            } else {
+                AwsWafIntegration.getToken().then(() => {
+                    window.location.reload(true);
+                });
+            }
+        });
+    </script>
+    <noscript>
+        <h1>JavaScript is disabled</h1>
+        In order to continue, we need to verify that you're not a robot.
+        This requires JavaScript. Enable JavaScript and then reload the page.
+    </noscript>
+
+</body></html>

@@ -1,0 +1,2457 @@
+
+  @font-face  {
+  
+    font-family: 'hurmegeometricsans_no3_6';
+  
+    src: url('fonts/regular.woff2') format('woff2'), url('fonts/regular.woff') format('woff');
+  
+    font-weight: 400;
+  
+    font-style: normal;
+  
+    font-display: swap;
+  
+  }
+
+
+  @font-face  {
+  
+    font-family: 'hurmegeometricsans_no3_6';
+  
+    src: url('fonts/semibold.woff2') format('woff2'), url('fonts/semibold.woff') format('woff');
+  
+    font-weight: 600;
+  
+    font-style: normal;
+  
+    font-display: swap;
+  
+  }
+
+
+  @font-face  {
+  
+    font-family: 'hurmegeometricsans_no3_6';
+  
+    src: url('fonts/bold.woff2') format('woff2'), url('fonts/bold.woff') format('woff');
+  
+    font-weight: 700;
+  
+    font-style: normal;
+  
+    font-display: swap;
+  
+  }
+
+  
+body {
+  margin:0;
+  font-family:hurmegeometricsans_no3_6;
+  text-rendering:optimizelegibility;
+  -webkit-font-smoothing:antialiased;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-flex-direction:column;
+  -ms-flex-direction:column;
+  flex-direction:column;
+  }
+.highlight {
+  color:#FF4A64;
+  }
+.semi-bold {
+  font-weight:600;
+  }
+[data-role='footer'] [data-role='dont-sell-my-information-button'] {
+  border:none;
+  outline:none;
+  color:inherit;
+  font-family:inherit;
+  background:transparent;
+  }
+.ni-1lgr5sy button {
+  border:none;
+  }
+.ni-1lgr5sy [data-testid='set-off-box-text'] {
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-align-items:center;
+  -webkit-box-align:center;
+  -ms-flex-align:center;
+  align-items:center;
+  }
+.ni-152zfk {
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  width:100%;
+  -webkit-box-pack:center;
+  -ms-flex-pack:center;
+  -webkit-justify-content:center;
+  justify-content:center;
+  border-bottom:1px solid #BDBDBD;
+  }
+.ni-1pc6w80 {
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-box-pack:center;
+  -ms-flex-pack:center;
+  -webkit-justify-content:center;
+  justify-content:center;
+  width:100%;
+  max-width:1200px;
+  font-size:14px;
+  line-height:17px;
+  padding:8px 0;
+  }
+@media (max-width: 1200px) {
+  .ni-1pc6w80 {
+  text-align:left;
+  -webkit-flex-direction:column;
+  -ms-flex-direction:column;
+  flex-direction:column;
+  padding:8px;
+  padding-top:4px;
+  }
+}
+.ni-7e8ctb {
+  display:inline;
+  letter-spacing:-0.5px;
+  text-align:left;
+  -webkit-margin-end:16px;
+  margin-inline-end:16px;
+  }
+@media (max-width: 1200px) {
+  .ni-16cmgru {
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  position:relative;
+  width:100%;
+  -webkit-box-pack:end;
+  -ms-flex-pack:end;
+  -webkit-justify-content:flex-end;
+  justify-content:flex-end;
+  margin-top:8px;
+  min-width:150px;
+  }
+.ni-16cmgru>div:first-of-type {
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-box-pack:center;
+  -ms-flex-pack:center;
+  -webkit-justify-content:center;
+  justify-content:center;
+  width:100%;
+  position:inherit;
+  }
+.ni-16cmgru>div:first-of-type>button {
+  width:100%;
+  text-align:right;
+  }
+.ni-16cmgru>div:first-of-type>div {
+  margin:0;
+  margin-top:12px;
+  }
+.ni-16cmgru>div:first-of-type>div:before {
+  position:absolute;
+  -webkit-transform:rotate(-45deg);
+  -moz-transform:rotate(-45deg);
+  -ms-transform:rotate(-45deg);
+  transform:rotate(-45deg);
+  left:calc(50% - 6px);
+  content:'';
+  top:-6px;
+  height:12px;
+  width:12px;
+  background:#fff;
+  }
+}
+@media (min-width: 1200px) {
+  .ni-16cmgru {
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-align-items:center;
+  -webkit-box-align:center;
+  -ms-flex-align:center;
+  align-items:center;
+  }
+.ni-16cmgru>div:first-of-type>button {
+  font-weight:400;
+  }
+.ni-16cmgru>div:first-of-type>div {
+  margin:0;
+  margin-top:12px;
+  right:calc(50% - 36px);
+  }
+.ni-16cmgru>div:first-of-type>div:before {
+  position:absolute;
+  -webkit-transform:rotate(-45deg);
+  -moz-transform:rotate(-45deg);
+  -ms-transform:rotate(-45deg);
+  transform:rotate(-45deg);
+  left:calc(100% - 36px);
+  content:'';
+  top:-6px;
+  height:12px;
+  width:12px;
+  background:#fff;
+  }
+}
+.ni-1dgld9d {
+  position:relative;
+  display:inline-block;
+  }
+.ni-1gpugho {
+  font-size:14px;
+  letter-spacing:-0.37px;
+  background-color:transparent;
+  -webkit-text-decoration:underline;
+  text-decoration:underline;
+  cursor:pointer;
+  width:-webkit-max-content;
+  width:-moz-max-content;
+  width:max-content;
+  color:#000000;
+  }
+.ni-ilfvkp {
+  margin:0 auto;
+  padding:0 15px;
+  max-width:100%;
+  width:1200px;
+  box-sizing:border-box;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-align-items:center;
+  -webkit-box-align:center;
+  -ms-flex-align:center;
+  align-items:center;
+  height:65px;
+  }
+.ni-e2qfj {
+  font-size:16px;
+  font-weight:600;
+  -webkit-text-decoration:none;
+  text-decoration:none;
+  color:#1789d5;
+  -webkit-transition:color 150ms linear;
+  transition:color 150ms linear;
+  cursor:pointer;
+  }
+.ni-e2qfj:hover {
+  color:#1564bf;
+  }
+.ni-1gvhhas {
+  fill:#FF4A64;
+  height:35px;
+  }
+@media (hover: hover) {
+  .ni-1gvhhas:hover {
+  fill:#BC284B;
+  }
+}
+.ni-1hjxear {
+  box-sizing:border-box;
+  margin:0;
+  min-width:0;
+  padding:0;
+  font-family:hurmegeometricsans_no3_6,Gilroy,Almarai,Arial,sans-serif;
+  font-weight:400;
+  font-size:14px;
+  min-height:618px;
+  }
+.ni-1yyakb4 {
+  box-sizing:border-box;
+  margin:0;
+  min-width:0;
+  padding:0;
+  font-family:hurmegeometricsans_no3_6,Gilroy,Almarai,Arial,sans-serif;
+  font-weight:400;
+  font-size:14px;
+  background:linear-gradient(#f3f3f4, #c8c7da);
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  height:394px;
+  position:relative;
+  background-repeat:no-repeat;
+  -webkit-background-position:center 0;
+  background-position:center 0;
+  -webkit-background-size:100% 100%;
+  background-size:100% 100%;
+  }
+@media (min-width: 768px) {
+  .ni-1yyakb4 {
+  background:url(images/top10-herobg.20231109083210.png);
+  }
+}
+@media (max-width: 768px) {
+  .ni-1yyakb4 {
+  height:auto;
+  padding:10px 0 100px;
+  }
+}
+.ni-c8z8t5 {
+  box-sizing:border-box;
+  margin:0;
+  min-width:0;
+  padding:0;
+  font-family:hurmegeometricsans_no3_6,Gilroy,Almarai,Arial,sans-serif;
+  font-weight:400;
+  font-size:14px;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-flex-direction:column;
+  -ms-flex-direction:column;
+  flex-direction:column;
+  -webkit-align-items:center;
+  -webkit-box-align:center;
+  -ms-flex-align:center;
+  align-items:center;
+  max-width:1000px;
+  margin:0 auto;
+  -webkit-box-pack:space-evenly;
+  -ms-flex-pack:space-evenly;
+  -webkit-justify-content:space-evenly;
+  justify-content:space-evenly;
+  }
+@media (max-width: 768px) {
+  .ni-c8z8t5 {
+  -webkit-box-pack:start;
+  -ms-flex-pack:start;
+  -webkit-justify-content:start;
+  justify-content:start;
+  }
+}
+.ni-kghpb1 {
+  box-sizing:border-box;
+  margin:0;
+  min-width:0;
+  padding:0;
+  font-family:hurmegeometricsans_no3_6,Gilroy,Almarai,Arial,sans-serif;
+  font-weight:400;
+  font-size:14px;
+  color:#23004E;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  font-size:48px;
+  font-weight:700;
+  text-align:center;
+  max-width:901px;
+  }
+.ni-kghpb1 span {
+  color:#FF4A64;
+  }
+@media (max-width: 768px) {
+  .ni-kghpb1 {
+  font-size:34px;
+  }
+}
+.ni-hapki3 {
+  box-sizing:border-box;
+  margin:0;
+  min-width:0;
+  padding:0;
+  font-family:hurmegeometricsans_no3_6,Gilroy,Almarai,Arial,sans-serif;
+  font-weight:400;
+  font-size:14px;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-align-self:center;
+  -ms-flex-item-align:center;
+  align-self:center;
+  }
+@media (max-width: 768px) {
+  .ni-hapki3 {
+  width:100%;
+  -webkit-flex-direction:column;
+  -ms-flex-direction:column;
+  flex-direction:column;
+  margin:20px 0;
+  padding:0 16px;
+  }
+.ni-hapki3 .category-and-sub-wrap {
+  margin:5px 10px 0;
+  }
+}
+.ni-sh3crd {
+  box-sizing:border-box;
+  margin:0;
+  min-width:0;
+  padding:0;
+  font-family:hurmegeometricsans_no3_6,Gilroy,Almarai,Arial,sans-serif;
+  font-weight:400;
+  font-size:14px;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  width:158px;
+  height:112px;
+  background-color:#ffffff;
+  -webkit-flex-direction:column;
+  -ms-flex-direction:column;
+  flex-direction:column;
+  -webkit-align-items:center;
+  -webkit-box-align:center;
+  -ms-flex-align:center;
+  align-items:center;
+  margin-right:16px;
+  border-radius:8px;
+  -webkit-box-pack:space-evenly;
+  -ms-flex-pack:space-evenly;
+  -webkit-justify-content:space-evenly;
+  justify-content:space-evenly;
+  position:relative;
+  cursor:pointer;
+  }
+@media (max-width: 768px) {
+  .ni-sh3crd {
+  width:100%;
+  height:56px;
+  -webkit-flex-direction:row;
+  -ms-flex-direction:row;
+  flex-direction:row;
+  -webkit-box-pack:start;
+  -ms-flex-pack:start;
+  -webkit-justify-content:flex-start;
+  justify-content:flex-start;
+  border-radius:6px;
+  border:1px solid #d6d6d6;
+  margin:0 0 5px;
+  }
+.ni-sh3crd img {
+  height:24px;
+  width:24px;
+  margin:0 5px 0 15px;
+  }
+}
+.ni-vsqybe {
+  box-sizing:border-box;
+  margin:0;
+  min-width:0;
+  padding:0;
+  font-family:hurmegeometricsans_no3_6,Gilroy,Almarai,Arial,sans-serif;
+  font-weight:400;
+  font-size:14px;
+  width:auto;
+  height:55px;
+  text-indent:100%;
+  white-space:nowrap;
+  overflow:hidden;
+  }
+.ni-1u18vzq {
+  box-sizing:border-box;
+  margin:0;
+  min-width:0;
+  padding:0;
+  font-family:hurmegeometricsans_no3_6,Gilroy,Almarai,Arial,sans-serif;
+  font-weight:400;
+  font-size:14px;
+  color:#383838;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  font-size:16px;
+  font-weight:400;
+  letter-spacing:-0.2px;
+  }
+.ni-1u18vzq:hover {
+  color:#fe4a64;
+  }
+@media (min-width: 768px) {
+  .ni-1u18vzq {
+  font-weight:600;
+  color:#fe4a64;
+  }
+}
+.ni-cu3t18 {
+  box-sizing:border-box;
+  margin:0;
+  min-width:0;
+  padding:0;
+  font-family:hurmegeometricsans_no3_6,Gilroy,Almarai,Arial,sans-serif;
+  font-weight:400;
+  font-size:14px;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  display:none;
+  }
+@media (max-width: 768px) {
+  .ni-cu3t18 {
+  display:block;
+  position:absolute;
+  right:15px;
+  width:8px;
+  font-size:30px;
+  opacity:1;
+  }
+}
+.ni-g18mml {
+  box-sizing:border-box;
+  margin:0;
+  min-width:0;
+  padding:0;
+  font-family:hurmegeometricsans_no3_6,Gilroy,Almarai,Arial,sans-serif;
+  font-weight:400;
+  font-size:14px;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  display:none;
+  }
+@media (max-width: 768px) {
+  .ni-g18mml {
+  display:inline;
+  position:absolute;
+  right:15px;
+  width:8px;
+  font-size:30px;
+  opacity:0;
+  }
+}
+.ni-z3tru0 {
+  box-sizing:border-box;
+  margin:0;
+  min-width:0;
+  padding:0;
+  font-family:hurmegeometricsans_no3_6,Gilroy,Almarai,Arial,sans-serif;
+  font-weight:400;
+  font-size:14px;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  position:relative;
+  width:0;
+  height:0;
+  border-left:20px solid transparent;
+  border-right:20px solid transparent;
+  margin:0 60px;
+  border-top:20px solid #ffffff;
+  }
+@media (max-width: 768px) {
+  .ni-z3tru0 {
+  display:none;
+  }
+}
+.ni-fi68f4 {
+  box-sizing:border-box;
+  margin:0;
+  min-width:0;
+  padding:0;
+  font-family:hurmegeometricsans_no3_6,Gilroy,Almarai,Arial,sans-serif;
+  font-weight:400;
+  font-size:14px;
+  border-bottom:20px solid #e6e6ee;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  position:relative;
+  width:0;
+  height:0;
+  border-left:20px solid transparent;
+  border-right:20px solid transparent;
+  margin:0 60px;
+  position:absolute;
+  bottom:0;
+  z-index:1;
+  }
+@media (max-width: 768px) {
+  .ni-fi68f4 {
+  display:none;
+  }
+}
+.ni-cpg42y {
+  box-sizing:border-box;
+  margin:0;
+  min-width:0;
+  padding:0;
+  font-family:hurmegeometricsans_no3_6,Gilroy,Almarai,Arial,sans-serif;
+  font-weight:400;
+  font-size:14px;
+  background-color:#e6e6ee;
+  height:224px;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  position:absolute;
+  left:0;
+  top:394px;
+  width:100%;
+  height:224px;
+  }
+@media (max-width: 768px) {
+  .ni-cpg42y {
+  position:static;
+  background-color:inherit;
+  min-height:0;
+  height:auto;
+  }
+}
+.ni-9qmydc {
+  box-sizing:border-box;
+  margin:0;
+  min-width:0;
+  padding:0;
+  font-family:hurmegeometricsans_no3_6,Gilroy,Almarai,Arial,sans-serif;
+  font-weight:400;
+  font-size:14px;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  width:1180px;
+  margin:30px auto;
+  -webkit-box-flex-wrap:wrap;
+  -webkit-flex-wrap:wrap;
+  -ms-flex-wrap:wrap;
+  flex-wrap:wrap;
+  -webkit-box-pack:center;
+  -ms-flex-pack:center;
+  -webkit-justify-content:center;
+  justify-content:center;
+  -webkit-align-items:center;
+  -webkit-box-align:center;
+  -ms-flex-align:center;
+  align-items:center;
+  }
+@media (max-width: 768px) {
+  .ni-9qmydc {
+  margin:-8px 0 8px;
+  height:0;
+  }
+}
+.ni-1hvu95 {
+  box-sizing:border-box;
+  margin:0;
+  min-width:0;
+  padding:0;
+  font-family:hurmegeometricsans_no3_6,Gilroy,Almarai,Arial,sans-serif;
+  font-weight:400;
+  font-size:14px;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  display:none;
+  width:228px;
+  height:74px;
+  background-color:#ffffff;
+  text-transform:capitalize;
+  border-radius:4px;
+  padding:15px;
+  z-index:1;
+  margin:8px 8px 0 0;
+  -webkit-flex-direction:column;
+  -ms-flex-direction:column;
+  flex-direction:column;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-box-pack:center;
+  -ms-flex-pack:center;
+  -webkit-justify-content:center;
+  justify-content:center;
+  }
+.ni-1hvu95:hover {
+  box-shadow:0 8px 24px 0 #00000029;
+  }
+@media (max-width: 768px) {
+  .ni-1hvu95 {
+  display:block;
+  margin:0;
+  height:0;
+  width:100%;
+  border-radius:0;
+  padding:10px;
+  overflow:hidden;
+  -webkit-transition:height 0.5s;
+  transition:height 0.5s;
+  opacity:0;
+  z-index:0;
+  }
+}
+.ni-cg6g9y {
+  box-sizing:border-box;
+  margin:0;
+  min-width:0;
+  padding:0;
+  font-family:hurmegeometricsans_no3_6,Gilroy,Almarai,Arial,sans-serif;
+  font-weight:400;
+  font-size:14px;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  color:#2d2d2d;
+  font-size:16px;
+  font-weight:600;
+  line-height:22px;
+  }
+.ni-8eku1f {
+  box-sizing:border-box;
+  margin:0;
+  min-width:0;
+  padding:0;
+  font-family:hurmegeometricsans_no3_6,Gilroy,Almarai,Arial,sans-serif;
+  font-weight:400;
+  font-size:14px;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-box-pack:start;
+  -ms-flex-pack:start;
+  -webkit-justify-content:flex-start;
+  justify-content:flex-start;
+  line-height:22px;
+  }
+.ni-1oe2nzy {
+  box-sizing:border-box;
+  margin:0;
+  min-width:0;
+  padding:0;
+  font-family:hurmegeometricsans_no3_6,Gilroy,Almarai,Arial,sans-serif;
+  font-weight:400;
+  font-size:14px;
+  font-weight:700;
+  color:#FF4A64;
+  cursor:pointer;
+  -webkit-text-decoration:none;
+  text-decoration:none;
+  -webkit-transition:all 0.3s ease;
+  transition:all 0.3s ease;
+  color:#797979;
+  padding:0 10px 0 0;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-align-items:center;
+  -webkit-box-align:center;
+  -ms-flex-align:center;
+  align-items:center;
+  font-weight:600;
+  }
+.ni-1oe2nzy:hover {
+  color:#B53547;
+  }
+.ni-1oe2nzy:hover {
+  -webkit-text-decoration:none;
+  text-decoration:none;
+  }
+.ni-1oe2nzy:hover {
+  color:#2d2d2d;
+  }
+.ni-1oe2nzy svg {
+  margin:0 0 0 5px;
+  }
+.ni-1i1o349 {
+  box-sizing:border-box;
+  margin:0;
+  min-width:0;
+  padding:0;
+  font-family:hurmegeometricsans_no3_6,Gilroy,Almarai,Arial,sans-serif;
+  font-weight:400;
+  font-size:14px;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  border-left:solid;
+  border-color:#d5d5d5;
+  border-width:1px;
+  }
+.ni-1xk84tj {
+  box-sizing:border-box;
+  margin:0;
+  min-width:0;
+  padding:0;
+  font-family:hurmegeometricsans_no3_6,Gilroy,Almarai,Arial,sans-serif;
+  font-weight:400;
+  font-size:14px;
+  font-weight:700;
+  color:#FF4A64;
+  cursor:pointer;
+  -webkit-text-decoration:none;
+  text-decoration:none;
+  -webkit-transition:all 0.3s ease;
+  transition:all 0.3s ease;
+  padding:0 10px;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-align-items:center;
+  -webkit-box-align:center;
+  -ms-flex-align:center;
+  align-items:center;
+  color:#fe4a64;
+  font-weight:600;
+  }
+.ni-1xk84tj:hover {
+  color:#B53547;
+  }
+.ni-1xk84tj:hover {
+  -webkit-text-decoration:none;
+  text-decoration:none;
+  }
+.ni-1xk84tj svg {
+  margin:0 0 0 5px;
+  }
+.ni-a9trmo {
+  box-sizing:border-box;
+  margin:0;
+  min-width:0;
+  padding:0;
+  font-family:hurmegeometricsans_no3_6,Gilroy,Almarai,Arial,sans-serif;
+  font-weight:400;
+  font-size:14px;
+  color:#383838;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  font-size:16px;
+  font-weight:400;
+  letter-spacing:-0.2px;
+  }
+.ni-a9trmo:hover {
+  color:#fe4a64;
+  }
+.ni-1uxm0m2 {
+  box-sizing:border-box;
+  margin:0;
+  min-width:0;
+  padding:0;
+  font-family:hurmegeometricsans_no3_6,Gilroy,Almarai,Arial,sans-serif;
+  font-weight:400;
+  font-size:14px;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  position:relative;
+  }
+@media (max-width: 768px) {
+  .ni-1uxm0m2 {
+  display:none;
+  }
+}
+.ni-1ee1maf {
+  box-sizing:border-box;
+  margin:0;
+  min-width:0;
+  padding:0;
+  font-family:hurmegeometricsans_no3_6,Gilroy,Almarai,Arial,sans-serif;
+  font-weight:400;
+  font-size:14px;
+  border-bottom:20px solid #e6e6ee;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  position:relative;
+  border-bottom:none;
+  }
+@media (max-width: 768px) {
+  .ni-1ee1maf {
+  display:none;
+  }
+}
+.ni-gnxpsb {
+  box-sizing:border-box;
+  margin:0;
+  min-width:0;
+  padding:0;
+  font-family:hurmegeometricsans_no3_6,Gilroy,Almarai,Arial,sans-serif;
+  font-weight:400;
+  font-size:14px;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  display:none;
+  width:228px;
+  height:74px;
+  background-color:#ffffff;
+  text-transform:capitalize;
+  border-radius:4px;
+  padding:15px;
+  z-index:1;
+  margin:8px 8px 0 0;
+  -webkit-flex-direction:column;
+  -ms-flex-direction:column;
+  flex-direction:column;
+  }
+.ni-gnxpsb:hover {
+  box-shadow:0 8px 24px 0 #00000029;
+  }
+@media (max-width: 768px) {
+  .ni-gnxpsb {
+  display:block;
+  margin:0;
+  height:0;
+  width:100%;
+  border-radius:0;
+  padding:10px;
+  overflow:hidden;
+  -webkit-transition:height 0.5s;
+  transition:height 0.5s;
+  opacity:0;
+  z-index:0;
+  }
+}
+.ni-1x0t3k1 {
+  margin:0 16px;
+  }
+@media (min-width: 768px) {
+  .ni-1x0t3k1 {
+  margin:initial;
+  }
+}
+.ni-vocp7d {
+  box-sizing:border-box;
+  margin:0;
+  min-width:0;
+  padding:0;
+  font-family:hurmegeometricsans_no3_6,Gilroy,Almarai,Arial,sans-serif;
+  font-weight:400;
+  font-size:14px;
+  background-color:#EEEEEE;
+  border-radius:8px;
+  padding:32px 20px;
+  gap:24px;
+  }
+@media (min-width: 768px) {
+  .ni-vocp7d {
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-flex-direction:row;
+  -ms-flex-direction:row;
+  flex-direction:row;
+  width:100%;
+  height:94px;
+  -webkit-align-items:center;
+  -webkit-box-align:center;
+  -ms-flex-align:center;
+  align-items:center;
+  -webkit-box-pack:center;
+  -ms-flex-pack:center;
+  -webkit-justify-content:center;
+  justify-content:center;
+  gap:40px;
+  padding:20px;
+  }
+}
+.ni-1c2opty {
+  box-sizing:border-box;
+  margin:0;
+  min-width:0;
+  padding:0;
+  font-family:hurmegeometricsans_no3_6,Gilroy,Almarai,Arial,sans-serif;
+  font-weight:400;
+  font-size:14px;
+  word-wrap:break-word;
+  max-width:100%;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+  font-size:24px;
+  line-height:36px;
+  font-weight:600;
+  color:#2D2D2D;
+  text-align:center;
+  }
+@media (min-width: 768px) {
+  .ni-1c2opty {
+  font-size:18px;
+  font-weight:400;
+  line-height:27px;
+  max-width:244px;
+  border-inline-end:1px solid #D5D5D5;
+  -webkit-padding-end:15px;
+  padding-inline-end:15px;
+  }
+}
+.ni-sl7qv {
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  height:21px;
+  margin:8px auto 0;
+  }
+@media (min-width: 768px) {
+  .ni-sl7qv {
+  display:inline-block;
+  margin:initial;
+  -webkit-margin-start:8px;
+  margin-inline-start:8px;
+  margin-bottom:-4px;
+  }
+}
+.ni-dyeu4s {
+  box-sizing:border-box;
+  margin:0;
+  min-width:0;
+  padding:0;
+  font-family:hurmegeometricsans_no3_6,Gilroy,Almarai,Arial,sans-serif;
+  font-weight:400;
+  font-size:14px;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-box-flex-wrap:wrap;
+  -webkit-flex-wrap:wrap;
+  -ms-flex-wrap:wrap;
+  flex-wrap:wrap;
+  -webkit-box-pack:justify;
+  -webkit-justify-content:space-between;
+  justify-content:space-between;
+  margin-top:24px;
+  }
+@media (min-width: 768px) {
+  .ni-dyeu4s {
+  -webkit-flex-direction:row;
+  -ms-flex-direction:row;
+  flex-direction:row;
+  -webkit-align-items:center;
+  -webkit-box-align:center;
+  -ms-flex-align:center;
+  align-items:center;
+  -webkit-box-flex-wrap:nowrap;
+  -webkit-flex-wrap:nowrap;
+  -ms-flex-wrap:nowrap;
+  flex-wrap:nowrap;
+  margin-top:initial;
+  gap:40px;
+  overflow:hidden;
+  }
+}
+.ni-sbh9k7 {
+  -webkit-flex-basis:calc(33.33% - 36px);
+  -ms-flex-preferred-size:calc(33.33% - 36px);
+  flex-basis:calc(33.33% - 36px);
+  }
+.ni-sbh9k7:not(:nth-of-type(-n + 3)) {
+  padding-top:24px;
+  }
+@media (min-width: 768px) {
+  .ni-sbh9k7:not(:nth-of-type(-n + 3)) {
+  padding-top:initial;
+  }
+}
+.ni-i5618i {
+  padding:0 15px;
+  margin-bottom:45px;
+  }
+@media screen and (min-width: 768px) {
+  .ni-i5618i {
+  padding:0;
+  }
+}
+@media screen and (min-width: 1000px) {
+  .ni-i5618i {
+  margin-bottom:40px;
+  }
+}
+.ni-1qnthm6 {
+  margin:0 auto;
+  padding:0 15px;
+  max-width:100%;
+  width:1200px;
+  box-sizing:border-box;
+  }
+.ni-3cvjrp {
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  margin-top:36px;
+  }
+.ni-13qkz7h {
+  -webkit-box-flex:1;
+  -webkit-flex-grow:1;
+  -ms-flex-positive:1;
+  flex-grow:1;
+  width:100%;
+  margin-bottom:50px;
+  }
+@media screen and (min-width: 1000px) {
+  .ni-13qkz7h {
+  margin-bottom:70px;
+  width:635px;
+  }
+}
+.ni-1lm6x7r button {
+  background-color:transparent;
+  border-color:transparent;
+  }
+.ni-1lm6x7r a {
+  -webkit-text-decoration:none;
+  text-decoration:none;
+  color:#2d2d2d;
+  }
+.ni-1lm6x7r h1,.ni-1lm6x7r h2,.ni-1lm6x7r h3,.ni-1lm6x7r h4,.ni-1lm6x7r h5,.ni-1lm6x7r h6 {
+  margin-block-start:0;
+  margin-block-end:0;
+  }
+@media (max-width: 768px) {
+  .ni-1lm6x7r .trending-item-cta {
+  width:calc(100% - 10px);
+  }
+}
+.ni-1r9q3l3 {
+  box-sizing:border-box;
+  margin:0;
+  min-width:0;
+  padding:0;
+  font-family:hurmegeometricsans_no3_6,Gilroy,Almarai,Arial,sans-serif;
+  font-weight:400;
+  font-size:14px;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-flex-direction:column;
+  -ms-flex-direction:column;
+  flex-direction:column;
+  position:relative;
+  }
+.ni-1vgqq16 {
+  box-sizing:border-box;
+  margin:0;
+  min-width:0;
+  padding:0;
+  font-family:hurmegeometricsans_no3_6,Gilroy,Almarai,Arial,sans-serif;
+  font-weight:400;
+  font-size:14px;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  margin-bottom:30px;
+  -webkit-box-pack:justify;
+  -webkit-justify-content:space-between;
+  justify-content:space-between;
+  }
+.ni-ixrrg9 {
+  font-size:22px;
+  font-weight:600;
+  line-height:25px;
+  }
+@media (max-width: 768px) {
+  .ni-ixrrg9 {
+  font-size:24px;
+  line-height:24px;
+  }
+}
+.ni-un3w91 {
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-align-items:center;
+  -webkit-box-align:center;
+  -ms-flex-align:center;
+  align-items:center;
+  cursor:pointer;
+  }
+.ni-449veh {
+  color:#147DC2;
+  font-weight:600;
+  font-size:16px;
+  }
+.ni-ocefd3 {
+  color:#147DC2;
+  width:20px;
+  height:20px;
+  margin-left:8px;
+  }
+.ni-vzqhb2 {
+  box-sizing:border-box;
+  margin:0;
+  min-width:0;
+  padding:0;
+  font-family:hurmegeometricsans_no3_6,Gilroy,Almarai,Arial,sans-serif;
+  font-weight:400;
+  font-size:14px;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-flex-direction:column;
+  -ms-flex-direction:column;
+  flex-direction:column;
+  width:100%;
+  border:3px solid #EEEEEE;
+  border-radius:5px;
+  margin-bottom:32px;
+  }
+@media (max-width: 1024px) {
+  .ni-vzqhb2 {
+  border:none;
+  }
+}
+.ni-gjtr62 {
+  box-sizing:border-box;
+  margin:0;
+  min-width:0;
+  padding:0;
+  font-family:hurmegeometricsans_no3_6,Gilroy,Almarai,Arial,sans-serif;
+  font-weight:400;
+  font-size:14px;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-align-items:center;
+  -webkit-box-align:center;
+  -ms-flex-align:center;
+  align-items:center;
+  height:72px;
+  background-color:#EEEEEE;
+  padding-left:25px;
+  cursor:pointer;
+  }
+@media (max-width: 768px) {
+  .ni-gjtr62 {
+  padding-left:16px;
+  height:69px;
+  }
+}
+.ni-1uo779q {
+  box-sizing:border-box;
+  margin:0;
+  min-width:0;
+  padding:0;
+  font-family:hurmegeometricsans_no3_6,Gilroy,Almarai,Arial,sans-serif;
+  font-weight:400;
+  font-size:14px;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-box-pack:center;
+  -ms-flex-pack:center;
+  -webkit-justify-content:center;
+  justify-content:center;
+  -webkit-align-items:center;
+  -webkit-box-align:center;
+  -ms-flex-align:center;
+  align-items:center;
+  margin-right:15px;
+  width:45px;
+  height:45px;
+  font-size:27px;
+  line-height:27px;
+  color:#FFFFFF;
+  font-weight:600;
+  background-color:#FF4A64;
+  border-radius:50%;
+  }
+.ni-44axjh {
+  font-weight:600;
+  font-size:20px;
+  line-height:27px;
+  }
+@media (max-width: 768px) {
+  .ni-44axjh {
+  font-size:18px;
+  }
+}
+.ni-1el103i {
+  width:20px;
+  color:#147DC2;
+  -webkit-transform:rotate(180deg);
+  -moz-transform:rotate(180deg);
+  -ms-transform:rotate(180deg);
+  transform:rotate(180deg);
+  -webkit-transition:-webkit-transform 0.17s cubic-bezier(0.4, 0, 1, 1);
+  transition:transform 0.17s cubic-bezier(0.4, 0, 1, 1);
+  position:absolute;
+  right:30px;
+  }
+@media (max-width: 768px) {
+  .ni-1el103i {
+  right:25px;
+  width:16px;
+  }
+}
+.ni-1v3txwc {
+  -webkit-transition:max-height 200ms;
+  transition:max-height 200ms;
+  overflow:hidden;
+  position:relative;
+  }
+.ni-15qoik9 {
+  box-sizing:border-box;
+  margin:0;
+  min-width:0;
+  padding:0;
+  font-family:hurmegeometricsans_no3_6,Gilroy,Almarai,Arial,sans-serif;
+  font-weight:400;
+  font-size:14px;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-flex-direction:column;
+  -ms-flex-direction:column;
+  flex-direction:column;
+  }
+.ni-1s81l2a {
+  box-sizing:border-box;
+  margin:0;
+  min-width:0;
+  padding:0;
+  font-family:hurmegeometricsans_no3_6,Gilroy,Almarai,Arial,sans-serif;
+  font-weight:400;
+  font-size:14px;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  position:relative;
+  }
+.ni-1s81l2a:hover .title-container {
+  -webkit-text-decoration:underline;
+  text-decoration:underline;
+  }
+@media (max-width: 768px) {
+  .ni-1s81l2a {
+  -webkit-flex-direction:column;
+  -ms-flex-direction:column;
+  flex-direction:column;
+  }
+}
+.ni-1y72xo {
+  width:100%;
+  height:100%;
+  position:absolute;
+  z-index:1;
+  }
+.ni-851yf7 {
+  height:262px;
+  width:507px;
+  margin-right:49px;
+  -webkit-flex-shrink:0;
+  -ms-flex-negative:0;
+  flex-shrink:0;
+  margin:32px 49px 32px 32px;
+  }
+@media (max-width: 1024px) {
+  .ni-851yf7 {
+  margin:24px 24px 24px 0;
+  width:356px;
+  height:200px;
+  }
+}
+@media (max-width: 768px) {
+  .ni-851yf7 {
+  width:100%;
+  height:176px;
+  margin-bottom:16px;
+  margin-right:0;
+  }
+}
+.ni-r3mbvv {
+  width:100%;
+  height:100%;
+  border-radius:4px;
+  -webkit-transition:all 0.5s ease-out;
+  transition:all 0.5s ease-out;
+  object-fit:cover;
+  }
+.ni-ynvdgs {
+  box-sizing:border-box;
+  margin:0;
+  min-width:0;
+  padding:0;
+  font-family:hurmegeometricsans_no3_6,Gilroy,Almarai,Arial,sans-serif;
+  font-weight:400;
+  font-size:14px;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-flex-direction:column;
+  -ms-flex-direction:column;
+  flex-direction:column;
+  padding:32px 32px 32px 0;
+  }
+@media (max-width: 1024px) {
+  .ni-ynvdgs {
+  padding:24px 0;
+  }
+}
+@media (max-width: 768px) {
+  .ni-ynvdgs {
+  padding-top:0;
+  padding-bottom:24px;
+  }
+}
+.ni-1ywwwb0 {
+  box-sizing:border-box;
+  margin:0;
+  min-width:0;
+  padding:0;
+  font-family:hurmegeometricsans_no3_6,Gilroy,Almarai,Arial,sans-serif;
+  font-weight:400;
+  font-size:14px;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-flex-direction:column;
+  -ms-flex-direction:column;
+  flex-direction:column;
+  margin-bottom:16px;
+  }
+@media (max-width: 768px) {
+  .ni-1ywwwb0 {
+  margin-bottom:8px;
+  }
+}
+.ni-9j1xd0 {
+  font-weight:700;
+  font-size:24px;
+  line-height:32px;
+  }
+@media (max-width: 768px) {
+  .ni-9j1xd0 {
+  font-size:20px;
+  line-height:26px;
+  }
+}
+.ni-fe08nx {
+  box-sizing:border-box;
+  margin:0;
+  min-width:0;
+  padding:0;
+  font-family:hurmegeometricsans_no3_6,Gilroy,Almarai,Arial,sans-serif;
+  font-weight:400;
+  font-size:14px;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-align-items:center;
+  -webkit-box-align:center;
+  -ms-flex-align:center;
+  align-items:center;
+  -webkit-box-flex-wrap:nowrap;
+  -webkit-flex-wrap:nowrap;
+  -ms-flex-wrap:nowrap;
+  flex-wrap:nowrap;
+  }
+@media (max-width: 768px) {
+  .ni-fe08nx {
+  font-size:14px;
+  }
+}
+.ni-v4euzz {
+  box-sizing:border-box;
+  margin:0;
+  min-width:0;
+  padding:0;
+  font-family:hurmegeometricsans_no3_6,Gilroy,Almarai,Arial,sans-serif;
+  font-weight:400;
+  font-size:14px;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-flex-direction:column;
+  -ms-flex-direction:column;
+  flex-direction:column;
+  -webkit-align-items:flex-start;
+  -webkit-box-align:flex-start;
+  -ms-flex-align:flex-start;
+  align-items:flex-start;
+  font-size:16px;
+  line-height:21px;
+  }
+@media (max-width: 1024px) {
+  .ni-v4euzz {
+  gap:12px;
+  -webkit-align-items:center;
+  -webkit-box-align:center;
+  -ms-flex-align:center;
+  align-items:center;
+  -webkit-flex-direction:row;
+  -ms-flex-direction:row;
+  flex-direction:row;
+  }
+}
+.ni-iyx4d6 {
+  white-space:nowrap;
+  color:#717171;
+  }
+.ni-wmrss8 {
+  height:40px;
+  width:-webkit-fit-content;
+  width:-moz-fit-content;
+  width:fit-content;
+  padding-left:8px;
+  border:1px solid #147DC2;
+  border-radius:2px;
+  margin-top:32px;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-align-items:center;
+  -webkit-box-align:center;
+  -ms-flex-align:center;
+  align-items:center;
+  z-index:2;
+  }
+@media (max-width: 768px) {
+  .ni-wmrss8 {
+  width:100%;
+  text-align:center;
+  -webkit-box-pack:center;
+  -ms-flex-pack:center;
+  -webkit-justify-content:center;
+  justify-content:center;
+  margin-top:8px;
+  }
+}
+.ni-l9fgq9 {
+  font-weight:600;
+  font-size:16px;
+  color:#147DC2;
+  }
+.ni-gg3p61 {
+  width:20px;
+  color:#147DC2;
+  margin-left:6px;
+  margin-right:10px;
+  }
+.ni-o0rong {
+  box-sizing:border-box;
+  margin:0;
+  min-width:0;
+  padding:0;
+  font-family:hurmegeometricsans_no3_6,Gilroy,Almarai,Arial,sans-serif;
+  font-weight:400;
+  font-size:14px;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  padding:0 32px 32px;
+  }
+@media (max-width: 1024px) {
+  .ni-o0rong {
+  padding:24px 0 0;
+  -webkit-flex-direction:column;
+  -ms-flex-direction:column;
+  flex-direction:column;
+  border-top:1px solid #D5D5D5;
+  }
+}
+.ni-9bmami {
+  -webkit-flex:1;
+  -ms-flex:1;
+  flex:1;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  min-height:100%;
+  font-weight:700;
+  margin-right:16px;
+  padding-right:16px;
+  border-right:1px solid #D5D5D5;
+  width:33%;
+  }
+.ni-9bmami:hover .related-item-title {
+  -webkit-text-decoration:underline;
+  text-decoration:underline;
+  }
+.ni-9bmami:last-child {
+  border-right:none;
+  padding-right:0;
+  padding-bottom:0;
+  margin-right:0;
+  }
+@media (max-width: 1024px) {
+  .ni-9bmami {
+  border-right:none;
+  margin-right:0;
+  padding-right:0;
+  padding-bottom:24px;
+  width:100%;
+  }
+}
+.ni-1cftoo9 {
+  box-sizing:border-box;
+  margin:0;
+  min-width:0;
+  padding:0;
+  font-family:hurmegeometricsans_no3_6,Gilroy,Almarai,Arial,sans-serif;
+  font-weight:400;
+  font-size:14px;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-box-pack:center;
+  -ms-flex-pack:center;
+  -webkit-justify-content:center;
+  justify-content:center;
+  -webkit-align-items:center;
+  -webkit-box-align:center;
+  -ms-flex-align:center;
+  align-items:center;
+  width:131px;
+  height:90px;
+  -webkit-flex-shrink:0;
+  -ms-flex-negative:0;
+  flex-shrink:0;
+  border-radius:5px;
+  }
+.ni-1x2o08u {
+  border-radius:5px;
+  object-fit:cover;
+  width:100%;
+  height:100%;
+  }
+.ni-1vynbg8 {
+  box-sizing:border-box;
+  margin:0;
+  min-width:0;
+  padding:0;
+  font-family:hurmegeometricsans_no3_6,Gilroy,Almarai,Arial,sans-serif;
+  font-weight:400;
+  font-size:14px;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-flex-direction:column;
+  -ms-flex-direction:column;
+  flex-direction:column;
+  margin-left:14px;
+  }
+.ni-1tx4gn1 {
+  margin-bottom:12px;
+  }
+@media (max-width: 768px) {
+  .ni-1tx4gn1 {
+  margin-bottom:8px;
+  }
+}
+.ni-t4efze {
+  font-weight:700;
+  font-size:16px;
+  line-height:24px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  }
+@media (max-width: 768px) {
+  .ni-t4efze {
+  -webkit-line-clamp:3;
+  }
+}
+.ni-85wzae {
+  box-sizing:border-box;
+  margin:0;
+  min-width:0;
+  padding:0;
+  font-family:hurmegeometricsans_no3_6,Gilroy,Almarai,Arial,sans-serif;
+  font-weight:400;
+  font-size:14px;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-flex-direction:column;
+  -ms-flex-direction:column;
+  flex-direction:column;
+  -webkit-align-items:flex-start;
+  -webkit-box-align:flex-start;
+  -ms-flex-align:flex-start;
+  align-items:flex-start;
+  font-size:16px;
+  line-height:21px;
+  font-size:12px;
+  line-height:15px;
+  }
+@media (max-width: 1024px) {
+  .ni-85wzae {
+  gap:12px;
+  -webkit-align-items:center;
+  -webkit-box-align:center;
+  -ms-flex-align:center;
+  align-items:center;
+  -webkit-flex-direction:row;
+  -ms-flex-direction:row;
+  flex-direction:row;
+  }
+}
+.ni-b4eudn {
+  white-space:nowrap;
+  color:#717171;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  overflow:hidden;
+  max-width:-webkit-fit-content;
+  max-width:-moz-fit-content;
+  max-width:fit-content;
+  }
+.ni-jzm02b {
+  height:4px;
+  width:4px;
+  border-radius:50%;
+  background:#717171;
+  margin-top:3px;
+  -webkit-flex-shrink:0;
+  -ms-flex-negative:0;
+  flex-shrink:0;
+  }
+@media (min-width: 1024px) {
+  .ni-jzm02b {
+  display:none;
+  }
+}
+.ni-kpk6ds {
+  box-sizing:border-box;
+  margin:0;
+  min-width:0;
+  padding:0;
+  font-family:hurmegeometricsans_no3_6,Gilroy,Almarai,Arial,sans-serif;
+  font-weight:400;
+  font-size:14px;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-box-pack:center;
+  -ms-flex-pack:center;
+  -webkit-justify-content:center;
+  justify-content:center;
+  -webkit-align-items:center;
+  -webkit-box-align:center;
+  -ms-flex-align:center;
+  align-items:center;
+  width:131px;
+  height:90px;
+  -webkit-flex-shrink:0;
+  -ms-flex-negative:0;
+  flex-shrink:0;
+  border:1px solid #D5D5D5;
+  border-radius:5px;
+  }
+.ni-1c6l3oy {
+  border-radius:5px;
+  object-fit:cover;
+  width:105px;
+  height:auto;
+  }
+.ni-188rvxn {
+  font-weight:700;
+  font-size:16px;
+  line-height:24px;
+  }
+.ni-1out05v {
+  padding-bottom:50px;
+  }
+@media screen and (min-width: 768px) {
+  .ni-1out05v {
+  padding:50px 0;
+  background-color:#F5F5F5;
+  }
+}
+.ni-10sckbz {
+  margin:0 auto;
+  max-width:1200px;
+  padding:0 20px;
+  box-sizing:border-box;
+  }
+.ni-sqf7nl {
+  border-bottom:1px solid;
+  border-color:#E2E2E2;
+  border-width:5px;
+  margin-bottom:50px;
+  }
+@media screen and (min-width: 768px) {
+  .ni-sqf7nl {
+  display:none;
+  }
+}
+.ni-1vruo6v {
+  margin:0;
+  padding:0;
+  letter-spacing:-0.1px;
+  font-size:30px;
+  color:#2D2D2D;
+  font-weight:700;
+  font-size:22px;
+  }
+.ni-bjn8wh {
+  position:relative;
+  }
+.ni-b0iyz5 {
+  width:130px;
+  height:100%;
+  -webkit-align-items:center;
+  -webkit-box-align:center;
+  -ms-flex-align:center;
+  align-items:center;
+  background:linear-gradient(-90deg, rgba(255, 255, 255, 0) 0%, #ffffff 60.5%);
+  z-index:1;
+  position:absolute;
+  right:0;
+  background:linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, #f5f5f5 60.5%);
+  -webkit-box-pack:end;
+  -ms-flex-pack:end;
+  -webkit-justify-content:flex-end;
+  justify-content:flex-end;
+  top:0;
+  display:none;
+  }
+@media screen and (min-width: 1000px) {
+  .ni-b0iyz5 {
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  }
+}
+.ni-8h0oye {
+  width:40px;
+  height:40px;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-align-items:center;
+  -webkit-box-align:center;
+  -ms-flex-align:center;
+  align-items:center;
+  -webkit-box-pack:center;
+  -ms-flex-pack:center;
+  -webkit-justify-content:center;
+  justify-content:center;
+  border-radius:50%;
+  background-color:#fff;
+  box-shadow:0px 0px 10px rgba(0, 0, 0, 0.2);
+  cursor:pointer;
+  }
+.ni-8h0oye:hover svg {
+  fill:#1564bf;
+  }
+.ni-9i0bof {
+  width:15px;
+  -webkit-transform:rotate(-90deg);
+  -moz-transform:rotate(-90deg);
+  -ms-transform:rotate(-90deg);
+  transform:rotate(-90deg);
+  fill:#1789d5;
+  }
+.ni-1yt1bof {
+  margin-top:25px;
+  }
+@media screen and (min-width: 768px) {
+  .ni-1yt1bof {
+  scroll-behavior:smooth;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  overflow:auto;
+  }
+}
+.ni-1yt1bof::-webkit-scrollbar {
+  display:none;
+  }
+.ni-11qlfbl {
+  width:auto;
+  margin-bottom:15px;
+  }
+@media screen and (min-width: 768px) {
+  .ni-11qlfbl {
+  margin-right:15px;
+  margin-bottom:0;
+  }
+}
+.ni-12perco {
+  display:-webkit-inline-box;
+  display:-webkit-inline-flex;
+  display:-ms-inline-flexbox;
+  display:inline-flex;
+  -webkit-box-pack:center;
+  -ms-flex-pack:center;
+  -webkit-justify-content:center;
+  justify-content:center;
+  -webkit-align-items:center;
+  -webkit-box-align:center;
+  -ms-flex-align:center;
+  align-items:center;
+  outline:none;
+  background-color:transparent;
+  cursor:pointer;
+  -webkit-text-decoration:none;
+  text-decoration:none;
+  box-sizing:border-box;
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
+  pointer-events:all;
+  -webkit-transition:all 0.3s;
+  transition:all 0.3s;
+  border:1px solid transparent;
+  border-radius:4px;
+  padding:12px 16px;
+  font-size:16px;
+  font-family:hurmegeometricsans_no3_6;
+  font-weight:700;
+  line-height:1;
+  font-weight:600;
+  font-size:18px;
+  background-color:#FFC9D0;
+  width:100%;
+  border-radius:4px;
+  box-sizing:border-box;
+  height:50px;
+  -webkit-box-pack:inherit;
+  -ms-flex-pack:inherit;
+  -webkit-justify-content:inherit;
+  justify-content:inherit;
+  white-space:nowrap;
+  }
+@media screen and (min-width: 768px) {
+  .ni-12perco {
+  background-color:#FFC9D0;
+  }
+.ni-12perco:hover {
+  background-color:#F7ADB6;
+  }
+}
+.ni-1s1j2gb {
+  display:inherit;
+  -webkit-box-pack:inherit;
+  -ms-flex-pack:inherit;
+  -webkit-justify-content:inherit;
+  justify-content:inherit;
+  -webkit-align-items:inherit;
+  -webkit-box-align:inherit;
+  -ms-flex-align:inherit;
+  align-items:inherit;
+  }
+.ni-1y64lkc {
+  width:15px;
+  -webkit-transform:rotate(180deg);
+  -moz-transform:rotate(180deg);
+  -ms-transform:rotate(180deg);
+  transform:rotate(180deg);
+  -webkit-transition:-webkit-transform 0.17s cubic-bezier(0.4, 0, 1, 1);
+  transition:transform 0.17s cubic-bezier(0.4, 0, 1, 1);
+  fill:#1789d5;
+  position:absolute;
+  right:15px;
+  fill:#BC284B;
+  }
+@media screen and (min-width: 768px) {
+  .ni-1y64lkc {
+  display:none;
+  }
+}
+.ni-18un0oq {
+  display:-webkit-inline-box;
+  display:-webkit-inline-flex;
+  display:-ms-inline-flexbox;
+  display:inline-flex;
+  -webkit-box-pack:center;
+  -ms-flex-pack:center;
+  -webkit-justify-content:center;
+  justify-content:center;
+  -webkit-align-items:center;
+  -webkit-box-align:center;
+  -ms-flex-align:center;
+  align-items:center;
+  outline:none;
+  background-color:transparent;
+  cursor:pointer;
+  -webkit-text-decoration:none;
+  text-decoration:none;
+  box-sizing:border-box;
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
+  pointer-events:all;
+  -webkit-transition:all 0.3s;
+  transition:all 0.3s;
+  border:1px solid transparent;
+  border-radius:4px;
+  padding:12px 16px;
+  font-size:16px;
+  font-family:hurmegeometricsans_no3_6;
+  font-weight:700;
+  line-height:1;
+  font-weight:600;
+  font-size:18px;
+  background-color:#F5F5F5;
+  width:100%;
+  border-radius:4px;
+  box-sizing:border-box;
+  height:50px;
+  -webkit-box-pack:inherit;
+  -ms-flex-pack:inherit;
+  -webkit-justify-content:inherit;
+  justify-content:inherit;
+  white-space:nowrap;
+  }
+@media screen and (min-width: 768px) {
+  .ni-18un0oq {
+  background-color:#FFF;
+  }
+.ni-18un0oq:hover {
+  background-color:#E2E2E2;
+  }
+}
+.ni-12xuwu1 {
+  margin-right:15px;
+  }
+.ni-11b1vgq {
+  width:15px;
+  -webkit-transform:rotate(0deg);
+  -moz-transform:rotate(0deg);
+  -ms-transform:rotate(0deg);
+  transform:rotate(0deg);
+  -webkit-transition:-webkit-transform 0.17s cubic-bezier(0.4, 0, 1, 1);
+  transition:transform 0.17s cubic-bezier(0.4, 0, 1, 1);
+  fill:#1789d5;
+  position:absolute;
+  right:15px;
+  }
+@media screen and (min-width: 768px) {
+  .ni-11b1vgq {
+  display:none;
+  }
+}
+.ni-1ej1cqj {
+  display:none;
+  }
+@media screen and (min-width: 768px) {
+  .ni-1ej1cqj {
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  margin-top:25px;
+  overflow:hidden;
+  -webkit-flex-direction:column;
+  -ms-flex-direction:column;
+  flex-direction:column;
+  max-height:250px;
+  -webkit-box-flex-wrap:wrap;
+  -webkit-flex-wrap:wrap;
+  -ms-flex-wrap:wrap;
+  flex-wrap:wrap;
+  }
+}
+.ni-5py9el {
+  font-size:16px;
+  font-weight:600;
+  -webkit-text-decoration:none;
+  text-decoration:none;
+  color:#1789d5;
+  -webkit-transition:color 150ms linear;
+  transition:color 150ms linear;
+  cursor:pointer;
+  margin-bottom:20px;
+  font-size:14px;
+  line-height:18px;
+  font-weight:600;
+  width:calc(20% - 20px);
+  margin-right:20px;
+  }
+.ni-5py9el:hover {
+  color:#1564bf;
+  }
+.ni-1ivybsv {
+  display:-webkit-inline-box;
+  display:-webkit-inline-flex;
+  display:-ms-inline-flexbox;
+  display:inline-flex;
+  -webkit-box-pack:center;
+  -ms-flex-pack:center;
+  -webkit-justify-content:center;
+  justify-content:center;
+  -webkit-align-items:center;
+  -webkit-box-align:center;
+  -ms-flex-align:center;
+  align-items:center;
+  outline:none;
+  background-color:transparent;
+  cursor:pointer;
+  -webkit-text-decoration:none;
+  text-decoration:none;
+  box-sizing:border-box;
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
+  pointer-events:all;
+  -webkit-transition:all 0.3s;
+  transition:all 0.3s;
+  border:1px solid transparent;
+  border-radius:4px;
+  padding:12px 16px;
+  font-size:16px;
+  font-family:hurmegeometricsans_no3_6;
+  font-weight:700;
+  line-height:1;
+  -webkit-transition:background-color 0.3s,color 0.3s;
+  transition:background-color 0.3s,color 0.3s;
+  color:#010233;
+  border-color:#010233;
+  display:none;
+  }
+.ni-1ivybsv svg {
+  margin-right:8px;
+  color:#010233;
+  fill:#010233;
+  }
+@media (hover: hover) {
+  .ni-1ivybsv:hover {
+  color:#FFF;
+  border-color:#010233;
+  background-color:#010233;
+  }
+}
+.ni-1ivybsv::after {
+  content:' ';
+  background-image:url('data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTIgMTMiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgICA8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTkuNDA1MjMgNy40NDIyNUw1LjM4MjUzIDExLjQxMkM1LjA4NTc1IDExLjcwNDkgNS4wODU5NCAxMi4xNzk3IDUuMzgyNTMgMTIuNDcyN0M1LjY3OTMxIDEyLjc2NTYgNi4xNjAzOSAxMi43NjU2IDYuNDU3MzcgMTIuNDcyN0wxMS43Nzc0IDcuMjIyNjhDMTIuMDc0MiA2LjkyOTgxIDEyLjA3NDIgNi40NTQ4NiAxMS43Nzc2IDYuMTYyMThMNi40NTc1NiAwLjkxMjEzNEM2LjMwOTE2IDAuNzY1Njk2IDYuMTE0NiAwLjY5MjM4MyA1LjkyMDA0IDAuNjkyMzgzQzUuNzI1NjcgMC42OTIzODMgNS41MzExMSAwLjc2NTY5NiA1LjM4MjUzIDAuOTEyMzIxQzUuMDg1NzUgMS4yMDUwMSA1LjA4NTk0IDEuNjc5OTUgNS4zODI1MyAxLjk3MjY0TDkuNDA1NDIgNS45NDIyNEwwLjc2MDAwNCA1Ljk0MjI0QzAuMzQwMjkyIDUuOTQyMjQgLTAuMDAwMTg5NzgxIDYuMjc4MjQgMCA2LjY5MjI0QzAgNy4xMDY0MyAwLjM0MDI5MiA3LjQ0MjI1IDAuNzYwMDA0IDcuNDQyMjVMOS40MDUyMyA3LjQ0MjI1WiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+Cg==');
+  -webkit-background-size:13px 13px;
+  background-size:13px 13px;
+  background-repeat:no-repeat;
+  -webkit-background-position:center left;
+  background-position:center left;
+  width:0;
+  height:13px;
+  padding-left:6px;
+  margin-left:-6px;
+  opacity:0;
+  -webkit-transition:all 0.3s ease;
+  transition:all 0.3s ease;
+  display:-webkit-inline-box;
+  display:-webkit-inline-flex;
+  display:-ms-inline-flexbox;
+  display:inline-flex;
+  }
+@media (hover: hover) {
+  .ni-1ivybsv:hover::after {
+  opacity:1;
+  margin-left:6px;
+  width:13px;
+  }
+}
+@media screen and (min-width: 768px) {
+  .ni-1ivybsv {
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  width:210px;
+  margin:20px auto 0 auto;
+  }
+}
+.ni-1m0vf1y {
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  box-sizing:border-box;
+  font-size:14px;
+  width:100%;
+  padding:40px 16px;
+  -webkit-box-pack:center;
+  -ms-flex-pack:center;
+  -webkit-justify-content:center;
+  justify-content:center;
+  z-index:10;
+  position:relative;
+  -webkit-flex-direction:column;
+  -ms-flex-direction:column;
+  flex-direction:column;
+  background-color:#23004E;
+  font-family:hurmegeometricsans_no3_6,Gilroy,Almarai,Arial,sans-serif;
+  font-weight:400;
+  color:white;
+  }
+@media (min-width: 1024px) {
+  .ni-1m0vf1y {
+  -webkit-flex-direction:row;
+  -ms-flex-direction:row;
+  flex-direction:row;
+  padding:48px 124px;
+  }
+}
+.ni-1uchtww {
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-flex-direction:column;
+  -ms-flex-direction:column;
+  flex-direction:column;
+  height:100%;
+  }
+@media (min-width: 1024px) {
+  .ni-1uchtww {
+  -webkit-margin-end:64px;
+  margin-inline-end:64px;
+  width:320px;
+  }
+}
+.ni-1h0wnoe {
+  width:320px;
+  height:50px;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-align-items:center;
+  -webkit-box-align:center;
+  -ms-flex-align:center;
+  align-items:center;
+  margin-bottom:24px;
+  }
+.ni-ov1ktg {
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  }
+.ni-15m83jm {
+  max-width:320px;
+  max-height:50px;
+  object-fit:scale-down;
+  object-position:center left;
+  }
+.ni-idpj16 {
+  padding-bottom:24px;
+  }
+.ni-idpj16 strong {
+  font-weight:700;
+  }
+.ni-idpj16 a {
+  color:white;
+  }
+.ni-idpj16 u {
+  -webkit-text-decoration:underline;
+  text-decoration:underline;
+  }
+.ni-idpj16 p {
+  margin-block:8px;
+  }
+.ni-idpj16 strong {
+  font-weight:700;
+  }
+.ni-1yqqrly {
+  font-weight:700;
+  -webkit-transition:0.3s ease-in-out;
+  transition:0.3s ease-in-out;
+  cursor:pointer;
+  width:100%;
+  border-top:1px solid white;
+  padding:24px 0;
+  display:none;
+  }
+@media (min-width: 1024px) {
+  .ni-1yqqrly {
+  border-top:none;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  }
+.ni-1yqqrly:last-child {
+  padding:0;
+  }
+}
+.ni-1yqqrly:hover {
+  opacity:80%;
+  }
+.ni-souzml {
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-flex-direction:column;
+  -ms-flex-direction:column;
+  flex-direction:column;
+  }
+@media (min-width: 1024px) {
+  .ni-souzml {
+  max-width:760px;
+  -webkit-box-pack:justify;
+  -webkit-justify-content:space-between;
+  justify-content:space-between;
+  }
+}
+@media (min-width: 1024px) {
+  .ni-1vmov3b {
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-flex-direction:column;
+  -ms-flex-direction:column;
+  flex-direction:column;
+  }
+}
+.ni-zsrdnm {
+  border-bottom:1px solid white;
+  border-top:1px solid white;
+  padding:24px 0;
+  }
+@media (min-width: 1024px) {
+  .ni-zsrdnm {
+  padding-top:0;
+  border:none;
+  }
+}
+.ni-yj9kw3 a {
+  color:white;
+  font-weight:700;
+  -webkit-text-decoration:underline;
+  text-decoration:underline;
+  }
+.ni-yj9kw3 p {
+  margin-block:8px;
+  }
+.ni-gmc94n {
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-flex-direction:column;
+  -ms-flex-direction:column;
+  flex-direction:column;
+  height:-webkit-fit-content;
+  height:-moz-fit-content;
+  height:fit-content;
+  gap:40px;
+  margin:24px 0 0;
+  }
+.ni-gmc94n >a {
+  font-weight:700;
+  }
+@media (min-width: 1024px) {
+  .ni-gmc94n {
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-flex-direction:row;
+  -ms-flex-direction:row;
+  flex-direction:row;
+  -webkit-box-flex-flow:wrap;
+  -webkit-flex-flow:wrap;
+  -ms-flex-flow:wrap;
+  flex-flow:wrap;
+  -webkit-order:-1;
+  -ms-flex-order:-1;
+  order:-1;
+  gap:16px;
+  margin-bottom:24px;
+  }
+}
+.ni-art7qp {
+  -webkit-transition:0.3s ease-in-out;
+  transition:0.3s ease-in-out;
+  -webkit-text-decoration:none;
+  text-decoration:none;
+  color:inherit;
+  font-weight:600;
+  }
+.ni-art7qp:hover {
+  opacity:80%;
+  }
+.ni-54xudk:not(:empty) {
+  margin-top:24px;
+  }
+@media (min-width: 1024px) {
+  .ni-54xudk {
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-flex-direction:column;
+  -ms-flex-direction:column;
+  flex-direction:column;
+  }
+.ni-54xudk:not(:empty) {
+  margin-top:0;
+  }
+}
+.ni-d4kaco {
+  font-weight:700;
+  -webkit-transition:0.3s ease-in-out;
+  transition:0.3s ease-in-out;
+  cursor:pointer;
+  width:100%;
+  border-top:1px solid white;
+  padding:24px 0;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  }
+@media (min-width: 1024px) {
+  .ni-d4kaco {
+  border-top:none;
+  display:none;
+  }
+.ni-d4kaco:last-child {
+  padding:0;
+  }
+}
+.ni-d4kaco:hover {
+  opacity:80%;
+  }
+
