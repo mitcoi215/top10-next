@@ -1,6 +1,7 @@
 // prisma/seed.ts
 // Seed script to import initial data into MongoDB
 
+import 'dotenv/config';
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 
