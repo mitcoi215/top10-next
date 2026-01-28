@@ -42,7 +42,26 @@ model Author {
 }
 
 // ============================================
-// CATEGORY - Main content hub
+// CATEGORY GROUP - Homepage display groups
+// e.g., Lifestyle, Health & Wellness, Home, Business, Security
+// ============================================
+model CategoryGroup {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  slug        String    @unique
+  name        String    // "Lifestyle", "Health & Wellness"
+  icon        String?   // Emoji or icon URL
+  order       Int       @default(0)
+
+  // Relations
+  categories  Category[]
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+// ============================================
+// CATEGORY - Main content hub (e.g., TV Services, Dating, VPN)
+// Each Category belongs to a CategoryGroup for homepage display
 // ============================================
 model Category {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
@@ -51,6 +70,10 @@ model Category {
   icon        String
   color       String    @default("bg-white")
   description String?   // Short description for cards
+
+  // Parent group for homepage organization
+  groupId     String?   @db.ObjectId
+  group       CategoryGroup? @relation(fields: [groupId], references: [id])
 
   // Display settings
   featured    Boolean   @default(false)
@@ -255,11 +278,11 @@ model HomepageSettings {
   heroTitle       String?
   heroSubtitle    String?
 
-  // Featured Categories (for hero dropdown)
-  featuredCategoryIds String[] @db.ObjectId
+  // Featured Category Groups (for hero dropdown)
+  featuredGroupIds String[] @db.ObjectId
 
   // Trending Section (curated)
-  trendingItems   Json?     // [{ categoryId, title, description, articleIds: [...] }]
+  trendingItems   Json?     // [{ groupId, title, description, image, articles: [{ title, href, image, author, date }] }]
 
   // Stats Section
   statsListsCount     String?   // "500+"
@@ -272,12 +295,23 @@ model HomepageSettings {
   // Mission Section
   missionTitle    String?
   missionContent  String?
+  missionImage    String?
+  missionCta      String?   // CTA link
+
+  // Method Section (Our Method)
+  methodTitle     String?
+  methodContent   String?
+  methodImage     String?
+  methodCta       String?   // CTA link
 
   // Brand Logos (As Seen On)
   brandLogos      Json?     // [{ name: "Forbes", logo: "..." }]
 
   // More Articles Section
   moreArticleIds  String[]  @db.ObjectId
+
+  // Explore Categories Section
+  exploreCategories Json?   // [{ groupSlug, groupName, icon, links: [{ title, href }] }]
 
   updatedAt       DateTime  @updatedAt
 }
