@@ -61,14 +61,18 @@ export default function EditCategoryPage() {
           faqs: categoryData.faqs || [],
         });
 
-        setProducts(productsData.map((p: any) => ({
+        // Products API returns array directly
+        const productsArray = Array.isArray(productsData) ? productsData : [];
+        setProducts(productsArray.map((p: any) => ({
           id: p.id,
           name: p.name,
           rank: p.rank || 0,
           logoUrl: p.logoUrl,
         })));
 
-        setArticles(articlesData.map((a: any) => ({
+        // Articles API returns { articles: [...], pagination: {...} }
+        const articlesArray = articlesData.articles || (Array.isArray(articlesData) ? articlesData : []);
+        setArticles(articlesArray.map((a: any) => ({
           id: a.id,
           title: a.title,
           slug: a.slug,

@@ -1,8 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Top10Manager from '@/components/admin/Top10Manager';
-import CategoryButtonManager from '@/components/admin/CategoryButtonManager';
+import Link from 'next/link';
 
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -10,7 +9,6 @@ export default function AdminPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [activeTab, setActiveTab] = useState<'products' | 'categories'>('products');
 
   useEffect(() => {
     // Check if already authenticated
@@ -108,6 +106,39 @@ export default function AdminPage() {
     );
   }
 
+  const adminSections = [
+    {
+      title: 'Products',
+      description: 'Manage products, rankings, reviews, and comparisons',
+      icon: '📦',
+      links: [
+        { href: '/admin/products', label: 'All Products' },
+        { href: '/admin/products/new', label: 'Add New Product' },
+      ],
+      color: 'bg-blue-500',
+    },
+    {
+      title: 'Categories',
+      description: 'Manage categories, hero sections, and methodology',
+      icon: '📁',
+      links: [
+        { href: '/admin/categories', label: 'All Categories' },
+        { href: '/admin/categories/new', label: 'Add New Category' },
+      ],
+      color: 'bg-green-500',
+    },
+    {
+      title: 'Articles',
+      description: 'Manage blog posts, charticles, and guides',
+      icon: '📝',
+      links: [
+        { href: '/admin/articles', label: 'All Articles' },
+        { href: '/admin/articles/new', label: 'Add New Article' },
+      ],
+      color: 'bg-purple-500',
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header */}
@@ -128,35 +159,65 @@ export default function AdminPage() {
         </div>
       </header>
 
-      {/* Tabs */}
-      <div className="container mx-auto px-4 mt-6">
-        <div className="bg-white rounded-lg shadow-sm border">
-          <div className="flex border-b">
-            <button
-              onClick={() => setActiveTab('products')}
-              className={`px-6 py-3 font-medium transition ${
-                activeTab === 'products'
-                  ? 'border-b-2 border-red-600 text-red-600'
-                  : 'text-gray-600 hover:text-gray-900'
-              }`}
-            >
-              Products Manager
-            </button>
-            <button
-              onClick={() => setActiveTab('categories')}
-              className={`px-6 py-3 font-medium transition ${
-                activeTab === 'categories'
-                  ? 'border-b-2 border-red-600 text-red-600'
-                  : 'text-gray-600 hover:text-gray-900'
-              }`}
-            >
-              Categories Manager
-            </button>
-          </div>
+      {/* Main Content */}
+      <div className="container mx-auto px-4 py-8">
+        <h2 className="text-xl font-semibold text-gray-800 mb-6">Content Management</h2>
 
-          {/* Content */}
-          <div className="p-6">
-            {activeTab === 'products' ? <Top10Manager /> : <CategoryButtonManager />}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {adminSections.map((section) => (
+            <div key={section.title} className="bg-white rounded-lg shadow-sm border overflow-hidden">
+              <div className={`${section.color} px-4 py-3 flex items-center gap-3`}>
+                <span className="text-2xl">{section.icon}</span>
+                <h3 className="text-lg font-semibold text-white">{section.title}</h3>
+              </div>
+              <div className="p-4">
+                <p className="text-gray-600 text-sm mb-4">{section.description}</p>
+                <div className="space-y-2">
+                  {section.links.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className="block px-4 py-2 bg-gray-50 hover:bg-gray-100 rounded-lg text-gray-700 font-medium transition"
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Quick Stats (placeholder) */}
+        <div className="mt-8">
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">Quick Links</h2>
+          <div className="bg-white rounded-lg shadow-sm border p-4">
+            <div className="flex flex-wrap gap-3">
+              <Link
+                href="/admin/products"
+                className="px-4 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition"
+              >
+                View All Products
+              </Link>
+              <Link
+                href="/admin/categories"
+                className="px-4 py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition"
+              >
+                View All Categories
+              </Link>
+              <Link
+                href="/admin/articles"
+                className="px-4 py-2 bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 transition"
+              >
+                View All Articles
+              </Link>
+              <Link
+                href="/"
+                className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition"
+              >
+                View Website
+              </Link>
+            </div>
           </div>
         </div>
       </div>
