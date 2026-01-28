@@ -4,7 +4,14 @@
       "Bash(node -e:*)",
       "Bash(npm run build:*)",
       "Bash(timeout 15 npm run dev)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(node scripts/extract-css.js:*)",
+      "Bash(node scripts/find-missing-css.js:*)",
+      "Bash(node scripts/extract-all-css.js:*)",
+      "Bash(python3:*)"
+    ],
+    "additionalDirectories": [
+      "\\tmp"
     ]
   }
 }
