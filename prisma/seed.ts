@@ -16,108 +16,157 @@ const categoriesData = [
   { slug: 'security', name: 'Security', icon: '/icons/security.svg', color: 'bg-white', featured: false, order: 5 },
 ];
 
-// Sample products data
+// Sample products data - Updated to match Prisma schema
 const productsData: Record<string, Array<{
   rank: number;
-  title: string;
-  description: string;
-  detailedDescription?: string;
-  image: string;
-  rating?: number;
-  price?: string;
-  features: string[];
+  slug: string;
+  name: string;
+  tagline: string;
+  bottomLine?: string;
+  logoUrl: string;
+  overallScore?: number;
+  scoreLabel?: string;
+  basePrice?: string;
+  features?: Array<{ text: string; bold?: boolean }>;
   pros: string[];
   cons: string[];
-  affiliateLink: string;
-  featured: boolean;
+  ctaUrl: string;
+  ribbon?: string;
+  status: string;
 }>> = {
   lifestyle: [
     {
       rank: 1,
-      title: 'eHarmony - Best Overall Dating Service',
-      description: 'eHarmony uses a scientific approach to match singles based on compatibility.',
-      detailedDescription: 'eHarmony stands out as the premier dating platform for individuals serious about finding long-term love.',
-      image: '/top10/1.jpg',
-      rating: 4.8,
-      price: '$35.90/month',
-      features: ['Compatibility matching system', 'Video dating feature', 'Identity verification'],
+      slug: 'eharmony',
+      name: 'eHarmony',
+      ribbon: 'Best Overall',
+      tagline: 'Best Overall Dating Service',
+      bottomLine: 'eHarmony uses a scientific approach to match singles based on compatibility. Stands out as the premier dating platform for individuals serious about finding long-term love.',
+      logoUrl: '/top10/1.jpg',
+      overallScore: 9.6,
+      scoreLabel: 'Excellent',
+      basePrice: '$35.90/month',
+      features: [
+        { text: 'Compatibility matching system', bold: true },
+        { text: 'Video dating feature', bold: false },
+        { text: 'Identity verification', bold: false }
+      ],
       pros: ['Highest success rate', 'Quality matches', 'Large user base'],
       cons: ['More expensive', 'Time-consuming sign-up'],
-      affiliateLink: 'https://www.eharmony.com',
-      featured: true,
+      ctaUrl: 'https://www.eharmony.com',
+      status: 'published',
     },
     {
       rank: 2,
-      title: 'Match.com - Best for Serious Relationships',
-      description: 'Match.com has been connecting singles since 1995.',
-      image: '/top10/2.jpg',
-      rating: 4.6,
-      price: '$24.99/month',
-      features: ['Advanced search filters', 'Daily matches', 'Match Events'],
+      slug: 'match-com',
+      name: 'Match.com',
+      tagline: 'Best for Serious Relationships',
+      bottomLine: 'Match.com has been connecting singles since 1995 with proven success.',
+      logoUrl: '/top10/2.jpg',
+      overallScore: 9.2,
+      scoreLabel: 'Very Good',
+      basePrice: '$24.99/month',
+      features: [
+        { text: 'Advanced search filters', bold: true },
+        { text: 'Daily matches', bold: false },
+        { text: 'Match Events', bold: false }
+      ],
       pros: ['Large user base', 'Affordable pricing'],
       cons: ['Some inactive profiles'],
-      affiliateLink: 'https://www.match.com',
-      featured: false,
+      ctaUrl: 'https://www.match.com',
+      status: 'published',
     },
   ],
   health: [
     {
       rank: 1,
-      title: 'BetterHelp - Best Online Therapy',
-      description: 'BetterHelp provides convenient and affordable online counseling.',
-      image: '/top10/1.jpg',
-      rating: 4.7,
-      price: '$60-90/week',
-      features: ['Licensed therapists', 'Multiple communication options', 'Flexible scheduling'],
+      slug: 'betterhelp',
+      name: 'BetterHelp',
+      ribbon: 'Best Overall',
+      tagline: 'Best Online Therapy Platform',
+      bottomLine: 'BetterHelp provides convenient and affordable online counseling with licensed therapists.',
+      logoUrl: '/top10/1.jpg',
+      overallScore: 9.4,
+      scoreLabel: 'Excellent',
+      basePrice: '$60-90/week',
+      features: [
+        { text: 'Licensed therapists', bold: true },
+        { text: 'Multiple communication options', bold: false },
+        { text: 'Flexible scheduling', bold: false }
+      ],
       pros: ['Convenient', 'Affordable', 'Wide therapist network'],
       cons: ['No insurance accepted', 'Not for emergencies'],
-      affiliateLink: 'https://www.betterhelp.com',
-      featured: true,
+      ctaUrl: 'https://www.betterhelp.com',
+      status: 'published',
     },
   ],
   home: [
     {
       rank: 1,
-      title: 'ADT - Best Home Security System',
-      description: 'ADT provides comprehensive home security with 24/7 monitoring.',
-      image: '/top10/1.jpg',
-      rating: 4.5,
-      price: '$28.99/month',
-      features: ['24/7 monitoring', 'Smart home integration', 'Professional installation'],
+      slug: 'adt',
+      name: 'ADT',
+      ribbon: 'Best Overall',
+      tagline: 'Best Home Security System',
+      bottomLine: 'ADT provides comprehensive home security with 24/7 professional monitoring.',
+      logoUrl: '/top10/1.jpg',
+      overallScore: 9.0,
+      scoreLabel: 'Excellent',
+      basePrice: '$28.99/month',
+      features: [
+        { text: '24/7 monitoring', bold: true },
+        { text: 'Smart home integration', bold: false },
+        { text: 'Professional installation', bold: false }
+      ],
       pros: ['Reliable service', 'Wide coverage'],
       cons: ['Long contracts', 'Higher cost'],
-      affiliateLink: 'https://www.adt.com',
-      featured: true,
+      ctaUrl: 'https://www.adt.com',
+      status: 'published',
     },
   ],
   business: [
     {
       rank: 1,
-      title: 'Salesforce - Best CRM Software',
-      description: 'Salesforce is the world leading CRM platform for businesses.',
-      image: '/top10/1.jpg',
-      rating: 4.6,
-      price: '$25/user/month',
-      features: ['Sales automation', 'Analytics', 'AppExchange'],
+      slug: 'salesforce',
+      name: 'Salesforce',
+      ribbon: 'Best Overall',
+      tagline: 'Best CRM Software',
+      bottomLine: 'Salesforce is the world leading CRM platform for businesses of all sizes.',
+      logoUrl: '/top10/1.jpg',
+      overallScore: 9.2,
+      scoreLabel: 'Excellent',
+      basePrice: '$25/user/month',
+      features: [
+        { text: 'Sales automation', bold: true },
+        { text: 'Analytics', bold: false },
+        { text: 'AppExchange', bold: false }
+      ],
       pros: ['Comprehensive features', 'Scalable'],
       cons: ['Steep learning curve', 'Expensive'],
-      affiliateLink: 'https://www.salesforce.com',
-      featured: true,
+      ctaUrl: 'https://www.salesforce.com',
+      status: 'published',
     },
   ],
   security: [
     {
       rank: 1,
-      title: 'NordVPN - Best Overall VPN',
-      description: 'NordVPN offers fast, secure VPN service with global coverage.',
-      image: '/top10/1.jpg',
-      rating: 4.8,
-      price: '$3.99/month',
-      features: ['5500+ servers', 'No-logs policy', 'Double VPN'],
+      slug: 'nordvpn',
+      name: 'NordVPN',
+      ribbon: 'Best Overall',
+      tagline: 'Best Overall VPN Service',
+      bottomLine: 'NordVPN offers fast, secure VPN service with global server coverage.',
+      logoUrl: '/top10/1.jpg',
+      overallScore: 9.6,
+      scoreLabel: 'Excellent',
+      basePrice: '$3.99/month',
+      features: [
+        { text: '5500+ servers', bold: true },
+        { text: 'No-logs policy', bold: false },
+        { text: 'Double VPN', bold: false }
+      ],
       pros: ['Fast speeds', 'Strong security', 'User-friendly'],
       cons: ['Occasional connection drops'],
-      affiliateLink: 'https://www.nordvpn.com',
-      featured: true,
+      ctaUrl: 'https://www.nordvpn.com',
+      status: 'published',
     },
   ],
 };
@@ -170,7 +219,7 @@ async function main() {
     }
   }
 
-  // Create products (check by title to avoid duplicates)
+  // Create products (check by slug to avoid duplicates)
   console.log('📦 Creating products...');
   for (const [categorySlug, products] of Object.entries(productsData)) {
     const categoryId = createdCategories[categorySlug];
@@ -179,7 +228,7 @@ async function main() {
     for (const product of products) {
       const existing = await prisma.product.findFirst({
         where: {
-          title: product.title,
+          slug: product.slug,
           categoryId: categoryId
         }
       });
@@ -187,13 +236,27 @@ async function main() {
       if (!existing) {
         await prisma.product.create({
           data: {
-            ...product,
+            slug: product.slug,
+            name: product.name,
+            tagline: product.tagline,
+            bottomLine: product.bottomLine,
+            logoUrl: product.logoUrl,
+            overallScore: product.overallScore,
+            scoreLabel: product.scoreLabel,
+            basePrice: product.basePrice,
+            features: product.features,
+            pros: product.pros,
+            cons: product.cons,
+            ctaUrl: product.ctaUrl,
+            ribbon: product.ribbon,
+            rank: product.rank,
+            status: product.status,
             categoryId,
           },
         });
-        console.log(`  ✓ Created product: ${product.title}`);
+        console.log(`  ✓ Created product: ${product.name}`);
       } else {
-        console.log(`  ⏭️ Product exists: ${product.title}`);
+        console.log(`  ⏭️ Product exists: ${product.name}`);
       }
     }
   }
