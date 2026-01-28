@@ -3,16 +3,18 @@
 // PUT /api/categories/:id - Update category (requires auth)
 // DELETE /api/categories/:id - Delete category (requires auth)
 
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/db';
 import { verifyAuth } from '@/lib/auth';
+import { CategoryUpdateSchema, formatZodErrors } from '@/lib/validations';
+import { ZodError } from 'zod';
 
 interface RouteParams {
   params: Promise<{ id: string }>;
 }
 
 // GET - Get single category with products
-export async function GET(request: Request, { params }: RouteParams) {
+export async function GET(request: NextRequest, { params }: RouteParams) {
   try {
     const { id } = await params;
 
@@ -21,7 +23,19 @@ export async function GET(request: Request, { params }: RouteParams) {
       where: { id },
       include: {
         products: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+            rank: true,
+            logoUrl: true,
+            status: true,
+            overallScore: true,
+          },
           orderBy: { rank: 'asc' },
+        },
+        _count: {
+          select: { products: true, articles: true },
         },
       },
     });
@@ -32,7 +46,19 @@ export async function GET(request: Request, { params }: RouteParams) {
         where: { slug: id },
         include: {
           products: {
+            select: {
+              id: true,
+              name: true,
+              slug: true,
+              rank: true,
+              logoUrl: true,
+              status: true,
+              overallScore: true,
+            },
             orderBy: { rank: 'asc' },
+          },
+          _count: {
+            select: { products: true, articles: true },
           },
         },
       });
@@ -56,7 +82,7 @@ export async function GET(request: Request, { params }: RouteParams) {
 }
 
 // PUT - Update category (requires auth)
-export async function PUT(request: Request, { params }: RouteParams) {
+export async function PUT(request: NextRequest, { params }: RouteParams) {
   try {
     const auth = await verifyAuth(request);
     if (!auth) {
@@ -68,22 +94,116 @@ export async function PUT(request: Request, { params }: RouteParams) {
 
     const { id } = await params;
     const body = await request.json();
-    const { name, icon, color, featured, order } = body;
 
+    // Check if category exists
+    const existingCategory = await prisma.category.findUnique({
+      where: { id },
+    });
+
+    if (!existingCategory) {
+      return NextResponse.json(
+        { error: 'Category not found' },
+        { status: 404 }
+      );
+    }
+
+    // Validate with Zod
+    const validatedData = CategoryUpdateSchema.parse(body);
+
+    // If slug is being changed, check for conflicts
+    if (validatedData.slug && validatedData.slug !== existingCategory.slug) {
+      const slugExists = await prisma.category.findUnique({
+        where: { slug: validatedData.slug },
+      });
+
+      if (slugExists) {
+        return NextResponse.json(
+          { error: 'A category with this slug already exists' },
+          { status: 400 }
+        );
+      }
+    }
+
+    // Auto-generate slug if name changed but slug is empty/same
+    let finalSlug = validatedData.slug;
+    if (validatedData.name && !validatedData.slug) {
+      const newSlug = validatedData.name
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-|-$/g, '');
+
+      // Check if new slug is available
+      const slugExists = await prisma.category.findFirst({
+        where: {
+          slug: newSlug,
+          id: { not: id },
+        },
+      });
+
+      if (!slugExists) {
+        finalSlug = newSlug;
+      }
+    }
+
+    // Update category with all fields
     const category = await prisma.category.update({
       where: { id },
       data: {
-        ...(name && { name }),
-        ...(icon && { icon }),
-        ...(color && { color }),
-        ...(featured !== undefined && { featured }),
-        ...(order !== undefined && { order }),
+        // Basic Info
+        ...(finalSlug !== undefined && { slug: finalSlug }),
+        ...(validatedData.name !== undefined && { name: validatedData.name }),
+        ...(validatedData.icon !== undefined && { icon: validatedData.icon }),
+        ...(validatedData.color !== undefined && { color: validatedData.color }),
+        ...(validatedData.description !== undefined && { description: validatedData.description }),
+
+        // Display settings
+        ...(validatedData.featured !== undefined && { featured: validatedData.featured }),
+        ...(validatedData.order !== undefined && { order: validatedData.order }),
+
+        // Hero & Intro
+        ...(validatedData.heroImage !== undefined && { heroImage: validatedData.heroImage }),
+        ...(validatedData.heroTitle !== undefined && { heroTitle: validatedData.heroTitle }),
+        ...(validatedData.introContent !== undefined && { introContent: validatedData.introContent }),
+
+        // JSON fields - Criteria & Highlights
+        ...(validatedData.criteriaDefinitions !== undefined && { criteriaDefinitions: validatedData.criteriaDefinitions }),
+        ...(validatedData.highlightDefinitions !== undefined && { highlightDefinitions: validatedData.highlightDefinitions }),
+
+        // Methodology
+        ...(validatedData.methodologyIntro !== undefined && { methodologyIntro: validatedData.methodologyIntro }),
+        ...(validatedData.methodologyCriteria !== undefined && { methodologyCriteria: validatedData.methodologyCriteria }),
+        ...(validatedData.exploreCards !== undefined && { exploreCards: validatedData.exploreCards }),
+
+        // Review List Page
+        ...(validatedData.reviewListIntro !== undefined && { reviewListIntro: validatedData.reviewListIntro }),
+        ...(validatedData.reviewListHeroImage !== undefined && { reviewListHeroImage: validatedData.reviewListHeroImage }),
+        ...(validatedData.tenThingsToKnow !== undefined && { tenThingsToKnow: validatedData.tenThingsToKnow }),
+        ...(validatedData.mustReadArticleIds !== undefined && { mustReadArticleIds: validatedData.mustReadArticleIds }),
+
+        // FAQs
+        ...(validatedData.faqs !== undefined && { faqs: validatedData.faqs }),
+
+        // SEO
+        ...(validatedData.metaTitle !== undefined && { metaTitle: validatedData.metaTitle }),
+        ...(validatedData.metaDescription !== undefined && { metaDescription: validatedData.metaDescription }),
+        ...(validatedData.ogImage !== undefined && { ogImage: validatedData.ogImage }),
       },
     });
 
     return NextResponse.json(category);
   } catch (error) {
     console.error('Update category error:', error);
+
+    if (error instanceof ZodError) {
+      return NextResponse.json(
+        {
+          error: 'Validation failed',
+          details: formatZodErrors(error),
+        },
+        { status: 400 }
+      );
+    }
+
     return NextResponse.json(
       { error: 'Failed to update category' },
       { status: 500 }
@@ -92,7 +212,7 @@ export async function PUT(request: Request, { params }: RouteParams) {
 }
 
 // DELETE - Delete category (requires auth)
-export async function DELETE(request: Request, { params }: RouteParams) {
+export async function DELETE(request: NextRequest, { params }: RouteParams) {
   try {
     const auth = await verifyAuth(request);
     if (!auth) {
@@ -104,12 +224,38 @@ export async function DELETE(request: Request, { params }: RouteParams) {
 
     const { id } = await params;
 
-    // Delete category (products will be deleted due to onDelete: Cascade)
+    // Check if category exists and has products
+    const existingCategory = await prisma.category.findUnique({
+      where: { id },
+      include: {
+        _count: {
+          select: { products: true },
+        },
+      },
+    });
+
+    if (!existingCategory) {
+      return NextResponse.json(
+        { error: 'Category not found' },
+        { status: 404 }
+      );
+    }
+
+    // Prevent deletion if category has products
+    if (existingCategory._count.products > 0) {
+      return NextResponse.json(
+        {
+          error: `Cannot delete category with ${existingCategory._count.products} products. Please move or delete products first.`,
+        },
+        { status: 400 }
+      );
+    }
+
     await prisma.category.delete({
       where: { id },
     });
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true, message: 'Category deleted successfully' });
   } catch (error) {
     console.error('Delete category error:', error);
     return NextResponse.json(
