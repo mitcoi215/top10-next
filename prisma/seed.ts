@@ -219,45 +219,52 @@ async function main() {
     }
   }
 
-  // Create products (check by slug to avoid duplicates)
+  // Create products using upsert to avoid duplicates
   console.log('📦 Creating products...');
   for (const [categorySlug, products] of Object.entries(productsData)) {
     const categoryId = createdCategories[categorySlug];
     if (!categoryId) continue;
 
     for (const product of products) {
-      const existing = await prisma.product.findFirst({
-        where: {
+      const result = await prisma.product.upsert({
+        where: { slug: product.slug },
+        update: {
+          name: product.name,
+          tagline: product.tagline,
+          bottomLine: product.bottomLine,
+          logoUrl: product.logoUrl,
+          overallScore: product.overallScore,
+          scoreLabel: product.scoreLabel,
+          basePrice: product.basePrice,
+          features: product.features,
+          pros: product.pros,
+          cons: product.cons,
+          ctaUrl: product.ctaUrl,
+          ribbon: product.ribbon,
+          rank: product.rank,
+          status: product.status,
+          categoryId,
+        },
+        create: {
           slug: product.slug,
-          categoryId: categoryId
-        }
+          name: product.name,
+          tagline: product.tagline,
+          bottomLine: product.bottomLine,
+          logoUrl: product.logoUrl,
+          overallScore: product.overallScore,
+          scoreLabel: product.scoreLabel,
+          basePrice: product.basePrice,
+          features: product.features,
+          pros: product.pros,
+          cons: product.cons,
+          ctaUrl: product.ctaUrl,
+          ribbon: product.ribbon,
+          rank: product.rank,
+          status: product.status,
+          categoryId,
+        },
       });
-
-      if (!existing) {
-        await prisma.product.create({
-          data: {
-            slug: product.slug,
-            name: product.name,
-            tagline: product.tagline,
-            bottomLine: product.bottomLine,
-            logoUrl: product.logoUrl,
-            overallScore: product.overallScore,
-            scoreLabel: product.scoreLabel,
-            basePrice: product.basePrice,
-            features: product.features,
-            pros: product.pros,
-            cons: product.cons,
-            ctaUrl: product.ctaUrl,
-            ribbon: product.ribbon,
-            rank: product.rank,
-            status: product.status,
-            categoryId,
-          },
-        });
-        console.log(`  ✓ Created product: ${product.name}`);
-      } else {
-        console.log(`  ⏭️ Product exists: ${product.name}`);
-      }
+      console.log(`  ✓ Upserted product: ${product.name}`);
     }
   }
 
