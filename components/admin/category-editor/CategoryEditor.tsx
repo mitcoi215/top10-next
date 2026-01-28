@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
-import { CategoryFormData, defaultCategoryFormData, ProductOption, ArticleOption } from './types';
+import { CategoryFormData, defaultCategoryFormData, ProductOption, ArticleOption, CategoryGroupOption } from './types';
 import Tab1GeneralInfo from './Tab1GeneralInfo';
 import Tab2RankingDisplay from './Tab2RankingDisplay';
 import Tab3Definitions from './Tab3Definitions';
@@ -11,6 +11,7 @@ import Tab4ReviewMethodology from './Tab4ReviewMethodology';
 interface CategoryEditorProps {
   categoryId?: string;
   initialData?: Partial<CategoryFormData>;
+  categoryGroups: CategoryGroupOption[];
   products: ProductOption[];
   articles: ArticleOption[];
   onSave: (data: CategoryFormData) => Promise<void>;
@@ -27,6 +28,7 @@ const TABS = [
 export default function CategoryEditor({
   categoryId,
   initialData,
+  categoryGroups,
   products,
   articles,
   onSave,
@@ -87,7 +89,7 @@ export default function CategoryEditor({
   const getTabErrorCount = (tabId: string): number => {
     const errorKeys = Object.keys(errors);
     const tabFields: Record<string, string[]> = {
-      general: ['slug', 'name', 'icon', 'color', 'description', 'featured', 'order', 'metaTitle', 'metaDescription', 'ogImage'],
+      general: ['slug', 'name', 'icon', 'color', 'description', 'featured', 'order', 'groupId', 'metaTitle', 'metaDescription', 'ogImage'],
       ranking: ['heroImage', 'heroTitle', 'introContent', 'productOrder'],
       definitions: ['criteriaDefinitions', 'highlightDefinitions'],
       'review-methodology': ['reviewListIntro', 'reviewListHeroImage', 'tenThingsToKnow', 'mustReadArticleIds', 'methodologyIntro', 'methodologyCriteria', 'exploreCards', 'faqs'],
@@ -153,7 +155,7 @@ export default function CategoryEditor({
         {/* Tab Content */}
         <form onSubmit={handleSubmit(onSubmit)} className="editor-form">
           <div className="tab-content">
-            {activeTab === 'general' && <Tab1GeneralInfo />}
+            {activeTab === 'general' && <Tab1GeneralInfo categoryGroups={categoryGroups} />}
             {activeTab === 'ranking' && <Tab2RankingDisplay products={products} />}
             {activeTab === 'definitions' && <Tab3Definitions />}
             {activeTab === 'review-methodology' && <Tab4ReviewMethodology articles={articles} />}

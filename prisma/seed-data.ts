@@ -2,6 +2,43 @@
 // Based on Prisma Schema v2.0
 
 // ============================================
+// CATEGORY GROUPS (Homepage Display)
+// These are the parent groups shown on homepage
+// ============================================
+export const categoryGroupsData = [
+  {
+    slug: 'lifestyle',
+    name: 'Lifestyle',
+    icon: '🎬',
+    order: 1,
+  },
+  {
+    slug: 'health-wellness',
+    name: 'Health & Wellness',
+    icon: '❤️',
+    order: 2,
+  },
+  {
+    slug: 'home',
+    name: 'Home',
+    icon: '🏠',
+    order: 3,
+  },
+  {
+    slug: 'business',
+    name: 'Business',
+    icon: '💼',
+    order: 4,
+  },
+  {
+    slug: 'security',
+    name: 'Security',
+    icon: '🔒',
+    order: 5,
+  },
+];
+
+// ============================================
 // AUTHOR DATA
 // ============================================
 export const authorsData = [
@@ -39,6 +76,7 @@ export const tvServicesCategory = {
   description: 'Compare the best TV streaming services and find the perfect option for your entertainment needs.',
   featured: true,
   order: 1,
+  groupSlug: 'lifestyle', // Links to CategoryGroup for homepage display
 
   // Category Listing Page - Header
   heroImage: '/top10-images/tv-services-hero.jpg',
@@ -374,6 +412,90 @@ export const huluLiveTvProduct = {
 };
 
 // ============================================
+// ADDITIONAL CATEGORIES - Dating (Lifestyle Group)
+// ============================================
+export const datingCategory = {
+  slug: 'dating',
+  name: 'Dating',
+  icon: '💕',
+  color: 'bg-pink-500',
+  description: 'Compare the best dating apps and sites to find your perfect match.',
+  featured: true,
+  order: 2,
+  groupSlug: 'lifestyle',
+
+  heroImage: '/top10-images/dating-hero.jpg',
+  heroTitle: 'Best Dating Sites & Apps of 2026',
+
+  introContent: `<p>Finding love online has become the norm. With dozens of dating apps available, our experts help you find the right platform for your dating goals.</p>`,
+
+  criteriaDefinitions: [
+    { key: 'matching', label: 'Matching Algorithm', maxScore: 10 },
+    { key: 'user_base', label: 'User Base Quality', maxScore: 10 },
+    { key: 'features', label: 'Features', maxScore: 10 },
+    { key: 'value', label: 'Value', maxScore: 10 },
+    { key: 'safety', label: 'Safety', maxScore: 10 },
+  ],
+
+  highlightDefinitions: [
+    { key: 'starting_price', label: 'Starting Price' },
+    { key: 'free_trial', label: 'Free Version' },
+    { key: 'user_base', label: 'User Base' },
+  ],
+
+  methodologyIntro: 'Our dating experts evaluate each platform through extensive testing and user research.',
+  methodologyCriteria: [
+    {
+      title: 'Matching Quality',
+      description: 'We assess the effectiveness of matching algorithms and compatibility scoring.',
+    },
+    {
+      title: 'User Experience',
+      description: 'We evaluate app design, navigation, and overall ease of use.',
+    },
+  ],
+
+  metaTitle: 'Best Dating Sites & Apps 2026 - Compare Top 10 | Top10',
+  metaDescription: 'Compare the best dating sites and apps of 2026. Expert reviews of eHarmony, Match, Bumble, and more.',
+};
+
+// ============================================
+// ADDITIONAL CATEGORIES - VPN (Security Group)
+// ============================================
+export const vpnCategory = {
+  slug: 'vpn',
+  name: 'VPN',
+  icon: '🔒',
+  color: 'bg-green-500',
+  description: 'Protect your privacy online with the best VPN services.',
+  featured: true,
+  order: 1,
+  groupSlug: 'security',
+
+  heroImage: '/top10-images/vpn-hero.jpg',
+  heroTitle: 'Best VPN Services of 2026',
+
+  introContent: `<p>A VPN protects your privacy and security online. Our experts test and review the top VPN services to help you choose the best protection.</p>`,
+
+  criteriaDefinitions: [
+    { key: 'security', label: 'Security', maxScore: 10 },
+    { key: 'speed', label: 'Speed', maxScore: 10 },
+    { key: 'features', label: 'Features', maxScore: 10 },
+    { key: 'value', label: 'Value', maxScore: 10 },
+    { key: 'ease_of_use', label: 'Ease of Use', maxScore: 10 },
+  ],
+
+  highlightDefinitions: [
+    { key: 'starting_price', label: 'Starting Price' },
+    { key: 'servers', label: 'Servers' },
+    { key: 'devices', label: 'Devices' },
+  ],
+
+  metaTitle: 'Best VPN Services 2026 - Compare Top 10 | Top10',
+  metaDescription: 'Compare the best VPN services of 2026. Expert reviews with speed tests, security audits, and pricing.',
+};
+
+// ============================================
 // HOMEPAGE SETTINGS
 // ============================================
 export const homepageSettings = {
@@ -399,8 +521,9 @@ export const homepageSettings = {
 // EXPORT ALL DATA
 // ============================================
 export const seedData = {
+  categoryGroups: categoryGroupsData,
   authors: authorsData,
-  categories: [tvServicesCategory],
+  categories: [tvServicesCategory, datingCategory, vpnCategory],
   products: [slingTvProduct, huluLiveTvProduct],
   homepageSettings,
 };

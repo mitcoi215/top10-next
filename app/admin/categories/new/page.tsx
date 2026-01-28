@@ -3,10 +3,11 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { CategoryEditor } from '@/components/admin/category-editor';
-import { CategoryFormData, ProductOption, ArticleOption } from '@/components/admin/category-editor/types';
+import { CategoryFormData, ProductOption, ArticleOption, CategoryGroupOption } from '@/components/admin/category-editor/types';
 
 export default function NewCategoryPage() {
   const router = useRouter();
+  const [categoryGroups, setCategoryGroups] = useState<CategoryGroupOption[]>([]);
   const [products, setProducts] = useState<ProductOption[]>([]);
   const [articles, setArticles] = useState<ArticleOption[]>([]);
   const [loading, setLoading] = useState(true);
@@ -14,13 +15,24 @@ export default function NewCategoryPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [productsRes, articlesRes] = await Promise.all([
+        const [groupsRes, productsRes, articlesRes] = await Promise.all([
+          fetch('/api/category-groups'),
           fetch('/api/products'),
           fetch('/api/articles'),
         ]);
 
+        const groupsData = await groupsRes.json();
         const productsData = await productsRes.json();
         const articlesData = await articlesRes.json();
+
+        // Category Groups
+        const groupsArray = Array.isArray(groupsData) ? groupsData : [];
+        setCategoryGroups(groupsArray.map((g: any) => ({
+          id: g.id,
+          name: g.name,
+          slug: g.slug,
+          icon: g.icon,
+        })));
 
         // Products API returns array directly
         const productsArray = Array.isArray(productsData) ? productsData : [];
@@ -106,6 +118,7 @@ export default function NewCategoryPage() {
 
   return (
     <CategoryEditor
+      categoryGroups={categoryGroups}
       products={products}
       articles={articles}
       onSave={handleSave}

@@ -22,6 +22,14 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     let category = await prisma.category.findUnique({
       where: { id },
       include: {
+        group: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+            icon: true,
+          },
+        },
         products: {
           select: {
             id: true,
@@ -45,6 +53,14 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       category = await prisma.category.findUnique({
         where: { slug: id },
         include: {
+          group: {
+            select: {
+              id: true,
+              name: true,
+              slug: true,
+              icon: true,
+            },
+          },
           products: {
             select: {
               id: true,
@@ -155,6 +171,9 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
         ...(validatedData.icon !== undefined && { icon: validatedData.icon }),
         ...(validatedData.color !== undefined && { color: validatedData.color }),
         ...(validatedData.description !== undefined && { description: validatedData.description }),
+
+        // Parent group
+        ...(validatedData.groupId !== undefined && { groupId: validatedData.groupId }),
 
         // Display settings
         ...(validatedData.featured !== undefined && { featured: validatedData.featured }),

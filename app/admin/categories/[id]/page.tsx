@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { CategoryEditor } from '@/components/admin/category-editor';
-import { CategoryFormData, ProductOption, ArticleOption } from '@/components/admin/category-editor/types';
+import { CategoryFormData, ProductOption, ArticleOption, CategoryGroupOption } from '@/components/admin/category-editor/types';
 
 export default function EditCategoryPage() {
   const router = useRouter();
@@ -11,6 +11,7 @@ export default function EditCategoryPage() {
   const categoryId = params.id as string;
 
   const [category, setCategory] = useState<Partial<CategoryFormData> | null>(null);
+  const [categoryGroups, setCategoryGroups] = useState<CategoryGroupOption[]>([]);
   const [products, setProducts] = useState<ProductOption[]>([]);
   const [articles, setArticles] = useState<ArticleOption[]>([]);
   const [loading, setLoading] = useState(true);
@@ -19,8 +20,9 @@ export default function EditCategoryPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [categoryRes, productsRes, articlesRes] = await Promise.all([
+        const [categoryRes, groupsRes, productsRes, articlesRes] = await Promise.all([
           fetch(`/api/categories/${categoryId}`),
+          fetch('/api/category-groups'),
           fetch('/api/products'),
           fetch('/api/articles'),
         ]);
@@ -30,6 +32,7 @@ export default function EditCategoryPage() {
         }
 
         const categoryData = await categoryRes.json();
+        const groupsData = await groupsRes.json();
         const productsData = await productsRes.json();
         const articlesData = await articlesRes.json();
 
@@ -42,6 +45,7 @@ export default function EditCategoryPage() {
           description: categoryData.description || '',
           featured: categoryData.featured || false,
           order: categoryData.order || 0,
+          groupId: categoryData.groupId || '',
           metaTitle: categoryData.metaTitle || '',
           metaDescription: categoryData.metaDescription || '',
           ogImage: categoryData.ogImage || '',
@@ -60,6 +64,15 @@ export default function EditCategoryPage() {
           exploreCards: categoryData.exploreCards || [],
           faqs: categoryData.faqs || [],
         });
+
+        // Category Groups
+        const groupsArray = Array.isArray(groupsData) ? groupsData : [];
+        setCategoryGroups(groupsArray.map((g: any) => ({
+          id: g.id,
+          name: g.name,
+          slug: g.slug,
+          icon: g.icon,
+        })));
 
         // Products API returns array directly
         const productsArray = Array.isArray(productsData) ? productsData : [];
@@ -188,6 +201,7 @@ export default function EditCategoryPage() {
     <CategoryEditor
       categoryId={categoryId}
       initialData={category || undefined}
+      categoryGroups={categoryGroups}
       products={products}
       articles={articles}
       onSave={handleSave}

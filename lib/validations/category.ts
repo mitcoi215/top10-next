@@ -50,6 +50,9 @@ export const CategoryCreateSchema = z.object({
   color: z.string().default('bg-blue-500'),
   description: z.string().optional().nullable(),
 
+  // Parent group for homepage organization
+  groupId: z.string().optional().nullable(),
+
   // Display settings
   featured: z.boolean().default(false),
   order: z.number().int().min(0).default(0),

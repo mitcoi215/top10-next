@@ -1,9 +1,13 @@
 'use client';
 
 import { useFormContext } from 'react-hook-form';
-import { CategoryFormData, COLOR_PRESETS, ICON_PRESETS } from './types';
+import { CategoryFormData, COLOR_PRESETS, ICON_PRESETS, CategoryGroupOption } from './types';
 
-export default function Tab1GeneralInfo() {
+interface Tab1Props {
+  categoryGroups: CategoryGroupOption[];
+}
+
+export default function Tab1GeneralInfo({ categoryGroups }: Tab1Props) {
   const { register, watch, setValue, formState: { errors } } = useFormContext<CategoryFormData>();
 
   const name = watch('name');
@@ -77,6 +81,28 @@ export default function Tab1GeneralInfo() {
               </button>
             </div>
             {errors.slug && <span className="error-msg">{errors.slug.message}</span>}
+          </div>
+
+          {/* Parent Group */}
+          <div className="form-group">
+            <label htmlFor="groupId">
+              Homepage Group <span className="required">*</span>
+              <span className="tooltip" title="Parent group for homepage display">?</span>
+            </label>
+            <select
+              id="groupId"
+              {...register('groupId', { required: 'Please select a parent group' })}
+              className={errors.groupId ? 'error' : ''}
+            >
+              <option value="">Select a group...</option>
+              {categoryGroups.map((group) => (
+                <option key={group.id} value={group.id}>
+                  {group.icon} {group.name}
+                </option>
+              ))}
+            </select>
+            {errors.groupId && <span className="error-msg">{errors.groupId.message}</span>}
+            <div className="hint">Categories are organized under groups on the homepage (e.g., Lifestyle, Security)</div>
           </div>
 
           {/* Description */}
@@ -350,6 +376,11 @@ export default function Tab1GeneralInfo() {
         .error-msg {
           font-size: 12px;
           color: #dc2626;
+        }
+
+        .hint {
+          font-size: 12px;
+          color: #9ca3af;
         }
 
         textarea {

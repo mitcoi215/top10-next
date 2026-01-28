@@ -21,6 +21,14 @@ export async function GET(request: NextRequest) {
         { name: 'asc' },
       ],
       include: {
+        group: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+            icon: true,
+          },
+        },
         _count: {
           select: { products: true },
         },
@@ -75,6 +83,9 @@ export async function POST(request: NextRequest) {
         icon: validatedData.icon,
         color: validatedData.color,
         description: validatedData.description,
+
+        // Parent group
+        groupId: validatedData.groupId || null,
 
         // Display settings
         featured: validatedData.featured,

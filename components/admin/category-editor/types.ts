@@ -11,6 +11,9 @@ export interface CategoryFormData {
   featured: boolean;
   order: number;
 
+  // Parent group for homepage organization
+  groupId: string; // Links to CategoryGroup
+
   // SEO
   metaTitle: string;
   metaDescription: string;
@@ -92,6 +95,13 @@ export interface ArticleOption {
   slug: string;
 }
 
+export interface CategoryGroupOption {
+  id: string;
+  name: string;
+  slug: string;
+  icon?: string;
+}
+
 // Color presets for category
 export const COLOR_PRESETS = [
   { value: 'bg-red-500', label: 'Red', hex: '#ef4444' },
@@ -129,6 +139,7 @@ export const defaultCategoryFormData: CategoryFormData = {
   description: '',
   featured: false,
   order: 0,
+  groupId: '', // Parent group for homepage
   metaTitle: '',
   metaDescription: '',
   ogImage: '',

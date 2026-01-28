@@ -42,15 +42,38 @@ model Author {
 }
 
 // ============================================
-// CATEGORY - Main content hub
+// CATEGORY GROUP - Homepage display groups
+// e.g., Lifestyle, Health & Wellness, Home, Business, Security
+// ============================================
+model CategoryGroup {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  slug        String    @unique
+  name        String    // "Lifestyle", "Health & Wellness"
+  icon        String?
+  order       Int       @default(0)
+
+  // Relations
+  categories  Category[]
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+// ============================================
+// CATEGORY - Actual product categories
+// e.g., TV Services, Dating, VPN, Password Managers
 // ============================================
 model Category {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
   slug        String    @unique
-  name        String
+  name        String    // "TV Services", "Dating"
   icon        String
   color       String    @default("bg-white")
   description String?   // Short description for cards
+
+  // Parent group for homepage organization
+  groupId     String?   @db.ObjectId
+  group       CategoryGroup? @relation(fields: [groupId], references: [id])
 
   // Display settings
   featured    Boolean   @default(false)
@@ -193,6 +216,8 @@ model Product {
   @@index([status])
   @@index([rank])
 }
+
+// Note: Category has index on groupId for homepage queries
 
 // ============================================
 // ARTICLE - Charticles & Blog Posts
