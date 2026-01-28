@@ -14,7 +14,8 @@
     "postinstall": "prisma generate",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
-    "db:seed": "npx tsx prisma/seed.ts"
+    "db:seed": "npx tsx prisma/seed.ts",
+    "db:seed:js": "node prisma/seed.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
