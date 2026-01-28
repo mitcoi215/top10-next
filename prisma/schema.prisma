@@ -1,5 +1,6 @@
 // prisma/schema.prisma
 // MongoDB Database Schema for Top10 Rating
+// Version 2.0 - Complete CMS Schema
 
 generator client {
   provider = "prisma-client-js"
@@ -10,7 +11,9 @@ datasource db {
   url      = env("MONGODB_URI")
 }
 
-// Admin user for authentication
+// ============================================
+// ADMIN - Authentication
+// ============================================
 model Admin {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   username  String   @unique
@@ -18,41 +21,263 @@ model Admin {
   createdAt DateTime @default(now())
 }
 
-// Category (Lifestyle, Health, Home, Business, Security)
-model Category {
-  id        String    @id @default(auto()) @map("_id") @db.ObjectId
-  slug      String    @unique
-  name      String
-  icon      String
-  color     String    @default("bg-white")
-  featured  Boolean   @default(false)
-  order     Int       @default(0)
-  products  Product[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+// ============================================
+// AUTHOR - Content Writers (E-E-A-T)
+// ============================================
+model Author {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  slug        String    @unique
+  name        String
+  avatar      String?
+  title       String?   // "Technology Writer", "Dating Expert"
+  bio         String?   // Short biography
+  socialLinks Json?     // { twitter?: string, linkedin?: string, website?: string }
+
+  // Relations
+  products    Product[]
+  articles    Article[]
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
 
-// Product/Service items in Top10 list
+// ============================================
+// CATEGORY - Main content hub
+// ============================================
+model Category {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  slug        String    @unique
+  name        String
+  icon        String
+  color       String    @default("bg-white")
+  description String?   // Short description for cards
+
+  // Display settings
+  featured    Boolean   @default(false)
+  order       Int       @default(0)
+
+  // Category Listing Page - Header
+  heroImage       String?
+  heroTitle       String?   // Override title for the page
+  lastUpdated     DateTime?
+
+  // Category Listing Page - Intro Content
+  introContent    String?   // HTML content for intro section
+
+  // Category Listing Page - Criteria Definitions
+  // Defines what scores/highlights are available for products in this category
+  criteriaDefinitions Json?   // [{ key: "security", label: "Security", maxScore: 10 }]
+  highlightDefinitions Json?  // [{ key: "startingPrice", label: "Starting Price" }, ...]
+
+  // Methodology Section (Category-specific)
+  methodologyIntro    String?   // Intro paragraph for methodology
+  methodologyCriteria Json?     // [{ title: "Value", description: "We evaluate..." }]
+  exploreCards        Json?     // [{ title: "Best VPN", href: "/vpn", image: "..." }]
+
+  // Review List Page Content (/dating/reviews)
+  reviewListIntro     String?   // Intro paragraph for review list
+  reviewListHeroImage String?
+  tenThingsToKnow     Json?     // [{ title: "...", description: "..." }]
+  mustReadArticleIds  String[]  @db.ObjectId // Article IDs
+
+  // FAQ Section (Category-level)
+  faqs                Json?     // [{ question: "...", answer: "..." }]
+
+  // SEO
+  metaTitle           String?
+  metaDescription     String?
+  ogImage             String?
+
+  // Relations
+  products    Product[]
+  articles    Article[]
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+// ============================================
+// PRODUCT - Main entity (~65 fields)
+// ============================================
 model Product {
-  id                  String   @id @default(auto()) @map("_id") @db.ObjectId
-  rank                Int
-  title               String
-  description         String
-  detailedDescription String?
-  image               String
-  rating              Float?
-  price               String?
-  features            String[]
-  pros                String[]
-  cons                String[]
-  affiliateLink       String
-  featured            Boolean  @default(false)
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
 
-  categoryId String   @db.ObjectId
-  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  // ========== NHÓM 1: METADATA & BASIC INFO (12 fields) ==========
+  slug        String   @unique
+  name        String
+  logoUrl     String?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  // CTA & Links
+  ctaUrl      String?   // Affiliate link
+  ctaText     String    @default("Visit Site")
+  reviewHref  String?   // "/dating/reviews/eharmony"
+
+  // Status & Workflow
+  status      String    @default("draft") // 'draft' | 'published'
+
+  // Relations
+  categoryId  String    @db.ObjectId
+  category    Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  authorId    String?   @db.ObjectId
+  author      Author?   @relation(fields: [authorId], references: [id])
+
+  // ========== NHÓM 2: CATEGORY LISTING DATA (12 fields) ==========
+  rank        Int       @default(0)
+  ribbon      String?   // "Best Overall", "Editor's Choice"
+  tagline     String?   // Short tagline under name
+  bottomLine  String?   // Longer description for listing
+  bestFor     String?   // "Best for serious daters"
+  basePrice   String?   // "$40/month", "Free"
+
+  // Scores
+  overallScore    Float?    // 9.2 - for sorting
+  scoreLabel      String?   // "Excellent", "Very Good", "Good"
+  scores          Json?     // { security: 9.2, speed: 8.5, support: 8.0 }
+
+  // Highlights (flexible key-value based on category definitions)
+  highlights      Json?     // { "startingPrice": "$19.99", "trialPeriod": "30 days" }
+
+  // Features list for comparison
+  features        Json?     // [{ text: "Live TV channels", bold: true }, ...]
+
+  // Customer quote
+  quote           Json?     // { text: "Great service!", source: "John D.", date: "2024" }
+
+  // ========== NHÓM 3: REVIEW CONTENT (25 fields) ==========
+  // Review Hero
+  reviewTitle     String?   // "eharmony Dating Site Review (2026)"
+  reviewSubtitle  String?   // "Trusted Dating App for Serious Relationships"
+  reviewHeroImage String?
+
+  // Ratings display
+  rating          Float?    // User rating (e.g., 3.0)
+  reviewCount     String?   // "3,598 Reviews"
+
+  // Hero Summary
+  heroSummary     String?   // Opening paragraph
+
+  // Pros & Cons
+  pros            String[]
+  cons            String[]
+
+  // Main Content
+  mainContent     String?   // Rich Text / HTML - Full review content
+
+  // Verdict
+  verdict         String?   // Concluding paragraph
+
+  // Images gallery
+  images          String[]
+
+  // ========== NHÓM 4: FAQ & EXTRAS (10 fields) ==========
+  faqs            Json?     // [{ question: "...", answer: "..." }]
+
+  // User ratings breakdown (if different from editorial)
+  userRatings     Json?     // { overall: 4.2, features: 4.0, value: 3.8 }
+
+  // Related products
+  relatedProductIds String[] @db.ObjectId
+
+  // ========== NHÓM 5: SEO (4 fields) ==========
+  metaTitle       String?
+  metaDescription String?
+  ogImage         String?
+  canonical       String?
+
+  // Timestamps
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  publishedAt     DateTime?
 
   @@index([categoryId])
+  @@index([status])
+  @@index([rank])
+}
+
+// ============================================
+// ARTICLE - Charticles & Blog Posts
+// ============================================
+model Article {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  slug        String   @unique
+
+  // Basic Info
+  title       String
+  subtitle    String?
+  articleType String   @default("charticle") // 'charticle' | 'blog' | 'guide'
+
+  // Status
+  status      String   @default("draft") // 'draft' | 'published'
+
+  // Relations
+  categoryId  String?  @db.ObjectId
+  category    Category? @relation(fields: [categoryId], references: [id])
+  authorId    String?  @db.ObjectId
+  author      Author?  @relation(fields: [authorId], references: [id])
+
+  // Header
+  featuredImage    String?
+  featuredImageAlt String?
+
+  // Content
+  content          String?   // Rich Text / HTML - Main content
+  excerpt          String?   // Short excerpt for listings
+
+  // Products mentioned in article (for widget/cards)
+  productIds       String[]  @db.ObjectId
+
+  // Breadcrumbs (optional override)
+  breadcrumbs      Json?     // [{ label: "Home", href: "/" }, ...]
+
+  // SEO
+  metaTitle        String?
+  metaDescription  String?
+  ogImage          String?
+  canonical        String?
+
+  // Timestamps
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  publishedAt      DateTime?
+
+  @@index([categoryId])
+  @@index([status])
+  @@index([articleType])
+}
+
+// ============================================
+// HOMEPAGE SETTINGS - Singleton config
+// ============================================
+model HomepageSettings {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+
+  // Hero Section
+  heroTitle       String?
+  heroSubtitle    String?
+
+  // Featured Categories (for hero dropdown)
+  featuredCategoryIds String[] @db.ObjectId
+
+  // Trending Section (curated)
+  trendingItems   Json?     // [{ categoryId, title, description, articleIds: [...] }]
+
+  // Stats Section
+  statsListsCount     String?   // "500+"
+  statsHoursCount     String?   // "5,000+"
+  statsDecisionsCount String?   // "16M+"
+
+  // Experts Section
+  expertIds       String[]  @db.ObjectId // Author IDs
+
+  // Mission Section
+  missionTitle    String?
+  missionContent  String?
+
+  // Brand Logos (As Seen On)
+  brandLogos      Json?     // [{ name: "Forbes", logo: "..." }]
+
+  // More Articles Section
+  moreArticleIds  String[]  @db.ObjectId
+
+  updatedAt       DateTime  @updatedAt
 }
