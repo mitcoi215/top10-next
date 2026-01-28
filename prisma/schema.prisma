@@ -79,6 +79,10 @@ model Category {
   featured    Boolean   @default(false)
   order       Int       @default(0)
 
+  // Homepage hero dropdown links
+  exploreHref     String?   // "/tv-services" - link for Explore button
+  compareHref     String?   // "/tv-services/compare" - link for Compare button
+
   // Category Listing Page - Header
   heroImage       String?
   heroTitle       String?   // Override title for the page
@@ -87,21 +91,46 @@ model Category {
   // Category Listing Page - Intro Content
   introContent    String?   // HTML content for intro section
 
+  // Category Listing Page - Sidebar
+  sidebarPeopleCount  String?   // "167,536" - people who shopped
+  sidebarArticleIds   String[]  @db.ObjectId // Articles for sidebar "Must Reads"
+
+  // Category Listing Page - Best Of List Section
+  bestOfListTitle     String?   // "Our Top 10 Best TV Streaming Services:"
+
+  // Category Listing Page - Compare Box (in Methodology section)
+  compareBoxTitle       String?   // "Compare With Top10.com, Choose the Best for You"
+  compareBoxDescription String?   // Description paragraph
+  compareBoxStats       String?   // "15 TV Streaming Services Evaluated | 8 Criteria | 10 Best"
+
+  // Category Listing Page - Closer Look Section
+  closerLookTitle     String?   // "A Closer Look at the Top 10 TV Streaming Services"
+
   // Category Listing Page - Criteria Definitions
   // Defines what scores/highlights are available for products in this category
   criteriaDefinitions Json?   // [{ key: "security", label: "Security", maxScore: 10 }]
   highlightDefinitions Json?  // [{ key: "startingPrice", label: "Starting Price" }, ...]
 
   // Methodology Section (Category-specific)
+  methodologyTitle    String?   // "Our Methodology: How We Reviewed..."
   methodologyIntro    String?   // Intro paragraph for methodology
+  criteriaTitle       String?   // "Here are some of the criteria we evaluated:"
   methodologyCriteria Json?     // [{ title: "Value", description: "We evaluate..." }]
+  exploreTitle        String?   // "Explore More TV Streaming Services:"
   exploreCards        Json?     // [{ title: "Best VPN", href: "/vpn", image: "..." }]
 
   // Review List Page Content (/dating/reviews)
+  reviewListTitle     String?   // "In-Depth Online Dating Sites and Apps Reviews"
+  reviewListSubtitle  String?   // Subtitle/description for review list page
   reviewListIntro     String?   // Intro paragraph for review list
   reviewListHeroImage String?
+  top5ProductIds      String[]  @db.ObjectId // Products for sidebar "Best X" widget
   tenThingsToKnow     Json?     // [{ title: "...", description: "..." }]
-  mustReadArticleIds  String[]  @db.ObjectId // Article IDs
+  mustReadArticleIds  String[]  @db.ObjectId // Article IDs for Must Reads
+
+  // Product Review Page - Sidebar
+  editorialReviewTitle      String?   // "Editorial Reviews"
+  editorialReviewProductIds String[]  @db.ObjectId // Products for sidebar on review pages
 
   // FAQ Section (Category-level)
   faqs                Json?     // [{ question: "...", answer: "..." }]
@@ -175,6 +204,7 @@ model Product {
   // Ratings display
   rating          Float?    // User rating (e.g., 3.0)
   reviewCount     String?   // "3,598 Reviews"
+  readTime        String?   // "5 min" - estimated read time
 
   // Hero Summary
   heroSummary     String?   // Opening paragraph
@@ -248,6 +278,11 @@ model Article {
 
   // Products mentioned in article (for widget/cards)
   productIds       String[]  @db.ObjectId
+
+  // Sidebar configuration
+  sidebarTitle     String?   // "Best TV Streaming Services"
+  sidebarSeeAllHref String?  // "/tv-services"
+  sidebarSeeAllText String?  // "See All TV Services"
 
   // Breadcrumbs (optional override)
   breadcrumbs      Json?     // [{ label: "Home", href: "/" }, ...]
