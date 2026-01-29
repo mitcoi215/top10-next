@@ -15,6 +15,7 @@
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:seed": "npx tsx prisma/seed.ts",
+    "db:seed:full": "npx tsx prisma/seed-full.ts",
     "db:seed:js": "node prisma/seed.js"
   },
   "dependencies": {
