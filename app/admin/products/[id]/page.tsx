@@ -76,6 +76,7 @@ export default function EditProductPage({ params }: EditProductPageProps) {
         rating: productData.rating || null,
         reviewCount: productData.reviewCount || '',
         heroSummary: productData.heroSummary || '',
+        videoUrl: productData.videoUrl || '',
         pros: productData.pros || [],
         cons: productData.cons || [],
         mainContent: productData.mainContent || productData.detailedDescription || '',
@@ -123,7 +124,7 @@ export default function EditProductPage({ params }: EditProductPageProps) {
     return (
       <div className="loading-container">
         <div className="loading-spinner"></div>
-        <p>Loading product...</p>
+        <p>Đang tải sản phẩm...</p>
         <style jsx>{`
           .loading-container {
             display: flex;
@@ -152,10 +153,10 @@ export default function EditProductPage({ params }: EditProductPageProps) {
   if (error) {
     return (
       <div className="error-container">
-        <h2>Error</h2>
+        <h2>Lỗi</h2>
         <p>{error}</p>
         <button onClick={() => router.push('/admin/products')}>
-          Back to Products
+          Quay lại danh sách
         </button>
         <style jsx>{`
           .error-container {

@@ -150,13 +150,14 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
         // Basic Info
         ...(validatedData.slug !== undefined && { slug: validatedData.slug }),
         ...(validatedData.name !== undefined && { name: validatedData.name }),
-        ...(validatedData.logoUrl !== undefined && { logoUrl: validatedData.logoUrl }),
-        ...(validatedData.ctaUrl !== undefined && { ctaUrl: validatedData.ctaUrl }),
+        ...(validatedData.logoUrl !== undefined && { logoUrl: validatedData.logoUrl || null }),
+        ...(validatedData.ctaUrl !== undefined && { ctaUrl: validatedData.ctaUrl || null }),
         ...(validatedData.ctaText !== undefined && { ctaText: validatedData.ctaText }),
-        ...(validatedData.reviewHref !== undefined && { reviewHref: validatedData.reviewHref }),
+        ...(validatedData.reviewHref !== undefined && { reviewHref: validatedData.reviewHref || null }),
         ...(validatedData.status !== undefined && { status: validatedData.status }),
-        ...(validatedData.categoryId !== undefined && { categoryId: validatedData.categoryId }),
-        ...(validatedData.authorId !== undefined && { authorId: validatedData.authorId }),
+        ...(validatedData.categoryId !== undefined && validatedData.categoryId && { categoryId: validatedData.categoryId }),
+        // Handle authorId - only update if it's a valid ObjectID (not empty string)
+        ...(validatedData.authorId !== undefined && { authorId: validatedData.authorId || null }),
 
         // Category Listing Data
         ...(validatedData.rank !== undefined && { rank: validatedData.rank }),
@@ -181,6 +182,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
         ...(validatedData.rating !== undefined && { rating: validatedData.rating }),
         ...(validatedData.reviewCount !== undefined && { reviewCount: validatedData.reviewCount }),
         ...(validatedData.heroSummary !== undefined && { heroSummary: validatedData.heroSummary }),
+        ...(validatedData.videoUrl !== undefined && { videoUrl: validatedData.videoUrl }),
         ...(validatedData.pros !== undefined && { pros: validatedData.pros }),
         ...(validatedData.cons !== undefined && { cons: validatedData.cons }),
         ...(validatedData.mainContent !== undefined && { mainContent: validatedData.mainContent }),
@@ -190,7 +192,10 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
         // FAQ & Extras
         ...(validatedData.faqs !== undefined && { faqs: validatedData.faqs }),
         ...(validatedData.userRatings !== undefined && { userRatings: validatedData.userRatings }),
-        ...(validatedData.relatedProductIds !== undefined && { relatedProductIds: validatedData.relatedProductIds }),
+        // Filter out empty strings from relatedProductIds (ObjectID array)
+        ...(validatedData.relatedProductIds !== undefined && {
+          relatedProductIds: validatedData.relatedProductIds.filter((id: string) => id && id.trim() !== '')
+        }),
 
         // SEO
         ...(validatedData.metaTitle !== undefined && { metaTitle: validatedData.metaTitle }),
@@ -207,6 +212,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     return NextResponse.json(product);
   } catch (error) {
     console.error('Update product error:', error);
+    console.error('Error details:', JSON.stringify(error, null, 2));
 
     if (error instanceof ZodError) {
       return NextResponse.json(
@@ -218,8 +224,10 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       );
     }
 
+    // Return more detailed error for debugging
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     return NextResponse.json(
-      { error: 'Failed to update product' },
+      { error: 'Failed to update product', message: errorMessage },
       { status: 500 }
     );
   }

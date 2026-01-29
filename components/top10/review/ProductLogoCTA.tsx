@@ -22,26 +22,89 @@ export default function ProductLogoCTA({
   ctaHref,
 }: ProductLogoCTAProps) {
   return (
-    <div className="ni-14shd" data-testid="logo-and-ctas">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={logo} alt={productName} className="ni-1uzmobf" />
-      <div className="ni-wm7fk9">
-        <div className="ni-fndg26">
+    <>
+      <div className="product-logo-cta" data-testid="logo-and-ctas">
+        {/* Logo on Left */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={logo} alt={productName} className="product-logo" />
+        {/* Button on Right */}
+        <div className="cta-container">
           <a
             href={ctaHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="nilink ni-1irj517"
+            className="cta-link"
           >
-            <button className="ni-1f5lmo" data-testid="visit-site">
-              {ctaText}
-              <div className="endIcon ni-k15e0p">
+            <button className="cta-button" data-testid="visit-site">
+              <span>{ctaText}</span>
+              <div className="cta-icon">
                 <ExternalLinkIcon />
               </div>
             </button>
           </a>
         </div>
       </div>
-    </div>
+      <style jsx>{`
+        .product-logo-cta {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 24px;
+          margin: 24px 0;
+          background-color: #f8f9fa;
+          border-radius: 8px;
+          gap: 24px;
+        }
+
+        .cta-container {
+          flex-shrink: 0;
+        }
+
+        .cta-link {
+          text-decoration: none;
+        }
+
+        .cta-button {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          padding: 12px 24px;
+          background-color: #FF4A64;
+          color: white;
+          border: none;
+          border-radius: 4px;
+          font-size: 16px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: background-color 0.2s;
+        }
+
+        .cta-button:hover {
+          background-color: #B53547;
+        }
+
+        .cta-icon {
+          display: flex;
+          align-items: center;
+        }
+
+        .product-logo {
+          max-width: 120px;
+          max-height: 60px;
+          object-fit: contain;
+        }
+
+        @media (max-width: 480px) {
+          .product-logo-cta {
+            flex-direction: column;
+            text-align: center;
+          }
+
+          .product-logo {
+            margin-bottom: 16px;
+          }
+        }
+      `}</style>
+    </>
   );
 }

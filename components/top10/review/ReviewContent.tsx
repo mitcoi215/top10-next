@@ -1,13 +1,192 @@
 'use client';
 
-import { ReactNode } from 'react';
+import { ReactNode, useMemo } from 'react';
 
 interface ReviewContentProps {
   content: string;
   children?: ReactNode;
 }
 
+// Convert markdown to HTML
+function markdownToHtml(markdown: string): string {
+  // Check if content is predominantly HTML (has multiple HTML block tags)
+  const htmlBlockTags = markdown.match(/<(p|div|h[1-6]|ul|ol|table|blockquote|section|article)[^>]*>/gi);
+  if (htmlBlockTags && htmlBlockTags.length > 3) {
+    // Content is mostly HTML, but still process markdown tables
+    return processMarkdownTables(markdown);
+  }
+
+  // Split into lines for processing
+  const lines = markdown.split('\n');
+  const processedLines: string[] = [];
+
+  let i = 0;
+  while (i < lines.length) {
+    const line = lines[i];
+    const trimmed = line.trim();
+
+    // Skip empty lines
+    if (!trimmed) {
+      processedLines.push('');
+      i++;
+      continue;
+    }
+
+    // Check for table (line starts with |)
+    if (trimmed.startsWith('|') && trimmed.endsWith('|')) {
+      const tableLines: string[] = [];
+
+      // Collect all table lines (allow empty lines between rows)
+      while (i < lines.length) {
+        const currentLine = lines[i].trim();
+        if (currentLine.startsWith('|')) {
+          tableLines.push(currentLine);
+          i++;
+        } else if (currentLine === '' && i + 1 < lines.length && lines[i + 1].trim().startsWith('|')) {
+          // Skip empty line if next line is still a table row
+          i++;
+        } else {
+          break;
+        }
+      }
+
+      if (tableLines.length >= 2) {
+        processedLines.push(parseTable(tableLines));
+      }
+      continue;
+    }
+
+    // Headers
+    if (trimmed.startsWith('#### ')) {
+      processedLines.push(`<h4>${processInline(trimmed.slice(5))}</h4>`);
+    } else if (trimmed.startsWith('### ')) {
+      processedLines.push(`<h3>${processInline(trimmed.slice(4))}</h3>`);
+    } else if (trimmed.startsWith('## ')) {
+      processedLines.push(`<h2>${processInline(trimmed.slice(3))}</h2>`);
+    } else if (trimmed.startsWith('# ')) {
+      processedLines.push(`<h1>${processInline(trimmed.slice(2))}</h1>`);
+    }
+    // Unordered list
+    else if (trimmed.startsWith('- ')) {
+      processedLines.push(`<li>${processInline(trimmed.slice(2))}</li>`);
+    }
+    // Ordered list
+    else if (/^\d+\. /.test(trimmed)) {
+      processedLines.push(`<li>${processInline(trimmed.replace(/^\d+\. /, ''))}</li>`);
+    }
+    // Blockquote
+    else if (trimmed.startsWith('> ')) {
+      processedLines.push(`<blockquote>${processInline(trimmed.slice(2))}</blockquote>`);
+    }
+    // Horizontal rule
+    else if (trimmed === '---') {
+      processedLines.push('<hr>');
+    }
+    // Regular paragraph
+    else {
+      processedLines.push(`<p>${processInline(trimmed)}</p>`);
+    }
+
+    i++;
+  }
+
+  let html = processedLines.join('\n');
+
+  // Wrap consecutive <li> in <ul>
+  html = html.replace(/(<li>[\s\S]*?<\/li>\n?)+/g, '<ul>$&</ul>');
+
+  return html;
+}
+
+// Process markdown tables in content that may already have HTML
+function processMarkdownTables(content: string): string {
+  // Find and replace markdown tables with HTML tables
+  // Allow empty lines between table rows
+  const tableRegex = /(\|[^\n]+\|\s*\n\s*\|[-:\s|]+\|\s*\n(?:\s*\|[^\n]+\|\s*\n?)*)/g;
+
+  return content.replace(tableRegex, (match) => {
+    const lines = match.trim().split('\n').filter(line => line.trim() && line.trim().startsWith('|'));
+    if (lines.length >= 2) {
+      return parseTable(lines);
+    }
+    return match;
+  });
+}
+
+// Parse markdown table to HTML
+function parseTable(tableLines: string[]): string {
+  const parseRow = (row: string): string[] => {
+    return row
+      .split('|')
+      .slice(1, -1) // Remove first and last empty elements
+      .map(cell => cell.trim());
+  };
+
+  // Check if second line is separator (|---|---|)
+  const isSeparator = (line: string): boolean => {
+    return /^\|[\s:-]+\|/.test(line) && line.includes('-');
+  };
+
+  let html = '<table>';
+  let hasHeader = tableLines.length > 1 && isSeparator(tableLines[1]);
+
+  if (hasHeader) {
+    // First row is header
+    const headerCells = parseRow(tableLines[0]);
+    html += '<thead><tr>';
+    headerCells.forEach(cell => {
+      html += `<th>${processInline(cell)}</th>`;
+    });
+    html += '</tr></thead>';
+
+    // Body starts from row 2 (skip separator)
+    html += '<tbody>';
+    for (let i = 2; i < tableLines.length; i++) {
+      const cells = parseRow(tableLines[i]);
+      html += '<tr>';
+      cells.forEach(cell => {
+        html += `<td>${processInline(cell)}</td>`;
+      });
+      html += '</tr>';
+    }
+    html += '</tbody>';
+  } else {
+    // No header, all rows are body
+    html += '<tbody>';
+    tableLines.forEach(line => {
+      const cells = parseRow(line);
+      html += '<tr>';
+      cells.forEach(cell => {
+        html += `<td>${processInline(cell)}</td>`;
+      });
+      html += '</tr>';
+    });
+    html += '</tbody>';
+  }
+
+  html += '</table>';
+  return html;
+}
+
+// Process inline markdown (bold, italic, links, etc.)
+function processInline(text: string): string {
+  return text
+    // Bold and italic
+    .replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/~~(.+?)~~/g, '<s>$1</s>')
+    // Links
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
+    // Images
+    .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" />')
+    // Inline code
+    .replace(/`([^`]+)`/g, '<code>$1</code>');
+}
+
 export default function ReviewContent({ content, children }: ReviewContentProps) {
+  const htmlContent = useMemo(() => markdownToHtml(content), [content]);
+
   return (
     <div className="review-content-wrapper" style={{
       display: 'flex',
@@ -18,7 +197,7 @@ export default function ReviewContent({ content, children }: ReviewContentProps)
       <section className="wysiwyg-section" data-role="wysiwyg">
         <div
           className="wysiwyg-content"
-          dangerouslySetInnerHTML={{ __html: content }}
+          dangerouslySetInnerHTML={{ __html: htmlContent }}
         />
       </section>
 

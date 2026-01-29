@@ -85,6 +85,7 @@ interface CategoryGroup {
 
 interface HeroSectionProps {
   categoryGroups?: CategoryGroup[] | null;
+  heroTagline?: string | null;
 }
 
 // Subcategory component
@@ -113,7 +114,8 @@ const SubcategoryItem = ({
 
 // Map icon string/emoji to image path
 const getIconPath = (icon?: string | null, name?: string) => {
-  if (icon && icon.startsWith('/')) return icon;
+  // Accept local paths (/...) or remote URLs (http/https)
+  if (icon && (icon.startsWith('/') || icon.startsWith('http'))) return icon;
   // Map by group name if icon is emoji or missing
   const iconMap: Record<string, string> = {
     'Lifestyle': '/top10-images/lifestyle.20240115133645.svg',
@@ -125,8 +127,9 @@ const getIconPath = (icon?: string | null, name?: string) => {
   return iconMap[name || ''] || '/top10-images/lifestyle.20240115133645.svg';
 };
 
-export default function HeroSection({ categoryGroups }: HeroSectionProps) {
-  const [activeCategory, setActiveCategory] = useState<number>(-1);
+export default function HeroSection({ categoryGroups, heroTagline }: HeroSectionProps) {
+  // Default to Lifestyle (index 0) on page load
+  const [activeCategory, setActiveCategory] = useState<number>(0);
 
   // Use provided data or fallback to defaults
   const groups = categoryGroups && categoryGroups.length > 0 ? categoryGroups : defaultCategoryGroups;
@@ -134,13 +137,16 @@ export default function HeroSection({ categoryGroups }: HeroSectionProps) {
   // Get current active category data
   const activeData = activeCategory >= 0 ? groups[activeCategory] : null;
 
+  // Default tagline
+  const tagline = heroTagline || 'Compare and shop the <span>Top10</span> best services & products for you';
+
   return (
     <div className="ni-1hjxear">
       <div data-role="top-wrap" data-testid="top-wrap" className="ni-1yyakb4">
         <div className="ni-c8z8t5">
           {/* Title */}
           <div className="ni-kghpb1">
-            <div>Compare and shop the <span>Top10</span> best services &amp; products for you</div>
+            <div dangerouslySetInnerHTML={{ __html: tagline }} />
           </div>
 
           {/* Category Cards */}
@@ -155,7 +161,7 @@ export default function HeroSection({ categoryGroups }: HeroSectionProps) {
                     onMouseEnter={() => setActiveCategory(idx)}
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={getIconPath(group.icon, group.name)} alt="category-icon" className="ni-vsqybe" />
+                    <img src={getIconPath(group.icon, group.name)} alt={group.name} className="ni-vsqybe" />
                     <div data-role="category-title" className={activeCategory === idx ? 'ni-1u18vzq' : 'ni-a9trmo'}>{group.name}</div>
                     <div className="plus ni-cu3t18">+</div>
                     <div className="minus ni-g18mml">-</div>

@@ -8,7 +8,14 @@
       "Bash(node scripts/extract-css.js:*)",
       "Bash(node scripts/find-missing-css.js:*)",
       "Bash(node scripts/extract-all-css.js:*)",
-      "Bash(python3:*)"
+      "Bash(python3:*)",
+      "Bash(node prisma/seed.js:*)",
+      "Bash(npx prisma:*)",
+      "Bash(npm run db:seed:articles:*)",
+      "Bash(npx tsx:*)",
+      "Bash(npx ts-node prisma/seed-hosting.ts)",
+      "Bash(timeout:*)",
+      "Bash(npm install:*)"
     ],
     "additionalDirectories": [
       "\\tmp"

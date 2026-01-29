@@ -3,9 +3,16 @@
 import { useFormContext, useFieldArray } from 'react-hook-form';
 import { ProductFormData } from './types';
 import dynamic from 'next/dynamic';
+import ImageUpload from '../category-editor/ImageUpload';
 
 // Dynamic import for RichTextEditor to avoid SSR issues
 const RichTextEditor = dynamic(() => import('../RichTextEditor'), {
+  ssr: false,
+  loading: () => <div className="editor-loading">Loading editor...</div>,
+});
+
+// Dynamic import for HtmlRichTextEditor (outputs HTML for heroSummary)
+const HtmlRichTextEditor = dynamic(() => import('../HtmlRichTextEditor'), {
   ssr: false,
   loading: () => <div className="editor-loading">Loading editor...</div>,
 });
@@ -35,62 +42,54 @@ export default function Tab3ReviewContent() {
   return (
     <div className="tab-review-content">
       <div className="section">
-        <h2 className="section-title">Review Header</h2>
-        <p className="section-desc">Title and introduction displayed at the top of the review page</p>
+        <h2 className="section-title">Tiêu đề đánh giá</h2>
+        <p className="section-desc">Tiêu đề và giới thiệu hiển thị ở đầu trang đánh giá</p>
 
         <div className="form-grid">
           {/* Review Title */}
           <div className="form-group full-width">
             <label htmlFor="reviewTitle">
-              Review Title
-              <span className="tooltip" title="Main title for the review page">?</span>
+              Tiêu đề đánh giá
+              <span className="tooltip" title="Tiêu đề chính cho trang đánh giá">?</span>
             </label>
             <input
               id="reviewTitle"
               type="text"
               {...register('reviewTitle')}
-              placeholder="e.g., Sling TV Review 2026: Is It Worth It?"
+              placeholder="VD: Đánh giá Sling TV 2026: Có đáng dùng không?"
             />
           </div>
 
           {/* Review Subtitle */}
           <div className="form-group full-width">
             <label htmlFor="reviewSubtitle">
-              Subtitle
-              <span className="tooltip" title="Subheading under the main title">?</span>
+              Phụ đề
+              <span className="tooltip" title="Tiêu đề phụ dưới tiêu đề chính">?</span>
             </label>
             <input
               id="reviewSubtitle"
               type="text"
               {...register('reviewSubtitle')}
-              placeholder="e.g., A flexible live TV streaming option for cord cutters"
+              placeholder="VD: Một lựa chọn streaming TV linh hoạt"
             />
           </div>
 
-          {/* Hero Image */}
+          {/* Hero Image with Upload */}
           <div className="form-group">
-            <label htmlFor="reviewHeroImage">
-              Hero Image URL
-              <span className="tooltip" title="Featured image for the review header">?</span>
-            </label>
-            <input
-              id="reviewHeroImage"
-              type="text"
-              {...register('reviewHeroImage')}
-              placeholder="/images/reviews/hero.jpg"
+            <ImageUpload
+              value={watch('reviewHeroImage') || ''}
+              onChange={(url) => setValue('reviewHeroImage', url)}
+              label="URL ảnh Banner"
+              placeholder="Nhập URL hoặc upload ảnh banner"
+              folder="products/banners"
             />
-            {watch('reviewHeroImage') && (
-              <div className="image-preview">
-                <img src={watch('reviewHeroImage')} alt="Hero preview" />
-              </div>
-            )}
           </div>
 
           {/* Rating & Review Count */}
           <div className="form-group">
             <label htmlFor="rating">
-              User Rating
-              <span className="tooltip" title="Average user rating (1-5 stars)">?</span>
+              Đánh giá người dùng
+              <span className="tooltip" title="Điểm đánh giá trung bình (1-5 sao)">?</span>
             </label>
             <input
               id="rating"
@@ -99,53 +98,76 @@ export default function Tab3ReviewContent() {
               min="1"
               max="5"
               {...register('rating', { valueAsNumber: true })}
-              placeholder="e.g., 4.2"
+              placeholder="VD: 4.2"
             />
           </div>
 
           <div className="form-group">
             <label htmlFor="reviewCount">
-              Review Count
-              <span className="tooltip" title="Number of user reviews">?</span>
+              Số lượt đánh giá
+              <span className="tooltip" title="Số lượng đánh giá từ người dùng">?</span>
             </label>
             <input
               id="reviewCount"
               type="text"
               {...register('reviewCount')}
-              placeholder="e.g., 3,598 Reviews"
+              placeholder="VD: 3,598 đánh giá"
             />
           </div>
         </div>
       </div>
 
       <div className="section">
-        <h2 className="section-title">Hero Summary</h2>
-        <p className="section-desc">Opening paragraph that summarizes the review</p>
+        <h2 className="section-title">Tóm tắt Banner</h2>
+        <p className="section-desc">Đoạn mở đầu tóm tắt đánh giá (hiển thị trong phần mini-review)</p>
 
-        <div className="form-group">
-          <textarea
-            {...register('heroSummary')}
-            placeholder="Write a compelling introduction that gives readers a quick overview of this product..."
-            rows={4}
+        <div className="form-group editor-wrapper-bordered">
+          <HtmlRichTextEditor
+            value={watch('heroSummary') || ''}
+            onChange={(html) => setValue('heroSummary', html)}
+            placeholder="Viết một đoạn giới thiệu hấp dẫn cho người đọc cái nhìn tổng quan nhanh về sản phẩm này..."
+            minHeight="150px"
+            maxHeight="300px"
           />
         </div>
       </div>
 
       <div className="section">
-        <h2 className="section-title">Pros & Cons</h2>
-        <p className="section-desc">Key advantages and disadvantages</p>
+        <h2 className="section-title">Video</h2>
+        <p className="section-desc">Nhúng video từ YouTube, Vimeo, Dailymotion, v.v.</p>
+
+        <div className="form-group">
+          <label htmlFor="videoUrl">
+            URL Video
+            <span className="tooltip" title="URL đầy đủ đến video (YouTube, Vimeo, Dailymotion)">?</span>
+          </label>
+          <input
+            id="videoUrl"
+            type="text"
+            {...register('videoUrl')}
+            placeholder="VD: https://www.youtube.com/watch?v=iX7JdbHNKBE"
+          />
+          <span className="helper-text">
+            Hỗ trợ: YouTube, Vimeo, Dailymotion, hoặc URL nhúng trực tiếp
+          </span>
+        </div>
+      </div>
+
+      <div className="section">
+        <h2 className="section-title">Ưu & Nhược điểm</h2>
+        <p className="section-desc">Ưu điểm và nhược điểm chính</p>
 
         <div className="pros-cons-grid">
           {/* Pros */}
           <div className="pros-section">
-            <h3 className="list-title pros-title">👍 Pros</h3>
+            <h3 className="list-title pros-title">👍 Ưu điểm</h3>
             <div className="list-items">
               {pros.map((_, index) => (
                 <div key={index} className="list-item">
                   <input
                     type="text"
                     {...register(`pros.${index}` as const)}
-                    placeholder="Enter a pro..."
+                    placeholder="Nhập ưu điểm..."
                   />
                   <button
                     type="button"
@@ -165,21 +187,21 @@ export default function Tab3ReviewContent() {
                 className="btn-add"
                 onClick={() => setValue('pros', [...pros, ''])}
               >
-                + Add Pro
+                + Thêm ưu điểm
               </button>
             </div>
           </div>
 
           {/* Cons */}
           <div className="cons-section">
-            <h3 className="list-title cons-title">👎 Cons</h3>
+            <h3 className="list-title cons-title">👎 Nhược điểm</h3>
             <div className="list-items">
               {cons.map((_, index) => (
                 <div key={index} className="list-item">
                   <input
                     type="text"
                     {...register(`cons.${index}` as const)}
-                    placeholder="Enter a con..."
+                    placeholder="Nhập nhược điểm..."
                   />
                   <button
                     type="button"
@@ -199,7 +221,7 @@ export default function Tab3ReviewContent() {
                 className="btn-add"
                 onClick={() => setValue('cons', [...cons, ''])}
               >
-                + Add Con
+                + Thêm nhược điểm
               </button>
             </div>
           </div>
@@ -207,34 +229,36 @@ export default function Tab3ReviewContent() {
       </div>
 
       <div className="section">
-        <h2 className="section-title">Main Content</h2>
-        <p className="section-desc">Full review content with rich text formatting</p>
+        <h2 className="section-title">Nội dung chính</h2>
+        <p className="section-desc">Nội dung đánh giá đầy đủ với định dạng văn bản phong phú</p>
 
         <div className="editor-wrapper">
           <RichTextEditor
             value={watch('mainContent') || ''}
             onChange={(content) => setValue('mainContent', content)}
-            placeholder="Write your detailed review here..."
+            placeholder="Viết đánh giá chi tiết của bạn tại đây..."
+            minHeight="400px"
+            maxHeight="600px"
           />
         </div>
       </div>
 
       <div className="section">
-        <h2 className="section-title">Verdict</h2>
-        <p className="section-desc">Final conclusion and recommendation</p>
+        <h2 className="section-title">Kết luận</h2>
+        <p className="section-desc">Kết luận cuối cùng và khuyến nghị</p>
 
         <div className="form-group">
           <textarea
             {...register('verdict')}
-            placeholder="Write your final verdict and recommendation..."
+            placeholder="Viết kết luận và khuyến nghị cuối cùng..."
             rows={4}
           />
         </div>
       </div>
 
       <div className="section">
-        <h2 className="section-title">Images Gallery</h2>
-        <p className="section-desc">Additional images for the review</p>
+        <h2 className="section-title">Thư viện ảnh</h2>
+        <p className="section-desc">Các ảnh bổ sung cho đánh giá</p>
 
         <div className="images-list">
           {images.map((_, index) => (
@@ -242,7 +266,7 @@ export default function Tab3ReviewContent() {
               <input
                 type="text"
                 {...register(`images.${index}` as const)}
-                placeholder="Image URL..."
+                placeholder="URL ảnh..."
               />
               <button
                 type="button"
@@ -267,7 +291,7 @@ export default function Tab3ReviewContent() {
             className="btn-add"
             onClick={() => setValue('images', [...images, ''])}
           >
-            + Add Image
+            + Thêm ảnh
           </button>
         </div>
       </div>
@@ -337,6 +361,12 @@ export default function Tab3ReviewContent() {
           font-size: 10px;
           color: #6b7280;
           cursor: help;
+        }
+
+        .helper-text {
+          font-size: 12px;
+          color: #6b7280;
+          margin-top: 4px;
         }
 
         input, textarea {
@@ -447,6 +477,11 @@ export default function Tab3ReviewContent() {
         .editor-wrapper {
           min-height: 400px;
           border: 1px solid #d1d5db;
+          border-radius: 8px;
+          overflow: hidden;
+        }
+
+        .editor-wrapper-bordered {
           border-radius: 8px;
           overflow: hidden;
         }

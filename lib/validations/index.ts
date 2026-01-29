@@ -8,11 +8,11 @@ export * from './article';
 export function formatZodErrors(error: any): Record<string, string> {
   const errors: Record<string, string> = {};
 
-  if (error.errors) {
-    for (const err of error.errors) {
-      const path = err.path.join('.');
-      errors[path] = err.message;
-    }
+  // ZodError uses 'issues' not 'errors'
+  const issues = error.issues || error.errors || [];
+  for (const err of issues) {
+    const path = err.path?.join('.') || 'unknown';
+    errors[path] = err.message;
   }
 
   return errors;

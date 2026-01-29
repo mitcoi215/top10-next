@@ -1,5 +1,6 @@
 import '@/styles/top10.css';
 import { Top10Header, Top10Footer } from '@/components/top10/layout';
+import { SetoffBox } from '@/components/top10/category';
 import {
   HeroSection,
   BrandLogos,
@@ -11,6 +12,9 @@ import {
   ExploreCategories,
 } from '@/components/top10/home';
 import { prisma } from '@/lib/prisma';
+
+// Disable caching - always fetch fresh data from DB
+export const dynamic = 'force-dynamic';
 
 export const metadata = {
   title: 'Top 10 Lists of the Best Products and Services | Top10.com',
@@ -26,7 +30,11 @@ async function getHomepageData() {
     // Fetch category groups with their categories
     const categoryGroups = await prisma.categoryGroup.findMany({
       orderBy: { order: 'asc' },
-      include: {
+      select: {
+        id: true,
+        slug: true,
+        name: true,
+        icon: true,
         categories: {
           orderBy: { order: 'asc' },
           select: {
@@ -95,10 +103,11 @@ export default async function HomePage() {
 
   return (
     <div className="top10-page">
+      <SetoffBox />
       <Top10Header />
 
       <main>
-        <HeroSection categoryGroups={categoryGroups} />
+        <HeroSection categoryGroups={categoryGroups} heroTagline={settings?.heroTagline} />
         <BrandLogos logos={settings?.brandLogos as any[]} />
         <TrendingList items={settings?.trendingItems as any[]} />
         <StatsSection

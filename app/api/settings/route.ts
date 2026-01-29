@@ -20,7 +20,7 @@ export async function GET() {
         data: {
           heroTitle: 'Find the Best Products & Services',
           heroSubtitle: 'Expert reviews and comparisons to help you make informed decisions',
-          featuredCategoryIds: [],
+          featuredGroupIds: [],
           trendingItems: [],
           statsListsCount: '500+',
           statsHoursCount: '5,000+',
@@ -34,7 +34,13 @@ export async function GET() {
       });
     }
 
-    return NextResponse.json(settings);
+    // Map featuredGroupIds to featuredCategoryIds for frontend compatibility
+    const response = {
+      ...settings,
+      featuredCategoryIds: settings.featuredGroupIds || [],
+    };
+
+    return NextResponse.json(response);
   } catch (error) {
     console.error('Get settings error:', error);
     return NextResponse.json(
@@ -68,9 +74,10 @@ export async function PUT(request: NextRequest) {
       settings = await prisma.homepageSettings.update({
         where: { id: settings.id },
         data: {
+          ...(validatedData.heroTagline !== undefined && { heroTagline: validatedData.heroTagline }),
           ...(validatedData.heroTitle !== undefined && { heroTitle: validatedData.heroTitle }),
           ...(validatedData.heroSubtitle !== undefined && { heroSubtitle: validatedData.heroSubtitle }),
-          ...(validatedData.featuredCategoryIds !== undefined && { featuredCategoryIds: validatedData.featuredCategoryIds }),
+          ...(validatedData.featuredCategoryIds !== undefined && { featuredGroupIds: validatedData.featuredCategoryIds }),
           ...(validatedData.trendingItems !== undefined && { trendingItems: validatedData.trendingItems }),
           ...(validatedData.statsListsCount !== undefined && { statsListsCount: validatedData.statsListsCount }),
           ...(validatedData.statsHoursCount !== undefined && { statsHoursCount: validatedData.statsHoursCount }),
@@ -86,9 +93,10 @@ export async function PUT(request: NextRequest) {
       // Create new
       settings = await prisma.homepageSettings.create({
         data: {
+          heroTagline: validatedData.heroTagline,
           heroTitle: validatedData.heroTitle,
           heroSubtitle: validatedData.heroSubtitle,
-          featuredCategoryIds: validatedData.featuredCategoryIds || [],
+          featuredGroupIds: validatedData.featuredCategoryIds || [],
           trendingItems: validatedData.trendingItems || [],
           statsListsCount: validatedData.statsListsCount,
           statsHoursCount: validatedData.statsHoursCount,
@@ -102,22 +110,35 @@ export async function PUT(request: NextRequest) {
       });
     }
 
-    return NextResponse.json(settings);
+    // Map featuredGroupIds to featuredCategoryIds for frontend compatibility
+    const response = {
+      ...settings,
+      featuredCategoryIds: settings.featuredGroupIds || [],
+    };
+
+    return NextResponse.json(response);
   } catch (error) {
     console.error('Update settings error:', error);
 
     if (error instanceof ZodError) {
+      const details = formatZodErrors(error);
+      console.error('Validation details:', JSON.stringify(details, null, 2));
+      console.error('Zod issues:', JSON.stringify(error.issues, null, 2));
       return NextResponse.json(
         {
           error: 'Validation failed',
-          details: formatZodErrors(error),
+          details,
+          issues: error.issues,
         },
         { status: 400 }
       );
     }
 
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    const errorStack = error instanceof Error ? error.stack : '';
+    console.error('Server error details:', errorMessage, errorStack);
     return NextResponse.json(
-      { error: 'Failed to update settings' },
+      { error: 'Failed to update settings', message: errorMessage },
       { status: 500 }
     );
   }

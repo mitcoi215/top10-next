@@ -36,8 +36,8 @@ export default function Tab4FaqSeo() {
   return (
     <div className="tab-faq-seo">
       <div className="section">
-        <h2 className="section-title">Frequently Asked Questions</h2>
-        <p className="section-desc">FAQ section for the product review page (helps with SEO)</p>
+        <h2 className="section-title">Câu hỏi thường gặp</h2>
+        <p className="section-desc">Phần FAQ cho trang đánh giá sản phẩm (hỗ trợ SEO)</p>
 
         <div className="faq-list">
           {faqs.map((faq, index) => (
@@ -54,20 +54,20 @@ export default function Tab4FaqSeo() {
               </div>
               <div className="faq-fields">
                 <div className="form-group">
-                  <label>Question</label>
+                  <label>Câu hỏi</label>
                   <input
                     type="text"
                     value={faq.question}
                     onChange={(e) => updateFaq(index, 'question', e.target.value)}
-                    placeholder="e.g., How much does Sling TV cost?"
+                    placeholder="VD: Giá của Sling TV là bao nhiêu?"
                   />
                 </div>
                 <div className="form-group">
-                  <label>Answer</label>
+                  <label>Câu trả lời</label>
                   <textarea
                     value={faq.answer}
                     onChange={(e) => updateFaq(index, 'answer', e.target.value)}
-                    placeholder="Provide a detailed answer..."
+                    placeholder="Cung cấp câu trả lời chi tiết..."
                     rows={3}
                   />
                 </div>
@@ -76,14 +76,14 @@ export default function Tab4FaqSeo() {
           ))}
 
           <button type="button" className="btn-add" onClick={addFaq}>
-            + Add FAQ
+            + Thêm câu hỏi
           </button>
         </div>
       </div>
 
       <div className="section">
-        <h2 className="section-title">User Ratings Breakdown</h2>
-        <p className="section-desc">Detailed user rating categories (optional)</p>
+        <h2 className="section-title">Phân tích đánh giá người dùng</h2>
+        <p className="section-desc">Các danh mục đánh giá chi tiết (tùy chọn)</p>
 
         <div className="ratings-grid">
           {['Overall', 'Features', 'Value', 'Ease of Use', 'Support'].map((category) => (
@@ -110,12 +110,12 @@ export default function Tab4FaqSeo() {
       </div>
 
       <div className="section">
-        <h2 className="section-title">SEO Settings</h2>
-        <p className="section-desc">Search engine optimization metadata</p>
+        <h2 className="section-title">Cài đặt SEO</h2>
+        <p className="section-desc">Thông tin tối ưu hóa công cụ tìm kiếm</p>
 
         <div className="seo-actions">
           <button type="button" className="btn-generate" onClick={generateSeoFields}>
-            🪄 Auto-generate SEO fields
+            🪄 Tự động tạo thông tin SEO
           </button>
         </div>
 
@@ -123,42 +123,42 @@ export default function Tab4FaqSeo() {
           {/* Meta Title */}
           <div className="form-group full-width">
             <label htmlFor="metaTitle">
-              Meta Title
-              <span className="tooltip" title="Title shown in search results (50-60 characters)">?</span>
+              Tiêu đề Meta
+              <span className="tooltip" title="Tiêu đề hiển thị trên kết quả tìm kiếm (50-60 ký tự)">?</span>
             </label>
             <input
               id="metaTitle"
               type="text"
               {...register('metaTitle')}
-              placeholder="e.g., Sling TV Review 2026: Features, Pricing & More | Top10"
+              placeholder="VD: Đánh giá Sling TV 2026: Tính năng, Giá & Hơn thế | Top10"
             />
             <div className="char-count">
-              {(watch('metaTitle') || '').length} / 60 characters
+              {(watch('metaTitle') || '').length} / 60 ký tự
             </div>
           </div>
 
           {/* Meta Description */}
           <div className="form-group full-width">
             <label htmlFor="metaDescription">
-              Meta Description
-              <span className="tooltip" title="Description shown in search results (150-160 characters)">?</span>
+              Mô tả Meta
+              <span className="tooltip" title="Mô tả hiển thị trên kết quả tìm kiếm (150-160 ký tự)">?</span>
             </label>
             <textarea
               id="metaDescription"
               {...register('metaDescription')}
-              placeholder="A compelling description for search engines..."
+              placeholder="Mô tả hấp dẫn cho công cụ tìm kiếm..."
               rows={3}
             />
             <div className="char-count">
-              {(watch('metaDescription') || '').length} / 160 characters
+              {(watch('metaDescription') || '').length} / 160 ký tự
             </div>
           </div>
 
           {/* OG Image */}
           <div className="form-group">
             <label htmlFor="ogImage">
-              OG Image URL
-              <span className="tooltip" title="Image shown when shared on social media">?</span>
+              URL ảnh OG
+              <span className="tooltip" title="Ảnh hiển thị khi chia sẻ trên mạng xã hội">?</span>
             </label>
             <input
               id="ogImage"
@@ -168,7 +168,7 @@ export default function Tab4FaqSeo() {
             />
             {watch('ogImage') && (
               <div className="og-preview">
-                <img src={watch('ogImage')} alt="OG preview" />
+                <img src={watch('ogImage')} alt="Xem trước ảnh OG" />
               </div>
             )}
           </div>
@@ -176,43 +176,43 @@ export default function Tab4FaqSeo() {
           {/* Canonical URL */}
           <div className="form-group">
             <label htmlFor="canonical">
-              Canonical URL
-              <span className="tooltip" title="Original URL if content exists elsewhere">?</span>
+              URL Canonical
+              <span className="tooltip" title="URL gốc nếu nội dung tồn tại ở nơi khác">?</span>
             </label>
             <input
               id="canonical"
               type="text"
               {...register('canonical')}
-              placeholder="https://example.com/original-content"
+              placeholder="https://example.com/noi-dung-goc"
             />
           </div>
         </div>
 
         {/* SEO Preview */}
         <div className="seo-preview">
-          <h3>Search Result Preview</h3>
+          <h3>Xem trước kết quả tìm kiếm</h3>
           <div className="preview-card">
             <div className="preview-url">
               top10.com › {watch('reviewHref') || 'product-review'}
             </div>
             <div className="preview-title">
-              {watch('metaTitle') || 'Product Title | Top10'}
+              {watch('metaTitle') || 'Tiêu đề sản phẩm | Top10'}
             </div>
             <div className="preview-desc">
-              {watch('metaDescription') || 'Meta description will appear here...'}
+              {watch('metaDescription') || 'Mô tả meta sẽ hiển thị ở đây...'}
             </div>
           </div>
         </div>
       </div>
 
       <div className="section">
-        <h2 className="section-title">Related Products</h2>
-        <p className="section-desc">Products to show in the &quot;Related&quot; section</p>
+        <h2 className="section-title">Sản phẩm liên quan</h2>
+        <p className="section-desc">Sản phẩm hiển thị trong phần "Liên quan"</p>
 
         <div className="form-group">
           <label>
-            Related Product IDs
-            <span className="tooltip" title="Comma-separated product IDs">?</span>
+            ID sản phẩm liên quan
+            <span className="tooltip" title="ID sản phẩm phân cách bằng dấu phẩy">?</span>
           </label>
           <input
             type="text"
@@ -221,9 +221,9 @@ export default function Tab4FaqSeo() {
               const ids = e.target.value.split(',').map(id => id.trim()).filter(Boolean);
               setValue('relatedProductIds', ids);
             }}
-            placeholder="product-id-1, product-id-2, product-id-3"
+            placeholder="id-san-pham-1, id-san-pham-2, id-san-pham-3"
           />
-          <p className="hint">Enter product IDs separated by commas</p>
+          <p className="hint">Nhập ID sản phẩm phân cách bằng dấu phẩy</p>
         </div>
       </div>
 

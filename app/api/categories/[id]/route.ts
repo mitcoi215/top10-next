@@ -22,6 +22,15 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     let category = await prisma.category.findUnique({
       where: { id },
       include: {
+        author: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+            avatar: true,
+            title: true,
+          },
+        },
         products: {
           select: {
             id: true,
@@ -45,6 +54,15 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       category = await prisma.category.findUnique({
         where: { slug: id },
         include: {
+          author: {
+            select: {
+              id: true,
+              name: true,
+              slug: true,
+              avatar: true,
+              title: true,
+            },
+          },
           products: {
             select: {
               id: true,
@@ -160,6 +178,11 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
         ...(validatedData.featured !== undefined && { featured: validatedData.featured }),
         ...(validatedData.order !== undefined && { order: validatedData.order }),
 
+        // Author
+        ...(validatedData.authorId !== undefined && {
+          authorId: validatedData.authorId || null
+        }),
+
         // Hero & Intro
         ...(validatedData.heroImage !== undefined && { heroImage: validatedData.heroImage }),
         ...(validatedData.heroTitle !== undefined && { heroTitle: validatedData.heroTitle }),
@@ -173,6 +196,12 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
         ...(validatedData.methodologyIntro !== undefined && { methodologyIntro: validatedData.methodologyIntro }),
         ...(validatedData.methodologyCriteria !== undefined && { methodologyCriteria: validatedData.methodologyCriteria }),
         ...(validatedData.exploreCards !== undefined && { exploreCards: validatedData.exploreCards }),
+
+        // Bottom Content (above FAQ)
+        ...(validatedData.bottomContent !== undefined && { bottomContent: validatedData.bottomContent }),
+
+        // Additional Content (below Bottom Content)
+        ...(validatedData.additionalContent !== undefined && { additionalContent: validatedData.additionalContent }),
 
         // Review List Page
         ...(validatedData.reviewListIntro !== undefined && { reviewListIntro: validatedData.reviewListIntro }),

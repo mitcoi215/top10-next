@@ -1,14 +1,27 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 
 interface FAQItem {
   question: string;
   answer: string;
 }
 
+interface AuthorInfo {
+  name: string;
+  slug: string;
+  avatar: string;
+  bio?: string;
+  blogUrl?: string;
+  twitterUrl?: string;
+  linkedInUrl?: string;
+}
+
 interface FAQSectionProps {
   items: FAQItem[];
+  author?: AuthorInfo;
+  lastUpdated?: string;
 }
 
 // FAQ Icon
@@ -22,7 +35,7 @@ function FAQIcon() {
   );
 }
 
-export default function FAQSection({ items }: FAQSectionProps) {
+export default function FAQSection({ items, author, lastUpdated }: FAQSectionProps) {
   const [openIndex, setOpenIndex] = useState<number>(0);
 
   const toggleFAQ = (index: number) => {
@@ -31,51 +44,139 @@ export default function FAQSection({ items }: FAQSectionProps) {
 
   return (
     <div className="charticle__faq under-wysiwyg">
-      <div data-type="application/hydration-marker">
-        <div id="_faq" data-testid="faq" className="css-15qoik9">
-          <div className="css-1n21q42">
-            <div className="css-6bs3ud">
-              <FAQIcon />
-            </div>
-            <div data-testid="faq-title" className="css-vcrdl3">Frequently Asked Questions</div>
+      <div id="_faq" data-testid="faq" className="css-15qoik9">
+        <div className="css-1n21q42">
+          <div className="css-6bs3ud">
+            <FAQIcon />
           </div>
-          <div data-testid="faq-list" className="css-gsmj7v">
-            {items.map((item, index) => (
-              <div
-                key={index}
-                data-testid={`faq-item-${index + 1}`}
-                className={`faq-item-${index + 1} css-ekpuav`}
-              >
-                <div className="css-ekpuav">
-                  <div
-                    className={`faq-header ${openIndex === index ? 'css-t7dj1t' : 'css-xwxnws'}`}
-                    onClick={() => toggleFAQ(index)}
-                  >
-                    <span data-testid="faq-question" className="css-foc1h8">
-                      {item.question}
-                    </span>
-                    <span
-                      className={`faq-plus-icon ${openIndex === index ? 'css-19x7kzb' : 'css-1r8kmuz'}`}
-                    >
-                      +
-                    </span>
-                    <span className={openIndex === index ? 'css-1ovh3ti' : 'css-1dnb2v0'}>-</span>
-                  </div>
-                </div>
+          <div data-testid="faq-title" className="css-vcrdl3">Frequently Asked Questions</div>
+        </div>
+        <div data-testid="faq-list" className="css-gsmj7v">
+          {items.map((item, index) => (
+            <div
+              key={index}
+              data-testid={`faq-item-${index + 1}`}
+              className={`faq-item-${index + 1} css-ekpuav`}
+            >
+              <div className="css-ekpuav">
                 <div
-                  style={{ height: openIndex === index ? 'auto' : 0 }}
-                  className="css-1d293q6"
+                  className={`faq-header ${openIndex === index ? 'css-t7dj1t' : 'css-xwxnws'}`}
+                  onClick={() => toggleFAQ(index)}
                 >
-                  <p
-                    className="css-hmjnm7"
-                    dangerouslySetInnerHTML={{ __html: item.answer }}
-                  />
+                  <span data-testid="faq-question" className="css-foc1h8">
+                    {item.question}
+                  </span>
+                  <span
+                    className={`faq-plus-icon ${openIndex === index ? 'css-19x7kzb' : 'css-1r8kmuz'}`}
+                  >
+                    +
+                  </span>
+                  <span className={openIndex === index ? 'css-1ovh3ti' : 'css-1dnb2v0'}>-</span>
                 </div>
               </div>
-            ))}
-          </div>
+              <div
+                style={{ height: openIndex === index ? 'auto' : 0 }}
+                className="css-1d293q6"
+              >
+                <p
+                  className="css-hmjnm7"
+                  dangerouslySetInnerHTML={{ __html: item.answer }}
+                />
+              </div>
+            </div>
+          ))}
         </div>
       </div>
+
+      {/* Author Section */}
+      {author && (
+        <div className="by-author__extended">
+          <div className="by-author__author-credentials">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              width="35"
+              height="35"
+              className="by-author__image"
+              src={author.avatar}
+              alt={author.name}
+              title={author.name}
+            />
+            <div className="by-author__author-metadata">
+              <div className="by-author__author-name">
+                <span className="by-author__by">By</span>
+                <Link
+                  href={`/authors/${author.slug}`}
+                  data-role="charticle-author-bottom"
+                  className="by-author__author"
+                >
+                  {author.name}
+                </Link>
+              </div>
+              {lastUpdated && (
+                <div data-testid="last-updated" className="by-author__pubdate css-1eneqdx">
+                  <svg width="1em" height="1em" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg" className="check-mark css-4qp2h0">
+                    <path d="M8.625 16.25a8.125 8.125 0 100-16.25 8.125 8.125 0 000 16.25z" fill="currentColor"></path>
+                    <path d="M5.05 8.545l.866-1.126L8.17 9.325l3.64-4.073 1.04.953-4.594 5.027L5.05 8.545z" fill="#F5F5F5"></path>
+                  </svg>
+                  <span className="css-1nuluvx">Last Updated:</span>
+                  <span className="css-66vicj"> {lastUpdated}</span>
+                </div>
+              )}
+            </div>
+          </div>
+          {author.bio && (
+            <div className="by-author__bio">{author.bio}</div>
+          )}
+          {(author.blogUrl || author.twitterUrl || author.linkedInUrl) && (
+            <div className="by-author__social">
+              <ul className="social-share">
+                {author.blogUrl && (
+                  <li
+                    className="btn-blogUrl social-share__button"
+                    data-value={author.blogUrl}
+                    data-name="social-share-buttons"
+                    data-role-id="open"
+                  >
+                    <a href={author.blogUrl} target="_blank" rel="noopener noreferrer">
+                      <svg className="social-share__icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" fill="currentColor"/>
+                      </svg>
+                    </a>
+                  </li>
+                )}
+                {author.twitterUrl && (
+                  <li
+                    className="btn-twitter social-share__button"
+                    data-value={author.twitterUrl}
+                    data-name="social-share-buttons"
+                    data-role-id="open"
+                  >
+                    <a href={author.twitterUrl} target="_blank" rel="noopener noreferrer">
+                      <svg className="social-share__icon" viewBox="0 0 25 20" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7.889 19.723c6.72 0 12.717-5.02 13.74-11.72.109-.71-.101-2.065.227-2.642.213-.374.92-.743 1.24-1.068a9.86 9.86 0 001.116-1.363 9.847 9.847 0 01-2.806.756 4.836 4.836 0 002.15-2.66c-.14.428-1.904.865-2.305.977-.958.27-1.071-.185-1.87-.64-1.583-.902-3.577-.839-5.122.116-1.695 1.048-2.5 3.133-2.128 5.077-3.692.309-7.825-2.276-10.082-5.002.003.004-.585 1.498-.616 1.703a4.795 4.795 0 00.393 2.749c.225.482 1.053 1.948 1.685 1.968-.8-.024-2.273-.24-2.273-.6v.06c0 1.123.482 2.226 1.208 3.075.61.711 1.763 1.796 2.788 1.65-.226.059-2.065.388-2.169.072.654 1.994 2.43 2.669 4.237 3.316-1.394 1.048-2.606 1.754-4.366 1.985-.606.079-2.002.367-2.536.03a14.005 14.005 0 007.489 2.161z" fill="currentColor"/>
+                      </svg>
+                    </a>
+                  </li>
+                )}
+                {author.linkedInUrl && (
+                  <li
+                    className="btn-linkedIn social-share__button"
+                    data-value={author.linkedInUrl}
+                    data-name="social-share-buttons"
+                    data-role-id="open"
+                  >
+                    <a href={author.linkedInUrl} target="_blank" rel="noopener noreferrer">
+                      <svg className="social-share__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15">
+                        <path d="M1.807.012a1.83 1.83 0 011.807 1.807c0 1.033-.877 1.833-1.807 1.807C.852 3.652.001 2.852.001 1.819-.025.813.8.012 1.807.012m1.007 14.713H.75a.518.518 0 01-.516-.516V5.175c0-.284.206-.516.49-.516h2.091c.284 0 .516.232.516.516v9.06c0 .258-.232.49-.516.49m12.131-6.917c0-1.91-1.42-3.408-3.33-3.408h-.542c-1.033 0-2.04.49-2.581 1.291l-.259.258V4.917c0-.104-.154-.258-.258-.258h-2.58c-.104 0-.259.103-.259.232v9.628c0 .103.155.206.258.206h2.84c.103 0 .258-.103.258-.206V8.943c0-.955.722-1.755 1.677-1.78.49 0 .93.18 1.265.515.31.31.439.749.439 1.24v5.549c0 .103.155.258.258.258h2.581c.103 0 .258-.155.258-.258v-6.66h-.025z" fill="currentColor"/>
+                      </svg>
+                    </a>
+                  </li>
+                )}
+              </ul>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

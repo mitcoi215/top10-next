@@ -116,8 +116,8 @@ const FamilyPetsIcon = () => (
   </svg>
 );
 
-// Categories data - exact from original HTML
-const categories = [
+// Tab categories data - exact from original HTML
+const tabCategories = [
   { id: 'all', name: 'All', icon: null },
   { id: 'lifestyle', name: 'Lifestyle', icon: LifestyleIcon },
   { id: 'business', name: 'Business', icon: BusinessIcon },
@@ -209,7 +209,7 @@ export default function ExploreCategories({ categories }: ExploreCategoriesProps
 
           {/* Tab buttons */}
           <div className="ni-1yt1bof">
-            {categories.map((cat) => (
+            {tabCategories.map((cat) => (
               <div key={cat.id} className="ni-11qlfbl">
                 <button
                   tabIndex={0}

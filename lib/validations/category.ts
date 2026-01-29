@@ -54,6 +54,9 @@ export const CategoryCreateSchema = z.object({
   featured: z.boolean().default(false),
   order: z.number().int().min(0).default(0),
 
+  // Author
+  authorId: z.string().optional().nullable(),
+
   // Hero & Intro
   heroImage: z.string().optional().nullable(),
   heroTitle: z.string().optional().nullable(),
@@ -67,6 +70,12 @@ export const CategoryCreateSchema = z.object({
   methodologyIntro: z.string().optional().nullable(),
   methodologyCriteria: z.array(MethodologyCriterionSchema).optional().default([]),
   exploreCards: z.array(ExploreCardSchema).optional().default([]),
+
+  // Bottom Content (above FAQ)
+  bottomContent: z.string().optional().nullable(),
+
+  // Additional Content (below Bottom Content)
+  additionalContent: z.string().optional().nullable(),
 
   // Review List Page
   reviewListIntro: z.string().optional().nullable(),

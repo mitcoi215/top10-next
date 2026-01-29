@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { CategoryEditor } from '@/components/admin/category-editor';
-import { CategoryFormData, ProductOption, ArticleOption } from '@/components/admin/category-editor/types';
+import { CategoryFormData, ProductOption, ArticleOption, AuthorOption } from '@/components/admin/category-editor/types';
 
 export default function EditCategoryPage() {
   const router = useRouter();
@@ -13,16 +13,18 @@ export default function EditCategoryPage() {
   const [category, setCategory] = useState<Partial<CategoryFormData> | null>(null);
   const [products, setProducts] = useState<ProductOption[]>([]);
   const [articles, setArticles] = useState<ArticleOption[]>([]);
+  const [authors, setAuthors] = useState<AuthorOption[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [categoryRes, productsRes, articlesRes] = await Promise.all([
+        const [categoryRes, productsRes, articlesRes, authorsRes] = await Promise.all([
           fetch(`/api/categories/${categoryId}`),
           fetch('/api/products'),
           fetch('/api/articles'),
+          fetch('/api/authors'),
         ]);
 
         if (!categoryRes.ok) {
@@ -32,6 +34,7 @@ export default function EditCategoryPage() {
         const categoryData = await categoryRes.json();
         const productsData = await productsRes.json();
         const articlesData = await articlesRes.json();
+        const authorsData = await authorsRes.json();
 
         // Transform category data to match form structure
         setCategory({
@@ -45,6 +48,7 @@ export default function EditCategoryPage() {
           metaTitle: categoryData.metaTitle || '',
           metaDescription: categoryData.metaDescription || '',
           ogImage: categoryData.ogImage || '',
+          authorId: categoryData.authorId || '',
           heroImage: categoryData.heroImage || '',
           heroTitle: categoryData.heroTitle || '',
           introContent: categoryData.introContent || '',
@@ -59,6 +63,8 @@ export default function EditCategoryPage() {
           methodologyCriteria: categoryData.methodologyCriteria || [],
           exploreCards: categoryData.exploreCards || [],
           faqs: categoryData.faqs || [],
+          bottomContent: categoryData.bottomContent || '',
+          additionalContent: categoryData.additionalContent || '',
         });
 
         // Products API returns array directly
@@ -76,6 +82,15 @@ export default function EditCategoryPage() {
           id: a.id,
           title: a.title,
           slug: a.slug,
+        })));
+
+        // Authors API returns array directly
+        const authorsArray = Array.isArray(authorsData) ? authorsData : [];
+        setAuthors(authorsArray.map((a: any) => ({
+          id: a.id,
+          name: a.name,
+          avatar: a.avatar,
+          title: a.title,
         })));
       } catch (err) {
         console.error('Failed to fetch data:', err);
@@ -118,7 +133,7 @@ export default function EditCategoryPage() {
     return (
       <div className="loading-container">
         <div className="loading-spinner" />
-        <p>Loading category...</p>
+        <p>Đang tải danh mục...</p>
         <style jsx>{`
           .loading-container {
             display: flex;
@@ -148,10 +163,10 @@ export default function EditCategoryPage() {
   if (error) {
     return (
       <div className="error-container">
-        <h2>Error</h2>
+        <h2>Lỗi</h2>
         <p>{error}</p>
         <button onClick={() => router.push('/admin/categories')}>
-          Back to Categories
+          Quay lại danh sách
         </button>
         <style jsx>{`
           .error-container {
@@ -190,6 +205,7 @@ export default function EditCategoryPage() {
       initialData={category || undefined}
       products={products}
       articles={articles}
+      authors={authors}
       onSave={handleSave}
       onCancel={handleCancel}
     />

@@ -4,16 +4,30 @@ import { z } from 'zod';
 // Nested Object Schemas
 // ============================================
 
+// Trending article schema (articles within a trending item)
+export const TrendingArticleSchema = z.object({
+  title: z.string(),
+  href: z.string(),
+  image: z.string().optional().default(''),
+  author: z.string().optional().default(''),
+  date: z.string().optional().default(''),
+  isReview: z.boolean().optional().default(false),
+});
+
+// Full trending item schema (used by admin UI and seed)
 export const TrendingItemSchema = z.object({
-  categoryId: z.string().min(1, 'Category ID is required'),
-  title: z.string().min(1, 'Title is required'),
-  description: z.string().optional(),
-  articleIds: z.array(z.string()).optional().default([]),
+  rank: z.number(),
+  title: z.string(),
+  href: z.string(),
+  image: z.string().optional().default(''),
+  description: z.string().optional().default(''),
+  date: z.string().optional().default(''),
+  articles: z.array(TrendingArticleSchema).optional().default([]),
 });
 
 export const BrandLogoSchema = z.object({
-  name: z.string().min(1, 'Brand name is required'),
-  logo: z.string().min(1, 'Logo URL is required'),
+  name: z.string(),
+  logo: z.string(),
 });
 
 // ============================================
@@ -22,6 +36,7 @@ export const BrandLogoSchema = z.object({
 
 export const HomepageSettingsSchema = z.object({
   // Hero Section
+  heroTagline: z.string().optional().nullable(),
   heroTitle: z.string().optional().nullable(),
   heroSubtitle: z.string().optional().nullable(),
 
@@ -56,4 +71,5 @@ export const HomepageSettingsSchema = z.object({
 
 export type HomepageSettingsInput = z.infer<typeof HomepageSettingsSchema>;
 export type TrendingItem = z.infer<typeof TrendingItemSchema>;
+export type TrendingArticle = z.infer<typeof TrendingArticleSchema>;
 export type BrandLogo = z.infer<typeof BrandLogoSchema>;

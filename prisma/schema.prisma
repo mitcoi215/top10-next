@@ -36,6 +36,7 @@ model Author {
   // Relations
   products    Product[]
   articles    Article[]
+  categories  Category[]
 
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
@@ -82,6 +83,10 @@ model Category {
   // Homepage hero dropdown links
   exploreHref     String?   // "/tv-services" - link for Explore button
   compareHref     String?   // "/tv-services/compare" - link for Compare button
+
+  // Category Author (for display on category page)
+  authorId    String?   @db.ObjectId
+  author      Author?   @relation(fields: [authorId], references: [id])
 
   // Category Listing Page - Header
   heroImage       String?
@@ -131,6 +136,12 @@ model Category {
   // Product Review Page - Sidebar
   editorialReviewTitle      String?   // "Editorial Reviews"
   editorialReviewProductIds String[]  @db.ObjectId // Products for sidebar on review pages
+
+  // Bottom Content (above FAQ) - Comparison table, experts section, etc.
+  bottomContent       String?   // JSON blocks displayed above FAQ section
+
+  // Additional Content (below Bottom Content) - More structured blocks
+  additionalContent   String?   // JSON blocks displayed below Bottom Content
 
   // FAQ Section (Category-level)
   faqs                Json?     // [{ question: "...", answer: "..." }]
@@ -207,7 +218,11 @@ model Product {
   readTime        String?   // "5 min" - estimated read time
 
   // Hero Summary
+  summaryTitle    String?   // "Is IONOS Worth Signing Up For?"
   heroSummary     String?   // Opening paragraph
+
+  // Video
+  videoUrl        String?   // Video URL (YouTube, Vimeo, Dailymotion, etc.)
 
   // Pros & Cons
   pros            String[]
@@ -310,11 +325,15 @@ model HomepageSettings {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
 
   // Hero Section
+  heroTagline     String?   // Main tagline: "Compare and shop the Top10 best..."
   heroTitle       String?
   heroSubtitle    String?
 
   // Featured Category Groups (for hero dropdown)
   featuredGroupIds String[] @db.ObjectId
+
+  // Featured Categories (for settings page)
+  featuredCategoryIds String[] @db.ObjectId
 
   // Trending Section (curated)
   trendingItems   Json?     // [{ groupId, title, description, image, articles: [{ title, href, image, author, date }] }]

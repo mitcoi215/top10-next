@@ -2,10 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
-import { CategoryFormData, defaultCategoryFormData, ProductOption, ArticleOption } from './types';
+import { CategoryFormData, defaultCategoryFormData, ProductOption, ArticleOption, AuthorOption } from './types';
 import Tab1GeneralInfo from './Tab1GeneralInfo';
 import Tab2RankingDisplay from './Tab2RankingDisplay';
-import Tab3Definitions from './Tab3Definitions';
 import Tab4ReviewMethodology from './Tab4ReviewMethodology';
 
 interface CategoryEditorProps {
@@ -13,15 +12,15 @@ interface CategoryEditorProps {
   initialData?: Partial<CategoryFormData>;
   products: ProductOption[];
   articles: ArticleOption[];
+  authors: AuthorOption[];
   onSave: (data: CategoryFormData) => Promise<void>;
   onCancel?: () => void;
 }
 
 const TABS = [
-  { id: 'general', label: 'General Info', icon: '⚙️' },
-  { id: 'ranking', label: 'Ranking & Display', icon: '📊' },
-  { id: 'definitions', label: 'Definitions', icon: '🧠' },
-  { id: 'review-methodology', label: 'Review & Methodology', icon: '📋' },
+  { id: 'general', label: 'Thông tin chung', icon: '⚙️' },
+  { id: 'ranking', label: 'Banner & Hiển thị', icon: '📊' },
+  { id: 'review-methodology', label: 'Nội dung & FAQ', icon: '📋' },
 ];
 
 export default function CategoryEditor({
@@ -29,6 +28,7 @@ export default function CategoryEditor({
   initialData,
   products,
   articles,
+  authors,
   onSave,
   onCancel,
 }: CategoryEditorProps) {
@@ -59,7 +59,7 @@ export default function CategoryEditor({
     const draftKey = categoryId ? `category_draft_${categoryId}` : 'category_draft_new';
     const savedDraft = localStorage.getItem(draftKey);
     if (savedDraft && !initialData) {
-      const shouldRestore = window.confirm('Found unsaved draft. Do you want to restore it?');
+      const shouldRestore = window.confirm('Tìm thấy bản nháp chưa lưu. Bạn có muốn khôi phục không?');
       if (shouldRestore) {
         const draftData = JSON.parse(savedDraft);
         methods.reset(draftData);
@@ -87,10 +87,9 @@ export default function CategoryEditor({
   const getTabErrorCount = (tabId: string): number => {
     const errorKeys = Object.keys(errors);
     const tabFields: Record<string, string[]> = {
-      general: ['slug', 'name', 'icon', 'color', 'description', 'featured', 'order', 'metaTitle', 'metaDescription', 'ogImage'],
-      ranking: ['heroImage', 'heroTitle', 'introContent', 'productOrder'],
-      definitions: ['criteriaDefinitions', 'highlightDefinitions'],
-      'review-methodology': ['reviewListIntro', 'reviewListHeroImage', 'tenThingsToKnow', 'mustReadArticleIds', 'methodologyIntro', 'methodologyCriteria', 'exploreCards', 'faqs'],
+      general: ['slug', 'name', 'icon', 'color', 'metaTitle', 'metaDescription', 'ogImage'],
+      ranking: ['heroImage', 'heroTitle', 'introContent', 'authorId'],
+      'review-methodology': ['methodologyIntro', 'methodologyCriteria', 'exploreCards', 'faqs', 'bottomContent', 'additionalContent'],
     };
     return errorKeys.filter(key => tabFields[tabId]?.includes(key)).length;
   };
@@ -101,7 +100,7 @@ export default function CategoryEditor({
         {/* Header */}
         <div className="editor-header">
           <div className="header-left">
-            <h1>{categoryId ? 'Edit Category' : 'Create New Category'}</h1>
+            <h1>{categoryId ? 'Chỉnh sửa danh mục' : 'Tạo danh mục mới'}</h1>
             {watch('name') && (
               <span className="category-preview">
                 <span className="preview-icon">{watch('icon')}</span>
@@ -110,14 +109,14 @@ export default function CategoryEditor({
             )}
           </div>
           <div className="header-right">
-            {saveStatus === 'saving' && <span className="save-status saving">Saving...</span>}
-            {saveStatus === 'saved' && <span className="save-status saved">Saved!</span>}
-            {saveStatus === 'error' && <span className="save-status error">Save failed</span>}
-            {isDirty && saveStatus === 'idle' && <span className="save-status unsaved">Unsaved changes</span>}
+            {saveStatus === 'saving' && <span className="save-status saving">Đang lưu...</span>}
+            {saveStatus === 'saved' && <span className="save-status saved">Đã lưu!</span>}
+            {saveStatus === 'error' && <span className="save-status error">Lưu thất bại</span>}
+            {isDirty && saveStatus === 'idle' && <span className="save-status unsaved">Chưa lưu thay đổi</span>}
 
             {onCancel && (
               <button type="button" className="btn-secondary" onClick={onCancel}>
-                Cancel
+                Hủy
               </button>
             )}
             <button
@@ -126,7 +125,7 @@ export default function CategoryEditor({
               onClick={handleSubmit(onSubmit)}
               disabled={isSaving}
             >
-              {isSaving ? 'Saving...' : 'Save Category'}
+              {isSaving ? 'Đang lưu...' : 'Lưu danh mục'}
             </button>
           </div>
         </div>
@@ -154,9 +153,8 @@ export default function CategoryEditor({
         <form onSubmit={handleSubmit(onSubmit)} className="editor-form">
           <div className="tab-content">
             {activeTab === 'general' && <Tab1GeneralInfo />}
-            {activeTab === 'ranking' && <Tab2RankingDisplay products={products} />}
-            {activeTab === 'definitions' && <Tab3Definitions />}
-            {activeTab === 'review-methodology' && <Tab4ReviewMethodology articles={articles} />}
+            {activeTab === 'ranking' && <Tab2RankingDisplay authors={authors} />}
+            {activeTab === 'review-methodology' && <Tab4ReviewMethodology authors={authors} />}
           </div>
         </form>
 

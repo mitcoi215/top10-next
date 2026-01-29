@@ -6271,7 +6271,7 @@
       margin-top: -10px
     }
     .mini-reviews__bullet-points {
-      margin: 40px 0 0 0;
+      /* margin: 40px 0 0 0; */
       padding: 0;
       display: -webkit-flex;
       display: flex;
@@ -16206,9 +16206,9 @@
     }
     .charticle__faq {
       margin: 50px 15px 0 15px;
-      padding: 50px 0;
-      border-bottom: 1px solid #d5d5d5;
-      border-top: 1px solid #d5d5d5
+      /* padding: 50px 0; */
+      /* border-bottom: 1px solid #d5d5d5; */
+      /* border-top: 1px solid #d5d5d5 */
     }
     @media screen and (min-width: 768px) {
       .charticle__faq .faq {
@@ -16235,11 +16235,11 @@
     .charticle__faq.under-wysiwyg {
       border-bottom: none;
       margin: 50px 0;
-      padding: 50px 0 0
+      /* padding: 50px 0 0 */
     }
     @media screen and (min-width: 768px) {
       .charticle__faq {
-        padding: 50px 0;
+        /* padding: 50px 0; */
         margin: 0;
         width: 100%
       }

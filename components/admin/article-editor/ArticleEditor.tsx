@@ -13,7 +13,7 @@ import {
   STATUS_OPTIONS,
   extractTocFromHtml,
 } from './types';
-import RichTextEditor from './RichTextEditor';
+import RichTextEditor from '@/components/admin/RichTextEditor';
 
 interface ArticleEditorProps {
   articleId?: string;
@@ -38,6 +38,8 @@ export default function ArticleEditor({
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
   const [toc, setToc] = useState<TocItem[]>([]);
   const [showProductSelector, setShowProductSelector] = useState(false);
+  const [showProductCtaPanel, setShowProductCtaPanel] = useState(false);
+  const [productCtaSearch, setProductCtaSearch] = useState('');
 
   const {
     register,
@@ -70,7 +72,7 @@ export default function ArticleEditor({
     const draftKey = articleId ? `article_draft_${articleId}` : 'article_draft_new';
     const savedDraft = localStorage.getItem(draftKey);
     if (savedDraft && !initialData) {
-      const shouldRestore = window.confirm('Found unsaved draft. Do you want to restore it?');
+      const shouldRestore = window.confirm('Tìm thấy bản nháp chưa lưu. Bạn có muốn khôi phục không?');
       if (shouldRestore) {
         const draftData = JSON.parse(savedDraft);
         Object.keys(draftData).forEach((key) => {
@@ -120,6 +122,13 @@ export default function ArticleEditor({
     }
   };
 
+  // Insert product CTA syntax at the end of content
+  const insertProductCta = (productSlug: string) => {
+    const currentContent = watch('content') || '';
+    const ctaSyntax = `\n\n{{product:${productSlug}}}\n\n`;
+    setValue('content', currentContent + ctaSyntax, { shouldDirty: true });
+  };
+
   const onSubmit = async (data: ArticleFormData) => {
     setIsSaving(true);
     setSaveStatus('saving');
@@ -142,18 +151,18 @@ export default function ArticleEditor({
       {/* Header */}
       <div className="editor-header">
         <div className="header-left">
-          <h1>{articleId ? 'Edit Article' : 'Create New Article'}</h1>
+          <h1>{articleId ? 'Chỉnh sửa bài viết' : 'Tạo bài viết mới'}</h1>
           {title && <span className="article-preview">{title}</span>}
         </div>
         <div className="header-right">
-          {saveStatus === 'saving' && <span className="save-status saving">Saving...</span>}
-          {saveStatus === 'saved' && <span className="save-status saved">Saved!</span>}
-          {saveStatus === 'error' && <span className="save-status error">Save failed</span>}
-          {isDirty && saveStatus === 'idle' && <span className="save-status unsaved">Unsaved changes</span>}
+          {saveStatus === 'saving' && <span className="save-status saving">Đang lưu...</span>}
+          {saveStatus === 'saved' && <span className="save-status saved">Đã lưu!</span>}
+          {saveStatus === 'error' && <span className="save-status error">Lưu thất bại</span>}
+          {isDirty && saveStatus === 'idle' && <span className="save-status unsaved">Chưa lưu thay đổi</span>}
 
           {onCancel && (
             <button type="button" className="btn-secondary" onClick={onCancel}>
-              Cancel
+              Hủy
             </button>
           )}
           <button
@@ -162,7 +171,7 @@ export default function ArticleEditor({
             onClick={handleSubmit(onSubmit)}
             disabled={isSaving}
           >
-            {isSaving ? 'Saving...' : status === 'published' ? 'Update' : 'Save Draft'}
+            {isSaving ? 'Đang lưu...' : status === 'published' ? 'Cập nhật' : 'Lưu bản nháp'}
           </button>
         </div>
       </div>
@@ -175,8 +184,8 @@ export default function ArticleEditor({
             <div className="title-section">
               <input
                 type="text"
-                {...register('title', { required: 'Title is required' })}
-                placeholder="Article title..."
+                {...register('title', { required: 'Tiêu đề là bắt buộc' })}
+                placeholder="Tiêu đề bài viết..."
                 className={`title-input ${errors.title ? 'error' : ''}`}
               />
               {errors.title && <span className="error-msg">{errors.title.message}</span>}
@@ -187,36 +196,113 @@ export default function ArticleEditor({
               <input
                 type="text"
                 {...register('subtitle')}
-                placeholder="Subtitle (optional)..."
+                placeholder="Phụ đề (tùy chọn)..."
                 className="subtitle-input"
               />
             </div>
 
             {/* Excerpt */}
             <div className="excerpt-section">
-              <label>Excerpt</label>
+              <label>Tóm tắt</label>
               <textarea
                 {...register('excerpt')}
-                placeholder="Brief summary for listings and SEO..."
+                placeholder="Tóm tắt ngắn gọn cho danh sách và SEO..."
                 rows={3}
               />
-              <div className="char-count">{(watch('excerpt') || '').length} / 300 characters</div>
+              <div className="char-count">{(watch('excerpt') || '').length} / 300 ký tự</div>
             </div>
 
             {/* Main Content */}
             <div className="content-section">
-              <label>Content</label>
-              <Controller
-                name="content"
-                control={control}
-                render={({ field }) => (
-                  <RichTextEditor
-                    value={field.value}
-                    onChange={field.onChange}
-                    placeholder="Write your article content here..."
-                  />
-                )}
-              />
+              <div className="content-section-header">
+                <label>Nội dung</label>
+                <button
+                  type="button"
+                  className={`btn-insert-cta ${showProductCtaPanel ? 'active' : ''}`}
+                  onClick={() => setShowProductCtaPanel(!showProductCtaPanel)}
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                    <line x1="12" y1="8" x2="12" y2="16"/>
+                    <line x1="8" y1="12" x2="16" y2="12"/>
+                  </svg>
+                  Chèn CTA sản phẩm
+                </button>
+              </div>
+
+              {/* Product CTA Panel */}
+              {showProductCtaPanel && (
+                <div className="product-cta-panel">
+                  <div className="product-cta-panel-header">
+                    <span className="panel-title">Click để chèn hộp CTA sản phẩm</span>
+                    <span className="panel-hint">Chèn <code>{'{{product:slug}}'}</code> vào cuối nội dung</span>
+                  </div>
+                  <div className="product-cta-search">
+                    <svg className="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <circle cx="11" cy="11" r="8"/>
+                      <path d="m21 21-4.3-4.3"/>
+                    </svg>
+                    <input
+                      type="text"
+                      placeholder="Tìm sản phẩm..."
+                      value={productCtaSearch}
+                      onChange={(e) => setProductCtaSearch(e.target.value)}
+                      className="product-cta-search-input"
+                    />
+                    {productCtaSearch && (
+                      <button
+                        type="button"
+                        className="search-clear"
+                        onClick={() => setProductCtaSearch('')}
+                      >
+                        ×
+                      </button>
+                    )}
+                  </div>
+                  <div className="product-cta-grid">
+                    {products
+                      .filter(product =>
+                        product.name.toLowerCase().includes(productCtaSearch.toLowerCase()) ||
+                        product.slug.toLowerCase().includes(productCtaSearch.toLowerCase())
+                      )
+                      .map((product) => (
+                      <button
+                        key={product.id}
+                        type="button"
+                        className="product-cta-item"
+                        onClick={() => insertProductCta(product.slug)}
+                        title={`Insert {{product:${product.slug}}}`}
+                      >
+                        {product.logoUrl && (
+                          <img src={product.logoUrl} alt={product.name} className="product-cta-logo" />
+                        )}
+                        <span className="product-cta-name">{product.name}</span>
+                        <span className="product-cta-slug">{product.slug}</span>
+                      </button>
+                    ))}
+                    {products.filter(product =>
+                      product.name.toLowerCase().includes(productCtaSearch.toLowerCase()) ||
+                      product.slug.toLowerCase().includes(productCtaSearch.toLowerCase())
+                    ).length === 0 && (
+                      <div className="no-products-found">Không tìm thấy sản phẩm</div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              <div className="editor-wrapper">
+                <Controller
+                  name="content"
+                  control={control}
+                  render={({ field }) => (
+                    <RichTextEditor
+                      value={field.value}
+                      onChange={field.onChange}
+                      placeholder="Viết nội dung bài viết tại đây..."
+                    />
+                  )}
+                />
+              </div>
             </div>
           </form>
         </div>
@@ -225,7 +311,7 @@ export default function ArticleEditor({
         <div className="editor-sidebar">
           {/* Status Card */}
           <div className="sidebar-card">
-            <h3>Status</h3>
+            <h3>Trạng thái</h3>
             <select {...register('status')} className="status-select">
               {STATUS_OPTIONS.map((option) => (
                 <option key={option.value} value={option.value}>
@@ -241,12 +327,12 @@ export default function ArticleEditor({
             <div className="slug-input-group">
               <input
                 type="text"
-                {...register('slug', { required: 'Slug is required' })}
-                placeholder="article-slug"
+                {...register('slug', { required: 'Slug là bắt buộc' })}
+                placeholder="slug-bai-viet"
                 className={errors.slug ? 'error' : ''}
               />
               <button type="button" className="btn-gen" onClick={generateSlug}>
-                Generate
+                Tạo tự động
               </button>
             </div>
             {errors.slug && <span className="error-msg">{errors.slug.message}</span>}
@@ -254,7 +340,7 @@ export default function ArticleEditor({
 
           {/* Article Type */}
           <div className="sidebar-card">
-            <h3>Article Type</h3>
+            <h3>Loại bài viết</h3>
             <select {...register('articleType')}>
               {ARTICLE_TYPES.map((type) => (
                 <option key={type.value} value={type.value}>
@@ -266,9 +352,9 @@ export default function ArticleEditor({
 
           {/* Category */}
           <div className="sidebar-card">
-            <h3>Category</h3>
+            <h3>Danh mục</h3>
             <select {...register('categoryId')}>
-              <option value="">No category</option>
+              <option value="">Không có danh mục</option>
               {categories.map((cat) => (
                 <option key={cat.id} value={cat.id}>
                   {cat.icon} {cat.name}
@@ -279,9 +365,9 @@ export default function ArticleEditor({
 
           {/* Author */}
           <div className="sidebar-card">
-            <h3>Author</h3>
+            <h3>Tác giả</h3>
             <select {...register('authorId')}>
-              <option value="">No author</option>
+              <option value="">Không có tác giả</option>
               {authors.map((author) => (
                 <option key={author.id} value={author.id}>
                   {author.name}
@@ -292,11 +378,11 @@ export default function ArticleEditor({
 
           {/* Featured Image */}
           <div className="sidebar-card">
-            <h3>Featured Image</h3>
+            <h3>Ảnh đại diện</h3>
             <input
               type="text"
               {...register('featuredImage')}
-              placeholder="Image URL..."
+              placeholder="URL ảnh..."
             />
             {watch('featuredImage') && (
               <div className="image-preview">
@@ -306,20 +392,20 @@ export default function ArticleEditor({
             <input
               type="text"
               {...register('featuredImageAlt')}
-              placeholder="Alt text..."
+              placeholder="Văn bản alt..."
               className="mt-2"
             />
           </div>
 
           {/* Related Products */}
           <div className="sidebar-card">
-            <h3>Related Products ({productIds.length})</h3>
+            <h3>Sản phẩm liên quan ({productIds.length})</h3>
             <button
               type="button"
               className="btn-select-products"
               onClick={() => setShowProductSelector(!showProductSelector)}
             >
-              {showProductSelector ? 'Hide Products' : 'Select Products'}
+              {showProductSelector ? 'Ẩn sản phẩm' : 'Chọn sản phẩm'}
             </button>
             {showProductSelector && (
               <div className="product-selector">
@@ -343,7 +429,7 @@ export default function ArticleEditor({
           {/* Table of Contents */}
           {toc.length > 0 && (
             <div className="sidebar-card">
-              <h3>Table of Contents</h3>
+              <h3>Mục lục</h3>
               <ul className="toc-list">
                 {toc.map((item, index) => (
                   <li key={index} className={`toc-item level-${item.level}`}>
@@ -356,23 +442,23 @@ export default function ArticleEditor({
 
           {/* SEO */}
           <div className="sidebar-card">
-            <h3>SEO Settings</h3>
+            <h3>Cài đặt SEO</h3>
             <button type="button" className="btn-generate-seo" onClick={generateSeoFields}>
-              Auto-generate
+              Tự động tạo
             </button>
             <div className="form-group">
-              <label>Meta Title</label>
-              <input type="text" {...register('metaTitle')} placeholder="SEO title..." />
+              <label>Tiêu đề Meta</label>
+              <input type="text" {...register('metaTitle')} placeholder="Tiêu đề SEO..." />
               <div className="char-count">{(watch('metaTitle') || '').length} / 60</div>
             </div>
             <div className="form-group">
-              <label>Meta Description</label>
-              <textarea {...register('metaDescription')} placeholder="SEO description..." rows={3} />
+              <label>Mô tả Meta</label>
+              <textarea {...register('metaDescription')} placeholder="Mô tả SEO..." rows={3} />
               <div className="char-count">{(watch('metaDescription') || '').length} / 160</div>
             </div>
             <div className="form-group">
-              <label>OG Image</label>
-              <input type="text" {...register('ogImage')} placeholder="Social image URL..." />
+              <label>Ảnh OG</label>
+              <input type="text" {...register('ogImage')} placeholder="URL ảnh mạng xã hội..." />
             </div>
           </div>
         </div>
@@ -516,12 +602,205 @@ export default function ArticleEditor({
           margin-bottom: 24px;
         }
 
+        .content-section-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 12px;
+        }
+
         .excerpt-section label, .content-section label {
           display: block;
           font-size: 14px;
           font-weight: 600;
-          margin-bottom: 8px;
           color: #374151;
+        }
+
+        .btn-insert-cta {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          padding: 8px 14px;
+          background: linear-gradient(135deg, #FF4A64 0%, #FF6B7A 100%);
+          color: white;
+          border: none;
+          border-radius: 6px;
+          font-size: 13px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+
+        .btn-insert-cta:hover {
+          background: linear-gradient(135deg, #E8435A 0%, #FF5A6A 100%);
+          transform: translateY(-1px);
+          box-shadow: 0 4px 12px rgba(255, 74, 100, 0.3);
+        }
+
+        .btn-insert-cta.active {
+          background: linear-gradient(135deg, #E8435A 0%, #FF5A6A 100%);
+          box-shadow: 0 4px 12px rgba(255, 74, 100, 0.3);
+        }
+
+        .btn-insert-cta svg {
+          flex-shrink: 0;
+        }
+
+        .product-cta-panel {
+          background: linear-gradient(135deg, #FFF5F6 0%, #FFF0F2 100%);
+          border: 2px solid #FF4A64;
+          border-radius: 8px;
+          padding: 16px;
+          margin-bottom: 16px;
+        }
+
+        .product-cta-panel-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 12px;
+        }
+
+        .panel-title {
+          font-size: 14px;
+          font-weight: 600;
+          color: #374151;
+        }
+
+        .panel-hint {
+          font-size: 12px;
+          color: #6b7280;
+        }
+
+        .panel-hint code {
+          background: #fff;
+          padding: 2px 6px;
+          border-radius: 4px;
+          font-family: monospace;
+          color: #FF4A64;
+          border: 1px solid #fecdd3;
+        }
+
+        .product-cta-search {
+          position: relative;
+          margin-bottom: 12px;
+        }
+
+        .product-cta-search .search-icon {
+          position: absolute;
+          left: 12px;
+          top: 50%;
+          transform: translateY(-50%);
+          color: #9ca3af;
+        }
+
+        .product-cta-search-input {
+          width: 100%;
+          padding: 10px 36px 10px 40px;
+          border: 1px solid #e5e7eb;
+          border-radius: 8px;
+          font-size: 14px;
+          background: white;
+          transition: border-color 0.2s ease;
+        }
+
+        .product-cta-search-input:focus {
+          outline: none;
+          border-color: #FF4A64;
+          box-shadow: 0 0 0 3px rgba(255, 74, 100, 0.1);
+        }
+
+        .product-cta-search-input::placeholder {
+          color: #9ca3af;
+        }
+
+        .search-clear {
+          position: absolute;
+          right: 8px;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 24px;
+          height: 24px;
+          border: none;
+          background: #e5e7eb;
+          border-radius: 50%;
+          color: #6b7280;
+          font-size: 16px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.2s ease;
+        }
+
+        .search-clear:hover {
+          background: #d1d5db;
+          color: #374151;
+        }
+
+        .no-products-found {
+          grid-column: 1 / -1;
+          text-align: center;
+          padding: 24px;
+          color: #6b7280;
+          font-size: 14px;
+        }
+
+        .product-cta-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+          gap: 10px;
+        }
+
+        .product-cta-item {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 6px;
+          padding: 12px;
+          background: white;
+          border: 1px solid #e5e7eb;
+          border-radius: 8px;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+
+        .product-cta-item:hover {
+          border-color: #FF4A64;
+          background: #fff5f6;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(255, 74, 100, 0.15);
+        }
+
+        .product-cta-logo {
+          width: 40px;
+          height: 40px;
+          object-fit: contain;
+        }
+
+        .product-cta-name {
+          font-size: 13px;
+          font-weight: 600;
+          color: #374151;
+          text-align: center;
+        }
+
+        .product-cta-slug {
+          font-size: 11px;
+          color: #9ca3af;
+          font-family: monospace;
+        }
+
+        .editor-wrapper {
+          border: 2px solid #d1d5db;
+          border-radius: 8px;
+          overflow: hidden;
+          transition: border-color 0.2s ease;
+        }
+
+        .editor-wrapper:focus-within {
+          border-color: #FF4A64;
+          box-shadow: 0 0 0 3px rgba(255, 74, 100, 0.1);
         }
 
         .excerpt-section textarea {

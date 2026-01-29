@@ -46,23 +46,23 @@ export default function Tab3Definitions() {
   return (
     <div className="tab-definitions">
       <div className="section">
-        <h2 className="section-title">Scoring Criteria Definitions</h2>
+        <h2 className="section-title">Định nghĩa tiêu chí chấm điểm</h2>
         <p className="section-desc">
-          Define the scoring dimensions for products in this category. These criteria will appear
-          in product score breakdowns and comparisons.
+          Xác định các tiêu chí chấm điểm cho sản phẩm trong danh mục này. Các tiêu chí này sẽ xuất hiện
+          trong bảng điểm và so sánh sản phẩm.
         </p>
 
         <div className="definitions-table">
           <div className="table-header">
-            <span className="col-key">Key (Internal)</span>
-            <span className="col-label">Label (Display)</span>
-            <span className="col-score">Max Score</span>
-            <span className="col-actions">Actions</span>
+            <span className="col-key">Key (Nội bộ)</span>
+            <span className="col-label">Nhãn (Hiển thị)</span>
+            <span className="col-score">Điểm tối đa</span>
+            <span className="col-actions">Thao tác</span>
           </div>
 
           {criteriaFields.length === 0 ? (
             <div className="empty-row">
-              No criteria defined. Add at least one scoring criterion.
+              Chưa có tiêu chí nào. Thêm ít nhất một tiêu chí chấm điểm.
             </div>
           ) : (
             <div className="table-body">
@@ -72,13 +72,13 @@ export default function Tab3Definitions() {
                     <input
                       type="text"
                       {...register(`criteriaDefinitions.${index}.key` as const, {
-                        required: 'Key is required',
+                        required: 'Key là bắt buộc',
                         pattern: {
                           value: /^[a-z0-9_]+$/,
-                          message: 'Only lowercase, numbers, underscores'
+                          message: 'Chỉ chữ thường, số, gạch dưới'
                         }
                       })}
-                      placeholder="e.g., value"
+                      placeholder="VD: gia_tri"
                       className="input-key"
                     />
                   </div>
@@ -86,9 +86,9 @@ export default function Tab3Definitions() {
                     <input
                       type="text"
                       {...register(`criteriaDefinitions.${index}.label` as const, {
-                        required: 'Label is required'
+                        required: 'Nhãn là bắt buộc'
                       })}
-                      placeholder="e.g., Value for Money"
+                      placeholder="VD: Giá trị đồng tiền"
                       onBlur={(e) => {
                         const currentKey = watch(`criteriaDefinitions.${index}.key`);
                         if (!currentKey && e.target.value) {
@@ -106,8 +106,8 @@ export default function Tab3Definitions() {
                       max="100"
                       {...register(`criteriaDefinitions.${index}.maxScore` as const, {
                         valueAsNumber: true,
-                        min: { value: 1, message: 'Min is 1' },
-                        max: { value: 100, message: 'Max is 100' }
+                        min: { value: 1, message: 'Tối thiểu là 1' },
+                        max: { value: 100, message: 'Tối đa là 100' }
                       })}
                       placeholder="10"
                     />
@@ -150,15 +150,15 @@ export default function Tab3Definitions() {
           )}
 
           <button type="button" className="btn-add" onClick={addCriteria}>
-            + Add Scoring Criterion
+            + Thêm tiêu chí chấm điểm
           </button>
         </div>
 
         <div className="criteria-preview">
-          <h4>Preview</h4>
+          <h4>Xem trước</h4>
           <div className="preview-scores">
             {criteriaFields.map((field, index) => {
-              const label = watch(`criteriaDefinitions.${index}.label`) || 'Untitled';
+              const label = watch(`criteriaDefinitions.${index}.label`) || 'Chưa đặt tên';
               const maxScore = watch(`criteriaDefinitions.${index}.maxScore`) || 10;
               return (
                 <div key={field.id} className="preview-score-item">
@@ -175,22 +175,22 @@ export default function Tab3Definitions() {
       </div>
 
       <div className="section">
-        <h2 className="section-title">Highlight Definitions</h2>
+        <h2 className="section-title">Định nghĩa thông tin nổi bật</h2>
         <p className="section-desc">
-          Define quick-info labels shown on product cards (e.g., Starting Price, Free Trial, etc.).
-          Products will fill in values for these labels.
+          Xác định các nhãn thông tin nhanh hiển thị trên thẻ sản phẩm (VD: Giá khởi điểm, Dùng thử miễn phí, v.v.).
+          Sản phẩm sẽ điền giá trị cho các nhãn này.
         </p>
 
         <div className="definitions-table">
           <div className="table-header">
-            <span className="col-key">Key (Internal)</span>
-            <span className="col-label">Label (Display)</span>
-            <span className="col-actions">Actions</span>
+            <span className="col-key">Key (Nội bộ)</span>
+            <span className="col-label">Nhãn (Hiển thị)</span>
+            <span className="col-actions">Thao tác</span>
           </div>
 
           {highlightFields.length === 0 ? (
             <div className="empty-row">
-              No highlights defined. Add at least one highlight label.
+              Chưa có thông tin nổi bật nào. Thêm ít nhất một nhãn.
             </div>
           ) : (
             <div className="table-body">
@@ -200,13 +200,13 @@ export default function Tab3Definitions() {
                     <input
                       type="text"
                       {...register(`highlightDefinitions.${index}.key` as const, {
-                        required: 'Key is required',
+                        required: 'Key là bắt buộc',
                         pattern: {
                           value: /^[a-z0-9_]+$/,
-                          message: 'Only lowercase, numbers, underscores'
+                          message: 'Chỉ chữ thường, số, gạch dưới'
                         }
                       })}
-                      placeholder="e.g., starting_price"
+                      placeholder="VD: gia_khoi_diem"
                       className="input-key"
                     />
                   </div>
@@ -214,9 +214,9 @@ export default function Tab3Definitions() {
                     <input
                       type="text"
                       {...register(`highlightDefinitions.${index}.label` as const, {
-                        required: 'Label is required'
+                        required: 'Nhãn là bắt buộc'
                       })}
-                      placeholder="e.g., Starting Price"
+                      placeholder="VD: Giá khởi điểm"
                     />
                   </div>
                   <div className="col-actions">
@@ -257,20 +257,20 @@ export default function Tab3Definitions() {
           )}
 
           <button type="button" className="btn-add" onClick={addHighlight}>
-            + Add Highlight Label
+            + Thêm nhãn nổi bật
           </button>
         </div>
 
         <div className="highlight-preview">
-          <h4>Preview (Sample Product Card)</h4>
+          <h4>Xem trước (Thẻ sản phẩm mẫu)</h4>
           <div className="preview-card">
             <div className="preview-highlights">
               {highlightFields.map((field, index) => {
-                const label = watch(`highlightDefinitions.${index}.label`) || 'Untitled';
+                const label = watch(`highlightDefinitions.${index}.label`) || 'Chưa đặt tên';
                 return (
                   <div key={field.id} className="preview-highlight-item">
                     <span className="preview-hl-label">{label}</span>
-                    <span className="preview-hl-value">Sample Value</span>
+                    <span className="preview-hl-value">Giá trị mẫu</span>
                   </div>
                 );
               })}
@@ -280,19 +280,19 @@ export default function Tab3Definitions() {
       </div>
 
       <div className="section tips-section">
-        <h2 className="section-title">Usage Tips</h2>
+        <h2 className="section-title">Mẹo sử dụng</h2>
         <div className="tips-grid">
           <div className="tip">
-            <h4>Criteria Keys</h4>
-            <p>Use snake_case for keys (e.g., <code>ease_of_use</code>). These are used internally to map product scores.</p>
+            <h4>Key tiêu chí</h4>
+            <p>Dùng snake_case cho key (VD: <code>de_su_dung</code>). Các key này được sử dụng nội bộ để ánh xạ điểm sản phẩm.</p>
           </div>
           <div className="tip">
-            <h4>Consistent Scoring</h4>
-            <p>Keep max scores consistent (usually 10) for easier comparison across products.</p>
+            <h4>Thang điểm nhất quán</h4>
+            <p>Giữ điểm tối đa nhất quán (thường là 10) để dễ so sánh giữa các sản phẩm.</p>
           </div>
           <div className="tip">
-            <h4>Highlight Labels</h4>
-            <p>Common highlights include Starting Price, Free Trial, Best For, Platforms, etc.</p>
+            <h4>Nhãn nổi bật</h4>
+            <p>Các thông tin nổi bật phổ biến: Giá khởi điểm, Dùng thử miễn phí, Phù hợp cho, Nền tảng, v.v.</p>
           </div>
         </div>
       </div>

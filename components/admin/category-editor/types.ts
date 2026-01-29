@@ -17,6 +17,7 @@ export interface CategoryFormData {
   ogImage: string;
 
   // ========== TAB 2: RANKING & DISPLAY ==========
+  authorId: string; // Category Author
   heroImage: string;
   heroTitle: string;
   introContent: string; // Rich Text / HTML
@@ -42,6 +43,12 @@ export interface CategoryFormData {
   methodologyIntro: string;
   methodologyCriteria: MethodologyCriterion[];
   exploreCards: ExploreCard[];
+
+  // Bottom Content (above FAQ) - Comparison table, experts section, etc.
+  bottomContent: string;
+
+  // Additional Content (below Bottom Content)
+  additionalContent: string;
 
   // FAQ (Category-level)
   faqs: FaqItem[];
@@ -92,6 +99,13 @@ export interface ArticleOption {
   slug: string;
 }
 
+export interface AuthorOption {
+  id: string;
+  name: string;
+  avatar?: string;
+  title?: string;
+}
+
 // Color presets for category
 export const COLOR_PRESETS = [
   { value: 'bg-red-500', label: 'Red', hex: '#ef4444' },
@@ -134,6 +148,7 @@ export const defaultCategoryFormData: CategoryFormData = {
   ogImage: '',
 
   // Tab 2
+  authorId: '',
   heroImage: '',
   heroTitle: '',
   introContent: '',
@@ -158,5 +173,7 @@ export const defaultCategoryFormData: CategoryFormData = {
   methodologyIntro: '',
   methodologyCriteria: [],
   exploreCards: [],
+  bottomContent: '',
+  additionalContent: '',
   faqs: [],
 };

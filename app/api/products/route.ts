@@ -144,6 +144,7 @@ export async function POST(request: NextRequest) {
         rating: validatedData.rating,
         reviewCount: validatedData.reviewCount,
         heroSummary: validatedData.heroSummary,
+        videoUrl: validatedData.videoUrl,
         pros: validatedData.pros,
         cons: validatedData.cons,
         mainContent: validatedData.mainContent,

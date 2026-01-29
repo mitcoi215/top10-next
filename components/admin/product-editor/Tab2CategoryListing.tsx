@@ -28,15 +28,15 @@ export default function Tab2CategoryListing() {
   return (
     <div className="tab-category-listing">
       <div className="section">
-        <h2 className="section-title">Ranking & Display</h2>
-        <p className="section-desc">How this product appears in the top 10 list</p>
+        <h2 className="section-title">Xếp hạng & Hiển thị</h2>
+        <p className="section-desc">Cách sản phẩm này hiển thị trong danh sách top 10</p>
 
         <div className="form-grid">
           {/* Rank */}
           <div className="form-group">
             <label htmlFor="rank">
-              Rank Position <span className="required">*</span>
-              <span className="tooltip" title="Position in the top 10 list (1-10)">?</span>
+              Vị trí xếp hạng <span className="required">*</span>
+              <span className="tooltip" title="Vị trí trong danh sách top 10 (1-10)">?</span>
             </label>
             <input
               id="rank"
@@ -44,9 +44,9 @@ export default function Tab2CategoryListing() {
               min="1"
               max="10"
               {...register('rank', {
-                required: 'Rank is required',
-                min: { value: 1, message: 'Minimum rank is 1' },
-                max: { value: 10, message: 'Maximum rank is 10' }
+                required: 'Xếp hạng là bắt buộc',
+                min: { value: 1, message: 'Xếp hạng tối thiểu là 1' },
+                max: { value: 10, message: 'Xếp hạng tối đa là 10' }
               })}
               className={errors.rank ? 'error' : ''}
             />
@@ -56,43 +56,43 @@ export default function Tab2CategoryListing() {
           {/* Ribbon */}
           <div className="form-group">
             <label htmlFor="ribbon">
-              Ribbon Badge
-              <span className="tooltip" title="Special badge like 'Best Overall', 'Editor's Choice'">?</span>
+              Huy hiệu
+              <span className="tooltip" title="Huy hiệu đặc biệt như 'Tốt nhất', 'Lựa chọn biên tập'">?</span>
             </label>
             <select id="ribbon" {...register('ribbon')}>
-              <option value="">No ribbon</option>
-              <option value="Best Overall">Best Overall</option>
-              <option value="Editor's Choice">Editor&apos;s Choice</option>
-              <option value="Best Value">Best Value</option>
-              <option value="Most Popular">Most Popular</option>
-              <option value="Rising Star">Rising Star</option>
+              <option value="">Không có huy hiệu</option>
+              <option value="Best Overall">Tốt nhất tổng thể</option>
+              <option value="Editor's Choice">Lựa chọn biên tập</option>
+              <option value="Best Value">Giá trị tốt nhất</option>
+              <option value="Most Popular">Phổ biến nhất</option>
+              <option value="Rising Star">Ngôi sao mới</option>
             </select>
           </div>
 
           {/* Tagline */}
           <div className="form-group full-width">
             <label htmlFor="tagline">
-              Tagline
-              <span className="tooltip" title="Short catchy phrase under the product name">?</span>
+              Khẩu hiệu
+              <span className="tooltip" title="Cụm từ ngắn hấp dẫn dưới tên sản phẩm">?</span>
             </label>
             <input
               id="tagline"
               type="text"
               {...register('tagline')}
-              placeholder="e.g., Freedom to create customized plans"
+              placeholder="VD: Tự do tạo gói tùy chỉnh"
             />
           </div>
 
           {/* Bottom Line */}
           <div className="form-group full-width">
             <label htmlFor="bottomLine">
-              Bottom Line
-              <span className="tooltip" title="Longer description shown in the comparison card">?</span>
+              Tóm tắt
+              <span className="tooltip" title="Mô tả dài hơn hiển thị trong thẻ so sánh">?</span>
             </label>
             <textarea
               id="bottomLine"
               {...register('bottomLine')}
-              placeholder="Sling TV is a live TV streaming service known for its flexible channel packages..."
+              placeholder="Mô tả ngắn về sản phẩm..."
               rows={3}
             />
           </div>
@@ -100,43 +100,43 @@ export default function Tab2CategoryListing() {
           {/* Best For */}
           <div className="form-group">
             <label htmlFor="bestFor">
-              Best For
-              <span className="tooltip" title="Target audience or use case">?</span>
+              Phù hợp cho
+              <span className="tooltip" title="Đối tượng mục tiêu hoặc trường hợp sử dụng">?</span>
             </label>
             <input
               id="bestFor"
               type="text"
               {...register('bestFor')}
-              placeholder="e.g., Budget-conscious cord cutters"
+              placeholder="VD: Người dùng quan tâm ngân sách"
             />
           </div>
 
           {/* Base Price */}
           <div className="form-group">
             <label htmlFor="basePrice">
-              Starting Price
-              <span className="tooltip" title="Base price or price range">?</span>
+              Giá khởi điểm
+              <span className="tooltip" title="Giá cơ bản hoặc phạm vi giá">?</span>
             </label>
             <input
               id="basePrice"
               type="text"
               {...register('basePrice')}
-              placeholder="e.g., $40/month, Free, $19.99"
+              placeholder="VD: 40$/tháng, Miễn phí, $19.99"
             />
           </div>
         </div>
       </div>
 
       <div className="section">
-        <h2 className="section-title">Scores & Ratings</h2>
-        <p className="section-desc">Editorial scores for this product</p>
+        <h2 className="section-title">Điểm số & Đánh giá</h2>
+        <p className="section-desc">Điểm biên tập cho sản phẩm này</p>
 
         <div className="form-grid">
           {/* Overall Score */}
           <div className="form-group">
             <label htmlFor="overallScore">
-              Overall Score
-              <span className="tooltip" title="Main score out of 10 (used for sorting)">?</span>
+              Điểm tổng thể
+              <span className="tooltip" title="Điểm chính trên 10 (dùng để sắp xếp)">?</span>
             </label>
             <input
               id="overallScore"
@@ -145,31 +145,31 @@ export default function Tab2CategoryListing() {
               min="0"
               max="10"
               {...register('overallScore', { valueAsNumber: true })}
-              placeholder="e.g., 9.2"
+              placeholder="VD: 9.2"
             />
           </div>
 
           {/* Score Label */}
           <div className="form-group">
             <label htmlFor="scoreLabel">
-              Score Label
-              <span className="tooltip" title="Text label for the score">?</span>
+              Nhãn điểm
+              <span className="tooltip" title="Nhãn văn bản cho điểm số">?</span>
             </label>
             <select id="scoreLabel" {...register('scoreLabel')}>
-              <option value="">Select label...</option>
-              <option value="Excellent">Excellent (9.0+)</option>
-              <option value="Very Good">Very Good (8.0-8.9)</option>
-              <option value="Good">Good (7.0-7.9)</option>
-              <option value="Fair">Fair (6.0-6.9)</option>
-              <option value="Poor">Poor (&lt;6.0)</option>
+              <option value="">Chọn nhãn...</option>
+              <option value="Excellent">Xuất sắc (9.0+)</option>
+              <option value="Very Good">Rất tốt (8.0-8.9)</option>
+              <option value="Good">Tốt (7.0-7.9)</option>
+              <option value="Fair">Khá (6.0-6.9)</option>
+              <option value="Poor">Kém (&lt;6.0)</option>
             </select>
           </div>
         </div>
 
         {/* Detailed Scores */}
         <div className="scores-section">
-          <h3>Detailed Scores (Category-specific)</h3>
-          <p className="hint">These scores are defined by the category criteria</p>
+          <h3>Điểm chi tiết (Theo danh mục)</h3>
+          <p className="hint">Các điểm này được xác định bởi tiêu chí danh mục</p>
           <div className="scores-grid">
             {['Value', 'Features', 'Ease of Use', 'Support', 'Quality'].map((criterion) => (
               <div key={criterion} className="score-item">
@@ -196,8 +196,8 @@ export default function Tab2CategoryListing() {
       </div>
 
       <div className="section">
-        <h2 className="section-title">Highlights</h2>
-        <p className="section-desc">Key information displayed prominently (3 items max)</p>
+        <h2 className="section-title">Thông tin nổi bật</h2>
+        <p className="section-desc">Thông tin chính hiển thị nổi bật (tối đa 3 mục)</p>
 
         <div className="highlights-grid">
           {['Starting Price', 'Trial Period', 'Best For'].map((label) => (
@@ -221,8 +221,8 @@ export default function Tab2CategoryListing() {
       </div>
 
       <div className="section">
-        <h2 className="section-title">Features List</h2>
-        <p className="section-desc">Key features shown in the comparison card (checkmarks)</p>
+        <h2 className="section-title">Danh sách tính năng</h2>
+        <p className="section-desc">Các tính năng chính hiển thị trong thẻ so sánh (dấu tick)</p>
 
         <div className="features-list">
           {featureFields.map((field, index) => (
@@ -230,14 +230,14 @@ export default function Tab2CategoryListing() {
               <input
                 type="text"
                 {...register(`features.${index}.text` as const)}
-                placeholder="Enter feature..."
+                placeholder="Nhập tính năng..."
               />
               <label className="bold-checkbox">
                 <input
                   type="checkbox"
                   {...register(`features.${index}.bold` as const)}
                 />
-                Bold
+                Đậm
               </label>
               <button
                 type="button"
@@ -249,14 +249,14 @@ export default function Tab2CategoryListing() {
             </div>
           ))}
           <button type="button" className="btn-add" onClick={addFeature}>
-            + Add Feature
+            + Thêm tính năng
           </button>
         </div>
       </div>
 
       <div className="section">
-        <h2 className="section-title">Customer Quote</h2>
-        <p className="section-desc">Testimonial displayed in the product card</p>
+        <h2 className="section-title">Trích dẫn khách hàng</h2>
+        <p className="section-desc">Phản hồi hiển thị trong thẻ sản phẩm</p>
 
         <div className="quote-toggle">
           <label className="toggle-label">
@@ -265,37 +265,37 @@ export default function Tab2CategoryListing() {
               checked={!!quote}
               onChange={toggleQuote}
             />
-            Include customer quote
+            Bao gồm trích dẫn khách hàng
           </label>
         </div>
 
         {quote && (
           <div className="quote-fields">
             <div className="form-group full-width">
-              <label>Quote Text</label>
+              <label>Nội dung trích dẫn</label>
               <textarea
                 value={quote.text}
                 onChange={(e) => setValue('quote', { ...quote, text: e.target.value })}
-                placeholder="Enter the customer quote..."
+                placeholder="Nhập trích dẫn khách hàng..."
                 rows={2}
               />
             </div>
             <div className="form-group">
-              <label>Source Name</label>
+              <label>Tên nguồn</label>
               <input
                 type="text"
                 value={quote.source}
                 onChange={(e) => setValue('quote', { ...quote, source: e.target.value })}
-                placeholder="e.g., John D."
+                placeholder="VD: Nguyễn Văn A."
               />
             </div>
             <div className="form-group">
-              <label>Date</label>
+              <label>Ngày</label>
               <input
                 type="text"
                 value={quote.date}
                 onChange={(e) => setValue('quote', { ...quote, date: e.target.value })}
-                placeholder="e.g., January 2026"
+                placeholder="VD: Tháng 1, 2026"
               />
             </div>
           </div>

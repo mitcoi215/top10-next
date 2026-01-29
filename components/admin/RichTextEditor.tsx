@@ -19,7 +19,11 @@ import TaskItem from '@tiptap/extension-task-item';
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
 import { common, createLowlight } from 'lowlight';
 import TurndownService from 'turndown';
-import { useCallback, useState, useRef } from 'react';
+import { marked } from 'marked';
+import { useCallback, useState, useRef, useEffect } from 'react';
+import { Extension } from '@tiptap/core';
+import { Plugin, PluginKey } from '@tiptap/pm/state';
+import { Decoration, DecorationSet } from '@tiptap/pm/view';
 
 const lowlight = createLowlight(common);
 
@@ -58,19 +62,72 @@ turndownService.addRule('table', {
   },
 });
 
+// Custom extension to highlight {{product:slug}} syntax
+const ProductCtaHighlight = Extension.create({
+  name: 'productCtaHighlight',
+
+  addProseMirrorPlugins() {
+    return [
+      new Plugin({
+        key: new PluginKey('productCtaHighlight'),
+        props: {
+          decorations(state) {
+            const decorations: Decoration[] = [];
+            const doc = state.doc;
+            const regex = /\{\{product:[a-zA-Z0-9-]+\}\}/g;
+
+            doc.descendants((node, pos) => {
+              if (!node.isText) return;
+
+              const text = node.text || '';
+              let match;
+
+              while ((match = regex.exec(text)) !== null) {
+                const start = pos + match.index;
+                const end = start + match[0].length;
+
+                decorations.push(
+                  Decoration.inline(start, end, {
+                    class: 'product-cta-highlight',
+                  })
+                );
+              }
+            });
+
+            return DecorationSet.create(doc, decorations);
+          },
+        },
+      }),
+    ];
+  },
+});
+
 interface RichTextEditorProps {
   value: string;
   onChange: (markdown: string) => void;
   placeholder?: string;
+  minHeight?: string;
+  maxHeight?: string;
 }
 
-export default function RichTextEditor({ value, onChange, placeholder = 'Start writing...' }: RichTextEditorProps) {
+export default function RichTextEditor({
+  value,
+  onChange,
+  placeholder = 'Start writing...',
+  minHeight = '300px',
+  maxHeight = '500px'
+}: RichTextEditorProps) {
   const [linkUrl, setLinkUrl] = useState('');
   const [showLinkModal, setShowLinkModal] = useState(false);
   const [showImageModal, setShowImageModal] = useState(false);
   const [imageUrl, setImageUrl] = useState('');
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Track if we're updating from internal typing to prevent sync loops
+  const isInternalChangeRef = useRef(false);
+  // Store the last value we set to editor to detect external changes
+  const lastExternalValueRef = useRef<string | null>(null);
 
   const editor = useEditor({
     extensions: [
@@ -116,60 +173,140 @@ export default function RichTextEditor({ value, onChange, placeholder = 'Start w
       CodeBlockLowlight.configure({
         lowlight,
       }),
+      ProductCtaHighlight.configure({
+      }),
     ],
     content: value ? markdownToHtml(value) : '',
+    onCreate: ({ editor }) => {
+      // If value is available at creation time, convert and set it
+      if (value && value.length > 10) {
+        console.log('[RichTextEditor] onCreate: Setting initial content');
+        lastExternalValueRef.current = value;
+        const html = markdownToHtml(value);
+        editor.commands.setContent(html, { emitUpdate: false });
+      } else {
+        lastExternalValueRef.current = value || '';
+      }
+    },
     onUpdate: ({ editor }) => {
+      // Mark that this is an internal change
+      isInternalChangeRef.current = true;
       const html = editor.getHTML();
       const markdown = turndownService.turndown(html);
       onChange(markdown);
+      // Reset the flag after a short delay to allow state to propagate
+      setTimeout(() => {
+        isInternalChangeRef.current = false;
+      }, 100);
     },
     editorProps: {
       attributes: {
-        class: 'prose prose-sm sm:prose max-w-none focus:outline-none min-h-[300px] p-4',
+        class: 'prose prose-sm sm:prose max-w-none focus:outline-none p-4',
       },
     },
     immediatelyRender: false, // Fix SSR hydration mismatch
   });
 
-  // Simple markdown to HTML conversion for initial content
-  function markdownToHtml(markdown: string): string {
-    let html = markdown
-      // Headers
-      .replace(/^#### (.+)$/gm, '<h4>$1</h4>')
-      .replace(/^### (.+)$/gm, '<h3>$1</h3>')
-      .replace(/^## (.+)$/gm, '<h2>$1</h2>')
-      .replace(/^# (.+)$/gm, '<h1>$1</h1>')
-      // Bold and italic
-      .replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>')
-      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-      .replace(/\*(.+?)\*/g, '<em>$1</em>')
-      .replace(/~~(.+?)~~/g, '<s>$1</s>')
-      // Links
-      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
-      // Images
-      .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" />')
-      // Task lists
-      .replace(/^- \[x\] (.+)$/gm, '<ul data-type="taskList"><li data-type="taskItem" data-checked="true"><label><input type="checkbox" checked><span>$1</span></label></li></ul>')
-      .replace(/^- \[ \] (.+)$/gm, '<ul data-type="taskList"><li data-type="taskItem" data-checked="false"><label><input type="checkbox"><span>$1</span></label></li></ul>')
-      // Unordered lists
-      .replace(/^- (.+)$/gm, '<li>$1</li>')
-      // Ordered lists
-      .replace(/^\d+\. (.+)$/gm, '<li>$1</li>')
-      // Blockquotes
-      .replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>')
-      // Code blocks
-      .replace(/```(\w*)\n([\s\S]*?)```/g, '<pre><code class="language-$1">$2</code></pre>')
-      // Inline code
-      .replace(/`([^`]+)`/g, '<code>$1</code>')
-      // Horizontal rule
-      .replace(/^---$/gm, '<hr>')
-      // Paragraphs (lines that don't start with HTML tags)
-      .replace(/^(?!<[a-z]|$)(.+)$/gm, '<p>$1</p>');
+  // Update editor content when value prop changes from external source (e.g., data loaded from API or programmatic insert)
+  useEffect(() => {
+    if (!editor) return;
 
-    // Wrap consecutive <li> in <ul>
-    html = html.replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>');
+    // Skip if this is an internal change (user typing)
+    if (isInternalChangeRef.current) return;
+
+    // Skip if value hasn't changed from what we last set
+    if (value === lastExternalValueRef.current) return;
+
+    // Get current editor state
+    const currentHtml = editor.getHTML();
+    const editorIsEmpty = editor.isEmpty || currentHtml === '<p></p>' || currentHtml.length < 20;
+
+    // Convert current editor content to markdown for comparison
+    const currentMarkdown = turndownService.turndown(currentHtml);
+
+    // Update content when:
+    // 1. Editor is empty and we have value (initial load from API)
+    // 2. lastExternalValueRef is null (first time setting)
+    // 3. Value is different from current editor content (external programmatic change like inserting CTA)
+    const valueChanged = value !== currentMarkdown && value !== lastExternalValueRef.current;
+
+    if (value && (editorIsEmpty || lastExternalValueRef.current === null || lastExternalValueRef.current === '' || valueChanged)) {
+      console.log('[RichTextEditor] Setting content from markdown, length:', value.length);
+      lastExternalValueRef.current = value;
+      const newContent = markdownToHtml(value);
+      editor.commands.setContent(newContent, { emitUpdate: false });
+    }
+  }, [editor, value]);
+
+  // Use marked library for proper markdown to HTML conversion
+  function markdownToHtml(markdown: string): string {
+    if (!markdown) return '';
+
+    // Configure marked for GFM (GitHub Flavored Markdown)
+    marked.setOptions({
+      gfm: true,
+      breaks: true,
+    });
+
+    // Convert markdown to HTML using marked library
+    const html = marked.parse(markdown) as string;
 
     return html;
+  }
+
+  // Convert markdown tables to HTML tables (TipTap compatible structure)
+  // TipTap requires: <table><tbody><tr><th/td colspan="1" rowspan="1"><p>content</p></th/td></tr></tbody></table>
+  function convertMarkdownTables(content: string): string {
+    const tableRegex = /(\|[^\n]+\|\s*\n\s*\|[-:\s|]+\|\s*\n(?:\s*\|[^\n]+\|\s*\n?)*)/g;
+
+    return content.replace(tableRegex, (match) => {
+      const lines = match.trim().split('\n').filter(line => line.trim() && line.trim().startsWith('|'));
+      if (lines.length < 2) return match;
+
+      const parseRow = (row: string): string[] => {
+        return row.split('|').slice(1, -1).map(cell => cell.trim());
+      };
+
+      const isSeparator = (line: string): boolean => {
+        return /^\|[\s:-]+\|/.test(line) && line.includes('-');
+      };
+
+      let tableHtml = '<table><tbody>';
+      const hasHeader = lines.length > 1 && isSeparator(lines[1]);
+
+      if (hasHeader) {
+        // Header row
+        const headerCells = parseRow(lines[0]);
+        tableHtml += '<tr>';
+        headerCells.forEach(cell => {
+          tableHtml += `<th colspan="1" rowspan="1"><p>${cell || ''}</p></th>`;
+        });
+        tableHtml += '</tr>';
+
+        // Body rows
+        for (let i = 2; i < lines.length; i++) {
+          const cells = parseRow(lines[i]);
+          tableHtml += '<tr>';
+          cells.forEach(cell => {
+            tableHtml += `<td colspan="1" rowspan="1"><p>${cell || ''}</p></td>`;
+          });
+          tableHtml += '</tr>';
+        }
+      } else {
+        // All rows as body (no header)
+        lines.forEach(line => {
+          const cells = parseRow(line);
+          tableHtml += '<tr>';
+          cells.forEach(cell => {
+            tableHtml += `<td colspan="1" rowspan="1"><p>${cell || ''}</p></td>`;
+          });
+          tableHtml += '</tr>';
+        });
+      }
+
+      tableHtml += '</tbody></table>';
+      return tableHtml;
+    });
   }
 
   // Handle link insertion
@@ -439,36 +576,49 @@ export default function RichTextEditor({ value, onChange, placeholder = 'Start w
         <div className="flex items-center gap-1 border-r pr-2 mr-1">
           <ToolbarButton
             onClick={() => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()}
-            title="Insert Table"
+            title="Insert Table (3x3)"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M3 14h18M10 3v18M14 3v18M3 3h18v18H3V3z" />
             </svg>
           </ToolbarButton>
-          {editor.isActive('table') && (
-            <>
-              <ToolbarButton
-                onClick={() => editor.chain().focus().addColumnAfter().run()}
-                title="Add Column"
-              >
-                <span className="text-xs">+Col</span>
-              </ToolbarButton>
-              <ToolbarButton
-                onClick={() => editor.chain().focus().addRowAfter().run()}
-                title="Add Row"
-              >
-                <span className="text-xs">+Row</span>
-              </ToolbarButton>
-              <ToolbarButton
-                onClick={() => editor.chain().focus().deleteTable().run()}
-                title="Delete Table"
-              >
-                <svg className="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                </svg>
-              </ToolbarButton>
-            </>
-          )}
+          <ToolbarButton
+            onClick={() => editor.chain().focus().addColumnAfter().run()}
+            disabled={!editor.isActive('table')}
+            title="Add Column (click inside table first)"
+          >
+            <span className="text-xs">+Col</span>
+          </ToolbarButton>
+          <ToolbarButton
+            onClick={() => editor.chain().focus().deleteColumn().run()}
+            disabled={!editor.isActive('table')}
+            title="Delete Column (click inside table first)"
+          >
+            <span className="text-xs text-red-500">-Col</span>
+          </ToolbarButton>
+          <ToolbarButton
+            onClick={() => editor.chain().focus().addRowAfter().run()}
+            disabled={!editor.isActive('table')}
+            title="Add Row (click inside table first)"
+          >
+            <span className="text-xs">+Row</span>
+          </ToolbarButton>
+          <ToolbarButton
+            onClick={() => editor.chain().focus().deleteRow().run()}
+            disabled={!editor.isActive('table')}
+            title="Delete Row (click inside table first)"
+          >
+            <span className="text-xs text-red-500">-Row</span>
+          </ToolbarButton>
+          <ToolbarButton
+            onClick={() => editor.chain().focus().deleteTable().run()}
+            disabled={!editor.isActive('table')}
+            title="Delete Table (click inside table first)"
+          >
+            <svg className="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            </svg>
+          </ToolbarButton>
         </div>
 
         {/* Colors */}
@@ -516,7 +666,16 @@ export default function RichTextEditor({ value, onChange, placeholder = 'Start w
       </div>
 
       {/* Editor Content */}
-      <EditorContent editor={editor} className="min-h-[300px]" />
+      <div
+        className="editor-scroll-container"
+        style={{
+          minHeight,
+          maxHeight,
+          overflowY: 'auto',
+        }}
+      >
+        <EditorContent editor={editor} />
+      </div>
 
       {/* Link Modal */}
       {showLinkModal && (
@@ -616,8 +775,25 @@ export default function RichTextEditor({ value, onChange, placeholder = 'Start w
 
       {/* Styles for the editor */}
       <style jsx global>{`
+        .editor-scroll-container {
+          border-top: 1px solid #e5e7eb;
+        }
+        .editor-scroll-container::-webkit-scrollbar {
+          width: 8px;
+        }
+        .editor-scroll-container::-webkit-scrollbar-track {
+          background: #f1f1f1;
+        }
+        .editor-scroll-container::-webkit-scrollbar-thumb {
+          background: #c1c1c1;
+          border-radius: 4px;
+        }
+        .editor-scroll-container::-webkit-scrollbar-thumb:hover {
+          background: #a1a1a1;
+        }
         .ProseMirror {
           outline: none;
+          min-height: 100%;
         }
         .ProseMirror p.is-editor-empty:first-child::before {
           content: attr(data-placeholder);
@@ -723,6 +899,36 @@ export default function RichTextEditor({ value, onChange, placeholder = 'Start w
         .ProseMirror mark {
           background-color: #fef08a;
           padding: 0.125rem 0;
+        }
+
+        /* Product CTA Highlight - {{product:slug}} syntax */
+        .product-cta-highlight {
+          display: inline-flex;
+          align-items: center;
+          background: linear-gradient(135deg, #FF4A64 0%, #FF6B7A 100%);
+          color: white !important;
+          padding: 4px 12px;
+          border-radius: 20px;
+          font-size: 13px;
+          font-weight: 600;
+          font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+          margin: 0 2px;
+          box-shadow: 0 2px 8px rgba(255, 74, 100, 0.3);
+          animation: pulse-cta 2s ease-in-out infinite;
+        }
+
+        .product-cta-highlight::before {
+          content: "🛒 ";
+          margin-right: 4px;
+        }
+
+        @keyframes pulse-cta {
+          0%, 100% {
+            box-shadow: 0 2px 8px rgba(255, 74, 100, 0.3);
+          }
+          50% {
+            box-shadow: 0 4px 16px rgba(255, 74, 100, 0.5);
+          }
         }
       `}</style>
     </div>

@@ -24,6 +24,7 @@ interface ProductCardProps {
   ctaHref: string;
   ribbon?: string;
   reviewHref: string;
+  reviewCount?: string;
 }
 
 // Checkmark SVG icon
@@ -62,6 +63,20 @@ function ThumbsUpIcon() {
   );
 }
 
+// TrustPilot logo icon
+function TrustPilotIcon() {
+  return (
+    <svg width="74" height="18" viewBox="0 0 74 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M7.54 7.29H0v1.24h2.89v8.89h1.76v-8.89h2.89V7.29z" fill="#191919"/>
+      <path d="M10.27 10.07v1.38c-.13-.06-.27-.1-.42-.14-.15-.03-.31-.05-.48-.05-.38 0-.67.12-.87.35-.2.23-.3.56-.3.98v4.83h-1.6v-7.35h1.52v.83c.16-.28.38-.51.66-.69.28-.17.62-.26 1.02-.26.12 0 .24.01.35.03.11.02.2.05.27.08l-.15.01zM16.5 17.42h-1.6v-.83c-.21.29-.48.52-.8.69-.32.17-.7.26-1.14.26-.68 0-1.22-.22-1.63-.66-.4-.44-.61-1.03-.61-1.78V10.07h1.6v4.53c0 .48.11.84.34 1.08.22.24.54.37.94.37.45 0 .8-.15 1.05-.44.26-.3.38-.71.38-1.25v-4.29h1.6v7.35h-.13zM22.94 13.07c-.09-.25-.22-.46-.38-.62a1.59 1.59 0 00-.56-.38c-.21-.09-.44-.13-.69-.13-.5 0-.91.16-1.22.49-.31.32-.49.78-.52 1.36h3.73a2.8 2.8 0 00-.36-.72zm-3.4 1.87c0 .6.15 1.07.45 1.41.3.34.72.5 1.25.5.36 0 .66-.08.91-.24.24-.16.43-.39.56-.68l1.38.56c-.25.49-.6.88-1.05 1.16-.45.29-1.03.43-1.74.43-.52 0-.99-.09-1.41-.27a3.05 3.05 0 01-1.07-.77 3.5 3.5 0 01-.68-1.17 4.32 4.32 0 01-.24-1.47c0-.52.08-1 .24-1.46.16-.45.39-.85.69-1.18.3-.33.66-.59 1.08-.77.42-.19.89-.28 1.41-.28.5 0 .95.09 1.34.27.39.18.72.43 1 .76.27.33.48.72.62 1.17.15.46.22.96.22 1.52v.51h-5.05l.09-.02zM29.97 12.11c-.1-.06-.24-.12-.42-.17a1.98 1.98 0 00-.52-.07c-.27 0-.51.05-.72.14-.2.09-.38.22-.53.38-.15.16-.26.35-.33.57-.08.22-.11.46-.11.72 0 .54.14.97.43 1.29.29.32.68.48 1.18.48.19 0 .37-.02.54-.06.17-.04.31-.1.42-.16v1.3c-.13.07-.3.12-.5.17-.2.04-.42.07-.65.07-.46 0-.87-.08-1.24-.24a2.7 2.7 0 01-.96-.68 3.04 3.04 0 01-.6-1.04 4.03 4.03 0 01-.21-1.33c0-.49.07-.95.22-1.38.14-.42.36-.79.64-1.1.28-.31.62-.56 1.02-.73.4-.18.85-.27 1.35-.27.24 0 .47.02.69.07.22.05.4.12.55.2v1.33l-.25-.49zM34.86 17.42c-.14.05-.31.09-.51.12-.2.03-.4.05-.6.05-.63 0-1.1-.17-1.43-.5-.32-.33-.49-.81-.49-1.43v-4.2h-1.08v-1.2h1.08V8.49h1.6v1.77h1.59v1.2h-1.59v3.7c0 .33.06.56.19.7.13.14.32.21.59.21.12 0 .24-.01.36-.04.12-.02.22-.06.29-.1v1.49zM36.53 9.56V7.79h1.6v1.77h-1.6zm0 7.86v-7.35h1.6v7.35h-1.6zM40 17.42V7.29h1.6v10.13H40zM49.9 13.83c0-.29-.05-.56-.15-.82-.1-.26-.24-.49-.42-.69a1.91 1.91 0 00-.66-.47 2.05 2.05 0 00-.86-.17c-.31 0-.6.06-.87.17-.26.11-.49.28-.68.49-.19.21-.34.46-.44.74a2.7 2.7 0 00-.15.91c0 .32.05.62.15.91.1.28.25.53.44.74.19.21.41.37.67.49.26.12.55.17.86.17.31 0 .6-.06.87-.17.27-.12.49-.28.67-.49.18-.21.33-.46.43-.74.1-.29.15-.58.15-.9v-.17h.01-.02zm1.6 3.59h-1.52v-.83c-.24.31-.54.55-.91.73-.37.18-.8.27-1.28.27-.5 0-.96-.09-1.37-.28a3.14 3.14 0 01-1.04-.77 3.5 3.5 0 01-.66-1.17 4.34 4.34 0 01-.23-1.43c0-.51.08-.99.24-1.44.16-.45.38-.84.68-1.17.29-.33.65-.59 1.05-.78.41-.19.86-.28 1.36-.28.46 0 .87.08 1.22.25.36.17.66.42.91.74v-.88h1.55v7.04z" fill="#191919"/>
+      <path d="M53.24 17.42V7.29h1.6v10.13h-1.6zM61.2 13.83c0-.29-.05-.56-.15-.82-.1-.26-.24-.49-.42-.69a1.91 1.91 0 00-.66-.47 2.05 2.05 0 00-.86-.17c-.31 0-.6.06-.87.17-.26.11-.49.28-.68.49-.19.21-.34.46-.44.74a2.7 2.7 0 00-.15.91c0 .32.05.62.15.91.1.28.25.53.44.74.19.21.41.37.67.49.26.12.55.17.86.17.31 0 .6-.06.87-.17.27-.12.49-.28.67-.49.18-.21.33-.46.43-.74.1-.29.15-.58.15-.9v-.17h.01-.02zm1.6 3.59h-1.52v-.83c-.24.31-.54.55-.91.73-.37.18-.8.27-1.28.27-.5 0-.96-.09-1.37-.28a3.14 3.14 0 01-1.04-.77 3.5 3.5 0 01-.66-1.17 4.34 4.34 0 01-.23-1.43c0-.51.08-.99.24-1.44.16-.45.38-.84.68-1.17.29-.33.65-.59 1.05-.78.41-.19.86-.28 1.36-.28.46 0 .87.08 1.22.25.36.17.66.42.91.74v-.88h1.55v7.04z" fill="#191919"/>
+      <path d="M67.08 10.07v1.38c-.13-.06-.27-.1-.42-.14-.15-.03-.31-.05-.48-.05-.38 0-.67.12-.87.35-.2.23-.3.56-.3.98v4.83h-1.6v-7.35h1.52v.83c.16-.28.38-.51.66-.69.28-.17.62-.26 1.02-.26.12 0 .24.01.35.03.11.02.2.05.27.08l-.15.01z" fill="#191919"/>
+      <path d="M73.14 10.97l-.92 1.42-1.1-1.42h-1.86l2.15 2.77-2.35 3.08h1.9l1.12-1.56 1.14 1.56h1.86l-2.4-3.1 2.16-2.75h-1.7z" fill="#191919"/>
+      <path d="M69.5 0l1.28 3.91H74l-2.65 1.93 1.01 3.12L69.5 6.94l-2.87 2.02 1.01-3.12-2.65-1.93h3.23L69.5 0z" fill="#00B67A"/>
+    </svg>
+  );
+}
+
 export default function ProductCard({
   position,
   productId,
@@ -75,6 +90,7 @@ export default function ProductCard({
   ctaHref,
   ribbon,
   reviewHref,
+  reviewCount,
 }: ProductCardProps) {
   return (
     <div
@@ -89,102 +105,90 @@ export default function ProductCard({
       data-view-type="text"
       data-available="true"
     >
-      <div data-type="application/hydration-marker">
-        <div data-role="chart-product-card-wrapper" data-product-name={name} data-product-id={productId} className="css-109mh73">
-          <div data-testid="chart-product-card" data-role="chart-product-card" data-product-position={position} data-product-id={productId} className="css-1nxf808">
-            <div className="css-zht04c">
-              {/* Ribbon */}
-              {ribbon && (
-                <div className="product-ribbon-xsite css-s57r0x" data-testid="product-ribbon">
-                  <ThumbsUpIcon />
-                  <div className="css-54jqjv">{ribbon}</div>
-                </div>
-              )}
+      <div data-role="chart-product-card-wrapper" data-product-name={name} data-product-id={productId} className="css-109mh73">
+        <div data-testid="chart-product-card" data-role="chart-product-card" data-product-position={position} data-product-id={productId} className="css-1nxf808">
+          <div className="css-zht04c">
+            {/* Ribbon */}
+            {ribbon && (
+              <div className="product-ribbon-xsite css-s57r0x" data-testid="product-ribbon">
+                <ThumbsUpIcon />
+                <div className="css-54jqjv">{ribbon}</div>
+              </div>
+            )}
 
-              {/* Logo Section */}
-              <div className="css-wqm30u">
-                <div className="css-16a96gi">
-                  <div className="css-1fe80e3" data-testid="index-counter" data-name="index-counter">{position}</div>
-                  <div data-testid="hybrid-logo" className="css-167poo7">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={logo}
-                      className="product-logo light-logo css-1hinvb1"
-                      data-testid="hybrid-logo-light"
-                      data-role="product-logo-image"
-                      alt={name}
-                      loading="lazy"
-                    />
-                  </div>
+            {/* Logo Section */}
+            <div className="css-wqm30u">
+              <div className="css-16a96gi">
+                <div className="css-1fe80e3" data-testid="index-counter" data-name="index-counter">{position}</div>
+                <div data-testid="hybrid-logo" className="css-167poo7">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={logo}
+                    className="product-logo light-logo css-1hinvb1"
+                    data-testid="hybrid-logo-light"
+                    data-role="product-logo-image"
+                    alt={name}
+                    loading="lazy"
+                  />
                 </div>
               </div>
+            </div>
 
-              {/* Features Section */}
-              <div className="css-8ccc6v">
-                {/* Bottom Line */}
-                <div data-testid="product-bottom-line" className="css-176xys8">
-                  <span data-testid="bottom-line-product-name" className="css-61six1">
-                    <span>{name}</span> -
-                  </span>
-                  <span data-testid="bottom-line-text" className="css-kzec96">
-                    <span>{bottomLine}</span>
-                  </span>
-                  <span data-testid="bottom-line-review-link" className="css-1me64gx">
-                    <Link data-testid="link" href={reviewHref} className="css-1ijsmci">Read review</Link>
-                  </span>
-                </div>
-
-                {/* Features List */}
-                <ul data-testid="product-attributes" className="css-9ko16t">
-                  {features.map((feature, index) => (
-                    <li key={index} data-testid="product-attribute" className="css-1wkrhmh">
-                      <CheckIcon />
-                      <div className="css-s6uv9c">
-                        <span>{feature.bold ? <strong>{feature.text}</strong> : feature.text}</span>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-
-                {/* Quote Section */}
-                {quote && (
-                  <div data-testid="product-soa" className="css-1myhh97">
-                    <div data-testid="product-soa-title" className="css-nkl1s3">
-                      <QuoteIcon />
-                      <div className="css-101s3w3">
-                        <strong className="css-87z3mv">{quote.source}</strong> highlights {name}
-                      </div>
+            {/* Features Section */}
+            <div className="css-8ccc6v">
+              {/* Bottom Line */}
+              <div data-testid="product-bottom-line" className="css-176xys8">
+                <span data-testid="bottom-line-product-name" className="css-61six1">
+                  <span>{name}</span> -
+                </span>
+                <span data-testid="bottom-line-text" className="css-kzec96">
+                  <span>{bottomLine}</span>
+                </span>
+                <span data-testid="bottom-line-review-link" className="css-1me64gx">
+                  <Link data-testid="link" href={`${reviewHref}#visitors-reviews`} className="css-1ijsmci">
+                    {reviewCount ? `${reviewCount} reviews` : 'Read review'}
+                  </Link>
+                  {reviewCount && (
+                    <div data-testid="trust-pilot-logo" className="css-uxbj5y">
+                      by
+                      <TrustPilotIcon />
                     </div>
-                    <div className="css-phmloz">
-                      <p data-testid="product-soa-citation-text" className="css-jis5ax">
-                        &quot;{quote.text}&quot;
-                        <span data-testid="product-soa-date" className="css-ncmbik">({quote.date})</span>
-                      </p>
-                    </div>
-                  </div>
-                )}
+                  )}
+                </span>
               </div>
 
-              {/* CTA Section */}
-              <div className="css-oq0r4z">
-                <div className="css-1frkq1e">
-                  <a
-                    data-testid="popover-trigger"
-                    data-role="product-cta"
-                    data-product-id={productId}
-                    data-product-name={name}
-                    rel="nofollow noreferrer"
-                    className="nilink css-1un23uh"
-                    href={ctaHref}
-                    target="_blank"
-                    data-review-link={reviewHref}
-                  >
-                    <span>{ctaText}</span>
-                    <div className="endIcon css-k15e0p">
-                      <ArrowIcon />
+              {/* Features List - Show first 4 features */}
+              <ul data-testid="product-attributes" className="css-9ko16t">
+                {features.slice(0, 4).map((feature, index) => (
+                  <li key={index} data-testid="product-attribute" className="css-1wkrhmh">
+                    <CheckIcon />
+                    <div className="css-s6uv9c">
+                      <span>{feature.bold ? <strong>{feature.text}</strong> : feature.text}</span>
                     </div>
-                  </a>
-                </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* CTA Section */}
+            <div className="css-oq0r4z">
+              <div className="css-1frkq1e">
+                <a
+                  data-testid="popover-trigger"
+                  data-role="product-cta"
+                  data-product-id={productId}
+                  data-product-name={name}
+                  rel="nofollow noreferrer"
+                  className="nilink css-1un23uh"
+                  href={ctaHref}
+                  target="_blank"
+                  data-review-link={reviewHref}
+                >
+                  <span>{ctaText}</span>
+                  <div className="endIcon css-k15e0p">
+                    <ArrowIcon />
+                  </div>
+                </a>
               </div>
             </div>
           </div>

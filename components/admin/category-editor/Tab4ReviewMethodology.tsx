@@ -1,23 +1,26 @@
 'use client';
 
 import { useFormContext, useFieldArray } from 'react-hook-form';
-import { CategoryFormData, ArticleOption } from './types';
+import { CategoryFormData, AuthorOption } from './types';
+import ImageUpload from './ImageUpload';
+import RichTextEditor from './RichTextEditor';
+import dynamic from 'next/dynamic';
+
+// Dynamic import for BottomContentEditor to avoid SSR issues
+const BottomContentEditor = dynamic(
+  () => import('../bottom-content-editor/BottomContentEditor'),
+  {
+    ssr: false,
+    loading: () => <div className="p-4 bg-gray-50 text-gray-500">Loading editor...</div>,
+  }
+);
 
 interface Tab4Props {
-  articles: ArticleOption[];
+  authors: AuthorOption[];
 }
 
-export default function Tab4ReviewMethodology({ articles }: Tab4Props) {
+export default function Tab4ReviewMethodology({ authors }: Tab4Props) {
   const { register, control, watch, setValue } = useFormContext<CategoryFormData>();
-
-  const {
-    fields: thingsFields,
-    append: appendThing,
-    remove: removeThing,
-  } = useFieldArray({
-    control,
-    name: 'tenThingsToKnow',
-  });
 
   const {
     fields: criteriaFields,
@@ -46,146 +49,23 @@ export default function Tab4ReviewMethodology({ articles }: Tab4Props) {
     name: 'faqs',
   });
 
-  const mustReadArticleIds = watch('mustReadArticleIds') || [];
-
-  const toggleArticle = (articleId: string) => {
-    if (mustReadArticleIds.includes(articleId)) {
-      setValue('mustReadArticleIds', mustReadArticleIds.filter(id => id !== articleId), { shouldDirty: true });
-    } else {
-      setValue('mustReadArticleIds', [...mustReadArticleIds, articleId], { shouldDirty: true });
-    }
-  };
-
   return (
     <div className="tab-review-methodology">
-      {/* Review List Section */}
-      <div className="section">
-        <h2 className="section-title">Review List Page Content</h2>
-        <p className="section-desc">Content for the category review list/comparison page</p>
-
-        <div className="form-grid">
-          {/* Review List Hero Image */}
-          <div className="form-group full-width">
-            <label htmlFor="reviewListHeroImage">
-              Review List Hero Image
-              <span className="tooltip" title="Hero image for the review list page">?</span>
-            </label>
-            <input
-              id="reviewListHeroImage"
-              type="text"
-              {...register('reviewListHeroImage')}
-              placeholder="/images/categories/tv-services-reviews.jpg"
-            />
-          </div>
-
-          {/* Review List Intro */}
-          <div className="form-group full-width">
-            <label htmlFor="reviewListIntro">
-              Review List Introduction
-              <span className="tooltip" title="Rich text intro for the review list page">?</span>
-            </label>
-            <textarea
-              id="reviewListIntro"
-              {...register('reviewListIntro')}
-              placeholder="Enter HTML content for the review list introduction..."
-              rows={5}
-            />
-            <div className="hint">Supports HTML. Appears at the top of the review list page.</div>
-          </div>
-        </div>
-      </div>
-
-      {/* Ten Things to Know */}
-      <div className="section">
-        <h2 className="section-title">10 Things to Know</h2>
-        <p className="section-desc">Quick facts displayed on the category page</p>
-
-        <div className="dynamic-list">
-          {thingsFields.map((field, index) => (
-            <div key={field.id} className="dynamic-item">
-              <span className="item-number">{index + 1}</span>
-              <div className="item-content">
-                <input
-                  type="text"
-                  {...register(`tenThingsToKnow.${index}.title` as const)}
-                  placeholder="Title"
-                  className="input-title"
-                />
-                <textarea
-                  {...register(`tenThingsToKnow.${index}.description` as const)}
-                  placeholder="Description..."
-                  rows={2}
-                />
-              </div>
-              <button
-                type="button"
-                className="btn-remove"
-                onClick={() => removeThing(index)}
-              >
-                x
-              </button>
-            </div>
-          ))}
-          <button
-            type="button"
-            className="btn-add"
-            onClick={() => appendThing({ title: '', description: '' })}
-          >
-            + Add Thing to Know
-          </button>
-        </div>
-      </div>
-
-      {/* Must Read Articles */}
-      <div className="section">
-        <h2 className="section-title">Must-Read Articles</h2>
-        <p className="section-desc">Select articles to feature in the must-read section</p>
-
-        <div className="articles-selector">
-          {articles.length === 0 ? (
-            <div className="empty-state">No articles available.</div>
-          ) : (
-            <div className="articles-grid">
-              {articles.map((article) => (
-                <label key={article.id} className="article-checkbox">
-                  <input
-                    type="checkbox"
-                    checked={mustReadArticleIds.includes(article.id)}
-                    onChange={() => toggleArticle(article.id)}
-                  />
-                  <span className="article-info">
-                    <span className="article-title">{article.title}</span>
-                    <span className="article-slug">/{article.slug}</span>
-                  </span>
-                </label>
-              ))}
-            </div>
-          )}
-          <div className="selected-count">
-            {mustReadArticleIds.length} article(s) selected
-          </div>
-        </div>
-      </div>
-
       {/* Methodology Section */}
       <div className="section">
-        <h2 className="section-title">Methodology</h2>
-        <p className="section-desc">Explain how products are evaluated</p>
+        <h2 className="section-title">Phương pháp đánh giá</h2>
+        <p className="section-desc">Giải thích cách đánh giá sản phẩm</p>
 
         <div className="form-group full-width mb-20">
-          <label htmlFor="methodologyIntro">
-            Methodology Introduction
-            <span className="tooltip" title="Intro text for methodology section">?</span>
-          </label>
-          <textarea
-            id="methodologyIntro"
-            {...register('methodologyIntro')}
-            placeholder="Explain your evaluation process..."
-            rows={4}
+          <RichTextEditor
+            label="Giới thiệu phương pháp"
+            value={watch('methodologyIntro') || ''}
+            onChange={(value) => setValue('methodologyIntro', value, { shouldDirty: true })}
+            placeholder="Giải thích quy trình đánh giá của bạn..."
           />
         </div>
 
-        <h3 className="subsection-title">Evaluation Criteria</h3>
+        <h3 className="subsection-title">Tiêu chí đánh giá</h3>
         <div className="dynamic-list">
           {criteriaFields.map((field, index) => (
             <div key={field.id} className="dynamic-item">
@@ -193,12 +73,12 @@ export default function Tab4ReviewMethodology({ articles }: Tab4Props) {
                 <input
                   type="text"
                   {...register(`methodologyCriteria.${index}.title` as const)}
-                  placeholder="Criterion title"
+                  placeholder="Tên tiêu chí"
                   className="input-title"
                 />
                 <textarea
                   {...register(`methodologyCriteria.${index}.description` as const)}
-                  placeholder="Describe how this criterion is evaluated..."
+                  placeholder="Mô tả cách đánh giá tiêu chí này..."
                   rows={2}
                 />
               </div>
@@ -216,35 +96,47 @@ export default function Tab4ReviewMethodology({ articles }: Tab4Props) {
             className="btn-add"
             onClick={() => appendCriterion({ title: '', description: '' })}
           >
-            + Add Evaluation Criterion
+            + Thêm tiêu chí đánh giá
           </button>
         </div>
       </div>
 
       {/* Explore Cards */}
       <div className="section">
-        <h2 className="section-title">Explore More Cards</h2>
-        <p className="section-desc">Related content cards at the bottom of the page</p>
+        <h2 className="section-title">Thẻ khám phá thêm</h2>
+        <p className="section-desc">Các thẻ nội dung liên quan ở cuối trang</p>
 
         <div className="dynamic-list explore-list">
           {exploreFields.map((field, index) => (
             <div key={field.id} className="explore-item">
-              <div className="explore-content">
-                <input
-                  type="text"
-                  {...register(`exploreCards.${index}.title` as const)}
-                  placeholder="Card title"
-                />
-                <input
-                  type="text"
-                  {...register(`exploreCards.${index}.href` as const)}
-                  placeholder="Link URL (e.g., /articles/guide)"
-                />
-                <input
-                  type="text"
-                  {...register(`exploreCards.${index}.image` as const)}
-                  placeholder="Image URL"
-                />
+              <div className="explore-content-grid">
+                <div className="explore-row">
+                  <div className="explore-field">
+                    <label>Tiêu đề</label>
+                    <input
+                      type="text"
+                      {...register(`exploreCards.${index}.title` as const)}
+                      placeholder="Tiêu đề thẻ"
+                    />
+                  </div>
+                  <div className="explore-field">
+                    <label>Đường dẫn</label>
+                    <input
+                      type="text"
+                      {...register(`exploreCards.${index}.href` as const)}
+                      placeholder="/bai-viet/huong-dan"
+                    />
+                  </div>
+                </div>
+                <div className="explore-image-upload">
+                  <ImageUpload
+                    label="Ảnh thẻ"
+                    value={watch(`exploreCards.${index}.image` as const) || ''}
+                    onChange={(url) => setValue(`exploreCards.${index}.image` as const, url, { shouldDirty: true })}
+                    placeholder="Tải lên hoặc nhập URL ảnh"
+                    folder="categories/explore"
+                  />
+                </div>
               </div>
               <button
                 type="button"
@@ -260,15 +152,51 @@ export default function Tab4ReviewMethodology({ articles }: Tab4Props) {
             className="btn-add"
             onClick={() => appendExplore({ title: '', href: '', image: '' })}
           >
-            + Add Explore Card
+            + Thêm thẻ khám phá
           </button>
         </div>
       </div>
 
+      {/* Bottom Content (Comparison Table, Experts, etc.) */}
+      <div className="section">
+        <h2 className="section-title">Nội dung phía dưới</h2>
+        <p className="section-desc">Xây dựng các khối nội dung cho bảng so sánh, phần chuyên gia, v.v. Hiển thị phía trên phần FAQ.</p>
+
+        <BottomContentEditor
+          value={watch('bottomContent') || ''}
+          onChange={(value) => setValue('bottomContent', value, { shouldDirty: true })}
+          authors={authors.map(a => ({
+            id: a.id,
+            name: a.name,
+            avatar: a.avatar,
+            title: a.title,
+            slug: a.id, // Using id as slug fallback
+          }))}
+        />
+      </div>
+
+      {/* Additional Content (below Bottom Content) */}
+      <div className="section">
+        <h2 className="section-title">Nội dung bổ sung</h2>
+        <p className="section-desc">Các khối nội dung bổ sung hiển thị bên dưới phần Nội dung phía dưới.</p>
+
+        <BottomContentEditor
+          value={watch('additionalContent') || ''}
+          onChange={(value) => setValue('additionalContent', value, { shouldDirty: true })}
+          authors={authors.map(a => ({
+            id: a.id,
+            name: a.name,
+            avatar: a.avatar,
+            title: a.title,
+            slug: a.id,
+          }))}
+        />
+      </div>
+
       {/* FAQs */}
       <div className="section">
-        <h2 className="section-title">Frequently Asked Questions</h2>
-        <p className="section-desc">Category-level FAQ section</p>
+        <h2 className="section-title">Câu hỏi thường gặp</h2>
+        <p className="section-desc">Phần FAQ cho danh mục</p>
 
         <div className="dynamic-list">
           {faqFields.map((field, index) => (
@@ -277,12 +205,12 @@ export default function Tab4ReviewMethodology({ articles }: Tab4Props) {
                 <input
                   type="text"
                   {...register(`faqs.${index}.question` as const)}
-                  placeholder="Question"
+                  placeholder="Câu hỏi"
                   className="input-title"
                 />
                 <textarea
                   {...register(`faqs.${index}.answer` as const)}
-                  placeholder="Answer (supports HTML)"
+                  placeholder="Câu trả lời (hỗ trợ HTML)"
                   rows={3}
                 />
               </div>
@@ -300,7 +228,7 @@ export default function Tab4ReviewMethodology({ articles }: Tab4Props) {
             className="btn-add"
             onClick={() => appendFaq({ question: '', answer: '' })}
           >
-            + Add FAQ
+            + Thêm câu hỏi
           </button>
         </div>
       </div>
@@ -425,20 +353,6 @@ export default function Tab4ReviewMethodology({ articles }: Tab4Props) {
           align-items: flex-start;
         }
 
-        .item-number {
-          width: 28px;
-          height: 28px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background: #FE4A64;
-          color: white;
-          font-weight: 600;
-          font-size: 13px;
-          border-radius: 50%;
-          flex-shrink: 0;
-        }
-
         .item-content {
           flex: 1;
           display: flex;
@@ -487,72 +401,6 @@ export default function Tab4ReviewMethodology({ articles }: Tab4Props) {
           color: #374151;
         }
 
-        .articles-selector {
-          background: #f9fafb;
-          border-radius: 8px;
-          padding: 16px;
-        }
-
-        .empty-state {
-          padding: 24px;
-          text-align: center;
-          color: #9ca3af;
-          font-size: 14px;
-        }
-
-        .articles-grid {
-          display: grid;
-          gap: 8px;
-          max-height: 300px;
-          overflow-y: auto;
-        }
-
-        .article-checkbox {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          padding: 12px;
-          background: white;
-          border-radius: 6px;
-          cursor: pointer;
-          transition: background 0.2s;
-        }
-
-        .article-checkbox:hover {
-          background: #f3f4f6;
-        }
-
-        .article-checkbox input[type="checkbox"] {
-          width: 18px;
-          height: 18px;
-          flex-shrink: 0;
-        }
-
-        .article-info {
-          display: flex;
-          flex-direction: column;
-          gap: 2px;
-        }
-
-        .article-title {
-          font-size: 14px;
-          font-weight: 500;
-          color: #374151;
-        }
-
-        .article-slug {
-          font-size: 12px;
-          color: #9ca3af;
-        }
-
-        .selected-count {
-          margin-top: 12px;
-          padding-top: 12px;
-          border-top: 1px solid #e5e7eb;
-          font-size: 13px;
-          color: #6b7280;
-        }
-
         .explore-list .explore-item {
           display: flex;
           gap: 12px;
@@ -568,6 +416,40 @@ export default function Tab4ReviewMethodology({ articles }: Tab4Props) {
           gap: 8px;
         }
 
+        .explore-content-grid {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+
+        .explore-row {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 12px;
+        }
+
+        .explore-field {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+        }
+
+        .explore-field label {
+          font-size: 12px;
+          font-weight: 500;
+          color: #6b7280;
+        }
+
+        .explore-field .optional {
+          font-weight: 400;
+          color: #9ca3af;
+        }
+
+        .explore-image-upload {
+          margin-top: 8px;
+        }
+
         .faq-item .item-content textarea {
           min-height: 80px;
         }
@@ -578,6 +460,10 @@ export default function Tab4ReviewMethodology({ articles }: Tab4Props) {
           }
 
           .explore-content {
+            grid-template-columns: 1fr;
+          }
+
+          .explore-row {
             grid-template-columns: 1fr;
           }
         }

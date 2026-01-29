@@ -18,9 +18,9 @@ interface ProductEditorProps {
 }
 
 const TABS = [
-  { id: 'basic', label: 'Basic Info', icon: '📋' },
-  { id: 'listing', label: 'Category Listing', icon: '📊' },
-  { id: 'review', label: 'Review Content', icon: '📝' },
+  { id: 'basic', label: 'Thông tin cơ bản', icon: '📋' },
+  { id: 'listing', label: 'Hiển thị danh mục', icon: '📊' },
+  { id: 'review', label: 'Nội dung đánh giá', icon: '📝' },
   { id: 'faq-seo', label: 'FAQ & SEO', icon: '🔍' },
 ];
 
@@ -59,7 +59,7 @@ export default function ProductEditor({
     const draftKey = productId ? `product_draft_${productId}` : 'product_draft_new';
     const savedDraft = localStorage.getItem(draftKey);
     if (savedDraft && !initialData) {
-      const shouldRestore = window.confirm('Found unsaved draft. Do you want to restore it?');
+      const shouldRestore = window.confirm('Tìm thấy bản nháp chưa lưu. Bạn có muốn khôi phục không?');
       if (shouldRestore) {
         const draftData = JSON.parse(savedDraft);
         methods.reset(draftData);
@@ -71,7 +71,22 @@ export default function ProductEditor({
     setIsSaving(true);
     setSaveStatus('saving');
     try {
-      await onSave(data);
+      // Clean data before saving - convert NaN to null and handle empty strings
+      const cleanedData = {
+        ...data,
+        // Convert NaN to null for number fields
+        rating: Number.isNaN(data.rating) ? null : data.rating,
+        overallScore: Number.isNaN(data.overallScore) ? null : data.overallScore,
+        rank: Number.isNaN(data.rank) ? 0 : data.rank,
+        // Convert empty strings to null for ObjectID fields
+        authorId: data.authorId && data.authorId.trim() !== '' ? data.authorId : null,
+        // Filter empty strings from arrays
+        pros: data.pros?.filter(p => p && p.trim() !== '') || [],
+        cons: data.cons?.filter(c => c && c.trim() !== '') || [],
+        images: data.images?.filter(i => i && i.trim() !== '') || [],
+        relatedProductIds: data.relatedProductIds?.filter(id => id && id.trim() !== '') || [],
+      };
+      await onSave(cleanedData);
       setSaveStatus('saved');
       // Clear draft after successful save
       const draftKey = productId ? `product_draft_${productId}` : 'product_draft_new';
@@ -102,20 +117,20 @@ export default function ProductEditor({
         {/* Header */}
         <div className="editor-header">
           <div className="header-left">
-            <h1>{productId ? 'Edit Product' : 'Create New Product'}</h1>
+            <h1>{productId ? 'Chỉnh sửa sản phẩm' : 'Tạo sản phẩm mới'}</h1>
             <span className="status-badge" data-status={watch('status')}>
-              {watch('status') === 'published' ? 'Published' : 'Draft'}
+              {watch('status') === 'published' ? 'Đã xuất bản' : 'Bản nháp'}
             </span>
           </div>
           <div className="header-right">
-            {saveStatus === 'saving' && <span className="save-status saving">Saving...</span>}
-            {saveStatus === 'saved' && <span className="save-status saved">Saved!</span>}
-            {saveStatus === 'error' && <span className="save-status error">Save failed</span>}
-            {isDirty && saveStatus === 'idle' && <span className="save-status unsaved">Unsaved changes</span>}
+            {saveStatus === 'saving' && <span className="save-status saving">Đang lưu...</span>}
+            {saveStatus === 'saved' && <span className="save-status saved">Đã lưu!</span>}
+            {saveStatus === 'error' && <span className="save-status error">Lưu thất bại</span>}
+            {isDirty && saveStatus === 'idle' && <span className="save-status unsaved">Chưa lưu thay đổi</span>}
 
             {onCancel && (
               <button type="button" className="btn-secondary" onClick={onCancel}>
-                Cancel
+                Hủy
               </button>
             )}
             <button
@@ -124,7 +139,7 @@ export default function ProductEditor({
               onClick={handleSubmit(onSubmit)}
               disabled={isSaving}
             >
-              {isSaving ? 'Saving...' : 'Save Product'}
+              {isSaving ? 'Đang lưu...' : 'Lưu sản phẩm'}
             </button>
           </div>
         </div>

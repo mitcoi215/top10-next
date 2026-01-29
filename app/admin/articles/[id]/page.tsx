@@ -99,7 +99,7 @@ export default function EditArticlePage() {
     return (
       <div className="loading-container">
         <div className="loading-spinner" />
-        <p>Loading article...</p>
+        <p>Đang tải bài viết...</p>
         <style jsx>{`
           .loading-container {
             display: flex;
@@ -129,10 +129,10 @@ export default function EditArticlePage() {
   if (error) {
     return (
       <div className="error-container">
-        <h2>Error</h2>
+        <h2>Lỗi</h2>
         <p>{error}</p>
         <button onClick={() => router.push('/admin/articles')}>
-          Back to Articles
+          Quay lại danh sách
         </button>
         <style jsx>{`
           .error-container {

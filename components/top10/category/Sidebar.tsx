@@ -47,8 +47,8 @@ export default function Sidebar({ peopleCount, categoryName, articles, seeAllHre
                 <img
                   src={article.image}
                   alt={article.title}
-                  height="76px"
-                  width="76px"
+                  height={76}
+                  width={76}
                   loading="lazy"
                   className="css-h6pnhp"
                 />

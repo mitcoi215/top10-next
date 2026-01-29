@@ -2,6 +2,7 @@
 
 import { useFormContext } from 'react-hook-form';
 import { CategoryFormData, COLOR_PRESETS, ICON_PRESETS } from './types';
+import ImageUpload from './ImageUpload';
 
 export default function Tab1GeneralInfo() {
   const { register, watch, setValue, formState: { errors } } = useFormContext<CategoryFormData>();
@@ -32,21 +33,21 @@ export default function Tab1GeneralInfo() {
   return (
     <div className="tab-general-info">
       <div className="section">
-        <h2 className="section-title">Basic Information</h2>
-        <p className="section-desc">Core category identification and display settings</p>
+        <h2 className="section-title">Thông tin cơ bản</h2>
+        <p className="section-desc">Cài đặt nhận dạng và hiển thị danh mục cốt lõi</p>
 
         <div className="form-grid">
           {/* Name */}
           <div className="form-group">
             <label htmlFor="name">
-              Category Name <span className="required">*</span>
-              <span className="tooltip" title="Display name for this category">?</span>
+              Tên danh mục <span className="required">*</span>
+              <span className="tooltip" title="Tên hiển thị cho danh mục này">?</span>
             </label>
             <input
               id="name"
               type="text"
-              {...register('name', { required: 'Category name is required' })}
-              placeholder="e.g., TV Services, Dating, VPN"
+              {...register('name', { required: 'Tên danh mục là bắt buộc' })}
+              placeholder="VD: Dịch vụ TV, Dating, VPN"
               className={errors.name ? 'error' : ''}
             />
             {errors.name && <span className="error-msg">{errors.name.message}</span>}
@@ -56,55 +57,42 @@ export default function Tab1GeneralInfo() {
           <div className="form-group">
             <label htmlFor="slug">
               URL Slug <span className="required">*</span>
-              <span className="tooltip" title="Used in URLs, auto-generated from name">?</span>
+              <span className="tooltip" title="Dùng trong URL, tự động tạo từ tên">?</span>
             </label>
             <div className="input-with-btn">
               <input
                 id="slug"
                 type="text"
                 {...register('slug', {
-                  required: 'Slug is required',
+                  required: 'Slug là bắt buộc',
                   pattern: {
                     value: /^[a-z0-9-]+$/,
-                    message: 'Only lowercase letters, numbers, and hyphens'
+                    message: 'Chỉ chữ thường, số và gạch ngang'
                   }
                 })}
-                placeholder="e.g., tv-services"
+                placeholder="VD: dich-vu-tv"
                 className={errors.slug ? 'error' : ''}
               />
               <button type="button" className="btn-gen" onClick={generateSlug}>
-                Generate
+                Tạo tự động
               </button>
             </div>
             {errors.slug && <span className="error-msg">{errors.slug.message}</span>}
           </div>
 
-          {/* Description */}
-          <div className="form-group full-width">
-            <label htmlFor="description">
-              Short Description
-              <span className="tooltip" title="Brief description for category cards">?</span>
-            </label>
-            <textarea
-              id="description"
-              {...register('description')}
-              placeholder="A brief description of what this category covers..."
-              rows={2}
-            />
-          </div>
         </div>
       </div>
 
       <div className="section">
-        <h2 className="section-title">Appearance</h2>
-        <p className="section-desc">Visual styling for the category</p>
+        <h2 className="section-title">Giao diện</h2>
+        <p className="section-desc">Cài đặt giao diện cho danh mục</p>
 
         <div className="form-grid">
           {/* Icon */}
           <div className="form-group">
             <label>
-              Icon
-              <span className="tooltip" title="Emoji icon displayed with category name">?</span>
+              Biểu tượng
+              <span className="tooltip" title="Emoji hiển thị cùng tên danh mục">?</span>
             </label>
             <div className="icon-picker">
               <div className="current-icon">{selectedIcon}</div>
@@ -123,7 +111,7 @@ export default function Tab1GeneralInfo() {
               <input
                 type="text"
                 {...register('icon')}
-                placeholder="Or enter custom emoji"
+                placeholder="Hoặc nhập emoji tùy chỉnh"
                 className="custom-icon-input"
               />
             </div>
@@ -132,8 +120,8 @@ export default function Tab1GeneralInfo() {
           {/* Color */}
           <div className="form-group">
             <label>
-              Color Theme
-              <span className="tooltip" title="Primary color for category styling">?</span>
+              Màu chủ đề
+              <span className="tooltip" title="Màu chính cho giao diện danh mục">?</span>
             </label>
             <div className="color-picker">
               <div className="color-grid">
@@ -149,7 +137,7 @@ export default function Tab1GeneralInfo() {
                 ))}
               </div>
               <div className="color-preview">
-                Selected: <span className="color-name">{COLOR_PRESETS.find(c => c.value === selectedColor)?.label || selectedColor}</span>
+                Đã chọn: <span className="color-name">{COLOR_PRESETS.find(c => c.value === selectedColor)?.label || selectedColor}</span>
               </div>
             </div>
           </div>
@@ -157,48 +145,12 @@ export default function Tab1GeneralInfo() {
       </div>
 
       <div className="section">
-        <h2 className="section-title">Display Settings</h2>
-        <p className="section-desc">Control how this category appears on the site</p>
-
-        <div className="form-grid">
-          {/* Featured */}
-          <div className="form-group">
-            <label className="checkbox-label">
-              <input
-                type="checkbox"
-                {...register('featured')}
-              />
-              <span className="checkbox-text">
-                Featured Category
-                <span className="checkbox-hint">Show in featured sections on homepage</span>
-              </span>
-            </label>
-          </div>
-
-          {/* Order */}
-          <div className="form-group">
-            <label htmlFor="order">
-              Display Order
-              <span className="tooltip" title="Lower numbers appear first">?</span>
-            </label>
-            <input
-              id="order"
-              type="number"
-              min="0"
-              {...register('order', { valueAsNumber: true })}
-              placeholder="0"
-            />
-          </div>
-        </div>
-      </div>
-
-      <div className="section">
-        <h2 className="section-title">SEO Settings</h2>
-        <p className="section-desc">Search engine optimization for category pages</p>
+        <h2 className="section-title">Cài đặt SEO</h2>
+        <p className="section-desc">Tối ưu hóa công cụ tìm kiếm cho trang danh mục</p>
 
         <div className="seo-actions">
           <button type="button" className="btn-generate" onClick={generateSeoFields}>
-            Auto-generate SEO fields
+            Tự động tạo thông tin SEO
           </button>
         </div>
 
@@ -206,54 +158,46 @@ export default function Tab1GeneralInfo() {
           {/* Meta Title */}
           <div className="form-group full-width">
             <label htmlFor="metaTitle">
-              Meta Title
-              <span className="tooltip" title="Title shown in search results (50-60 chars)">?</span>
+              Tiêu đề Meta
+              <span className="tooltip" title="Tiêu đề hiển thị trên kết quả tìm kiếm (50-60 ký tự)">?</span>
             </label>
             <input
               id="metaTitle"
               type="text"
               {...register('metaTitle')}
-              placeholder="Best [Category] 2026 - Compare Top 10 | Top10"
+              placeholder="Top 10 [Danh mục] tốt nhất 2026 - So sánh | Top10"
             />
             <div className="char-count">
-              {(watch('metaTitle') || '').length} / 60 characters
+              {(watch('metaTitle') || '').length} / 60 ký tự
             </div>
           </div>
 
           {/* Meta Description */}
           <div className="form-group full-width">
             <label htmlFor="metaDescription">
-              Meta Description
-              <span className="tooltip" title="Description in search results (150-160 chars)">?</span>
+              Mô tả Meta
+              <span className="tooltip" title="Mô tả trong kết quả tìm kiếm (150-160 ký tự)">?</span>
             </label>
             <textarea
               id="metaDescription"
               {...register('metaDescription')}
-              placeholder="A compelling description for search engines..."
+              placeholder="Mô tả hấp dẫn cho công cụ tìm kiếm..."
               rows={3}
             />
             <div className="char-count">
-              {(watch('metaDescription') || '').length} / 160 characters
+              {(watch('metaDescription') || '').length} / 160 ký tự
             </div>
           </div>
 
           {/* OG Image */}
           <div className="form-group full-width">
-            <label htmlFor="ogImage">
-              OG Image URL
-              <span className="tooltip" title="Image for social media sharing">?</span>
-            </label>
-            <input
-              id="ogImage"
-              type="text"
-              {...register('ogImage')}
-              placeholder="/images/og/category-name.jpg"
+            <ImageUpload
+              label="Ảnh OG (Mạng xã hội)"
+              value={watch('ogImage') || ''}
+              onChange={(url) => setValue('ogImage', url, { shouldDirty: true })}
+              placeholder="Tải lên hoặc nhập URL ảnh để chia sẻ mạng xã hội"
+              folder="categories/og"
             />
-            {watch('ogImage') && (
-              <div className="image-preview">
-                <img src={watch('ogImage')} alt="OG preview" />
-              </div>
-            )}
           </div>
         </div>
       </div>
@@ -473,31 +417,6 @@ export default function Tab1GeneralInfo() {
         .color-name {
           font-weight: 600;
           color: #374151;
-        }
-
-        .checkbox-label {
-          display: flex;
-          align-items: flex-start;
-          gap: 10px;
-          cursor: pointer;
-        }
-
-        .checkbox-label input[type="checkbox"] {
-          width: 18px;
-          height: 18px;
-          margin-top: 2px;
-        }
-
-        .checkbox-text {
-          display: flex;
-          flex-direction: column;
-          gap: 2px;
-        }
-
-        .checkbox-hint {
-          font-size: 12px;
-          color: #9ca3af;
-          font-weight: 400;
         }
 
         .seo-actions {

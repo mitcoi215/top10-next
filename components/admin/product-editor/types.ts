@@ -34,6 +34,7 @@ export interface ProductFormData {
   rating: number | null;
   reviewCount: string;
   heroSummary: string;
+  videoUrl: string;
   pros: string[];
   cons: string[];
   mainContent: string;
@@ -124,6 +125,7 @@ export const defaultProductFormData: ProductFormData = {
   rating: null,
   reviewCount: '',
   heroSummary: '',
+  videoUrl: '',
   pros: [],
   cons: [],
   mainContent: '',

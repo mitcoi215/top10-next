@@ -27,7 +27,7 @@ export const ProductCreateSchema = z.object({
     .regex(/^[a-z0-9-]+$/, 'Slug must be lowercase with hyphens only'),
   name: z.string().min(1, 'Name is required'),
   logoUrl: z.string().optional().nullable(),
-  ctaUrl: z.string().url('Must be a valid URL').optional().nullable(),
+  ctaUrl: z.string().optional().nullable(),
   ctaText: z.string().default('Visit Site'),
   reviewHref: z.string().optional().nullable(),
   status: z.enum(['draft', 'published']).default('draft'),
@@ -45,7 +45,17 @@ export const ProductCreateSchema = z.object({
   // Scores
   overallScore: z.number().min(0).max(10).optional().nullable(),
   scoreLabel: z.string().optional().nullable(),
-  scores: z.record(z.string(), z.number()).optional().default({}),
+  // Scores can be object { key: number } or array [{ category, score, description }]
+  scores: z.union([
+    z.record(z.string(), z.number()),
+    z.array(z.object({
+      category: z.string().optional(),
+      name: z.string().optional(),
+      score: z.number().optional(),
+      value: z.number().optional(),
+      description: z.string().optional(),
+    })),
+  ]).optional().nullable(),
 
   // Highlights (dynamic key-value)
   highlights: z.record(z.string(), z.string()).optional().default({}),
@@ -63,6 +73,7 @@ export const ProductCreateSchema = z.object({
   rating: z.number().min(0).max(5).optional().nullable(),
   reviewCount: z.string().optional().nullable(),
   heroSummary: z.string().optional().nullable(),
+  videoUrl: z.string().optional().nullable(),
   pros: z.array(z.string()).optional().default([]),
   cons: z.array(z.string()).optional().default([]),
   mainContent: z.string().optional().nullable(),

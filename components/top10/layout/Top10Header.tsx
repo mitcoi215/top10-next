@@ -1,6 +1,3 @@
-'use client';
-
-import { useState } from 'react';
 import Link from 'next/link';
 
 // SVG Logo component - exact copy from original
@@ -20,40 +17,11 @@ const Top10Logo = () => (
 );
 
 export default function Top10Header() {
-  const [showDisclosure, setShowDisclosure] = useState(false);
-
   return (
-    <>
-      {/* Wrapper div with original class */}
-      <div className="ni-1lgr5sy">
-        {/* Disclosure Bar */}
-        <div className="ni-152zfk">
-          <div className="ni-1pc6w80">
-            <div data-testid="set-off-box-text" className="ni-7e8ctb">
-              We earn commissions from brands listed on this site, which influences how listings are presented.
-            </div>
-            <div className="ni-16cmgru">
-              <div data-testid="advertising-disclosure" className="ni-1dgld9d">
-                <button
-                  data-testid="opening-label"
-                  data-hook="open-advertising-disclosure"
-                  className="ni-1gpugho"
-                  onClick={() => setShowDisclosure(!showDisclosure)}
-                >
-                  Advertising Disclosure
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Logo Bar */}
-      <div className="ni-ilfvkp">
-        <Link href="/" className="ni-e2qfj">
-          <Top10Logo />
-        </Link>
-      </div>
-    </>
+    <div className="ni-ilfvkp">
+      <Link href="/" className="ni-e2qfj">
+        <Top10Logo />
+      </Link>
+    </div>
   );
 }

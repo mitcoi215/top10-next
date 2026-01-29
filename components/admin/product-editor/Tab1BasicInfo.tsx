@@ -2,6 +2,7 @@
 
 import { useFormContext } from 'react-hook-form';
 import { ProductFormData, CategoryOption, AuthorOption } from './types';
+import ImageUpload from '../category-editor/ImageUpload';
 
 interface Tab1Props {
   categories: CategoryOption[];
@@ -37,21 +38,21 @@ export default function Tab1BasicInfo({ categories, authors }: Tab1Props) {
   return (
     <div className="tab-basic-info">
       <div className="section">
-        <h2 className="section-title">Basic Information</h2>
-        <p className="section-desc">Core product identification and display settings</p>
+        <h2 className="section-title">Thông tin cơ bản</h2>
+        <p className="section-desc">Cài đặt nhận dạng và hiển thị sản phẩm cốt lõi</p>
 
         <div className="form-grid">
           {/* Name */}
           <div className="form-group full-width">
             <label htmlFor="name">
-              Product Name <span className="required">*</span>
-              <span className="tooltip" title="The display name of the product/service">?</span>
+              Tên sản phẩm <span className="required">*</span>
+              <span className="tooltip" title="Tên hiển thị của sản phẩm/dịch vụ">?</span>
             </label>
             <input
               id="name"
               type="text"
-              {...register('name', { required: 'Product name is required' })}
-              placeholder="e.g., Sling TV, eharmony"
+              {...register('name', { required: 'Tên sản phẩm là bắt buộc' })}
+              placeholder="VD: Sling TV, eharmony"
               className={errors.name ? 'error' : ''}
             />
             {errors.name && <span className="error-msg">{errors.name.message}</span>}
@@ -61,66 +62,58 @@ export default function Tab1BasicInfo({ categories, authors }: Tab1Props) {
           <div className="form-group">
             <label htmlFor="slug">
               URL Slug <span className="required">*</span>
-              <span className="tooltip" title="Used in URLs, auto-generated from name">?</span>
+              <span className="tooltip" title="Dùng trong URL, tự động tạo từ tên">?</span>
             </label>
             <div className="input-with-btn">
               <input
                 id="slug"
                 type="text"
                 {...register('slug', {
-                  required: 'Slug is required',
+                  required: 'Slug là bắt buộc',
                   pattern: {
                     value: /^[a-z0-9-]+$/,
-                    message: 'Only lowercase letters, numbers, and hyphens allowed'
+                    message: 'Chỉ chữ thường, số và gạch ngang'
                   }
                 })}
-                placeholder="e.g., sling-tv"
+                placeholder="VD: sling-tv"
                 className={errors.slug ? 'error' : ''}
               />
               <button type="button" className="btn-gen" onClick={generateSlug}>
-                Generate
+                Tạo tự động
               </button>
             </div>
             {errors.slug && <span className="error-msg">{errors.slug.message}</span>}
           </div>
 
-          {/* Logo URL */}
+          {/* Logo URL with Upload */}
           <div className="form-group">
-            <label htmlFor="logoUrl">
-              Logo URL
-              <span className="tooltip" title="Product logo image URL">?</span>
-            </label>
-            <input
-              id="logoUrl"
-              type="text"
-              {...register('logoUrl')}
-              placeholder="/images/products/logo.png"
+            <ImageUpload
+              value={watch('logoUrl') || ''}
+              onChange={(url) => setValue('logoUrl', url)}
+              label="URL Logo"
+              placeholder="Nhập URL hoặc upload ảnh logo"
+              folder="products/logos"
             />
-            {watch('logoUrl') && (
-              <div className="image-preview">
-                <img src={watch('logoUrl')} alt="Logo preview" />
-              </div>
-            )}
           </div>
         </div>
       </div>
 
       <div className="section">
-        <h2 className="section-title">Category & Author</h2>
-        <p className="section-desc">Assign product to category and author</p>
+        <h2 className="section-title">Danh mục & Tác giả</h2>
+        <p className="section-desc">Gán sản phẩm vào danh mục và tác giả</p>
 
         <div className="form-grid">
           {/* Category */}
           <div className="form-group">
             <label htmlFor="categoryId">
-              Category <span className="required">*</span>
+              Danh mục <span className="required">*</span>
             </label>
             <select
               id="categoryId"
-              {...register('categoryId', { required: 'Category is required' })}
+              {...register('categoryId', { required: 'Danh mục là bắt buộc' })}
               className={errors.categoryId ? 'error' : ''}
             >
-              <option value="">Select a category...</option>
+              <option value="">Chọn danh mục...</option>
               {categories.map(cat => (
                 <option key={cat.id} value={cat.id}>{cat.name}</option>
               ))}
@@ -131,11 +124,11 @@ export default function Tab1BasicInfo({ categories, authors }: Tab1Props) {
           {/* Author */}
           <div className="form-group">
             <label htmlFor="authorId">
-              Author
-              <span className="tooltip" title="Content writer for this product review">?</span>
+              Tác giả
+              <span className="tooltip" title="Người viết bài đánh giá sản phẩm này">?</span>
             </label>
             <select id="authorId" {...register('authorId')}>
-              <option value="">Select an author...</option>
+              <option value="">Chọn tác giả...</option>
               {authors.map(author => (
                 <option key={author.id} value={author.id}>{author.name}</option>
               ))}
@@ -145,15 +138,15 @@ export default function Tab1BasicInfo({ categories, authors }: Tab1Props) {
       </div>
 
       <div className="section">
-        <h2 className="section-title">Links & CTA</h2>
-        <p className="section-desc">Affiliate and navigation links</p>
+        <h2 className="section-title">Liên kết & CTA</h2>
+        <p className="section-desc">Liên kết tiếp thị và điều hướng</p>
 
         <div className="form-grid">
           {/* CTA URL (Affiliate) */}
           <div className="form-group">
             <label htmlFor="ctaUrl">
-              Affiliate URL
-              <span className="tooltip" title="The affiliate/referral link for this product">?</span>
+              URL Affiliate
+              <span className="tooltip" title="Liên kết affiliate/giới thiệu cho sản phẩm này">?</span>
             </label>
             <input
               id="ctaUrl"
@@ -166,22 +159,22 @@ export default function Tab1BasicInfo({ categories, authors }: Tab1Props) {
           {/* CTA Text */}
           <div className="form-group">
             <label htmlFor="ctaText">
-              CTA Button Text
-              <span className="tooltip" title="Text displayed on the call-to-action button">?</span>
+              Văn bản nút CTA
+              <span className="tooltip" title="Văn bản hiển thị trên nút kêu gọi hành động">?</span>
             </label>
             <input
               id="ctaText"
               type="text"
               {...register('ctaText')}
-              placeholder="Visit Site"
+              placeholder="Xem trang web"
             />
           </div>
 
           {/* Review Href */}
           <div className="form-group full-width">
             <label htmlFor="reviewHref">
-              Review Page URL
-              <span className="tooltip" title="Internal link to the detailed review page">?</span>
+              URL trang đánh giá
+              <span className="tooltip" title="Liên kết nội bộ đến trang đánh giá chi tiết">?</span>
             </label>
             <div className="input-with-btn">
               <input
@@ -191,7 +184,7 @@ export default function Tab1BasicInfo({ categories, authors }: Tab1Props) {
                 placeholder="/tv-services/reviews/sling-tv"
               />
               <button type="button" className="btn-gen" onClick={generateReviewHref}>
-                Generate
+                Tạo tự động
               </button>
             </div>
           </div>
@@ -199,12 +192,12 @@ export default function Tab1BasicInfo({ categories, authors }: Tab1Props) {
       </div>
 
       <div className="section">
-        <h2 className="section-title">Status</h2>
-        <p className="section-desc">Publication status of this product</p>
+        <h2 className="section-title">Trạng thái</h2>
+        <p className="section-desc">Trạng thái xuất bản của sản phẩm này</p>
 
         <div className="form-grid">
           <div className="form-group">
-            <label htmlFor="status">Publication Status</label>
+            <label htmlFor="status">Trạng thái xuất bản</label>
             <div className="status-toggle">
               <label className={`toggle-option ${watch('status') === 'draft' ? 'active' : ''}`}>
                 <input
@@ -213,7 +206,7 @@ export default function Tab1BasicInfo({ categories, authors }: Tab1Props) {
                   value="draft"
                 />
                 <span className="toggle-icon">📝</span>
-                Draft
+                Bản nháp
               </label>
               <label className={`toggle-option ${watch('status') === 'published' ? 'active' : ''}`}>
                 <input
@@ -222,7 +215,7 @@ export default function Tab1BasicInfo({ categories, authors }: Tab1Props) {
                   value="published"
                 />
                 <span className="toggle-icon">✅</span>
-                Published
+                Đã xuất bản
               </label>
             </div>
           </div>

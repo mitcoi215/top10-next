@@ -3,220 +3,289 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
-export default function AdminPage() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+interface Stats {
+  categories: number;
+  products: number;
+  articles: number;
+  authors: number;
+}
+
+interface RecentItem {
+  id: string;
+  title: string;
+  slug: string;
+  createdAt: string;
+  status?: string;
+}
+
+export default function AdminDashboard() {
+  const [stats, setStats] = useState<Stats>({ categories: 0, products: 0, articles: 0, authors: 0 });
+  const [recentArticles, setRecentArticles] = useState<RecentItem[]>([]);
+  const [recentProducts, setRecentProducts] = useState<RecentItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check if already authenticated
-    const token = localStorage.getItem('admin_token');
-    if (token) {
-      setIsAuthenticated(true);
-    }
+    fetchDashboardData();
   }, []);
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError('');
-
+  const fetchDashboardData = async () => {
     try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
+      // Fetch stats
+      const [categoriesRes, productsRes, articlesRes, authorsRes] = await Promise.all([
+        fetch('/api/categories'),
+        fetch('/api/products'),
+        fetch('/api/articles'),
+        fetch('/api/authors'),
+      ]);
+
+      const categories = await categoriesRes.json();
+      const products = await productsRes.json();
+      const articles = await articlesRes.json();
+      const authors = await authorsRes.json();
+
+      setStats({
+        categories: Array.isArray(categories) ? categories.length : 0,
+        products: Array.isArray(products) ? products.length : 0,
+        articles: Array.isArray(articles) ? articles.length : 0,
+        authors: Array.isArray(authors) ? authors.length : 0,
       });
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Login failed');
+      // Set recent items
+      if (Array.isArray(articles)) {
+        setRecentArticles(articles.slice(0, 5).map((a: { id: string; title: string; slug: string; createdAt: string; status: string }) => ({
+          id: a.id,
+          title: a.title,
+          slug: a.slug,
+          createdAt: a.createdAt,
+          status: a.status,
+        })));
       }
 
-      // Save token to localStorage
-      localStorage.setItem('admin_token', data.token);
-      localStorage.setItem('admin_user', JSON.stringify(data.user));
-      setIsAuthenticated(true);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Login failed');
+      if (Array.isArray(products)) {
+        setRecentProducts(products.slice(0, 5).map((p: { id: string; name: string; slug: string; createdAt: string; status: string }) => ({
+          id: p.id,
+          title: p.name,
+          slug: p.slug,
+          createdAt: p.createdAt,
+          status: p.status,
+        })));
+      }
+    } catch (error) {
+      console.error('Failed to fetch dashboard data:', error);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('admin_token');
-    localStorage.removeItem('admin_user');
-    setIsAuthenticated(false);
-    setUsername('');
-    setPassword('');
-  };
+  const statCards = [
+    {
+      title: 'Danh mục',
+      value: stats.categories,
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+        </svg>
+      ),
+      color: 'from-blue-500 to-blue-600',
+      href: '/admin/categories',
+    },
+    {
+      title: 'Sản phẩm',
+      value: stats.products,
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+        </svg>
+      ),
+      color: 'from-emerald-500 to-emerald-600',
+      href: '/admin/products',
+    },
+    {
+      title: 'Bài viết',
+      value: stats.articles,
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+        </svg>
+      ),
+      color: 'from-purple-500 to-purple-600',
+      href: '/admin/articles',
+    },
+    {
+      title: 'Tác giả',
+      value: stats.authors,
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>
+      ),
+      color: 'from-orange-500 to-orange-600',
+      href: '/admin/authors',
+    },
+  ];
 
-  if (!isAuthenticated) {
+  const quickActions = [
+    { title: 'Thêm bài viết', href: '/admin/articles/new', icon: '📝', color: 'bg-purple-100 text-purple-700 hover:bg-purple-200' },
+    { title: 'Thêm sản phẩm', href: '/admin/products/new', icon: '📦', color: 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200' },
+    { title: 'Thêm danh mục', href: '/admin/categories/new', icon: '📁', color: 'bg-blue-100 text-blue-700 hover:bg-blue-200' },
+    { title: 'Cài đặt trang chủ', href: '/admin/settings', icon: '🏠', color: 'bg-pink-100 text-pink-700 hover:bg-pink-200' },
+    { title: 'Danh mục xu hướng', href: '/admin/trending', icon: '📈', color: 'bg-orange-100 text-orange-700 hover:bg-orange-200' },
+    { title: 'Xem website', href: '/', icon: '🌐', color: 'bg-gray-100 text-gray-700 hover:bg-gray-200', external: true },
+  ];
+
+  if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <div className="bg-white p-8 rounded-lg shadow-md w-96">
-          <h1 className="text-2xl font-bold mb-6 text-center">Admin Login</h1>
-          {error && (
-            <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg text-sm">
-              {error}
-            </div>
-          )}
-          <form onSubmit={handleLogin}>
-            <div className="mb-4">
-              <label className="block text-gray-700 mb-2">Username</label>
-              <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none"
-                placeholder="Enter username"
-                required
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-gray-700 mb-2">Password</label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none"
-                placeholder="Enter password"
-                required
-              />
-            </div>
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition disabled:opacity-50"
-            >
-              {isLoading ? 'Logging in...' : 'Login'}
-            </button>
-            <p className="text-sm text-gray-500 mt-4 text-center">
-              Default: admin / admin123
-            </p>
-          </form>
-        </div>
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin w-8 h-8 border-4 border-pink-500 border-t-transparent rounded-full" />
       </div>
     );
   }
 
-  const adminSections = [
-    {
-      title: 'Products',
-      description: 'Manage products, rankings, reviews, and comparisons',
-      icon: '📦',
-      links: [
-        { href: '/admin/products', label: 'All Products' },
-        { href: '/admin/products/new', label: 'Add New Product' },
-      ],
-      color: 'bg-blue-500',
-    },
-    {
-      title: 'Categories',
-      description: 'Manage categories, hero sections, and methodology',
-      icon: '📁',
-      links: [
-        { href: '/admin/categories', label: 'All Categories' },
-        { href: '/admin/categories/new', label: 'Add New Category' },
-      ],
-      color: 'bg-green-500',
-    },
-    {
-      title: 'Articles',
-      description: 'Manage blog posts, charticles, and guides',
-      icon: '📝',
-      links: [
-        { href: '/admin/articles', label: 'All Articles' },
-        { href: '/admin/articles/new', label: 'Add New Article' },
-      ],
-      color: 'bg-purple-500',
-    },
-  ];
-
   return (
-    <div className="min-h-screen bg-gray-100">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-600">
-              Logged in as <strong>{JSON.parse(localStorage.getItem('admin_user') || '{}').username || 'admin'}</strong>
-            </span>
-            <button
-              onClick={handleLogout}
-              className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition"
-            >
-              Logout
-            </button>
-          </div>
-        </div>
-      </header>
+    <div className="space-y-6">
+      {/* Welcome Section */}
+      <div className="bg-gradient-to-r from-pink-500 to-rose-500 rounded-2xl p-6 text-white">
+        <h2 className="text-2xl font-bold mb-2">Chào mừng trở lại!</h2>
+        <p className="opacity-90">Quản lý nội dung website của bạn tại đây. Sử dụng sidebar để điều hướng giữa các mục.</p>
+      </div>
 
-      {/* Main Content */}
-      <div className="container mx-auto px-4 py-8">
-        <h2 className="text-xl font-semibold text-gray-800 mb-6">Content Management</h2>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {adminSections.map((section) => (
-            <div key={section.title} className="bg-white rounded-lg shadow-sm border overflow-hidden">
-              <div className={`${section.color} px-4 py-3 flex items-center gap-3`}>
-                <span className="text-2xl">{section.icon}</span>
-                <h3 className="text-lg font-semibold text-white">{section.title}</h3>
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {statCards.map((stat) => (
+          <Link
+            key={stat.title}
+            href={stat.href}
+            className="bg-white rounded-xl p-5 shadow-sm border border-gray-100 hover:shadow-md transition group"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-500 mb-1">{stat.title}</p>
+                <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
               </div>
-              <div className="p-4">
-                <p className="text-gray-600 text-sm mb-4">{section.description}</p>
-                <div className="space-y-2">
-                  {section.links.map((link) => (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      className="block px-4 py-2 bg-gray-50 hover:bg-gray-100 rounded-lg text-gray-700 font-medium transition"
-                    >
-                      {link.label}
-                    </Link>
-                  ))}
-                </div>
+              <div className={`w-12 h-12 rounded-xl bg-gradient-to-r ${stat.color} flex items-center justify-center text-white group-hover:scale-110 transition`}>
+                {stat.icon}
               </div>
             </div>
+          </Link>
+        ))}
+      </div>
+
+      {/* Quick Actions */}
+      <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">Thao tác nhanh</h3>
+        <div className="flex flex-wrap gap-3">
+          {quickActions.map((action) => (
+            <Link
+              key={action.title}
+              href={action.href}
+              target={action.external ? '_blank' : undefined}
+              className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium transition ${action.color}`}
+            >
+              <span>{action.icon}</span>
+              {action.title}
+            </Link>
           ))}
         </div>
+      </div>
 
-        {/* Quick Stats (placeholder) */}
-        <div className="mt-8">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">Quick Links</h2>
-          <div className="bg-white rounded-lg shadow-sm border p-4">
-            <div className="flex flex-wrap gap-3">
-              <Link
-                href="/admin/products"
-                className="px-4 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition"
-              >
-                View All Products
-              </Link>
-              <Link
-                href="/admin/categories"
-                className="px-4 py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition"
-              >
-                View All Categories
-              </Link>
-              <Link
-                href="/admin/articles"
-                className="px-4 py-2 bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 transition"
-              >
-                View All Articles
-              </Link>
-              <Link
-                href="/"
-                className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition"
-              >
-                View Website
-              </Link>
+      {/* Recent Content */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Recent Articles */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100">
+          <div className="p-4 border-b border-gray-100 flex items-center justify-between">
+            <h3 className="font-semibold text-gray-900">Bài viết gần đây</h3>
+            <Link href="/admin/articles" className="text-sm text-pink-600 hover:text-pink-700 font-medium">
+              Xem tất cả
+            </Link>
+          </div>
+          <div className="divide-y divide-gray-100">
+            {recentArticles.length > 0 ? (
+              recentArticles.map((article) => (
+                <Link
+                  key={article.id}
+                  href={`/admin/articles/${article.id}`}
+                  className="flex items-center justify-between p-4 hover:bg-gray-50 transition"
+                >
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-medium text-gray-900 truncate">{article.title}</p>
+                    <p className="text-xs text-gray-500 mt-0.5">{new Date(article.createdAt).toLocaleDateString()}</p>
+                  </div>
+                  <span className={`ml-3 px-2 py-1 text-xs font-medium rounded-full ${
+                    article.status === 'published' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'
+                  }`}>
+                    {article.status === 'published' ? 'Đã xuất bản' : 'Bản nháp'}
+                  </span>
+                </Link>
+              ))
+            ) : (
+              <div className="p-8 text-center text-gray-500">
+                <p>Chưa có bài viết nào</p>
+                <Link href="/admin/articles/new" className="text-pink-600 hover:text-pink-700 font-medium text-sm mt-1 inline-block">
+                  Tạo bài viết đầu tiên
+                </Link>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Recent Products */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100">
+          <div className="p-4 border-b border-gray-100 flex items-center justify-between">
+            <h3 className="font-semibold text-gray-900">Sản phẩm gần đây</h3>
+            <Link href="/admin/products" className="text-sm text-pink-600 hover:text-pink-700 font-medium">
+              Xem tất cả
+            </Link>
+          </div>
+          <div className="divide-y divide-gray-100">
+            {recentProducts.length > 0 ? (
+              recentProducts.map((product) => (
+                <Link
+                  key={product.id}
+                  href={`/admin/products/${product.id}`}
+                  className="flex items-center justify-between p-4 hover:bg-gray-50 transition"
+                >
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-medium text-gray-900 truncate">{product.title}</p>
+                    <p className="text-xs text-gray-500 mt-0.5">{product.slug}</p>
+                  </div>
+                  <span className={`ml-3 px-2 py-1 text-xs font-medium rounded-full ${
+                    product.status === 'published' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'
+                  }`}>
+                    {product.status === 'published' ? 'Đã xuất bản' : 'Bản nháp'}
+                  </span>
+                </Link>
+              ))
+            ) : (
+              <div className="p-8 text-center text-gray-500">
+                <p>Chưa có sản phẩm nào</p>
+                <Link href="/admin/products/new" className="text-pink-600 hover:text-pink-700 font-medium text-sm mt-1 inline-block">
+                  Tạo sản phẩm đầu tiên
+                </Link>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Help Section */}
+      <div className="bg-slate-900 rounded-xl p-6 text-white">
+        <div className="flex items-start gap-4">
+          <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center flex-shrink-0">
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <div>
+            <h3 className="font-semibold mb-1">Cần trợ giúp?</h3>
+            <p className="text-sm text-slate-300 mb-3">
+              Sử dụng sidebar để điều hướng giữa các mục quản lý website.
+              Mỗi mục đều có danh sách và form chỉnh sửa riêng.
+            </p>
+            <div className="flex flex-wrap gap-2 text-sm">
+              <span className="px-2 py-1 bg-white/10 rounded">Danh mục - Quản lý chủ đề</span>
+              <span className="px-2 py-1 bg-white/10 rounded">Sản phẩm - Thêm/sửa sản phẩm</span>
+              <span className="px-2 py-1 bg-white/10 rounded">Bài viết - Viết nội dung</span>
+              <span className="px-2 py-1 bg-white/10 rounded">Trang chủ - Cấu hình homepage</span>
             </div>
           </div>
         </div>

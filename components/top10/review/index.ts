@@ -6,3 +6,7 @@ export { default as ScoreTable } from './ScoreTable';
 export { default as ReviewContent } from './ReviewContent';
 export { default as ShortChart } from './ShortChart';
 export { default as MustReads } from './MustReads';
+export { default as SummarySection } from './SummarySection';
+export { default as TrustSection } from './TrustSection';
+export { default as AuthorBio } from './AuthorBio';
+export { default as VideoEmbed } from './VideoEmbed';
