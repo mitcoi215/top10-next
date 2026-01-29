@@ -132,7 +132,7 @@ const categories = [
 ];
 
 // Links data - exact from original HTML
-const categoryLinks = [
+const defaultCategoryLinks = [
   { href: '/medical-alerts-match', title: 'Medical Alerts Match' },
   { href: '/accounting-software', title: 'Accounting Software' },
   { href: '/ad-blockers', title: 'Ad Blockers' },
@@ -165,7 +165,28 @@ const categoryLinks = [
   { href: '/baby-clothing-websites', title: 'Baby Clothing Websites' },
 ];
 
-export default function ExploreCategories() {
+// Types
+interface CategoryLink {
+  title: string;
+  href: string;
+}
+
+interface ExploreCategory {
+  groupSlug: string;
+  groupName: string;
+  icon?: string | null;
+  links: CategoryLink[];
+}
+
+interface ExploreCategoriesProps {
+  categories?: ExploreCategory[] | null;
+}
+
+export default function ExploreCategories({ categories }: ExploreCategoriesProps) {
+  // Get all links from categories, or use defaults
+  const categoryLinks = categories && categories.length > 0
+    ? categories.flatMap(c => c.links)
+    : defaultCategoryLinks;
   const [activeTab, setActiveTab] = useState('all');
 
   return (

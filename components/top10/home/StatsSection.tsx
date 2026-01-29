@@ -1,4 +1,14 @@
-export default function StatsSection() {
+interface StatsSectionProps {
+  listsCount?: string | null;
+  hoursCount?: string | null;
+  decisionsCount?: string | null;
+}
+
+export default function StatsSection({
+  listsCount = '500+',
+  hoursCount = '5,000+',
+  decisionsCount = '16M+',
+}: StatsSectionProps) {
   return (
     <section data-role="wysiwyg" className="homepage-content">
       <div>
@@ -18,17 +28,17 @@ export default function StatsSection() {
           margin: 'auto'
         }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
-            <div style={{ fontSize: '24px', fontWeight: 'bold' }}>500+</div>
+            <div style={{ fontSize: '24px', fontWeight: 'bold' }}>{listsCount}</div>
             <div style={{ fontSize: '16px', color: '#555' }}>Comparison Lists</div>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <div style={{ fontSize: '24px', fontWeight: 'bold' }}>5,000+</div>
+            <div style={{ fontSize: '24px', fontWeight: 'bold' }}>{hoursCount}</div>
             <div style={{ fontSize: '16px', color: '#555' }}>Hours of Research</div>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <div style={{ fontSize: '24px', fontWeight: 'bold' }}>16M+</div>
+            <div style={{ fontSize: '24px', fontWeight: 'bold' }}>{decisionsCount}</div>
             <div style={{ fontSize: '16px', color: '#555' }}>Decisions made with Top10.com</div>
           </div>
         </div>

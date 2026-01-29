@@ -1,5 +1,5 @@
-// Brand logos data - hardcoded from original template
-const brands = [
+// Default brand logos data
+const defaultBrands = [
   { name: 'Better Help', logo: '/top10-images/betterhelp.20240618082918.svg' },
   { name: 'Peddle', logo: '/top10-images/300x100-Dark-NoBg3.20250211121928.svg' },
   { name: 'Sling', logo: '/top10-images/sling.20240618083121.svg' },
@@ -8,7 +8,13 @@ const brands = [
   { name: 'WIX', logo: '/top10-images/300x100-Dark-NoBg2.20250211121906.svg' },
 ];
 
-export default function BrandLogos() {
+interface BrandLogosProps {
+  logos?: Array<{ name: string; logo: string }> | null;
+}
+
+export default function BrandLogos({ logos }: BrandLogosProps) {
+  const brands = logos && logos.length > 0 ? logos : defaultBrands;
+
   return (
     <div className="ni-1x0t3k1">
       <div data-testid="brands-strip" className="ni-vocp7d">

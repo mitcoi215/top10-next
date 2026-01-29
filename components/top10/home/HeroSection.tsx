@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-// Arrow icon SVG - exact copy from original
+// Arrow icon SVG
 const ArrowIcon = () => (
   <svg width="1em" height="1em" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path
@@ -14,108 +14,125 @@ const ArrowIcon = () => (
   </svg>
 );
 
-// Subcategory data - exact from original template
-const lifestyleSubcategories = [
-  { title: 'Dating', explore: 'https://www.top10.com/dating', compare: 'https://www.top10.com/dating/comparison' },
-  { title: 'Meal Delivery Services', explore: 'https://www.top10.com/meal-delivery', compare: 'https://www.top10.com/meal-delivery/comparison' },
-  { title: 'TV Services', explore: 'https://www.top10.com/tv-services', compare: 'https://www.top10.com/tv-services/live-tv-comparison' },
-  { title: 'Mobile Plans', explore: 'https://www.top10.com/mobile-plans', compare: 'https://www.top10.com/mobile-plans/comparison' },
-  { title: 'Language Learning', explore: 'https://www.top10.com/language-learning', compare: 'https://www.top10.com/language-learning/comparison' },
-];
-
-const healthSubcategories = [
-  { title: 'Online Therapy', explore: 'https://www.top10.com/online-therapy', compare: 'https://www.top10.com/online-therapy/comparison' },
-  { title: 'Medical alerts', explore: 'https://www.top10.com/medical-alerts', compare: 'https://www.top10.com/medical-alerts/comparison' },
-  { title: 'Hearing Aids', explore: 'https://www.top10.com/hearing-aid', compare: 'https://www.top10.com/hearing-aid/comparison' },
-  { title: 'DNA Testing', explore: 'https://www.top10.com/dna-testing', compare: 'https://www.top10.com/dna-testing/comparison' },
-];
-
-const homeSubcategories = [
-  { title: 'Moving', explore: 'https://www.top10.com/moving-companies', compare: 'https://www.top10.com/moving-companies/longdistance-comparison' },
-  { title: 'Home Warranty', explore: 'https://www.top10.com/home-warranty', compare: 'https://www.top10.com/home-warranty/comparison' },
-  { title: 'Home security', explore: 'https://www.top10.com/home-security', compare: 'https://www.top10.com/home-security/comparison' },
-  { title: 'Internet Service Providers', explore: 'https://www.top10.com/internet-providers', compare: 'https://www.top10.com/internet-providers/comparison' },
-];
-
-const businessSubcategories = [
-  { title: 'CRM', explore: 'https://www.top10.com/crm', compare: 'https://www.top10.com/crm/comparison' },
-  { title: 'Website Builders', explore: 'https://www.top10.com/website-builders/comparison', compare: 'https://www.top10.com/website-builders/comparison' },
-  { title: 'Hosting Services', explore: 'https://www.top10.com/hosting', compare: 'https://www.top10.com/hosting/comparison' },
-  { title: 'Legal Services & LLC Registration', explore: 'https://www.top10.com/legal-services', compare: 'https://www.top10.com/legal-services/llc-registration-comparison' },
-  { title: 'Project Management Software', explore: 'https://www.top10.com/project-management/', compare: 'https://www.top10.com/project-management/comparison' },
-  { title: 'VoIP', explore: 'https://www.top10.com/voip', compare: 'https://www.top10.com/voip/comparison' },
-  { title: 'POS', explore: 'https://www.top10.com/pos', compare: 'https://www.top10.com/pos/comparison' },
-  { title: 'Payroll', explore: 'https://www.top10.com/payroll', compare: 'https://www.top10.com/payroll/comparison' },
-  { title: 'Merchant Services', explore: 'https://www.top10.com/merchant-services/', compare: 'https://www.top10.com/merchant-services/comparison' },
-  { title: 'Accounting Software', explore: 'https://www.top10.com/accounting-software/', compare: 'https://www.top10.com/accounting-software/comparison' },
-];
-
-const securitySubcategories = [
-  { title: 'Background Check', explore: 'https://www.top10.com/background-check', compare: 'https://www.top10.com/background-check/comparison' },
-  { title: 'ID Theft', explore: 'https://www.top10.com/id-theft', compare: 'https://www.top10.com/id-theft/comparison' },
-  { title: 'Cyber security', explore: 'https://www.top10.com/cyber-security', compare: 'https://www.top10.com/cyber-security/comparison' },
-];
-
-// All categories data
-const categories = [
+// Default data for fallback
+const defaultCategoryGroups = [
   {
-    id: 0,
-    title: 'Lifestyle',
+    id: '0',
+    name: 'Lifestyle',
     icon: '/top10-images/lifestyle.20240115133645.svg',
-    subcategories: lifestyleSubcategories,
-    cardClass: 'ni-1hvu95',
+    categories: [
+      { name: 'Dating', exploreHref: '/dating', compareHref: '/dating/comparison' },
+      { name: 'Meal Delivery Services', exploreHref: '/meal-delivery', compareHref: '/meal-delivery/comparison' },
+      { name: 'TV Services', exploreHref: '/tv-services', compareHref: '/tv-services/comparison' },
+    ],
   },
   {
-    id: 1,
-    title: 'Health & Wellness',
+    id: '1',
+    name: 'Health & Wellness',
     icon: '/top10-images/health.20240115133541.svg',
-    subcategories: healthSubcategories,
-    cardClass: 'ni-gnxpsb',
+    categories: [
+      { name: 'Online Therapy', exploreHref: '/online-therapy', compareHref: '/online-therapy/comparison' },
+      { name: 'Medical Alerts', exploreHref: '/medical-alerts', compareHref: '/medical-alerts/comparison' },
+    ],
   },
   {
-    id: 2,
-    title: 'Home',
+    id: '2',
+    name: 'Home',
     icon: '/top10-images/home.20240115133606.svg',
-    subcategories: homeSubcategories,
-    cardClass: 'ni-gnxpsb',
+    categories: [
+      { name: 'Moving', exploreHref: '/moving-companies', compareHref: '/moving-companies/comparison' },
+      { name: 'Home Security', exploreHref: '/home-security', compareHref: '/home-security/comparison' },
+    ],
   },
   {
-    id: 3,
-    title: 'Business',
+    id: '3',
+    name: 'Business',
     icon: '/top10-images/business.20240115133519.svg',
-    subcategories: businessSubcategories,
-    cardClass: 'ni-gnxpsb',
+    categories: [
+      { name: 'CRM', exploreHref: '/crm', compareHref: '/crm/comparison' },
+      { name: 'Website Builders', exploreHref: '/website-builders', compareHref: '/website-builders/comparison' },
+      { name: 'Hosting Services', exploreHref: '/hosting', compareHref: '/hosting/comparison' },
+    ],
   },
   {
-    id: 4,
-    title: 'Security',
+    id: '4',
+    name: 'Security',
     icon: '/top10-images/security.20240115133625.svg',
-    subcategories: securitySubcategories,
-    cardClass: 'ni-gnxpsb',
+    categories: [
+      { name: 'Background Check', exploreHref: '/background-check', compareHref: '/background-check/comparison' },
+      { name: 'ID Theft', exploreHref: '/id-theft', compareHref: '/id-theft/comparison' },
+      { name: 'VPN', exploreHref: '/vpn', compareHref: '/vpn/comparison' },
+    ],
   },
 ];
+
+interface Category {
+  id?: string;
+  slug?: string;
+  name: string;
+  icon?: string | null;
+  exploreHref?: string | null;
+  compareHref?: string | null;
+}
+
+interface CategoryGroup {
+  id: string;
+  slug?: string;
+  name: string;
+  icon?: string | null;
+  categories: Category[];
+}
+
+interface HeroSectionProps {
+  categoryGroups?: CategoryGroup[] | null;
+}
 
 // Subcategory component
-const SubcategoryItem = ({ title, explore, compare, cardClass = 'ni-1hvu95' }: { title: string; explore: string; compare: string; cardClass?: string }) => (
-  <div data-role="sub-category" data-testid="sub-two-links" className={cardClass} style={{ display: 'flex' }}>
-    <div data-role="sub-category-title" className="ni-cg6g9y">{title}</div>
+const SubcategoryItem = ({
+  name,
+  exploreHref,
+  compareHref
+}: {
+  name: string;
+  exploreHref?: string | null;
+  compareHref?: string | null;
+}) => (
+  <div data-role="sub-category" data-testid="sub-two-links" className="ni-1hvu95" style={{ display: 'flex' }}>
+    <div data-role="sub-category-title" className="ni-cg6g9y">{name}</div>
     <div className="ni-8eku1f">
-      <a data-testid="link" target="_self" href={explore} className="ni-1oe2nzy">
+      <a data-testid="link" target="_self" href={exploreHref || '#'} className="ni-1oe2nzy">
         Explore<ArrowIcon />
       </a>
       <div className="ni-1i1o349"></div>
-      <a data-testid="link" target="_self" href={compare} className="ni-1xk84tj">
+      <a data-testid="link" target="_self" href={compareHref || '#'} className="ni-1xk84tj">
         Compare<ArrowIcon />
       </a>
     </div>
   </div>
 );
 
-export default function HeroSection() {
+// Map icon string/emoji to image path
+const getIconPath = (icon?: string | null, name?: string) => {
+  if (icon && icon.startsWith('/')) return icon;
+  // Map by group name if icon is emoji or missing
+  const iconMap: Record<string, string> = {
+    'Lifestyle': '/top10-images/lifestyle.20240115133645.svg',
+    'Health & Wellness': '/top10-images/health.20240115133541.svg',
+    'Home': '/top10-images/home.20240115133606.svg',
+    'Business': '/top10-images/business.20240115133519.svg',
+    'Security': '/top10-images/security.20240115133625.svg',
+  };
+  return iconMap[name || ''] || '/top10-images/lifestyle.20240115133645.svg';
+};
+
+export default function HeroSection({ categoryGroups }: HeroSectionProps) {
   const [activeCategory, setActiveCategory] = useState<number>(-1);
 
+  // Use provided data or fallback to defaults
+  const groups = categoryGroups && categoryGroups.length > 0 ? categoryGroups : defaultCategoryGroups;
+
   // Get current active category data
-  const activeData = activeCategory >= 0 ? categories[activeCategory] : null;
+  const activeData = activeCategory >= 0 ? groups[activeCategory] : null;
 
   return (
     <div className="ni-1hjxear">
@@ -128,46 +145,47 @@ export default function HeroSection() {
 
           {/* Category Cards */}
           <div className="ni-hapki3">
-            {categories.map((cat) => (
-              <div key={cat.id} data-role="category-and-sub-wrap">
+            {groups.map((group, idx) => (
+              <div key={group.id || idx} data-role="category-and-sub-wrap">
                 <div>
                   <div
                     data-role="category"
-                    data-idx={cat.id}
+                    data-idx={idx}
                     className="ni-sh3crd"
-                    onMouseEnter={() => setActiveCategory(cat.id)}
+                    onMouseEnter={() => setActiveCategory(idx)}
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={cat.icon} alt="category-icon" className="ni-vsqybe" />
-                    <div data-role="category-title" className={activeCategory === cat.id ? 'ni-1u18vzq' : 'ni-a9trmo'}>{cat.title}</div>
+                    <img src={getIconPath(group.icon, group.name)} alt="category-icon" className="ni-vsqybe" />
+                    <div data-role="category-title" className={activeCategory === idx ? 'ni-1u18vzq' : 'ni-a9trmo'}>{group.name}</div>
                     <div className="plus ni-cu3t18">+</div>
                     <div className="minus ni-g18mml">-</div>
                   </div>
                 </div>
-                {/* Arrow indicators - only show for active category */}
+                {/* Arrow indicators */}
                 <div
                   data-role="arrow-bottom"
                   className="ni-z3tru0"
-                  style={{ display: activeCategory === cat.id ? 'flex' : 'none' }}
+                  style={{ display: activeCategory === idx ? 'flex' : 'none' }}
                 ></div>
                 <div
                   data-role="arrow-top"
                   className="ni-fi68f4"
-                  style={{ display: activeCategory === cat.id ? 'flex' : 'none' }}
+                  style={{ display: activeCategory === idx ? 'flex' : 'none' }}
                 ></div>
               </div>
             ))}
           </div>
 
-          {/* Single Dropdown - renders content based on active category */}
+          {/* Single Dropdown */}
           {activeData && (
             <div className="ni-cpg42y">
               <div className="ni-9qmydc">
-                {activeData.subcategories.map((sub) => (
+                {activeData.categories.map((cat, idx) => (
                   <SubcategoryItem
-                    key={sub.title}
-                    {...sub}
-                    cardClass={activeData.cardClass}
+                    key={cat.name || idx}
+                    name={cat.name}
+                    exploreHref={cat.exploreHref}
+                    compareHref={cat.compareHref}
                   />
                 ))}
               </div>

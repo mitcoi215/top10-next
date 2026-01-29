@@ -1,32 +1,51 @@
-const experts = [
+const defaultExperts = [
   {
-    name: 'Suzannah Weiss, Dating Coach',
-    image: '/top10-images/Frame1968.20240603103350.png',
-    href: 'https://www.top10.com/authors/suzannah-weiss',
+    name: 'Suzannah Weiss',
+    title: 'Dating Coach',
+    avatar: '/top10-images/Frame1968.20240603103350.png',
+    slug: 'suzannah-weiss',
   },
   {
-    name: 'Katherine Cullen, Licensed Clinical Social Worker',
-    image: '/top10-images/Frame1967.20240603103412.png',
-    href: 'https://www.top10.com/authors/katherine-cullen',
+    name: 'Katherine Cullen',
+    title: 'Licensed Clinical Social Worker',
+    avatar: '/top10-images/Frame1967.20240603103412.png',
+    slug: 'katherine-cullen',
   },
   {
-    name: 'Antonia Greco, Personal Development Coach',
-    image: '/top10-images/Group1100.20240624102950.png',
-    href: 'https://www.top10.com/authors/antonia-greco',
+    name: 'Antonia Greco',
+    title: 'Personal Development Coach',
+    avatar: '/top10-images/Group1100.20240624102950.png',
+    slug: 'antonia-greco',
   },
   {
-    name: 'Lauren Gillan, Certified Holistic Nutritionist',
-    image: '/top10-images/Frame1970.20240603103453.png',
-    href: 'https://www.top10.com/authors/lauren-gillan',
+    name: 'Lauren Gillan',
+    title: 'Certified Holistic Nutritionist',
+    avatar: '/top10-images/Frame1970.20240603103453.png',
+    slug: 'lauren-gillan',
   },
   {
-    name: 'Cassidy Horton, Personal Finance Expert',
-    image: '/top10-images/Frame1983.20240625083440.png',
-    href: 'https://www.top10.com/authors/cassidy-horton',
+    name: 'Cassidy Horton',
+    title: 'Personal Finance Expert',
+    avatar: '/top10-images/Frame1983.20240625083440.png',
+    slug: 'cassidy-horton',
   },
 ];
 
-export default function ExpertsSection() {
+interface Expert {
+  id?: string;
+  name: string;
+  title?: string | null;
+  avatar?: string | null;
+  slug: string;
+}
+
+interface ExpertsSectionProps {
+  experts?: Expert[] | null;
+}
+
+export default function ExpertsSection({ experts }: ExpertsSectionProps) {
+  const displayExperts = experts && experts.length > 0 ? experts : defaultExperts;
+
   return (
     <div style={{
       backgroundColor: '#F8F6FC',
@@ -54,10 +73,10 @@ export default function ExpertsSection() {
       </div>
 
       <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '20px' }}>
-        {experts.map((expert, idx) => (
+        {displayExperts.map((expert, idx) => (
           <a
-            key={idx}
-            href={expert.href}
+            key={expert.slug || idx}
+            href={`/authors/${expert.slug}`}
             style={{
               textDecoration: 'none',
               color: 'inherit',
@@ -72,7 +91,7 @@ export default function ExpertsSection() {
             }}
           >
             <div style={{
-              backgroundImage: `url('${expert.image}')`,
+              backgroundImage: `url('${expert.avatar || '/top10-images/default-avatar.png'}')`,
               width: '100%',
               height: 0,
               paddingTop: '100%',
@@ -83,7 +102,9 @@ export default function ExpertsSection() {
               display: 'block',
               overflow: 'hidden'
             }}></div>
-            <p style={{ marginTop: '10px', fontWeight: 'bold' }}>{expert.name}</p>
+            <p style={{ marginTop: '10px', fontWeight: 'bold' }}>
+              {expert.name}{expert.title ? `, ${expert.title}` : ''}
+            </p>
           </a>
         ))}
       </div>

@@ -2,8 +2,32 @@
 
 import { useState } from 'react';
 
-// Trending data - exact 10 items from original HTML template
-const trendingItems = [
+// Types
+interface TrendingArticle {
+  title: string;
+  href: string;
+  image: string;
+  author?: string;
+  date: string;
+  isReview?: boolean;
+}
+
+interface TrendingItem {
+  rank: number;
+  title: string;
+  href: string;
+  image: string;
+  description: string;
+  date: string;
+  articles: TrendingArticle[];
+}
+
+interface TrendingListProps {
+  items?: TrendingItem[] | null;
+}
+
+// Default trending data - exact 10 items from original HTML template
+const defaultTrendingItems: TrendingItem[] = [
   {
     rank: 1,
     title: 'Hosting',
@@ -362,8 +386,11 @@ const ArrowIcon = () => (
   </svg>
 );
 
-export default function TrendingList() {
-  const [openItems, setOpenItems] = useState<number[]>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]); // All 10 items open by default
+export default function TrendingList({ items }: TrendingListProps) {
+  // Use provided items or fallback to defaults
+  const trendingItems = items && items.length > 0 ? items : defaultTrendingItems;
+
+  const [openItems, setOpenItems] = useState<number[]>(trendingItems.map(i => i.rank)); // All items open by default
 
   const toggleItem = (rank: number) => {
     setOpenItems((prev) =>

@@ -1,38 +1,65 @@
-// More Articles data - exact from original HTML template (6 cards)
-const articles = [
+// Default articles data
+const defaultArticles = [
   {
     title: 'Best Places To Buy Gold and Silver Online',
-    href: 'https://www.top10.com/sites-to-buy-gold-and-silver',
-    image: '/top10-images/Places-to-Buy-Gold-and-Silver-Online.jpg',
+    slug: 'sites-to-buy-gold-and-silver',
+    featuredImage: '/top10-images/Places-to-Buy-Gold-and-Silver-Online.jpg',
+    category: { slug: 'shopping' },
   },
   {
     title: 'Best Cell Phone Service Providers',
-    href: 'https://www.top10.com/cell-phone-companies',
-    image: '/top10-images/cell-phone-companies.jpg',
+    slug: 'cell-phone-companies',
+    featuredImage: '/top10-images/cell-phone-companies.jpg',
+    category: { slug: 'cell-phone-companies' },
   },
   {
     title: 'In-Depth Analysis of Shopping Trends',
-    href: 'https://www.top10.com/best-lists/research-before-purchase-survey',
-    image: '/top10-images/Research-before-making-online-decisions-hero-red1.jpg',
+    slug: 'research-before-purchase-survey',
+    featuredImage: '/top10-images/Research-before-making-online-decisions-hero-red1.jpg',
+    category: { slug: 'best-lists' },
   },
   {
     title: 'Best Shows on Disney+ to Watch Right Now',
-    href: 'https://www.top10.com/tv-services/10-best-shows-on-disney-to-watch',
-    image: '/top10-images/disney-plus-shows.jpg',
+    slug: '10-best-shows-on-disney-to-watch',
+    featuredImage: '/top10-images/disney-plus-shows.jpg',
+    category: { slug: 'tv-services' },
   },
   {
     title: '10 Reasons Why Younger Guys Like Older Women',
-    href: 'https://www.top10.com/dating/10-reasons-why-younger-guys-want-an-older-woman',
-    image: '/top10-images/Mature_Dating.jpg',
+    slug: '10-reasons-why-younger-guys-want-an-older-woman',
+    featuredImage: '/top10-images/Mature_Dating.jpg',
+    category: { slug: 'dating' },
   },
   {
     title: "Mediterranean Food Choices That Won't Ruin Your Diet",
-    href: 'https://www.top10.com/meal-delivery/mediterranean-fast-food-choices-that-wont-ruin-your-diet',
-    image: '/top10-images/mediterranean-food.jpg',
+    slug: 'mediterranean-fast-food-choices-that-wont-ruin-your-diet',
+    featuredImage: '/top10-images/mediterranean-food.jpg',
+    category: { slug: 'meal-delivery' },
   },
 ];
 
-export default function MoreArticles() {
+interface Article {
+  id?: string;
+  title: string;
+  slug: string;
+  featuredImage?: string | null;
+  category?: { slug: string } | null;
+}
+
+interface MoreArticlesProps {
+  articles?: Article[] | null;
+}
+
+export default function MoreArticles({ articles }: MoreArticlesProps) {
+  const displayArticles = articles && articles.length > 0 ? articles : defaultArticles;
+
+  const getArticleHref = (article: Article) => {
+    if (article.category?.slug) {
+      return `/${article.category.slug}/${article.slug}`;
+    }
+    return `/${article.slug}`;
+  };
+
   return (
     <div
       style={{
@@ -69,10 +96,10 @@ export default function MoreArticles() {
           scrollbarWidth: 'thin',
         }}
       >
-        {articles.map((article, idx) => (
+        {displayArticles.map((article, idx) => (
           <a
-            key={idx}
-            href={article.href}
+            key={article.slug || idx}
+            href={getArticleHref(article)}
             className="scrolling-card"
             style={{
               textDecoration: 'none',
@@ -102,7 +129,7 @@ export default function MoreArticles() {
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={article.image}
+                  src={article.featuredImage || '/top10-images/placeholder.jpg'}
                   style={{ height: '100%', width: '100%', objectFit: 'cover' }}
                   alt={article.title}
                 />
