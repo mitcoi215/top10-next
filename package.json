@@ -21,7 +21,9 @@
     "db:seed:articles": "npx tsx prisma/seed-trending-articles.ts",
     "db:seed:all": "npx tsx prisma/seed-category-groups.ts && npx tsx prisma/seed-trending.ts && npx tsx prisma/seed-trending-articles.ts",
     "db:seed:hosting": "npx tsx prisma/seed-hosting.ts",
-    "db:seed:js": "node prisma/seed.js"
+    "db:seed:js": "node prisma/seed.js",
+    "scrape": "npx tsx scripts/scraper/index.ts",
+    "scrape:seed": "npx tsx scripts/scraper/seed.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
