@@ -208,9 +208,11 @@ export async function scrapeReviewPage(
   }
 
   // Bottom line (short summary) from data-testid="bottom-line-text"
+  // Some products have a long paragraph here, so take only the first sentence
   const bottomLineText = await layer2_byTestId(page, 'bottom-line-text');
   if (bottomLineText) {
-    product.bottomLine = bottomLineText;
+    const firstSentence = bottomLineText.match(/^[^.!?]+[.!?]/);
+    product.bottomLine = firstSentence ? firstSentence[0].trim() : bottomLineText.slice(0, 120).trim();
   }
 
   log(`  → title: ${product.reviewTitle}, score: ${product.overallScore}, readTime: ${product.readTime}`);
