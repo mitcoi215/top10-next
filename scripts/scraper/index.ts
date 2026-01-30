@@ -124,7 +124,8 @@ async function main() {
             // Keep listing data for fields that review might not have
             rank: listingProduct.rank,
             ribbon: listingProduct.ribbon || reviewProduct.ribbon,
-            bottomLine: listingProduct.bottomLine || reviewProduct.bottomLine,
+            // Prefer review's bottomLine (short text from data-testid="bottom-line-text")
+            bottomLine: reviewProduct.bottomLine || listingProduct.bottomLine,
             features: listingProduct.features || reviewProduct.features,
             // Merge highlights (listing has more, review might have different ones)
             highlights: {

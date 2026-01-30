@@ -205,9 +205,9 @@ export async function scrapeListingPage(
         const taglineEl = card.querySelector('.mini-reviews__product-highlight span, .mini-reviews__product-highlight');
         data.tagline = taglineEl?.textContent?.trim() || '';
 
-        // Bottom line / description
+        // Product description (long text from listing - NOT the short bottom line)
         const descEl = card.querySelector('.mini-reviews__product-description');
-        data.bottomLine = descEl?.textContent?.trim() || '';
+        data.description = descEl?.textContent?.trim() || '';
 
         // CTA
         const ctaEl = card.querySelector('a.cta-button, a[data-role="product-cta"], a.mini-reviews__cta-button');

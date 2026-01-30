@@ -207,6 +207,12 @@ export async function scrapeReviewPage(
     product.logoUrl = (await layer5_combinedAttr(page, '[data-testid="logo-and-ctas"] img', 'src')) || undefined;
   }
 
+  // Bottom line (short summary) from data-testid="bottom-line-text"
+  const bottomLineText = await layer2_byTestId(page, 'bottom-line-text');
+  if (bottomLineText) {
+    product.bottomLine = bottomLineText;
+  }
+
   log(`  → title: ${product.reviewTitle}, score: ${product.overallScore}, readTime: ${product.readTime}`);
 
   // ===========================================================
