@@ -22,6 +22,9 @@ export const metadata = {
       'Top10.com is a comparison platform that brings you useful top 10 lists covering a wide variety of products and services that can help you save time and money',
   },
   metadataBase: new URL('https://www.top10.com'),
+  icons: {
+    icon: '/icon.png',
+  },
 };
 
 export default function RootLayout({
