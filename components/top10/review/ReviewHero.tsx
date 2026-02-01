@@ -20,20 +20,21 @@ interface ReviewHeroProps {
 }
 
 function StarIcon({ filled }: { filled: boolean }) {
+  const bgColor = filled ? '#00B67A' : '#DCDCE5';
   if (filled) {
     return (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="1em" height="1em" color="#FED007" data-testid="full-star" className="ni-10im9f e2sg7l81">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="1em" height="1em" data-testid="full-star" className="ni-10im9f e2sg7l81">
         <g fill="none" fillRule="evenodd">
-          <path fill="#02B57A" d="M0 0h18.717v19.251H0z"></path>
+          <path fill={bgColor} d="M0 0h18.717v19.251H0z"></path>
           <path d="M16.609 7.965l-4.47 3.269 1.707 5.286-4.47-3.268-4.474 3.268 1.712-5.286L2.139 7.96l5.525.005 1.713-5.291 1.706 5.291h5.526zm-4.086 4.466l-.384-1.197-2.762 2.018 3.146-.821z" fill="#FFF" fillRule="nonzero"></path>
         </g>
       </svg>
     );
   }
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="1em" height="1em" color="#DCDCE5" data-testid="empty-star" className="ni-1ondxqp e2sg7l80">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="1em" height="1em" data-testid="empty-star" className="ni-1ondxqp e2sg7l80">
       <g fill="none" fillRule="evenodd">
-        <path fill="#02B57A" d="M0 0h18.717v19.251H0z"></path>
+        <path fill={bgColor} d="M0 0h18.717v19.251H0z"></path>
         <path d="M16.609 7.965l-4.47 3.269 1.707 5.286-4.47-3.268-4.474 3.268 1.712-5.286L2.139 7.96l5.525.005 1.713-5.291 1.706 5.291h5.526zm-4.086 4.466l-.384-1.197-2.762 2.018 3.146-.821z" fill="#FFF" fillRule="nonzero"></path>
       </g>
     </svg>
