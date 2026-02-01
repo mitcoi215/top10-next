@@ -52,6 +52,11 @@ export interface CategoryFormData {
 
   // FAQ (Category-level)
   faqs: FaqItem[];
+
+  // ========== TAB 5: COMPARISON PAGE ==========
+  comparisonTitle: string;
+  comparisonSubtitle: string;
+  comparisonHeroImage: string;
 }
 
 export interface CriteriaDefinition {
@@ -176,4 +181,9 @@ export const defaultCategoryFormData: CategoryFormData = {
   bottomContent: '',
   additionalContent: '',
   faqs: [],
+
+  // Tab 5 - Comparison
+  comparisonTitle: '',
+  comparisonSubtitle: '',
+  comparisonHeroImage: '',
 };

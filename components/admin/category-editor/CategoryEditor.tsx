@@ -6,6 +6,7 @@ import { CategoryFormData, defaultCategoryFormData, ProductOption, ArticleOption
 import Tab1GeneralInfo from './Tab1GeneralInfo';
 import Tab2RankingDisplay from './Tab2RankingDisplay';
 import Tab4ReviewMethodology from './Tab4ReviewMethodology';
+import Tab5Comparison from './Tab5Comparison';
 
 interface CategoryEditorProps {
   categoryId?: string;
@@ -21,6 +22,7 @@ const TABS = [
   { id: 'general', label: 'Thông tin chung', icon: '⚙️' },
   { id: 'ranking', label: 'Banner & Hiển thị', icon: '📊' },
   { id: 'review-methodology', label: 'Nội dung & FAQ', icon: '📋' },
+  { id: 'comparison', label: 'Trang So sánh', icon: '🔄' },
 ];
 
 export default function CategoryEditor({
@@ -90,6 +92,7 @@ export default function CategoryEditor({
       general: ['slug', 'name', 'icon', 'color', 'metaTitle', 'metaDescription', 'ogImage'],
       ranking: ['heroImage', 'heroTitle', 'introContent', 'authorId'],
       'review-methodology': ['methodologyIntro', 'methodologyCriteria', 'exploreCards', 'faqs', 'bottomContent', 'additionalContent'],
+      'comparison': ['comparisonTitle', 'comparisonSubtitle', 'comparisonHeroImage'],
     };
     return errorKeys.filter(key => tabFields[tabId]?.includes(key)).length;
   };
@@ -155,6 +158,7 @@ export default function CategoryEditor({
             {activeTab === 'general' && <Tab1GeneralInfo />}
             {activeTab === 'ranking' && <Tab2RankingDisplay authors={authors} />}
             {activeTab === 'review-methodology' && <Tab4ReviewMethodology authors={authors} />}
+            {activeTab === 'comparison' && <Tab5Comparison products={products} categoryId={categoryId} />}
           </div>
         </form>
 

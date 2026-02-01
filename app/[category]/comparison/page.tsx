@@ -83,8 +83,10 @@ export default async function ComparePage({ params }: PageProps) {
     return [];
   }
 
-  const displayName = category.heroTitle || `Best ${category.name} Comparison`;
-  const heroImage = (category as any).heroImage || null;
+  const cat = category as any;
+  const displayName = cat.comparisonTitle || category.heroTitle || `Best ${category.name} Comparison`;
+  const heroSubtitle = cat.comparisonSubtitle || category.metaDescription || `Compare the top ${category.name.toLowerCase()} side by side to find the best fit for your needs.`;
+  const heroImage = cat.comparisonHeroImage || cat.heroImage || null;
 
   return (
     <>
@@ -116,7 +118,7 @@ export default async function ComparePage({ params }: PageProps) {
             </div>
             <h1>{displayName}</h1>
             <p className="compare-hero__subtitle">
-              {category.metaDescription || `Compare the top ${category.name.toLowerCase()} side by side to find the best fit for your needs.`}
+              {heroSubtitle}
             </p>
           </div>
         </div>

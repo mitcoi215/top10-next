@@ -86,6 +86,11 @@ export const CategoryCreateSchema = z.object({
   // FAQs
   faqs: z.array(FaqItemSchema).optional().default([]),
 
+  // Comparison Page
+  comparisonTitle: z.string().optional().nullable(),
+  comparisonSubtitle: z.string().optional().nullable(),
+  comparisonHeroImage: z.string().optional().nullable(),
+
   // SEO
   metaTitle: z.string().optional().nullable(),
   metaDescription: z.string().optional().nullable(),

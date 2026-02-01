@@ -108,6 +108,11 @@ model Category {
   compareBoxDescription String?   // Description paragraph
   compareBoxStats       String?   // "15 TV Streaming Services Evaluated | 8 Criteria | 10 Best"
 
+  // Comparison Page (/[category]/comparison)
+  comparisonTitle       String?   // Hero title for comparison page
+  comparisonSubtitle    String?   // Hero subtitle/description
+  comparisonHeroImage   String?   // Hero background image
+
   // Category Listing Page - Closer Look Section
   closerLookTitle     String?   // "A Closer Look at the Top 10 TV Streaming Services"
 

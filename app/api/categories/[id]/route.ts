@@ -212,6 +212,11 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
         // FAQs
         ...(validatedData.faqs !== undefined && { faqs: validatedData.faqs }),
 
+        // Comparison Page
+        ...(validatedData.comparisonTitle !== undefined && { comparisonTitle: validatedData.comparisonTitle }),
+        ...(validatedData.comparisonSubtitle !== undefined && { comparisonSubtitle: validatedData.comparisonSubtitle }),
+        ...(validatedData.comparisonHeroImage !== undefined && { comparisonHeroImage: validatedData.comparisonHeroImage }),
+
         // SEO
         ...(validatedData.metaTitle !== undefined && { metaTitle: validatedData.metaTitle }),
         ...(validatedData.metaDescription !== undefined && { metaDescription: validatedData.metaDescription }),
