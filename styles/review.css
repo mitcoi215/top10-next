@@ -2109,3 +2109,17 @@ header{
   color: #106197;
   text-decoration: none;
 }
+.summary-section a {
+    font-size: inherit;
+    line-height: inherit;
+    color: #1789d5;
+    cursor: pointer;
+    margin: 0 0 30px;
+    font-family: inherit;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color .3s linear;
+}
+.summary-section a:hover {
+    text-decoration: underline;
+}

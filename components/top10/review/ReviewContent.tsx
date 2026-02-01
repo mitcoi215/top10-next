@@ -208,7 +208,10 @@ export default function ReviewContent({ content, children }: ReviewContentProps)
           color: var(--color-body-1, #191919);
           line-height: 1.6;
         }
-
+      .wysiwyg-section ul>li::marker {
+          color: var(--color-info);
+          font-size: 16px;
+      }
         .wysiwyg-content a:not([data-role="product-cta"]) {
           color: var(--color-info-hover, #147DC2);
           font-weight: 600;

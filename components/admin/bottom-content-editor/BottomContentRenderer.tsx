@@ -30,77 +30,8 @@ export default function BottomContentRenderer({ content, authors = [] }: BottomC
       <>
         <div className="bottom-content-legacy" dangerouslySetInnerHTML={{ __html: content }} />
         <style jsx>{`
-          .bottom-content-legacy {
-            font-size: 16px;
-            line-height: 1.7;
-            color: #374151;
-          }
-
-          .bottom-content-legacy :global(a) {
-            font-size: inherit;
-            line-height: inherit;
-            font-weight: 600;
-            color: #1789d5;
-            cursor: pointer;
-            text-decoration: none;
-            font-family: inherit;
-            transition: color 0.3s linear;
-          }
-
-          .bottom-content-legacy :global(a:hover) {
-            color: #0f6bb3;
-            text-decoration: underline;
-          }
-
-          .bottom-content-legacy :global(ul),
-          .bottom-content-legacy :global(ol) {
-            margin: 16px 0;
-            padding-left: 0;
-            list-style: none;
-          }
-
-          .bottom-content-legacy :global(li) {
-            margin: 8px 0;
-            padding-left: 20px;
-            position: relative;
-            line-height: 1.6;
-          }
-
-          .bottom-content-legacy :global(ul li::before) {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 10px;
-            width: 6px;
-            height: 6px;
-            background-color: #1789d5;
-          }
-
-          .bottom-content-legacy :global(ol) {
-            counter-reset: list-counter;
-          }
-
-          .bottom-content-legacy :global(ol li) {
-            counter-increment: list-counter;
-          }
-
-          .bottom-content-legacy :global(ol li::before) {
-            content: counter(list-counter) '.';
-            position: absolute;
-            left: 0;
-            top: 0;
-            color: #1789d5;
-            font-weight: 600;
-          }
-
-          .bottom-content-legacy :global(li a) {
-            display: inline;
-            margin: 0;
-          }
-
-          .bottom-content-legacy :global(p) {
-            margin: 16px 0;
-          }
+         
+            
         `}</style>
       </>
     );
