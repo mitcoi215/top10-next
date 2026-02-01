@@ -84,6 +84,7 @@ export default async function ComparePage({ params }: PageProps) {
   }
 
   const displayName = category.heroTitle || `Best ${category.name} Comparison`;
+  const heroImage = (category as any).heroImage || null;
 
   return (
     <>
@@ -93,74 +94,101 @@ export default async function ComparePage({ params }: PageProps) {
         items={[
           { label: 'Home', href: '/' },
           { label: category.name, href: `/${categorySlug}` },
-          { label: 'Compare' },
+          { label: 'Comparison' },
         ]}
       />
 
       {/* Hero Section */}
       <div className="compare-hero" data-testid="hero-container">
-        <div className="compare-updated" data-testid="last-updated">
-          Last Updated: {new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
+        <div className="compare-hero__image-container">
+          <div
+            className="compare-hero__bg"
+            style={heroImage ? { backgroundImage: `url(${heroImage})` } : undefined}
+          />
+          <div className="compare-hero__content">
+            {/* Last Updated badge */}
+            <div className="compare-hero__updated" data-testid="last-updated">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+                <path d="M8 1a7 7 0 100 14A7 7 0 008 1zm3.3 5.3l-4 4a.75.75 0 01-1.06 0l-2-2a.75.75 0 011.06-1.06L6.75 8.7l3.47-3.47a.75.75 0 011.06 1.06z" />
+              </svg>
+              <span>Last Updated:</span>
+              <span> {new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}</span>
+            </div>
+            <h1>{displayName}</h1>
+            <p className="compare-hero__subtitle">
+              {category.metaDescription || `Compare the top ${category.name.toLowerCase()} side by side to find the best fit for your needs.`}
+            </p>
+          </div>
         </div>
-        <h1>{displayName}</h1>
-        <p className="compare-subtitle">
-          {category.metaDescription || `Compare the top ${category.name.toLowerCase()} side by side to find the best fit for your needs.`}
-        </p>
       </div>
 
-      {/* Main Chart Body */}
-      <main data-role="chart" className="compare-chart-body">
-        <div data-role="chart-body" data-pli-name="Comparison">
-          {/* Product Cards Grid */}
-          <div className="nissim-card-grid" role="list">
-            {products.map((product: any) => (
-              <NissimProductCard
-                key={product.slug}
-                position={product.rank || 0}
-                name={product.name}
-                slug={product.slug}
-                categorySlug={categorySlug}
-                logoUrl={product.logoUrl || undefined}
-                bottomLine={product.bottomLine || product.tagline || undefined}
-                ribbon={product.ribbon || undefined}
-                features={getProductFeatures(product)}
-                ctaUrl={product.ctaUrl || undefined}
-                ctaText={product.ctaText || 'Visit Site'}
-                reviewCount={product.reviewCount || undefined}
-              />
-            ))}
+      {/* Main Content */}
+      <main data-role="chart" className="compare-main">
+        <div className="compare-main__row">
+          <div className="compare-main__center">
+
+            {/* Chart Body - Product Cards (vertical stack) */}
+            <div data-role="chart-body" data-pli-name="Comparison" className="compare-chart-body">
+              <div role="list" className="compare-card-list">
+                {products.map((product: any) => (
+                  <NissimProductCard
+                    key={product.slug}
+                    position={product.rank || 0}
+                    name={product.name}
+                    slug={product.slug}
+                    categorySlug={categorySlug}
+                    logoUrl={product.logoUrl || undefined}
+                    bottomLine={product.bottomLine || product.tagline || undefined}
+                    ribbon={product.ribbon || undefined}
+                    features={getProductFeatures(product)}
+                    ctaUrl={product.ctaUrl || undefined}
+                    ctaText={product.ctaText || 'Visit Site'}
+                    reviewCount={product.reviewCount || undefined}
+                    overallScore={product.overallScore || undefined}
+                    scoreLabel={product.scoreLabel || undefined}
+                  />
+                ))}
+              </div>
+            </div>
+
           </div>
+
+          {/* Sidebar placeholder (for future use) */}
+          <aside className="compare-sidebar" />
         </div>
 
-        {/* Comparison Summary Table */}
-        {products.length > 0 && (
-          <div className="compare-content-sections">
-            <h2>Comparing Our Top {category.name} Providers</h2>
-            <table className="compare-summary-table" data-testid="wysiwyg-table">
-              <thead>
-                <tr>
-                  <th>Company</th>
-                  <th>Why We Recommend It</th>
-                </tr>
-              </thead>
-              <tbody>
-                {products.map((product: any) => (
-                  <tr key={product.slug}>
-                    <td><strong>{product.name}</strong></td>
-                    <td>{product.bestFor || product.bottomLine || product.tagline || '—'}</td>
+        {/* Below chart sections */}
+        <div className="compare-below-chart">
+          {/* Comparison Summary Table */}
+          {products.length > 0 && (
+            <div className="compare-content-sections">
+              <h2>Comparing Our Top {category.name} Providers</h2>
+              <table className="compare-summary-table" data-testid="wysiwyg-table">
+                <thead>
+                  <tr>
+                    <th>Company</th>
+                    <th>Why We Recommend It</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+                </thead>
+                <tbody>
+                  {products.map((product: any) => (
+                    <tr key={product.slug}>
+                      <td><strong>{product.name}</strong></td>
+                      <td>{product.bestFor || product.bottomLine || product.tagline || '—'}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
 
-        {/* FAQ Section */}
-        {faqs.length > 0 && (
-          <div className="compare-content-sections">
-            <FAQSection items={faqs.map((f: any) => ({ question: f.question || f.q || '', answer: f.answer || f.a || '' }))} />
-          </div>
-        )}
+          {/* FAQ Section */}
+          {faqs.length > 0 && (
+            <div className="compare-content-sections">
+              <FAQSection items={faqs.map((f: any) => ({ question: f.question || f.q || '', answer: f.answer || f.a || '' }))} />
+            </div>
+          )}
+        </div>
       </main>
 
       <Footer />
