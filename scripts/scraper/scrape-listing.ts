@@ -270,6 +270,10 @@ export async function scrapeListingPage(
         data.pros = pros;
         data.cons = cons;
 
+        // Bottom line (short summary from listing page)
+        const bottomLineEl = card.querySelector('[data-testid="bottom-line-text"]');
+        data.bottomLine = bottomLineEl?.textContent?.trim() || '';
+
         // Ribbon / Badge
         const ribbonEl = card.querySelector('[class*="ribbon"], [class*="badge"], [data-testid="ribbon"]');
         data.ribbon = ribbonEl?.textContent?.trim() || '';
@@ -304,6 +308,10 @@ export async function scrapeListingPage(
         // Logo
         const logoImg = card.querySelector('img[class*="logo"]');
         data.logoUrl = logoImg?.getAttribute('src') || '';
+
+        // Bottom line
+        const bottomLineEl = card.querySelector('[data-testid="bottom-line-text"]');
+        data.bottomLine = bottomLineEl?.textContent?.trim() || '';
 
         cards.push(data);
       });
@@ -341,6 +349,22 @@ export async function scrapeListingPage(
       }
 
       products.push(product);
+    }
+  }
+
+  // --- LỚP 2: bottom-line-text fallback (if not found inside product cards) ---
+  const missingBottomLine = products.some(p => !p.bottomLine);
+  if (missingBottomLine) {
+    const bottomLineTexts = await layer3_evaluate(page, () => {
+      const els = document.querySelectorAll('[data-testid="bottom-line-text"]');
+      return Array.from(els).map(el => el.textContent?.trim() || '');
+    });
+    if (bottomLineTexts && bottomLineTexts.length === products.length) {
+      bottomLineTexts.forEach((text, i) => {
+        if (text && !products[i].bottomLine) {
+          products[i].bottomLine = text;
+        }
+      });
     }
   }
 

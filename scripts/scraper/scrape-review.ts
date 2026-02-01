@@ -207,8 +207,7 @@ export async function scrapeReviewPage(
     product.logoUrl = (await layer5_combinedAttr(page, '[data-testid="logo-and-ctas"] img', 'src')) || undefined;
   }
 
-  // Bottom line (short summary) from data-testid="bottom-line-text"
-  // Some products have a long paragraph here, so take only the first sentence
+  // Bottom line (fallback only - listing page has the correct short values)
   const bottomLineText = await layer2_byTestId(page, 'bottom-line-text');
   if (bottomLineText) {
     const firstSentence = bottomLineText.match(/^[^.!?]+[.!?]/);
