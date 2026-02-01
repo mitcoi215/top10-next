@@ -1,0 +1,214 @@
+(function(networkId) {
+var automaticIntegrations = {};
+
+var cacheLifetimeDays = 30;
+
+var customDataWaitForConfig = [
+  { on: function() { return Invoca.Client.parseCustomDataField("Bing_Account_ID", "Last", "URLParam", ""); }, paramName: "Bing_Account_ID", fallbackValue: null },
+  { on: function() { return Invoca.Client.parseCustomDataField("Cake_Offer_ID", "Last", "URLParam", ""); }, paramName: "Cake_Offer_ID", fallbackValue: null },
+  { on: function() { return Invoca.Client.parseCustomDataField("Google_account_ID", "Last", "URLParam", ""); }, paramName: "Google_account_ID", fallbackValue: null },
+  { on: function() { return Invoca.Client.parseCustomDataField("NIRegion", "Last", "URLParam", ""); }, paramName: "NIRegion", fallbackValue: null },
+  { on: function() { return Invoca.Client.parseCustomDataField("callingPage", "Last", "URLParam", "location.href"); }, paramName: "callingPage", fallbackValue: null },
+  { on: function() { return Invoca.Client.parseCustomDataField("calling_page", "Last", "JavascriptDataLayer", "location.href"); }, paramName: "calling_page", fallbackValue: null },
+  { on: function() { return Invoca.Client.parseCustomDataField("customer_id", "Last", "URLParam", ""); }, paramName: "customer_id", fallbackValue: null },
+  { on: function() { return Invoca.Client.parseCustomDataField("fbclid", "Last", "URLParam", ""); }, paramName: "fbclid", fallbackValue: null },
+  { on: function() { return Invoca.Client.parseCustomDataField("gbraid", "Last", "URLParam", "gbraid"); }, paramName: "gbraid", fallbackValue: null },
+  { on: function() { return Invoca.Client.parseCustomDataField("gclid", "Last", "URLParam", "gclid"); }, paramName: "gclid", fallbackValue: null },
+  { on: function() { return Invoca.Client.parseCustomDataField("iid", "Last", "URLParam", ""); }, paramName: "iid", fallbackValue: null },
+  { on: function() { return Invoca.Client.parseCustomDataField("impression_id", "Last", "JavascriptDataLayer", "ni_server_side_impression_id"); }, paramName: "impression_id", fallbackValue: null },
+  { on: function() { return Invoca.Client.parseCustomDataField("invoca_destination_number", "Unique", "URLParam", ""); }, paramName: "invoca_destination_number", fallbackValue: null },
+  { on: function() { return Invoca.Client.parseCustomDataField("marketing_channel", "Last", "URLParam", ""); }, paramName: "marketing_channel", fallbackValue: null },
+  { on: function() { return Invoca.Client.parseCustomDataField("nidata", "Last", "JavascriptDataLayer", "nidt"); }, paramName: "nidata", fallbackValue: null },
+  { on: function() { return Invoca.Client.parseCustomDataField("sid", "Last", "URLParam", ""); }, paramName: "sid", fallbackValue: null },
+  { on: function() { return Invoca.Client.parseCustomDataField("storeId", "Unique", "URLParam", ""); }, paramName: "storeId", fallbackValue: null },
+  { on: function() { return Invoca.Client.parseCustomDataField("subid", "Last", "URLParam", "cid"); }, paramName: "subid", fallbackValue: null },
+  { on: function() { return Invoca.Client.parseCustomDataField("subid2", "Last", "URLParam", ""); }, paramName: "subid2", fallbackValue: null },
+  { on: function() { return Invoca.Client.parseCustomDataField("tealium_vid", "Last", "URLParam", ""); }, paramName: "tealium_vid", fallbackValue: null },
+  { on: function() { return Invoca.Client.parseCustomDataField("uid", "Last", "URLParam", ""); }, paramName: "uid", fallbackValue: null },
+  { on: function() { return Invoca.Client.parseCustomDataField("user_agent", "Last", "JavascriptDataLayer", "navigator.userAgent"); }, paramName: "user_agent", fallbackValue: null },
+  { on: function() { return Invoca.Client.parseCustomDataField("utm_source", "Last", "URLParam", ""); }, paramName: "utm_source", fallbackValue: function() { return Invoca.PNAPI.currentPageSettings.poolParams.utm_source || null; } },
+  { on: function() { return Invoca.Client.parseCustomDataField("vertical_id", "First", "URLParam", ""); }, paramName: "vertical_id", fallbackValue: null },
+  { on: function() { return Invoca.Client.parseCustomDataField("wbraid", "Last", "URLParam", "wbraid"); }, paramName: "wbraid", fallbackValue: null },
+  { on: function() { return Invoca.Client.parseCustomDataField("webhook_caller_id", "Last", "URLParam", ""); }, paramName: "webhook_caller_id", fallbackValue: null },
+  { on: function() { return Invoca.Client.parseCustomDataField("webhook_city", "Last", "URLParam", ""); }, paramName: "webhook_city", fallbackValue: null }
+];
+
+var customDataWaitForConfigAnonymousFunctions = [
+  { on: function() { return Invoca.Client.parseCustomDataField("calling_page", "Last", "JavascriptDataLayer", function() { return (location.href); }) }, paramName: "calling_page", fallbackValue: null },
+  { on: function() { return Invoca.Client.parseCustomDataField("impression_id", "Last", "JavascriptDataLayer", function() { return (ni_server_side_impression_id); }) }, paramName: "impression_id", fallbackValue: null },
+  { on: function() { return Invoca.Client.parseCustomDataField("nidata", "Last", "JavascriptDataLayer", function() { return (nidt); }) }, paramName: "nidata", fallbackValue: null },
+  { on: function() { return Invoca.Client.parseCustomDataField("user_agent", "Last", "JavascriptDataLayer", function() { return (navigator.userAgent); }) }, paramName: "user_agent", fallbackValue: null }
+];
+
+var defaultCampaignId = null;
+
+var destinationSettings = {
+  paramName: null
+};
+
+var numbersToReplace = {
+  "+18882950108": "462353",
+  "+18447423259": "467041",
+  "+18447423260": "467042",
+  "+18552495827": "467043",
+  "+18442091080": "467044",
+  "+18662537617": "467045",
+  "+18339836006": "467046",
+  "+18447423277": "468636",
+  "+18448335701": "468640",
+  "+18662594252": "468663",
+  "+18009184902": "464314",
+  "+18888363864": "464417",
+  "+18557405997": "466399",
+  "+18557397669": "468639",
+  "+18777358585": "489597",
+  "+18009477512": "489598",
+  "+18889574675": "490058",
+  "+18445936287": "490068",
+  "+18332683669": "562911",
+  "+18883296879": "582910",
+  "+18557806383": "651390",
+  "+18882593647": "983968",
+  "+18882853139": "983969",
+  "+18559212324": "1000841",
+  "+18778767336": "1000877",
+  "+18772308795": "1000879",
+  "+18445224967": "1047878",
+  "+18337312016": "1047880",
+  "+18443709431": "1047881",
+  "+18334088430": "1047882",
+  "+18334913719": "1047883",
+  "+18772993502": "1074879",
+  "+18882843532": "1106708",
+  "+18882850902": "1106709",
+  "+18883893024": "1106710",
+  "+18442178053": "1106712",
+  "+18444349221": "1106713",
+  "+18445677928": "1106714",
+  "+18445224990": "1106715",
+  "+18442039727": "1106717",
+  "+18447423230": "1106718",
+  "+18444399574": "1106720",
+  "+18557193026": "1493938",
+  "+18882874057": "1493939",
+  "+18882860150": "1493941",
+  "+18882860108": "1493942",
+  "+18886641542": "5493723",
+  "+18887233013": "5493724",
+  "+18886641543": "5493725",
+  "+18886655748": "5493726",
+  "+18889574638": "5493727",
+  "+18889574631": "5493728",
+  "+18889574632": "5493729",
+  "+18778172330": "5493730",
+  "+18779188964": "5493731",
+  "+18889914086": "7525289",
+  "+18448362833": "7900132",
+  "+18007100526": "8123653",
+  "+18665828513": "9520569",
+  "+18667046079": "9520570",
+  "+18665622887": "9520571",
+  "+18667748172": "9520572",
+  "+18662998468": "9520573",
+  "+18664383730": "9520574",
+  "+18665409022": "9520575",
+  "+18009018842": "9521250",
+  "+18442572030": "9521251",
+  "+18669467194": "9521351",
+  "+18664152531": "9521730",
+  "+18669466551": "9521731",
+  "+18665635006": "9521732",
+  "+18668591644": "9521733",
+  "+18667966635": "9521734",
+  "+18662460674": "9521735",
+  "+18668976184": "9521736",
+  "+18664167881": "9521737",
+  "+18777992033": "9522760",
+  "+18665214623": "9522761",
+  "+18882332449": "9523389",
+  "+18444234108": "9526065",
+  "+18666612979": "9527742",
+  "+18669600052": "9528076",
+  "+18444602121": "9643619",
+  "+18669762978": "9646277",
+  "+18554882423": "9705120",
+  "+18884955729": "9714317",
+  "+18669529799": "9714318",
+  "+18446973472": "9714319",
+  "+18444276770": "9714320",
+  "+18775895268": "9714321",
+  "+18773984735": "9714322",
+  "+18448220439": "9714327",
+  "+18448760341": "9714328",
+  "+18336481350": "9714329",
+  "+18445520656": "9714330",
+  "+18778813589": "9714331",
+  "+18556996820": "9714332",
+  "+18778653269": "9718003",
+  "+18778819505": "9718004",
+  "+18447356294": "9718005",
+  "+18339581846": "9718006",
+  "+18882791972": "9758453",
+  "+18882793920": "9758452",
+  "+18444530097": "9785506",
+  "+18336007024": "9792354",
+  "+18445893680": "9893086",
+  "+18444272142": "9928247",
+  "+18884410290": "9928249",
+  "+18555250031": "9935415",
+  "+18885606795": "9935416",
+  "+18555129756": "9935417",
+  "+18445846921": "9939354",
+  "+18445846879": "9939355",
+  "+18445846918": "9939356",
+  "+18445846925": "9939357"
+};
+
+var organicSources = false;
+
+var reRunAfter = 4000;
+
+var requiredParams = null;
+
+var resetCacheOn = ['gclid', 'utm_source', 'utm_medium', 'wbraid', 'gbraid'];
+
+var waitFor = 0;
+
+var customCodeIsSet = (function() {
+  Invoca.Client.customCode = function(options) {
+    if (Invoca.Tools.readUrl('monitoring')) {
+  options.autoRun = false;
+}
+
+return options;
+  };
+
+  return true;
+})();
+
+var generatedOptions = {
+  active:              true,
+  autoSwap:            false,
+  cookieDays:          cacheLifetimeDays,
+  country:             null,
+  dataSilo:            "us",
+  defaultCampaignId:   defaultCampaignId,
+  destinationSettings: destinationSettings,
+  disableUrlParams:    ['Bing_Keyword','CAKE_AFF_ID','Google_Keyword','Site','Source','Vertical','advertiser_name','blrs','client_id','msclkid','partnerid','pid','platform','productid','site_id','t','utm_campaign','utm_content','utm_medium','utm_term'],
+  doNotSwap:           [],
+  integrations:        automaticIntegrations,
+  maxWaitFor:          waitFor,
+  networkId:           networkId || null,
+  numberToReplace:     numbersToReplace,
+  organicSources:      organicSources,
+  poolParams:          {},
+  reRunAfter:          reRunAfter,
+  requiredParams:      requiredParams,
+  resetCacheOn:        resetCacheOn,
+  waitForData:         customDataWaitForConfig,
+  waitForDataAnonymousFunctions:  customDataWaitForConfigAnonymousFunctions
+};
+
+Invoca.Client.startFromWizard(generatedOptions);
+
+})(1666);
