@@ -161,11 +161,11 @@
   box-sizing: content-box;
 }
 
-.ni-10im9f path {
-  fill: #FED007;
+.ni-10im9f path:first-child {
+  fill: var(--star-filled-color, #00B67A);
 }
 
-.ni-1ondxqp path {
+.ni-1ondxqp path:first-child {
   fill: #DCDCE5;
 }
 

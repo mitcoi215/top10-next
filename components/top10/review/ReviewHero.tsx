@@ -19,13 +19,18 @@ interface ReviewHeroProps {
   ctaText?: string;
 }
 
-function StarIcon({ filled }: { filled: boolean }) {
-  const bgColor = filled ? '#00B67A' : '#DCDCE5';
+function getStarColor(rating: number): string {
+  if (rating < 2) return '#FF3722';    // Red
+  if (rating < 4) return '#FFCE00';    // Yellow
+  return '#00B67A';                     // Green
+}
+
+function StarIcon({ filled, color }: { filled: boolean; color: string }) {
   if (filled) {
     return (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="1em" height="1em" data-testid="full-star" className="ni-10im9f e2sg7l81">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="1em" height="1em" data-testid="full-star" className="ni-10im9f e2sg7l81" style={{ '--star-filled-color': color } as React.CSSProperties}>
         <g fill="none" fillRule="evenodd">
-          <path fill={bgColor} d="M0 0h18.717v19.251H0z"></path>
+          <path fill={color} d="M0 0h18.717v19.251H0z"></path>
           <path d="M16.609 7.965l-4.47 3.269 1.707 5.286-4.47-3.268-4.474 3.268 1.712-5.286L2.139 7.96l5.525.005 1.713-5.291 1.706 5.291h5.526zm-4.086 4.466l-.384-1.197-2.762 2.018 3.146-.821z" fill="#FFF" fillRule="nonzero"></path>
         </g>
       </svg>
@@ -34,7 +39,7 @@ function StarIcon({ filled }: { filled: boolean }) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="1em" height="1em" data-testid="empty-star" className="ni-1ondxqp e2sg7l80">
       <g fill="none" fillRule="evenodd">
-        <path fill={bgColor} d="M0 0h18.717v19.251H0z"></path>
+        <path fill="#DCDCE5" d="M0 0h18.717v19.251H0z"></path>
         <path d="M16.609 7.965l-4.47 3.269 1.707 5.286-4.47-3.268-4.474 3.268 1.712-5.286L2.139 7.96l5.525.005 1.713-5.291 1.706 5.291h5.526zm-4.086 4.466l-.384-1.197-2.762 2.018 3.146-.821z" fill="#FFF" fillRule="nonzero"></path>
       </g>
     </svg>
@@ -84,6 +89,7 @@ export default function ReviewHero({
 }: ReviewHeroProps) {
   const fullStars = Math.floor(rating);
   const emptyStars = 5 - fullStars;
+  const starColor = getStarColor(rating);
 
   return (
     <div className="ni-1d7dwkj" data-testid="hero-container">
@@ -99,10 +105,10 @@ export default function ReviewHero({
                     <div className="ni-e61ef4">
                       <div className="tp-stars-icon">
                         {[...Array(fullStars)].map((_, i) => (
-                          <StarIcon key={`full-${i}`} filled={true} />
+                          <StarIcon key={`full-${i}`} filled={true} color={starColor} />
                         ))}
                         {[...Array(emptyStars)].map((_, i) => (
-                          <StarIcon key={`empty-${i}`} filled={false} />
+                          <StarIcon key={`empty-${i}`} filled={false} color={starColor} />
                         ))}
                       </div>
                     </div>
