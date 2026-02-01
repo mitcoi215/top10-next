@@ -145,6 +145,7 @@ async function main() {
         heroImage: catData.heroImage,
         introContent: catData.introContent,
         sidebarPeopleCount: catData.sidebarPeopleCount,
+        bestOfListTitle: catData.bestOfListTitle,
         methodologyTitle: catData.methodologyTitle,
         methodologyIntro: catData.methodologyIntro,
         criteriaTitle: catData.criteriaTitle,

@@ -160,6 +160,29 @@ export async function scrapeListingPage(
     return faqs.length > 0 ? faqs : null;
   }) || undefined;
 
+  // --- Best of products list (title + bestFor labels) ---
+  const bestOfData = await layer3_evaluate(page, () => {
+    const container = document.querySelector('[data-testid="best-of-products"]');
+    if (!container) return null;
+    const title = container.querySelector('h2')?.textContent?.trim() || '';
+    const items: { name: string; bestFor: string }[] = [];
+    container.querySelectorAll('li').forEach(li => {
+      const link = li.querySelector('a[data-product-name]');
+      const name = link?.getAttribute('data-product-name')?.trim() || link?.textContent?.trim() || '';
+      // Text after " - " is the bestFor label
+      const fullText = li.textContent?.trim() || '';
+      const dashIndex = fullText.indexOf(' - ');
+      const bestFor = dashIndex >= 0 ? fullText.slice(dashIndex + 3).trim() : '';
+      items.push({ name, bestFor });
+    });
+    return { title, items };
+  });
+  if (bestOfData) {
+    category.bestOfListTitle = bestOfData.title || undefined;
+    // Store for later mapping to products
+    (category as any)._bestOfItems = bestOfData.items;
+  }
+
   // Bottom content
   category.bottomContent = await layer3_evaluate(page, () => {
     const bottomSection = document.querySelector('.charticle__bottom, .charticle__article');
@@ -380,9 +403,23 @@ export async function scrapeListingPage(
     });
   }
 
+  // --- Map bestFor labels from best-of-products section ---
+  const bestOfItems = (category as any)._bestOfItems as { name: string; bestFor: string }[] | undefined;
+  if (bestOfItems && bestOfItems.length > 0) {
+    for (const product of products) {
+      const match = bestOfItems.find(
+        item => item.name.toLowerCase().trim() === product.name?.toLowerCase().trim()
+      );
+      if (match?.bestFor) {
+        product.bestFor = match.bestFor;
+      }
+    }
+    delete (category as any)._bestOfItems;
+  }
+
   log(`  → Products found: ${products.length}`);
   products.forEach(p => {
-    log(`    ${p.rank}. ${p.name} (${p.slug}) - ${p.basePrice || 'no price'}`);
+    log(`    ${p.rank}. ${p.name} (${p.slug}) - ${p.basePrice || 'no price'} - bestFor: ${p.bestFor || 'N/A'}`);
   });
 
   return { category, products };
