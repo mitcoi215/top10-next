@@ -129,11 +129,11 @@ async function main() {
             // Prefer listing's heroSummary (rich HTML from listing page)
             heroSummary: listingProduct.heroSummary || reviewProduct.heroSummary,
             features: listingProduct.features || reviewProduct.features,
-            // Merge highlights (listing has more, review might have different ones)
-            highlights: {
-              ...(listingProduct.highlights || {}),
-              ...(reviewProduct.highlights || {}),
-            },
+            // Prefer review's highlights (correct set for review page display)
+            // Only fall back to listing highlights if review has none
+            highlights: Object.keys(reviewProduct.highlights || {}).length > 0
+              ? reviewProduct.highlights
+              : (listingProduct.highlights || {}),
             // Prefer review data for pros/cons (usually more complete from JSON-LD)
             pros: (reviewProduct.pros?.length || 0) > 0 ? reviewProduct.pros : listingProduct.pros,
             cons: (reviewProduct.cons?.length || 0) > 0 ? reviewProduct.cons : listingProduct.cons,
