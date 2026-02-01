@@ -18,7 +18,7 @@ import 'dotenv/config';
 import { PrismaClient } from '@prisma/client';
 import * as fs from 'fs';
 import * as path from 'path';
-import type { ScrapeResult, ScrapedAuthor, ScrapedCategory, ScrapedProduct } from './types';
+import type { ScrapeResult, ScrapedAuthor, ScrapedCategory, ScrapedProduct, ScrapedArticle } from './types';
 
 const prisma = new PrismaClient();
 
@@ -283,12 +283,66 @@ async function main() {
     }
 
     // =========================================================
+    // STEP 4: Upsert Articles (if any)
+    // =========================================================
+    let articlesSeeded = 0;
+    if (data.articles && data.articles.length > 0) {
+      console.log('\n═══ STEP 4: Articles ═══');
+
+      for (const articleData of data.articles) {
+        // Find author for this article
+        const articleAuthorId = articleData.authorName
+          ? authorIdMap.get(articleData.authorName) || firstAuthorId
+          : firstAuthorId;
+
+        const article = await prisma.article.upsert({
+          where: { slug: articleData.slug },
+          update: {
+            title: articleData.title,
+            subtitle: articleData.subtitle,
+            articleType: 'guide',  // Ensure correct type on update
+            featuredImage: articleData.heroImage,
+            content: articleData.mainContent,
+            excerpt: articleData.summary,
+            metaTitle: articleData.metaTitle,
+            metaDescription: articleData.metaDescription,
+            ogImage: articleData.ogImage,
+            canonical: articleData.canonical,
+            publishedAt: articleData.publishedAt ? new Date(articleData.publishedAt) : undefined,
+            status: 'published',
+          },
+          create: {
+            slug: articleData.slug,
+            title: articleData.title,
+            subtitle: articleData.subtitle,
+            articleType: 'guide',  // 'guide' | 'blog' - NOT 'charticle' (charticle is for product reviews)
+            status: 'published',
+            categoryId: category.id,
+            authorId: articleAuthorId,
+            featuredImage: articleData.heroImage,
+            content: articleData.mainContent,
+            excerpt: articleData.summary,
+            metaTitle: articleData.metaTitle,
+            metaDescription: articleData.metaDescription,
+            ogImage: articleData.ogImage,
+            canonical: articleData.canonical,
+            publishedAt: articleData.publishedAt ? new Date(articleData.publishedAt) : new Date(),
+          },
+        });
+
+        articlesSeeded++;
+        console.log(`  ✓ ${articlesSeeded}. ${article.title.slice(0, 50)}... (${article.id})`);
+      }
+    }
+
+    // =========================================================
     // SUMMARY
     // =========================================================
     console.log('\n═══ SEED COMPLETE ═══');
     console.log(`Category: ${category.name}`);
     console.log(`Authors:  ${data.authors.length}`);
     console.log(`Products: ${data.products.length}`);
+    console.log(`Articles: ${articlesSeeded}`);
     console.log('Done!');
   } catch (err) {
     console.error('Seed error:', err);

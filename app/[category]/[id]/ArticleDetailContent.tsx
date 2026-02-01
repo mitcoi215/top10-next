@@ -613,8 +613,47 @@ export default function ArticleDetailContent({
         /* Product CTA Box - inline in content */
         .logo-and-ctas {
           margin: 24px 0;
-        }
-
+        } 
+          
+          .ni-1tvp7pz {
+    box-sizing: border-box;
+    margin: 0;
+    min-width: 0;
+    padding: 0;
+    font-family: hurmegeometricsans_no3_6, Gilroy, Almarai, Arial, sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    width: 100%;
+    min-height: initial;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    padding: 16px;
+    border: 1px solid var(--color-border-1);
+    background-color: #FFFFFF;
+}
+    .ni-94wdv9 {
+    max-width: 130px!important;
+    max-height: 80px;
+    width: 100%;
+    display: block;
+    object-fit: contain;
+    margin: 0!important;
+    margin-bottom: 0;
+}
         .logo-and-ctas__inner {
           display: flex;
           align-items: center;

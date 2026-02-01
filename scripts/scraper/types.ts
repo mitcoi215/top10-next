@@ -128,10 +128,54 @@ export interface JsonLdReview {
 }
 
 // ============================================
+// ARTICLE (from top-reads page)
+// ============================================
+export interface ScrapedArticle {
+  // --- Metadata ---
+  slug: string;
+  title: string;
+  subtitle?: string;
+  summary?: string;
+  heroImage?: string;
+  publishedDate?: string;
+  readTime?: string;
+  status: string;
+
+  // --- Content ---
+  mainContent?: string;
+
+  // --- Author ---
+  authorName?: string;
+  authorSlug?: string;
+  authorAvatar?: string;
+  authorBio?: string;
+
+  // --- SEO ---
+  metaTitle?: string;
+  metaDescription?: string;
+  ogImage?: string;
+  canonical?: string;
+  publishedAt?: string;
+}
+
+// ============================================
+// Article list item (from top-reads listing)
+// ============================================
+export interface ArticleListItem {
+  slug: string;
+  title: string;
+  summary?: string;
+  date?: string;
+  imageUrl?: string;
+  href: string;
+}
+
+// ============================================
 // Scrape result container
 // ============================================
 export interface ScrapeResult {
   category: ScrapedCategory;
   products: ScrapedProduct[];
   authors: ScrapedAuthor[];
+  articles?: ScrapedArticle[];
 }

@@ -18,7 +18,9 @@
 import { chromium, Browser, Page } from 'playwright';
 import { scrapeListingPage } from './scrape-listing';
 import { scrapeReviewPage } from './scrape-review';
-import type { ScrapedProduct, ScrapedAuthor, ScrapeResult } from './types';
+import { scrapeArticleListPage } from './scrape-article-list';
+import { scrapeArticlePage } from './scrape-article';
+import type { ScrapedProduct, ScrapedAuthor, ScrapedArticle, ScrapeResult } from './types';
 import { log, sleep, retry } from './utils';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -44,6 +46,8 @@ async function main() {
     console.log('║                                                              ║');
     console.log('║  Options:                                                    ║');
     console.log('║    --no-reviews    Skip review pages (listing only)          ║');
+    console.log('║    --articles      Also scrape articles from top-reads       ║');
+    console.log('║    --articles-limit=N  Limit articles to scrape (default 10) ║');
     console.log('║    --limit=N       Limit number of products to scrape        ║');
     console.log('║    --headless=no   Show browser window                       ║');
     console.log('╚══════════════════════════════════════════════════════════════╝');
@@ -53,13 +57,17 @@ async function main() {
 
   // Parse options
   const skipReviews = process.argv.includes('--no-reviews');
+  const scrapeArticles = process.argv.includes('--articles');
   const limitArg = process.argv.find(a => a.startsWith('--limit='));
   const limit = limitArg ? parseInt(limitArg.split('=')[1]) : Infinity;
+  const articlesLimitArg = process.argv.find(a => a.startsWith('--articles-limit='));
+  const articlesLimit = articlesLimitArg ? parseInt(articlesLimitArg.split('=')[1]) : 10;
   const headless = !process.argv.includes('--headless=no');
 
   log(`════════════════════════════════════════════════════════════`);
   log(`Starting scraper for category: ${categorySlug}`);
   log(`Options: skipReviews=${skipReviews}, limit=${limit === Infinity ? 'all' : limit}, headless=${headless}`);
+  log(`         articles=${scrapeArticles}, articlesLimit=${articlesLimit}`);
   log(`════════════════════════════════════════════════════════════`);
 
   let browser: Browser | null = null;
@@ -166,15 +174,88 @@ async function main() {
     }
 
     // =========================================================
-    // STEP 3: Output result
+    // STEP 3: Cào Articles (nếu có --articles flag)
+    // =========================================================
+    const allArticles: Partial<ScrapedArticle>[] = [];
+
+    if (scrapeArticles) {
+      log('');
+      log('═══ STEP 3: Cào Articles từ top-reads ═══');
+
+      // Cào danh sách articles từ trang top-reads
+      const topReadsUrl = `${BASE_URL}/${categorySlug}/top-reads`;
+      const articleList = await retry(
+        () => scrapeArticleListPage(page, topReadsUrl, articlesLimit),
+      );
+
+      log(`→ Articles found: ${articleList.length}`);
+
+      // Cào từng article
+      for (let i = 0; i < articleList.length; i++) {
+        const articleItem = articleList[i];
+
+        log('');
+        log(`─── Article ${i + 1}/${articleList.length}: ${articleItem.title.slice(0, 50)}... ───`);
+
+        try {
+          const articleUrl = articleItem.href.startsWith('http')
+            ? articleItem.href
+            : `${BASE_URL}${articleItem.href}`;
+
+          const { article, author } = await retry(
+            () => scrapeArticlePage(page, articleUrl),
+          );
+
+          // Merge data từ list + detail
+          const merged: Partial<ScrapedArticle> = {
+            ...article,
+            // Keep list data for fields that detail might not have
+            summary: article.summary || articleItem.summary,
+            heroImage: article.heroImage || articleItem.imageUrl,
+            publishedDate: article.publishedDate || articleItem.date,
+          };
+
+          allArticles.push(merged);
+
+          // Collect author
+          if (author) {
+            allAuthors.set(author.slug, author);
+          }
+
+          log(`✓ Scraped: ${merged.title} (${merged.slug})`);
+        } catch (err) {
+          log(`✗ Failed to scrape article: ${(err as Error).message}`);
+          // Still add basic data from list
+          allArticles.push({
+            slug: articleItem.slug,
+            title: articleItem.title,
+            summary: articleItem.summary,
+            heroImage: articleItem.imageUrl,
+            publishedDate: articleItem.date,
+            status: 'published',
+          });
+        }
+
+        // Delay between requests
+        if (i < articleList.length - 1) {
+          const delay = 2000 + Math.random() * 3000;
+          log(`  Waiting ${Math.round(delay / 1000)}s...`);
+          await sleep(delay);
+        }
+      }
+    }
+
+    // =========================================================
+    // STEP 4: Output result
     // =========================================================
     log('');
-    log('═══ STEP 3: Saving result ═══');
+    log('═══ STEP 4: Saving result ═══');
 
     const result: ScrapeResult = {
       category: category as any,
       products: allProducts as any,
       authors: Array.from(allAuthors.values()),
+      articles: scrapeArticles ? allArticles as any : undefined,
     };
 
     // Save to JSON file
@@ -192,6 +273,7 @@ async function main() {
     log('═══ SUMMARY ═══');
     log(`Category: ${category.name} (${category.slug})`);
     log(`Products: ${allProducts.length}`);
+    log(`Articles: ${allArticles.length}`);
     log(`Authors:  ${allAuthors.size}`);
     log('');
     log('Products:');
@@ -201,6 +283,15 @@ async function main() {
       log(`     Pros: ${p.pros?.length || 0} | Cons: ${p.cons?.length || 0}`);
       log(`     Review: ${p.mainContent ? 'YES' : 'NO'} | Verdict: ${p.verdict ? 'YES' : 'NO'}`);
     });
+
+    if (allArticles.length > 0) {
+      log('');
+      log('Articles:');
+      allArticles.forEach((a, i) => {
+        log(`  ${i + 1}. ${a.title} (${a.slug})`);
+        log(`     Author: ${a.authorName || 'N/A'} | Content: ${a.mainContent ? 'YES' : 'NO'}`);
+      });
+    }
 
     log('');
     log(`Output: ${outputPath}`);
