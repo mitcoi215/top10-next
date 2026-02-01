@@ -228,9 +228,9 @@ export async function scrapeListingPage(
         const taglineEl = card.querySelector('.mini-reviews__product-highlight span, .mini-reviews__product-highlight');
         data.tagline = taglineEl?.textContent?.trim() || '';
 
-        // Product description (long text from listing - NOT the short bottom line)
+        // Product description HTML (rich content from listing page)
         const descEl = card.querySelector('.mini-reviews__product-description');
-        data.description = descEl?.textContent?.trim() || '';
+        data.heroSummary = descEl?.innerHTML?.trim() || '';
 
         // CTA
         const ctaEl = card.querySelector('a.cta-button, a[data-role="product-cta"], a.mini-reviews__cta-button');
@@ -352,6 +352,7 @@ export async function scrapeListingPage(
         logoUrl: card.logoUrl || undefined,
         tagline: card.tagline || undefined,
         bottomLine: card.bottomLine || undefined,
+        heroSummary: card.heroSummary || undefined,
         basePrice: card.basePrice || undefined,
         ctaUrl: card.ctaUrl || undefined,
         ctaText: card.ctaText || 'Visit Site',

@@ -126,6 +126,8 @@ async function main() {
             ribbon: listingProduct.ribbon || reviewProduct.ribbon,
             // Prefer listing's bottomLine (short text from data-testid="bottom-line-text" on listing page)
             bottomLine: listingProduct.bottomLine || reviewProduct.bottomLine,
+            // Prefer listing's heroSummary (rich HTML from listing page)
+            heroSummary: listingProduct.heroSummary || reviewProduct.heroSummary,
             features: listingProduct.features || reviewProduct.features,
             // Merge highlights (listing has more, review might have different ones)
             highlights: {
