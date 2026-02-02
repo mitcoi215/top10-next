@@ -136,7 +136,7 @@ export default function EditCategoryPage() {
 
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(error.message || 'Failed to update category');
+      throw new Error(error.message || error.error || 'Failed to update category');
     }
 
     // Optionally refresh data after save

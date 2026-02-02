@@ -116,12 +116,12 @@ model Category {
   // Comparison Page - Top 3 Products Bar
   comparisonTop3Enabled     Boolean   @default(false)
   comparisonTop3Title       String?   // "Top 3 Home Security Services"
-  comparisonTop3ProductIds  String[]  @db.ObjectId // ordered product IDs (up to 3)
+  comparisonTop3ProductIds  String[]  // ordered product IDs (up to 3)
   comparisonTop3Ribbon      String?   // Ribbon text for #1, e.g. "Our Recommendation"
 
   // Comparison Page - Right Sidebar (Best Overall)
   comparisonRightSidebarEnabled   Boolean @default(false)
-  comparisonRightSidebarProductId String? @db.ObjectId // null = auto (rank #1)
+  comparisonRightSidebarProductId String? // null = auto (rank #1)
 
   // Comparison Page - Left Sidebar
   comparisonLeftSidebarEnabled  Boolean @default(true)

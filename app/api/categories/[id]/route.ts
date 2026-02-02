@@ -272,8 +272,9 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       );
     }
 
+    const message = error instanceof Error ? error.message : 'Failed to update category';
     return NextResponse.json(
-      { error: 'Failed to update category' },
+      { error: 'Failed to update category', message },
       { status: 500 }
     );
   }
