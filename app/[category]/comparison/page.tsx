@@ -4,6 +4,8 @@ import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import prisma from '@/lib/db';
 import NissimProductCard from '@/components/top10/compare/NissimProductCard';
+import Top3ProductsBar from '@/components/top10/compare/Top3ProductsBar';
+import ComparisonSidebar from '@/components/top10/compare/ComparisonSidebar';
 import Navbar from '@/components/top10/category/Navbar';
 import Breadcrumb from '@/components/top10/category/Breadcrumb';
 import Footer from '@/components/top10/category/Footer';
@@ -63,6 +65,14 @@ export default async function ComparePage({ params }: PageProps) {
   const products = category.products;
   const faqs = (category.faqs as any[]) || [];
 
+  // Fetch articles for the sidebar "Must Reads"
+  const articles = await prisma.article.findMany({
+    where: { categoryId: category.id, status: 'published' },
+    orderBy: { publishedAt: 'desc' },
+    take: 3,
+    select: { slug: true, title: true, publishedAt: true },
+  });
+
   // Parse features from product highlights or features JSON
   function getProductFeatures(product: typeof products[0]): string[] {
     const features = product.features as Record<string, string | boolean> | string[] | null;
@@ -92,6 +102,19 @@ export default async function ComparePage({ params }: PageProps) {
 
   // Best overall = first product (highest ranked)
   const bestProduct = products[0] || null;
+
+  // Top 3 products data for the bar above chart
+  const top3ForBar = products.slice(0, 3).map((p: any) => ({
+    name: p.name,
+    slug: p.slug,
+    logoUrl: p.logoUrl || undefined,
+    ctaUrl: p.ctaUrl || undefined,
+    ctaText: p.ctaText || 'Visit Site',
+    overallScore: p.overallScore || undefined,
+    scoreLabel: p.scoreLabel || undefined,
+    bottomLine: p.bottomLine || p.tagline || undefined,
+    ribbon: p.ribbon || undefined,
+  }));
 
   // Top 3 picks for CloserLook / mini-reviews section
   const top3Products = products.slice(0, 3);
@@ -126,6 +149,13 @@ export default async function ComparePage({ params }: PageProps) {
       iconImage: product.logoUrl || undefined,
     };
   });
+
+  // Review products for sidebar
+  const reviewProducts = products.slice(0, 3).map((p: any) => ({
+    slug: p.slug,
+    name: p.name,
+    logoUrl: p.logoUrl || null,
+  }));
 
   return (
     <>
@@ -163,9 +193,26 @@ export default async function ComparePage({ params }: PageProps) {
         </div>
       </div>
 
-      {/* Main Content */}
+      {/* Top 3 Products Bar (above chart) */}
+      {top3ForBar.length > 0 && (
+        <Top3ProductsBar
+          title={`Top 3 ${category.name} Services`}
+          products={top3ForBar}
+          categorySlug={categorySlug}
+        />
+      )}
+
+      {/* Main Content: 3-column layout (left sidebar | center chart | right sidebar) */}
       <main data-role="chart" className="compare-main">
         <div className="compare-main__row">
+          {/* Left Sidebar (social proof, score disclaimer, must reads, reviews) */}
+          <ComparisonSidebar
+            categoryName={category.name}
+            categorySlug={categorySlug}
+            articles={articles}
+            reviewProducts={reviewProducts}
+          />
+
           <div className="compare-main__center">
 
             {/* Chart Body - Product Cards (vertical stack) */}
@@ -194,7 +241,7 @@ export default async function ComparePage({ params }: PageProps) {
 
           </div>
 
-          {/* Best Overall Sidebar (desktop only) */}
+          {/* Best Overall Sidebar (desktop only, right side) */}
           <aside className="compare-sidebar">
             {bestProduct && (
               <div className="compare-best-overall">
