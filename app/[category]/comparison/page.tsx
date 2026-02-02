@@ -1,4 +1,5 @@
 import '@/styles/compare.css';
+import '@/styles/category.css';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import prisma from '@/lib/db';
@@ -7,6 +8,7 @@ import Navbar from '@/components/top10/category/Navbar';
 import Breadcrumb from '@/components/top10/category/Breadcrumb';
 import Footer from '@/components/top10/category/Footer';
 import FAQSection from '@/components/top10/category/FAQSection';
+import CloserLook from '@/components/top10/category/CloserLook';
 
 export const dynamic = 'force-dynamic';
 
@@ -88,6 +90,43 @@ export default async function ComparePage({ params }: PageProps) {
   const heroSubtitle = cat.comparisonSubtitle || category.metaDescription || `Compare the top ${category.name.toLowerCase()} side by side to find the best fit for your needs.`;
   const heroImage = cat.comparisonHeroImage || cat.heroImage || null;
 
+  // Best overall = first product (highest ranked)
+  const bestProduct = products[0] || null;
+
+  // Top 3 picks for CloserLook / mini-reviews section
+  const top3Products = products.slice(0, 3);
+  const closerLookItems = top3Products.map((product: any, idx: number) => {
+    const highlights = product.highlights as Record<string, string> | null;
+    const bulletPoints = highlights
+      ? Object.entries(highlights).map(([key, value]) => ({
+          label: key.replace(/([A-Z])/g, ' $1').replace(/^./, (str: string) => str.toUpperCase()).trim(),
+          value: value,
+        }))
+      : [];
+
+    return {
+      position: idx + 1,
+      name: product.name,
+      slug: product.slug,
+      logo: product.logoUrl || '/top10-images/default-logo.png',
+      tagline: product.tagline || product.bottomLine || '',
+      bestFor: product.bestFor || '',
+      basePrice: product.basePrice || 'Contact for pricing',
+      reviewHref: product.reviewHref || `/${categorySlug}/reviews/${product.slug}`,
+      ctaHref: product.ctaUrl || '#',
+      ctaText: product.ctaText || 'Visit Site',
+      overallScore: product.overallScore || undefined,
+      scoreLabel: product.scoreLabel || undefined,
+      description: product.heroSummary || undefined,
+      bulletPoints: bulletPoints.length > 0 ? bulletPoints : undefined,
+      pros: product.pros.length > 0 ? product.pros : undefined,
+      cons: product.cons.length > 0 ? product.cons : undefined,
+      images: product.images.length > 0 ? product.images : undefined,
+      highlightText: product.tagline || product.bestFor || undefined,
+      iconImage: product.logoUrl || undefined,
+    };
+  });
+
   return (
     <>
       <Navbar categorySlug={categorySlug} />
@@ -155,39 +194,52 @@ export default async function ComparePage({ params }: PageProps) {
 
           </div>
 
-          {/* Sidebar placeholder (for future use) */}
-          <aside className="compare-sidebar" />
+          {/* Best Overall Sidebar (desktop only) */}
+          <aside className="compare-sidebar">
+            {bestProduct && (
+              <div className="compare-best-overall">
+                <div className="compare-best-overall__title">
+                  Our Best {category.name} Provider
+                </div>
+                <div className="nissim-card--highlighted">
+                  <div className="nissim-card--highlighted__banner">
+                    {(bestProduct as any).bestFor || 'Best Overall'}
+                  </div>
+                  <NissimProductCard
+                    position={(bestProduct as any).rank || 1}
+                    name={(bestProduct as any).name}
+                    slug={(bestProduct as any).slug}
+                    categorySlug={categorySlug}
+                    logoUrl={(bestProduct as any).logoUrl || undefined}
+                    bottomLine={(bestProduct as any).bottomLine || (bestProduct as any).tagline || undefined}
+                    features={getProductFeatures(bestProduct as any)}
+                    ctaUrl={(bestProduct as any).ctaUrl || undefined}
+                    ctaText={(bestProduct as any).ctaText || 'Visit Site'}
+                    overallScore={(bestProduct as any).overallScore || undefined}
+                    scoreLabel={(bestProduct as any).scoreLabel || undefined}
+                  />
+                </div>
+              </div>
+            )}
+          </aside>
         </div>
 
         {/* Below chart sections */}
         <div className="compare-below-chart">
-          {/* Comparison Summary Table */}
-          {products.length > 0 && (
-            <div className="compare-content-sections">
-              <h2>Comparing Our Top {category.name} Providers</h2>
-              <table className="compare-summary-table" data-testid="wysiwyg-table">
-                <thead>
-                  <tr>
-                    <th>Company</th>
-                    <th>Why We Recommend It</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {products.map((product: any) => (
-                    <tr key={product.slug}>
-                      <td><strong>{product.name}</strong></td>
-                      <td>{product.bestFor || product.bottomLine || product.tagline || '—'}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-
           {/* FAQ Section */}
           {faqs.length > 0 && (
             <div className="compare-content-sections">
               <FAQSection items={faqs.map((f: any) => ({ question: f.question || f.q || '', answer: f.answer || f.a || '' }))} />
+            </div>
+          )}
+
+          {/* Our Top 3 Picks - reuses CloserLook component from category page */}
+          {closerLookItems.length > 0 && (
+            <div className="compare-content-sections">
+              <CloserLook
+                title="Our Top 3 Picks"
+                items={closerLookItems}
+              />
             </div>
           )}
         </div>
