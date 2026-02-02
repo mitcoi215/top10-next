@@ -91,8 +91,10 @@ export default function Top3ProductsBar({ title, products, categorySlug }: Top3P
                 )}
 
                 <div className={`top3-card__body${isFirst ? ' top3-card__body--first' : ''}`}>
-                  {/* Icon logo */}
-                  <div className="top3-card__icon">
+                  <div style={{width:"100%",display:"flex", alignItems: "center", justifyContent:"space-between"}}>
+                    {/* Icon logo */}
+                 <div style={{display:"flex", alignItems:"center"}}>
+                   <div className="top3-card__icon">
                     {product.logoUrl ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img src={product.logoUrl} alt={product.name} width={30} height={30} loading="lazy" />
@@ -102,11 +104,12 @@ export default function Top3ProductsBar({ title, products, categorySlug }: Top3P
                   </div>
 
                   {/* Product name */}
-                  <div className="top3-card__name" data-testid="product-name">{product.name}</div>
+                  <div style={{margin: "0 0 0 15px"}} className="top3-card__name" data-testid="product-name">{product.name}</div>
 
+                 </div>
                   {/* Score */}
                   {displayScore > 0 && (
-                    <div className="top3-card__score">
+                    <div className="top3-card__score" style={{width:"auto"}}>
                       <div className="top3-card__score-widget" data-role="product-score" data-with-trophy={hasTrophy ? 'true' : 'false'}>
                         <div className="top3-card__score-wording">
                           <span className="top3-card__score-label">{displayLabel}</span>
@@ -125,6 +128,7 @@ export default function Top3ProductsBar({ title, products, categorySlug }: Top3P
                       </div>
                     </div>
                   )}
+                  </div>
 
                   {/* Bottom line + CTA */}
                   <div className="top3-card__footer">
@@ -134,7 +138,7 @@ export default function Top3ProductsBar({ title, products, categorySlug }: Top3P
                       </div>
                     )}
                     <div className="top3-card__cta">
-                      <div className="top3-card__cta-text">{product.ctaText || 'Get Started'}</div>
+                      <div className="top3-card__cta-text">{'Get Started'}</div>
                       <svg width="1em" height="1em" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ fontSize: '11px' }}>
                         <path fillRule="evenodd" clipRule="evenodd" d="M9.405 6.613l-4.022 3.89a.718.718 0 000 1.039.779.779 0 001.074 0l5.32-5.144a.718.718 0 000-1.039L6.458.215A.771.771 0 005.92 0a.771.771 0 00-.537.215.718.718 0 000 1.04l4.022 3.889H.76c-.42 0-.76.329-.76.734 0 .406.34.735.76.735h8.645z" fill="currentColor" />
                       </svg>
