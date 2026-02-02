@@ -719,6 +719,55 @@
   margin: 0 0 12px;
 }
 
+/* Below FAQ Rich Text Content */
+.compare-below-faq-content {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #444;
+}
+
+.compare-below-faq-content h2 {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-body-1);
+  margin: 24px 0 12px;
+}
+
+.compare-below-faq-content h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-body-1);
+  margin: 20px 0 10px;
+}
+
+.compare-below-faq-content p {
+  margin: 0 0 12px;
+}
+
+.compare-below-faq-content a {
+  color: var(--color-info);
+  text-decoration: underline;
+}
+
+.compare-below-faq-content ul,
+.compare-below-faq-content ol {
+  padding-left: 24px;
+  margin: 12px 0;
+}
+
+.compare-below-faq-content li {
+  margin: 6px 0;
+}
+
+/* Score in sidebar disclaimer row */
+.sidebar-disclaimer__row-score {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-body-1);
+  margin-left: auto;
+  margin-right: 8px;
+}
+
 /* Comparison Summary Table */
 .compare-summary-table {
   width: 100%;

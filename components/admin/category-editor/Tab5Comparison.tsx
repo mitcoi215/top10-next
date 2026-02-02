@@ -2,8 +2,9 @@
 
 import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { CategoryFormData, ProductOption } from './types';
+import { CategoryFormData, ProductOption, ScoreBreakdownItem } from './types';
 import ImageUpload from './ImageUpload';
+import RichTextEditor from './RichTextEditor';
 
 interface ProductComparisonData {
   id: string;
@@ -32,6 +33,13 @@ export default function Tab5Comparison({ products, categoryId }: Tab5Props) {
   const [savingProductId, setSavingProductId] = useState<string | null>(null);
   const [expandedProduct, setExpandedProduct] = useState<string | null>(null);
   const [saveMessages, setSaveMessages] = useState<Record<string, { type: 'success' | 'error'; text: string }>>({});
+
+  // Watch form values
+  const top3Enabled = watch('comparisonTop3Enabled');
+  const top3ProductIds = watch('comparisonTop3ProductIds') || [];
+  const rightSidebarEnabled = watch('comparisonRightSidebarEnabled');
+  const leftSidebarEnabled = watch('comparisonLeftSidebarEnabled');
+  const scoreBreakdown = watch('comparisonScoreBreakdown') || [];
 
   // Load full product data for comparison editing
   const loadProductData = async () => {
@@ -131,16 +139,53 @@ export default function Tab5Comparison({ products, categoryId }: Tab5Props) {
         }),
       });
       if (!res.ok) throw new Error('Save failed');
-      setSaveMessages(prev => ({ ...prev, [product.id]: { type: 'success', text: 'Đã lưu!' } }));
+      setSaveMessages(prev => ({ ...prev, [product.id]: { type: 'success', text: 'Saved!' } }));
       setTimeout(() => {
         setSaveMessages(prev => ({ ...prev, [product.id]: { type: 'success', text: '' } }));
       }, 2000);
     } catch (err) {
       console.error('Save product error:', err);
-      setSaveMessages(prev => ({ ...prev, [product.id]: { type: 'error', text: 'Lưu thất bại!' } }));
+      setSaveMessages(prev => ({ ...prev, [product.id]: { type: 'error', text: 'Save failed!' } }));
     } finally {
       setSavingProductId(null);
     }
+  };
+
+  // Top 3 product selection helpers
+  const toggleTop3Product = (productId: string) => {
+    const current = [...top3ProductIds];
+    const idx = current.indexOf(productId);
+    if (idx >= 0) {
+      current.splice(idx, 1);
+    } else if (current.length < 3) {
+      current.push(productId);
+    }
+    setValue('comparisonTop3ProductIds', current, { shouldDirty: true });
+  };
+
+  const moveTop3Product = (fromIdx: number, toIdx: number) => {
+    const current = [...top3ProductIds];
+    const [item] = current.splice(fromIdx, 1);
+    current.splice(toIdx, 0, item);
+    setValue('comparisonTop3ProductIds', current, { shouldDirty: true });
+  };
+
+  // Score breakdown helpers
+  const updateScoreItem = (index: number, field: keyof ScoreBreakdownItem, value: any) => {
+    const items = [...scoreBreakdown];
+    items[index] = { ...items[index], [field]: value };
+    setValue('comparisonScoreBreakdown', items, { shouldDirty: true });
+  };
+
+  const addScoreItem = () => {
+    setValue('comparisonScoreBreakdown', [
+      ...scoreBreakdown,
+      { name: '', description: '', score: 8.0 },
+    ], { shouldDirty: true });
+  };
+
+  const removeScoreItem = (index: number) => {
+    setValue('comparisonScoreBreakdown', scoreBreakdown.filter((_: any, i: number) => i !== index), { shouldDirty: true });
   };
 
   // Auto-load on mount
@@ -148,72 +193,306 @@ export default function Tab5Comparison({ products, categoryId }: Tab5Props) {
     loadProductData();
   }
 
+  const getProductName = (id: string) => {
+    const p = productData.find(pd => pd.id === id) || products.find(pd => pd.id === id);
+    return p?.name || id;
+  };
+
   return (
     <div className="tab-comparison">
-      {/* Section 1: Comparison Page Hero Settings */}
+      {/* Section 1: Hero Settings */}
       <div className="section">
-        <h2 className="section-title">Cài đặt trang So sánh</h2>
-        <p className="section-desc">Thiết lập nội dung hiển thị ở phần hero của trang comparison</p>
+        <h2 className="section-title">Hero trang So sanh</h2>
+        <p className="section-desc">Thiet lap noi dung hien thi o phan hero cua trang comparison</p>
 
         <div className="form-grid">
           <div className="form-group full-width">
             <ImageUpload
-              label="Ảnh nền Hero"
+              label="Anh nen Hero"
               value={watch('comparisonHeroImage') || ''}
               onChange={(url) => setValue('comparisonHeroImage', url, { shouldDirty: true })}
-              placeholder="Tải lên hoặc nhập URL ảnh nền hero trang so sánh"
+              placeholder="Tai len hoac nhap URL anh nen hero trang so sanh"
               folder="categories/comparison"
             />
           </div>
 
           <div className="form-group full-width">
-            <label htmlFor="comparisonTitle">
-              Tiêu đề trang So sánh
-              <span className="tooltip" title="Tiêu đề hiển thị trên hero section của trang comparison">?</span>
-            </label>
+            <label htmlFor="comparisonTitle">Tieu de trang So sanh</label>
             <input
               id="comparisonTitle"
               type="text"
               {...register('comparisonTitle')}
               placeholder="VD: Best Home Security Systems in 2026"
             />
-            <div className="hint">Nếu để trống sẽ dùng Hero Title của danh mục hoặc tự sinh.</div>
+            <div className="hint">Neu de trong se dung Hero Title cua danh muc hoac tu sinh.</div>
           </div>
 
           <div className="form-group full-width">
-            <label htmlFor="comparisonSubtitle">
-              Mô tả phụ
-              <span className="tooltip" title="Đoạn text mô tả bên dưới tiêu đề hero">?</span>
-            </label>
+            <label htmlFor="comparisonSubtitle">Mo ta phu</label>
             <textarea
               id="comparisonSubtitle"
               {...register('comparisonSubtitle')}
               rows={3}
               placeholder="VD: Compare the top home security systems side by side..."
             />
-            <div className="hint">Nếu để trống sẽ dùng Meta Description của danh mục.</div>
+            <div className="hint">Neu de trong se dung Meta Description cua danh muc.</div>
           </div>
         </div>
       </div>
 
-      {/* Section 2: Products Comparison Data */}
+      {/* Section 2: Top 3 Products Bar */}
       <div className="section">
-        <h2 className="section-title">Dữ liệu sản phẩm trên trang So sánh</h2>
+        <div className="section-header-row">
+          <div>
+            <h2 className="section-title">Top 3 Products Bar</h2>
+            <p className="section-desc">Thanh top 3 san pham hien phia tren danh sach so sanh. Neu tat se khong hien thi.</p>
+          </div>
+          <label className="toggle-switch">
+            <input
+              type="checkbox"
+              checked={top3Enabled}
+              onChange={(e) => setValue('comparisonTop3Enabled', e.target.checked, { shouldDirty: true })}
+            />
+            <span className="toggle-slider" />
+            <span className="toggle-label">{top3Enabled ? 'Hien' : 'An'}</span>
+          </label>
+        </div>
+
+        {top3Enabled && (
+          <div className="subsection">
+            <div className="form-grid">
+              <div className="form-group">
+                <label>Tieu de Top 3</label>
+                <input
+                  type="text"
+                  {...register('comparisonTop3Title')}
+                  placeholder="VD: Top 3 Home Security Services"
+                />
+              </div>
+              <div className="form-group">
+                <label>Ribbon cho #1 (san pham dau tien)</label>
+                <input
+                  type="text"
+                  {...register('comparisonTop3Ribbon')}
+                  placeholder="VD: Our Recommendation"
+                />
+              </div>
+            </div>
+
+            <div className="top3-selector">
+              <label className="features-label">Chon 3 san pham (theo thu tu hien thi)</label>
+
+              {/* Selected products */}
+              {top3ProductIds.length > 0 && (
+                <div className="selected-products">
+                  {top3ProductIds.map((id: string, idx: number) => (
+                    <div key={id} className="selected-product-item">
+                      <span className="selected-product-rank">#{idx + 1}</span>
+                      <span className="selected-product-name">{getProductName(id)}</span>
+                      <div className="selected-product-actions">
+                        {idx > 0 && (
+                          <button type="button" className="btn-move" onClick={() => moveTop3Product(idx, idx - 1)} title="Di chuyen len">
+                            &uarr;
+                          </button>
+                        )}
+                        {idx < top3ProductIds.length - 1 && (
+                          <button type="button" className="btn-move" onClick={() => moveTop3Product(idx, idx + 1)} title="Di chuyen xuong">
+                            &darr;
+                          </button>
+                        )}
+                        <button type="button" className="btn-remove-feature" onClick={() => toggleTop3Product(id)} title="Bo chon">
+                          &times;
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Available products to select */}
+              {top3ProductIds.length < 3 && (
+                <div className="available-products">
+                  <p className="hint">Chon them san pham ({3 - top3ProductIds.length} vi tri con lai):</p>
+                  <div className="product-chips">
+                    {productData
+                      .filter(p => !top3ProductIds.includes(p.id))
+                      .map(p => (
+                        <button
+                          key={p.id}
+                          type="button"
+                          className="product-chip"
+                          onClick={() => toggleTop3Product(p.id)}
+                        >
+                          #{p.rank} {p.name}
+                          {p.overallScore != null && <span className="chip-score">{p.overallScore.toFixed(1)}</span>}
+                        </button>
+                      ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Section 3: Right Sidebar (Best Overall) */}
+      <div className="section">
+        <div className="section-header-row">
+          <div>
+            <h2 className="section-title">Sidebar Phai (Best Overall)</h2>
+            <p className="section-desc">Hien thi san pham tot nhat ben phai danh sach so sanh. Neu tat se an di.</p>
+          </div>
+          <label className="toggle-switch">
+            <input
+              type="checkbox"
+              checked={rightSidebarEnabled}
+              onChange={(e) => setValue('comparisonRightSidebarEnabled', e.target.checked, { shouldDirty: true })}
+            />
+            <span className="toggle-slider" />
+            <span className="toggle-label">{rightSidebarEnabled ? 'Hien' : 'An'}</span>
+          </label>
+        </div>
+
+        {rightSidebarEnabled && (
+          <div className="subsection">
+            <div className="form-group">
+              <label>Chon san pham hien thi</label>
+              <select
+                value={watch('comparisonRightSidebarProductId') || ''}
+                onChange={(e) => setValue('comparisonRightSidebarProductId', e.target.value, { shouldDirty: true })}
+              >
+                <option value="">Tu dong (San pham #1 theo rank)</option>
+                {productData.map(p => (
+                  <option key={p.id} value={p.id}>#{p.rank} {p.name}{p.overallScore != null ? ` (${p.overallScore.toFixed(1)})` : ''}</option>
+                ))}
+              </select>
+              <div className="hint">De trong se tu dong hien thi san pham rank #1</div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Section 4: Left Sidebar */}
+      <div className="section">
+        <div className="section-header-row">
+          <div>
+            <h2 className="section-title">Sidebar Trai (Score Disclaimer)</h2>
+            <p className="section-desc">Social proof, diem chi tiet, Must Reads va Our Reviews. Neu tat se an toan bo sidebar trai.</p>
+          </div>
+          <label className="toggle-switch">
+            <input
+              type="checkbox"
+              checked={leftSidebarEnabled}
+              onChange={(e) => setValue('comparisonLeftSidebarEnabled', e.target.checked, { shouldDirty: true })}
+            />
+            <span className="toggle-slider" />
+            <span className="toggle-label">{leftSidebarEnabled ? 'Hien' : 'An'}</span>
+          </label>
+        </div>
+
+        {leftSidebarEnabled && (
+          <div className="subsection">
+            <div className="form-group">
+              <label>So nguoi da so sanh (Social Proof)</label>
+              <input
+                type="text"
+                {...register('comparisonSocialProofCount')}
+                placeholder="VD: 13,810"
+              />
+              <div className="hint">Neu de trong se tu dong sinh so ngau nhien.</div>
+            </div>
+
+            {/* Score Breakdown Items */}
+            <div className="score-breakdown-section">
+              <label className="features-label">
+                Diem chi tiet (Score Breakdown)
+                <span className="tooltip" title="Cac muc diem hien thi trong phan Score Disclaimer cua sidebar trai">?</span>
+              </label>
+
+              <div className="score-breakdown-list">
+                {scoreBreakdown.map((item: ScoreBreakdownItem, idx: number) => (
+                  <div key={idx} className="score-breakdown-item">
+                    <div className="score-breakdown-row">
+                      <div className="form-group" style={{ flex: 2 }}>
+                        <label>Ten</label>
+                        <input
+                          type="text"
+                          value={item.name}
+                          onChange={(e) => updateScoreItem(idx, 'name', e.target.value)}
+                          placeholder="VD: Popularity"
+                        />
+                      </div>
+                      <div className="form-group" style={{ flex: 1 }}>
+                        <label>Diem (0-10)</label>
+                        <input
+                          type="number"
+                          min="0"
+                          max="10"
+                          step="0.1"
+                          value={item.score}
+                          onChange={(e) => updateScoreItem(idx, 'score', parseFloat(e.target.value) || 0)}
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        className="btn-remove-score"
+                        onClick={() => removeScoreItem(idx)}
+                        title="Xoa"
+                      >
+                        &times;
+                      </button>
+                    </div>
+                    <div className="form-group">
+                      <input
+                        type="text"
+                        value={item.description}
+                        onChange={(e) => updateScoreItem(idx, 'description', e.target.value)}
+                        placeholder="VD: Based on visits in the past 7 days"
+                      />
+                    </div>
+                  </div>
+                ))}
+
+                <button type="button" className="btn-add-feature" onClick={addScoreItem}>
+                  + Them muc diem
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Section 5: Below FAQ Content */}
+      <div className="section">
+        <h2 className="section-title">Noi dung ben duoi FAQ</h2>
+        <p className="section-desc">Noi dung Rich Text hien thi ben duoi phan FAQ tren trang so sanh.</p>
+
+        <RichTextEditor
+          label="Noi dung (HTML)"
+          value={watch('comparisonBelowFaqContent') || ''}
+          onChange={(val) => setValue('comparisonBelowFaqContent', val, { shouldDirty: true })}
+          placeholder="Nhap noi dung hien thi ben duoi FAQ..."
+        />
+      </div>
+
+      {/* Section 6: Products Comparison Data */}
+      <div className="section">
+        <h2 className="section-title">Du lieu san pham tren trang So sanh</h2>
         <p className="section-desc">
-          Chỉnh sửa thông tin hiển thị trên Nissim Card của từng sản phẩm.
-          Nhấn &quot;Lưu&quot; ở mỗi sản phẩm để cập nhật.
+          Chinh sua thong tin hien thi tren Nissim Card cua tung san pham.
+          Nhan &quot;Luu&quot; o moi san pham de cap nhat.
         </p>
 
         {loadingProducts && (
-          <div className="loading-state">Đang tải dữ liệu sản phẩm...</div>
+          <div className="loading-state">Dang tai du lieu san pham...</div>
         )}
 
         {!loadingProducts && !categoryId && (
-          <div className="empty-state">Vui lòng lưu danh mục trước để chỉnh sửa sản phẩm.</div>
+          <div className="empty-state">Vui long luu danh muc truoc de chinh sua san pham.</div>
         )}
 
         {!loadingProducts && loaded && productData.length === 0 && (
-          <div className="empty-state">Chưa có sản phẩm nào trong danh mục này.</div>
+          <div className="empty-state">Chua co san pham nao trong danh muc nay.</div>
         )}
 
         <div className="product-list">
@@ -239,9 +518,9 @@ export default function Tab5Comparison({ products, categoryId }: Tab5Props) {
                       <span className="product-score-badge">{product.overallScore.toFixed(1)}</span>
                     )}
                     <span className={`product-features-count ${product.features.length === 0 ? 'empty' : ''}`}>
-                      {product.features.length} điểm nổi bật
+                      {product.features.length} diem noi bat
                     </span>
-                    <span className="expand-icon">{isExpanded ? '▲' : '▼'}</span>
+                    <span className="expand-icon">{isExpanded ? '\u25B2' : '\u25BC'}</span>
                   </div>
                 </div>
 
@@ -249,9 +528,8 @@ export default function Tab5Comparison({ products, categoryId }: Tab5Props) {
                 {isExpanded && (
                   <div className="product-editor">
                     <div className="editor-grid">
-                      {/* Row 1: Score + Label */}
                       <div className="form-group">
-                        <label>Điểm tổng (0-10)</label>
+                        <label>Diem tong (0-10)</label>
                         <input
                           type="number"
                           min="0"
@@ -262,7 +540,7 @@ export default function Tab5Comparison({ products, categoryId }: Tab5Props) {
                         />
                       </div>
                       <div className="form-group">
-                        <label>Nhãn điểm</label>
+                        <label>Nhan diem</label>
                         <input
                           type="text"
                           value={product.scoreLabel}
@@ -271,7 +549,6 @@ export default function Tab5Comparison({ products, categoryId }: Tab5Props) {
                         />
                       </div>
 
-                      {/* Row 2: Bottom Line + Ribbon */}
                       <div className="form-group">
                         <label>Bottom Line (tagline)</label>
                         <input
@@ -282,7 +559,7 @@ export default function Tab5Comparison({ products, categoryId }: Tab5Props) {
                         />
                       </div>
                       <div className="form-group">
-                        <label>Ribbon (nhãn đặc biệt)</label>
+                        <label>Ribbon (nhan dac biet)</label>
                         <input
                           type="text"
                           value={product.ribbon}
@@ -291,7 +568,6 @@ export default function Tab5Comparison({ products, categoryId }: Tab5Props) {
                         />
                       </div>
 
-                      {/* Row 3: CTA URL + Text */}
                       <div className="form-group">
                         <label>CTA URL (affiliate link)</label>
                         <input
@@ -312,12 +588,9 @@ export default function Tab5Comparison({ products, categoryId }: Tab5Props) {
                       </div>
                     </div>
 
-                    {/* Features / Bullet Points */}
+                    {/* Features */}
                     <div className="features-section">
-                      <label className="features-label">
-                        Điểm nổi bật (Bullet Points)
-                        <span className="tooltip" title="Các dòng text hiển thị trên Nissim Card với icon checkmark">?</span>
-                      </label>
+                      <label className="features-label">Diem noi bat (Bullet Points)</label>
                       <div className="features-list">
                         {product.features.map((feature, idx) => (
                           <div key={idx} className="feature-item">
@@ -332,9 +605,9 @@ export default function Tab5Comparison({ products, categoryId }: Tab5Props) {
                               type="button"
                               className="btn-remove-feature"
                               onClick={() => removeFeature(product.id, idx)}
-                              title="Xóa"
+                              title="Xoa"
                             >
-                              ×
+                              &times;
                             </button>
                           </div>
                         ))}
@@ -343,7 +616,7 @@ export default function Tab5Comparison({ products, categoryId }: Tab5Props) {
                           className="btn-add-feature"
                           onClick={() => addFeature(product.id)}
                         >
-                          + Thêm điểm nổi bật
+                          + Them diem noi bat
                         </button>
                       </div>
                     </div>
@@ -359,7 +632,7 @@ export default function Tab5Comparison({ products, categoryId }: Tab5Props) {
                         onClick={() => saveProduct(product)}
                         disabled={savingProductId === product.id}
                       >
-                        {savingProductId === product.id ? 'Đang lưu...' : `Lưu ${product.name}`}
+                        {savingProductId === product.id ? 'Dang luu...' : `Luu ${product.name}`}
                       </button>
                     </div>
                   </div>
@@ -398,6 +671,76 @@ export default function Tab5Comparison({ products, categoryId }: Tab5Props) {
           font-size: 14px;
           color: #6b7280;
           margin: 0 0 20px 0;
+        }
+
+        .section-header-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          margin-bottom: 16px;
+        }
+
+        .section-header-row .section-desc {
+          margin-bottom: 0;
+        }
+
+        .subsection {
+          padding: 16px;
+          background: #f9fafb;
+          border-radius: 8px;
+          border: 1px solid #e5e7eb;
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+        }
+
+        /* Toggle Switch */
+        .toggle-switch {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          cursor: pointer;
+          flex-shrink: 0;
+        }
+
+        .toggle-switch input {
+          display: none;
+        }
+
+        .toggle-slider {
+          width: 44px;
+          height: 24px;
+          background: #d1d5db;
+          border-radius: 12px;
+          position: relative;
+          transition: background 0.3s;
+        }
+
+        .toggle-slider::after {
+          content: '';
+          position: absolute;
+          top: 3px;
+          left: 3px;
+          width: 18px;
+          height: 18px;
+          background: white;
+          border-radius: 50%;
+          transition: transform 0.3s;
+          box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .toggle-switch input:checked + .toggle-slider {
+          background: #10b981;
+        }
+
+        .toggle-switch input:checked + .toggle-slider::after {
+          transform: translateX(20px);
+        }
+
+        .toggle-label {
+          font-size: 13px;
+          font-weight: 500;
+          color: #6b7280;
         }
 
         .form-grid {
@@ -461,6 +804,150 @@ export default function Tab5Comparison({ products, categoryId }: Tab5Props) {
         .hint {
           font-size: 12px;
           color: #9ca3af;
+        }
+
+        /* Top 3 Selector */
+        .top3-selector {
+          margin-top: 8px;
+        }
+
+        .selected-products {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          margin-bottom: 12px;
+        }
+
+        .selected-product-item {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 10px 14px;
+          background: white;
+          border: 1px solid #d1d5db;
+          border-radius: 6px;
+        }
+
+        .selected-product-rank {
+          font-weight: 700;
+          color: #FE4A64;
+          font-size: 14px;
+          min-width: 28px;
+        }
+
+        .selected-product-name {
+          flex: 1;
+          font-weight: 500;
+          color: #1a1a1a;
+        }
+
+        .selected-product-actions {
+          display: flex;
+          gap: 4px;
+        }
+
+        .btn-move {
+          width: 28px;
+          height: 28px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: #f3f4f6;
+          border: 1px solid #d1d5db;
+          border-radius: 4px;
+          cursor: pointer;
+          font-size: 14px;
+          color: #374151;
+        }
+
+        .btn-move:hover {
+          background: #e5e7eb;
+        }
+
+        .available-products {
+          margin-top: 8px;
+        }
+
+        .product-chips {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+          margin-top: 8px;
+        }
+
+        .product-chip {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          padding: 6px 12px;
+          background: white;
+          border: 1px solid #d1d5db;
+          border-radius: 20px;
+          cursor: pointer;
+          font-size: 13px;
+          color: #374151;
+          transition: all 0.2s;
+        }
+
+        .product-chip:hover {
+          border-color: #FE4A64;
+          color: #FE4A64;
+        }
+
+        .chip-score {
+          background: #10b981;
+          color: white;
+          padding: 1px 6px;
+          border-radius: 10px;
+          font-size: 11px;
+          font-weight: 700;
+        }
+
+        /* Score Breakdown */
+        .score-breakdown-section {
+          margin-top: 8px;
+        }
+
+        .score-breakdown-list {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+
+        .score-breakdown-item {
+          padding: 12px;
+          background: white;
+          border: 1px solid #e5e7eb;
+          border-radius: 6px;
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+
+        .score-breakdown-row {
+          display: flex;
+          gap: 12px;
+          align-items: flex-end;
+        }
+
+        .btn-remove-score {
+          width: 36px;
+          height: 36px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: #fee2e2;
+          border: none;
+          border-radius: 6px;
+          color: #dc2626;
+          font-size: 18px;
+          cursor: pointer;
+          flex-shrink: 0;
+          margin-bottom: 6px;
+        }
+
+        .btn-remove-score:hover {
+          background: #fecaca;
         }
 
         /* Product List */
@@ -567,7 +1054,7 @@ export default function Tab5Comparison({ products, categoryId }: Tab5Props) {
           color: #6b7280;
         }
 
-        /* Product Editor (expanded) */
+        /* Product Editor */
         .product-editor {
           padding: 20px;
           border-top: 1px solid #e5e7eb;
@@ -713,6 +1200,11 @@ export default function Tab5Comparison({ products, categoryId }: Tab5Props) {
             grid-template-columns: 1fr;
           }
 
+          .section-header-row {
+            flex-direction: column;
+            gap: 12px;
+          }
+
           .product-header {
             flex-direction: column;
             align-items: flex-start;
@@ -722,6 +1214,16 @@ export default function Tab5Comparison({ products, categoryId }: Tab5Props) {
           .product-header-right {
             width: 100%;
             justify-content: flex-end;
+          }
+
+          .score-breakdown-row {
+            flex-direction: column;
+            align-items: stretch;
+          }
+
+          .btn-remove-score {
+            align-self: flex-end;
+            margin-bottom: 0;
           }
         }
       `}</style>

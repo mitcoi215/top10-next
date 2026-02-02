@@ -65,6 +65,25 @@ export default function EditCategoryPage() {
           faqs: categoryData.faqs || [],
           bottomContent: categoryData.bottomContent || '',
           additionalContent: categoryData.additionalContent || '',
+
+          // Comparison Page
+          comparisonTitle: categoryData.comparisonTitle || '',
+          comparisonSubtitle: categoryData.comparisonSubtitle || '',
+          comparisonHeroImage: categoryData.comparisonHeroImage || '',
+          comparisonTop3Enabled: categoryData.comparisonTop3Enabled || false,
+          comparisonTop3Title: categoryData.comparisonTop3Title || '',
+          comparisonTop3ProductIds: categoryData.comparisonTop3ProductIds || [],
+          comparisonTop3Ribbon: categoryData.comparisonTop3Ribbon || '',
+          comparisonRightSidebarEnabled: categoryData.comparisonRightSidebarEnabled || false,
+          comparisonRightSidebarProductId: categoryData.comparisonRightSidebarProductId || '',
+          comparisonLeftSidebarEnabled: categoryData.comparisonLeftSidebarEnabled !== false,
+          comparisonSocialProofCount: categoryData.comparisonSocialProofCount || '',
+          comparisonScoreBreakdown: categoryData.comparisonScoreBreakdown || [
+            { name: 'Popularity', description: 'Based on visits in the past 7 days', score: 9.0 },
+            { name: 'Brand Reputation', description: 'Based on web trends', score: 9.0 },
+            { name: 'Features & Benefits', description: 'Based on our editorial reviews', score: 9.0 },
+          ],
+          comparisonBelowFaqContent: categoryData.comparisonBelowFaqContent || '',
         });
 
         // Products API returns array directly

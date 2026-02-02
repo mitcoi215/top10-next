@@ -57,6 +57,30 @@ export interface CategoryFormData {
   comparisonTitle: string;
   comparisonSubtitle: string;
   comparisonHeroImage: string;
+
+  // Top 3 Bar
+  comparisonTop3Enabled: boolean;
+  comparisonTop3Title: string;
+  comparisonTop3ProductIds: string[];
+  comparisonTop3Ribbon: string;
+
+  // Right Sidebar (Best Overall)
+  comparisonRightSidebarEnabled: boolean;
+  comparisonRightSidebarProductId: string;
+
+  // Left Sidebar
+  comparisonLeftSidebarEnabled: boolean;
+  comparisonSocialProofCount: string;
+  comparisonScoreBreakdown: ScoreBreakdownItem[];
+
+  // Below FAQ Content (Rich Text)
+  comparisonBelowFaqContent: string;
+}
+
+export interface ScoreBreakdownItem {
+  name: string;
+  description: string;
+  score: number;
 }
 
 export interface CriteriaDefinition {
@@ -186,4 +210,26 @@ export const defaultCategoryFormData: CategoryFormData = {
   comparisonTitle: '',
   comparisonSubtitle: '',
   comparisonHeroImage: '',
+
+  // Top 3 Bar
+  comparisonTop3Enabled: false,
+  comparisonTop3Title: '',
+  comparisonTop3ProductIds: [],
+  comparisonTop3Ribbon: '',
+
+  // Right Sidebar
+  comparisonRightSidebarEnabled: false,
+  comparisonRightSidebarProductId: '',
+
+  // Left Sidebar
+  comparisonLeftSidebarEnabled: true,
+  comparisonSocialProofCount: '',
+  comparisonScoreBreakdown: [
+    { name: 'Popularity', description: 'Based on visits in the past 7 days', score: 9.0 },
+    { name: 'Brand Reputation', description: 'Based on web trends', score: 9.0 },
+    { name: 'Features & Benefits', description: 'Based on our editorial reviews', score: 9.0 },
+  ],
+
+  // Below FAQ
+  comparisonBelowFaqContent: '',
 };

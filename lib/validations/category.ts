@@ -36,6 +36,12 @@ export const FaqItemSchema = z.object({
   answer: z.string().min(1, 'Answer is required'),
 });
 
+export const ScoreBreakdownItemSchema = z.object({
+  name: z.string().min(1, 'Name is required'),
+  description: z.string().optional().default(''),
+  score: z.number().min(0).max(10),
+});
+
 // ============================================
 // Category Create Schema
 // ============================================
@@ -86,10 +92,28 @@ export const CategoryCreateSchema = z.object({
   // FAQs
   faqs: z.array(FaqItemSchema).optional().default([]),
 
-  // Comparison Page
+  // Comparison Page - Hero
   comparisonTitle: z.string().optional().nullable(),
   comparisonSubtitle: z.string().optional().nullable(),
   comparisonHeroImage: z.string().optional().nullable(),
+
+  // Comparison Page - Top 3 Bar
+  comparisonTop3Enabled: z.boolean().optional().default(false),
+  comparisonTop3Title: z.string().optional().nullable(),
+  comparisonTop3ProductIds: z.array(z.string()).optional().default([]),
+  comparisonTop3Ribbon: z.string().optional().nullable(),
+
+  // Comparison Page - Right Sidebar
+  comparisonRightSidebarEnabled: z.boolean().optional().default(false),
+  comparisonRightSidebarProductId: z.string().optional().nullable(),
+
+  // Comparison Page - Left Sidebar
+  comparisonLeftSidebarEnabled: z.boolean().optional().default(true),
+  comparisonSocialProofCount: z.string().optional().nullable(),
+  comparisonScoreBreakdown: z.array(ScoreBreakdownItemSchema).optional().default([]),
+
+  // Comparison Page - Below FAQ Content
+  comparisonBelowFaqContent: z.string().optional().nullable(),
 
   // SEO
   metaTitle: z.string().optional().nullable(),
@@ -115,3 +139,4 @@ export type ThingToKnow = z.infer<typeof ThingToKnowSchema>;
 export type MethodologyCriterion = z.infer<typeof MethodologyCriterionSchema>;
 export type ExploreCard = z.infer<typeof ExploreCardSchema>;
 export type FaqItem = z.infer<typeof FaqItemSchema>;
+export type ScoreBreakdownItem = z.infer<typeof ScoreBreakdownItemSchema>;

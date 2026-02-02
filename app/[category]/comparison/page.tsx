@@ -64,6 +64,7 @@ export default async function ComparePage({ params }: PageProps) {
 
   const products = category.products;
   const faqs = (category.faqs as any[]) || [];
+  const cat = category as any;
 
   // Fetch articles for the sidebar "Must Reads"
   const articles = await prisma.article.findMany({
@@ -95,26 +96,70 @@ export default async function ComparePage({ params }: PageProps) {
     return [];
   }
 
-  const cat = category as any;
+  // Hero settings
   const displayName = cat.comparisonTitle || category.heroTitle || `Best ${category.name} Comparison`;
   const heroSubtitle = cat.comparisonSubtitle || category.metaDescription || `Compare the top ${category.name.toLowerCase()} side by side to find the best fit for your needs.`;
   const heroImage = cat.comparisonHeroImage || cat.heroImage || null;
 
-  // Best overall = first product (highest ranked)
-  const bestProduct = products[0] || null;
+  // ============ Top 3 Products Bar ============
+  const top3Enabled = cat.comparisonTop3Enabled === true;
+  const top3ProductIds: string[] = cat.comparisonTop3ProductIds || [];
+  const top3Ribbon: string = cat.comparisonTop3Ribbon || 'Our Recommendation';
+  const top3Title: string = cat.comparisonTop3Title || `Top 3 ${category.name} Services`;
 
-  // Top 3 products data for the bar above chart
-  const top3ForBar = products.slice(0, 3).map((p: any) => ({
-    name: p.name,
-    slug: p.slug,
-    logoUrl: p.logoUrl || undefined,
-    ctaUrl: p.ctaUrl || undefined,
-    ctaText: p.ctaText || 'Visit Site',
-    overallScore: p.overallScore || undefined,
-    scoreLabel: p.scoreLabel || undefined,
-    bottomLine: p.bottomLine || p.tagline || undefined,
-    ribbon: p.ribbon || undefined,
-  }));
+  let top3ForBar: any[] = [];
+  if (top3Enabled) {
+    if (top3ProductIds.length > 0) {
+      // Use configured product IDs in order
+      top3ForBar = top3ProductIds
+        .map((id: string) => products.find((p: any) => p.id === id))
+        .filter(Boolean)
+        .map((p: any, idx: number) => ({
+          name: p.name,
+          slug: p.slug,
+          logoUrl: p.logoUrl || undefined,
+          ctaUrl: p.ctaUrl || undefined,
+          ctaText: p.ctaText || 'Visit Site',
+          overallScore: p.overallScore || undefined,
+          scoreLabel: p.scoreLabel || undefined,
+          bottomLine: p.bottomLine || p.tagline || undefined,
+          ribbon: idx === 0 ? top3Ribbon : undefined,
+        }));
+    } else {
+      // Fallback: top 3 by rank
+      top3ForBar = products.slice(0, 3).map((p: any, idx: number) => ({
+        name: p.name,
+        slug: p.slug,
+        logoUrl: p.logoUrl || undefined,
+        ctaUrl: p.ctaUrl || undefined,
+        ctaText: p.ctaText || 'Visit Site',
+        overallScore: p.overallScore || undefined,
+        scoreLabel: p.scoreLabel || undefined,
+        bottomLine: p.bottomLine || p.tagline || undefined,
+        ribbon: idx === 0 ? top3Ribbon : undefined,
+      }));
+    }
+  }
+
+  // ============ Right Sidebar (Best Overall) ============
+  const rightSidebarEnabled = cat.comparisonRightSidebarEnabled === true;
+  let bestProduct: any = null;
+  if (rightSidebarEnabled) {
+    const rightProductId = cat.comparisonRightSidebarProductId;
+    if (rightProductId) {
+      bestProduct = products.find((p: any) => p.id === rightProductId) || products[0] || null;
+    } else {
+      bestProduct = products[0] || null;
+    }
+  }
+
+  // ============ Left Sidebar ============
+  const leftSidebarEnabled = cat.comparisonLeftSidebarEnabled !== false;
+  const socialProofCount = cat.comparisonSocialProofCount || undefined;
+  const scoreBreakdown = (cat.comparisonScoreBreakdown as any[]) || undefined;
+
+  // ============ Below FAQ Content ============
+  const belowFaqContent = cat.comparisonBelowFaqContent || null;
 
   // Top 3 picks for CloserLook / mini-reviews section
   const top3Products = products.slice(0, 3);
@@ -193,16 +238,16 @@ export default async function ComparePage({ params }: PageProps) {
         </div>
       </div>
 
-      {/* Top 3 Products Bar (above chart) */}
-      {top3ForBar.length > 0 && (
+      {/* Top 3 Products Bar (above chart) - only if enabled and configured */}
+      {top3Enabled && top3ForBar.length > 0 && (
         <Top3ProductsBar
-          title={`Top 3 ${category.name} Services`}
+          title={top3Title}
           products={top3ForBar}
           categorySlug={categorySlug}
         />
       )}
 
-      {/* Main Content: 3-column layout (left sidebar | center chart | right sidebar) */}
+      {/* Main Content */}
       <main data-role="chart" className="compare-main">
         <div className="compare-main__row">
           <div className="compare-main__center">
@@ -233,40 +278,46 @@ export default async function ComparePage({ params }: PageProps) {
 
           </div>
 
-          {/* Best Overall Sidebar (desktop only, right side) */}
+          {/* Sidebar */}
           <aside className="compare-sidebar">
             {/* Left Sidebar (social proof, score disclaimer, must reads, reviews) */}
-          <ComparisonSidebar
-            categoryName={category.name}
-            categorySlug={categorySlug}
-            articles={articles}
-            reviewProducts={reviewProducts}
-          />
-            {/* {bestProduct && (
+            {leftSidebarEnabled && (
+              <ComparisonSidebar
+                categoryName={category.name}
+                categorySlug={categorySlug}
+                socialProofCount={socialProofCount}
+                articles={articles}
+                reviewProducts={reviewProducts}
+                scoreBreakdown={scoreBreakdown}
+              />
+            )}
+
+            {/* Right Sidebar - Best Overall Product */}
+            {rightSidebarEnabled && bestProduct && (
               <div className="compare-best-overall">
                 <div className="compare-best-overall__title">
                   Our Best {category.name} Provider
                 </div>
                 <div className="nissim-card--highlighted">
                   <div className="nissim-card--highlighted__banner">
-                    {(bestProduct as any).bestFor || 'Best Overall'}
+                    {bestProduct.bestFor || 'Best Overall'}
                   </div>
                   <NissimProductCard
-                    position={(bestProduct as any).rank || 1}
-                    name={(bestProduct as any).name}
-                    slug={(bestProduct as any).slug}
+                    position={bestProduct.rank || 1}
+                    name={bestProduct.name}
+                    slug={bestProduct.slug}
                     categorySlug={categorySlug}
-                    logoUrl={(bestProduct as any).logoUrl || undefined}
-                    bottomLine={(bestProduct as any).bottomLine || (bestProduct as any).tagline || undefined}
-                    features={getProductFeatures(bestProduct as any)}
-                    ctaUrl={(bestProduct as any).ctaUrl || undefined}
-                    ctaText={(bestProduct as any).ctaText || 'Visit Site'}
-                    overallScore={(bestProduct as any).overallScore || undefined}
-                    scoreLabel={(bestProduct as any).scoreLabel || undefined}
+                    logoUrl={bestProduct.logoUrl || undefined}
+                    bottomLine={bestProduct.bottomLine || bestProduct.tagline || undefined}
+                    features={getProductFeatures(bestProduct)}
+                    ctaUrl={bestProduct.ctaUrl || undefined}
+                    ctaText={bestProduct.ctaText || 'Visit Site'}
+                    overallScore={bestProduct.overallScore || undefined}
+                    scoreLabel={bestProduct.scoreLabel || undefined}
                   />
                 </div>
               </div>
-            )} */}
+            )}
           </aside>
         </div>
 
@@ -276,6 +327,13 @@ export default async function ComparePage({ params }: PageProps) {
           {faqs.length > 0 && (
             <div className="compare-content-sections">
               <FAQSection items={faqs.map((f: any) => ({ question: f.question || f.q || '', answer: f.answer || f.a || '' }))} />
+            </div>
+          )}
+
+          {/* Below FAQ Rich Text Content */}
+          {belowFaqContent && (
+            <div className="compare-content-sections">
+              <div className="compare-below-faq-content" dangerouslySetInnerHTML={{ __html: belowFaqContent }} />
             </div>
           )}
 

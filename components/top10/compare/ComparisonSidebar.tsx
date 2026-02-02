@@ -14,12 +14,19 @@ interface ReviewProduct {
   logoUrl?: string | null;
 }
 
+interface ScoreBreakdownItem {
+  name: string;
+  description: string;
+  score: number;
+}
+
 interface ComparisonSidebarProps {
   categoryName: string;
   categorySlug: string;
-  socialProofCount?: number;
+  socialProofCount?: number | string;
   articles?: Article[];
   reviewProducts?: ReviewProduct[];
+  scoreBreakdown?: ScoreBreakdownItem[];
 }
 
 function ChevronIcon({ open }: { open: boolean }) {
@@ -64,7 +71,7 @@ function FeaturesIcon() {
   );
 }
 
-function DisclaimerRow({ icon, title, text }: { icon: React.ReactNode; title: string; text: string }) {
+function DisclaimerRow({ icon, title, text, score }: { icon: React.ReactNode; title: string; text: string; score?: number }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -72,6 +79,7 @@ function DisclaimerRow({ icon, title, text }: { icon: React.ReactNode; title: st
       <div className="sidebar-disclaimer__row-header" onClick={() => setOpen(!open)}>
         {icon}
         <div className="sidebar-disclaimer__row-title">{title}</div>
+        {score != null && <div className="sidebar-disclaimer__row-score">{score.toFixed(1)}</div>}
         <ChevronIcon open={open} />
       </div>
       {open && (
@@ -81,14 +89,23 @@ function DisclaimerRow({ icon, title, text }: { icon: React.ReactNode; title: st
   );
 }
 
+const DEFAULT_SCORE_ICONS: Record<string, React.ReactNode> = {
+  'Popularity': <PopularityIcon />,
+  'Brand Reputation': <ReputationIcon />,
+  'Features & Benefits': <FeaturesIcon />,
+};
+
 export default function ComparisonSidebar({
   categoryName,
   categorySlug,
   socialProofCount,
   articles = [],
   reviewProducts = [],
+  scoreBreakdown,
 }: ComparisonSidebarProps) {
-  const displayCount = socialProofCount || Math.floor(Math.random() * 15000 + 8000);
+  const displayCount = typeof socialProofCount === 'string' && socialProofCount
+    ? socialProofCount
+    : (typeof socialProofCount === 'number' ? socialProofCount.toLocaleString() : Math.floor(Math.random() * 15000 + 8000).toLocaleString());
 
   return (
     <aside className="compare-left-sidebar">
@@ -104,7 +121,7 @@ export default function ComparisonSidebar({
         />
         <div className="sidebar-social-proof__text">
           <div className="sidebar-social-proof__title" data-testid="title">
-            {displayCount.toLocaleString()} people
+            {displayCount} people
           </div>
           <div className="sidebar-social-proof__desc" data-testid="description">
             compared {categoryName.toLowerCase()} services via Top10.com this month
@@ -121,21 +138,35 @@ export default function ComparisonSidebar({
           </div>
         </div>
         <div className="sidebar-disclaimer__rows">
-          <DisclaimerRow
-            icon={<PopularityIcon />}
-            title="Popularity"
-            text="Top10.com measures user engagement based on the number of clicks each listed brand received in the past 7 days. The number of clicks to each brand will be measured against other brands listed in the same query."
-          />
-          <DisclaimerRow
-            icon={<ReputationIcon />}
-            title="Brand Reputation"
-            text="The brand reputation is based on analysis of clickstream data, which includes user behavior, search patterns, and engagement, to accurately measure each brand's prominence, credibility, and trustworthiness."
-          />
-          <DisclaimerRow
-            icon={<FeaturesIcon />}
-            title="Features & Benefits"
-            text="Our editorial team researches and reviews products based on factors such as: range of products and services offered, ease-of-use, online accessibility, customer service, special awards, and more."
-          />
+          {scoreBreakdown && scoreBreakdown.length > 0 ? (
+            scoreBreakdown.map((item, idx) => (
+              <DisclaimerRow
+                key={idx}
+                icon={DEFAULT_SCORE_ICONS[item.name] || <FeaturesIcon />}
+                title={item.name}
+                text={item.description}
+                score={item.score}
+              />
+            ))
+          ) : (
+            <>
+              <DisclaimerRow
+                icon={<PopularityIcon />}
+                title="Popularity"
+                text="Top10.com measures user engagement based on the number of clicks each listed brand received in the past 7 days. The number of clicks to each brand will be measured against other brands listed in the same query."
+              />
+              <DisclaimerRow
+                icon={<ReputationIcon />}
+                title="Brand Reputation"
+                text="The brand reputation is based on analysis of clickstream data, which includes user behavior, search patterns, and engagement, to accurately measure each brand's prominence, credibility, and trustworthiness."
+              />
+              <DisclaimerRow
+                icon={<FeaturesIcon />}
+                title="Features & Benefits"
+                text="Our editorial team researches and reviews products based on factors such as: range of products and services offered, ease-of-use, online accessibility, customer service, special awards, and more."
+              />
+            </>
+          )}
         </div>
       </div>
 

@@ -113,6 +113,24 @@ model Category {
   comparisonSubtitle    String?   // Hero subtitle/description
   comparisonHeroImage   String?   // Hero background image
 
+  // Comparison Page - Top 3 Products Bar
+  comparisonTop3Enabled     Boolean   @default(false)
+  comparisonTop3Title       String?   // "Top 3 Home Security Services"
+  comparisonTop3ProductIds  String[]  @db.ObjectId // ordered product IDs (up to 3)
+  comparisonTop3Ribbon      String?   // Ribbon text for #1, e.g. "Our Recommendation"
+
+  // Comparison Page - Right Sidebar (Best Overall)
+  comparisonRightSidebarEnabled   Boolean @default(false)
+  comparisonRightSidebarProductId String? @db.ObjectId // null = auto (rank #1)
+
+  // Comparison Page - Left Sidebar
+  comparisonLeftSidebarEnabled  Boolean @default(true)
+  comparisonSocialProofCount    String?   // "13,810"
+  comparisonScoreBreakdown      Json?     // [{ name, description, score }]
+
+  // Comparison Page - Below FAQ Content (Rich Text)
+  comparisonBelowFaqContent     String?
+
   // Category Listing Page - Closer Look Section
   closerLookTitle     String?   // "A Closer Look at the Top 10 TV Streaming Services"
 

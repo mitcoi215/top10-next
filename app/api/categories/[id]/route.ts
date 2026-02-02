@@ -40,6 +40,14 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
             logoUrl: true,
             status: true,
             overallScore: true,
+            scoreLabel: true,
+            bottomLine: true,
+            ribbon: true,
+            ctaUrl: true,
+            ctaText: true,
+            features: true,
+            tagline: true,
+            bestFor: true,
           },
           orderBy: { rank: 'asc' },
         },
@@ -72,6 +80,14 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
               logoUrl: true,
               status: true,
               overallScore: true,
+              scoreLabel: true,
+              bottomLine: true,
+              ribbon: true,
+              ctaUrl: true,
+              ctaText: true,
+              features: true,
+              tagline: true,
+              bestFor: true,
             },
             orderBy: { rank: 'asc' },
           },
@@ -212,10 +228,28 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
         // FAQs
         ...(validatedData.faqs !== undefined && { faqs: validatedData.faqs }),
 
-        // Comparison Page
+        // Comparison Page - Hero
         ...(validatedData.comparisonTitle !== undefined && { comparisonTitle: validatedData.comparisonTitle }),
         ...(validatedData.comparisonSubtitle !== undefined && { comparisonSubtitle: validatedData.comparisonSubtitle }),
         ...(validatedData.comparisonHeroImage !== undefined && { comparisonHeroImage: validatedData.comparisonHeroImage }),
+
+        // Comparison Page - Top 3 Bar
+        ...(validatedData.comparisonTop3Enabled !== undefined && { comparisonTop3Enabled: validatedData.comparisonTop3Enabled }),
+        ...(validatedData.comparisonTop3Title !== undefined && { comparisonTop3Title: validatedData.comparisonTop3Title }),
+        ...(validatedData.comparisonTop3ProductIds !== undefined && { comparisonTop3ProductIds: validatedData.comparisonTop3ProductIds }),
+        ...(validatedData.comparisonTop3Ribbon !== undefined && { comparisonTop3Ribbon: validatedData.comparisonTop3Ribbon }),
+
+        // Comparison Page - Right Sidebar
+        ...(validatedData.comparisonRightSidebarEnabled !== undefined && { comparisonRightSidebarEnabled: validatedData.comparisonRightSidebarEnabled }),
+        ...(validatedData.comparisonRightSidebarProductId !== undefined && { comparisonRightSidebarProductId: validatedData.comparisonRightSidebarProductId || null }),
+
+        // Comparison Page - Left Sidebar
+        ...(validatedData.comparisonLeftSidebarEnabled !== undefined && { comparisonLeftSidebarEnabled: validatedData.comparisonLeftSidebarEnabled }),
+        ...(validatedData.comparisonSocialProofCount !== undefined && { comparisonSocialProofCount: validatedData.comparisonSocialProofCount }),
+        ...(validatedData.comparisonScoreBreakdown !== undefined && { comparisonScoreBreakdown: validatedData.comparisonScoreBreakdown }),
+
+        // Comparison Page - Below FAQ Content
+        ...(validatedData.comparisonBelowFaqContent !== undefined && { comparisonBelowFaqContent: validatedData.comparisonBelowFaqContent }),
 
         // SEO
         ...(validatedData.metaTitle !== undefined && { metaTitle: validatedData.metaTitle }),
