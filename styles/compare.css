@@ -776,7 +776,8 @@
   margin: 0 auto;
   padding: 16px 16px;
   background-color: #EEEEEE;
-  margin-bottom: 31px;
+  position: relative;
+  top: -40px;
 }
 
 .top3-bar__title-row {
