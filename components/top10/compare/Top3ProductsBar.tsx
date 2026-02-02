@@ -12,6 +12,7 @@ interface Top3Product {
 
 interface Top3ProductsBarProps {
   title: string;
+  ribbon?: string;
   products: Top3Product[];
   categorySlug: string;
 }
@@ -57,8 +58,14 @@ function getScoreLabel(score: number): string {
   return 'Poor';
 }
 
-export default function Top3ProductsBar({ title, products, categorySlug }: Top3ProductsBarProps) {
+export default function Top3ProductsBar({ title, ribbon = 'Our Recommendation', products, categorySlug }: Top3ProductsBarProps) {
   if (products.length === 0) return null;
+
+  // Reorder for podium layout: #2 (left), #1 (center), #3 (right)
+  const podiumOrder = products.length >= 3
+    ? [products[1], products[0], products[2]]
+    : [...products];
+  const podiumOriginalIdx = products.length >= 3 ? [1, 0, 2] : products.map((_, i) => i);
 
   return (
     <div className="top3-bar" data-testid="top3-products" data-component="top3-products">
@@ -67,8 +74,9 @@ export default function Top3ProductsBar({ title, products, categorySlug }: Top3P
       </div>
       <div className="top3-bar__cards">
         <div className="top3-bar__cards-inner">
-          {products.map((product, idx) => {
-            const isFirst = idx === 0;
+          {podiumOrder.map((product, idx) => {
+            const originalIdx = podiumOriginalIdx[idx];
+            const isFirst = originalIdx === 0;
             const displayScore = product.overallScore ?? 0;
             const displayLabel = product.scoreLabel || (displayScore > 0 ? getScoreLabel(displayScore) : '');
             const starScore = displayScore / 2;
@@ -86,7 +94,7 @@ export default function Top3ProductsBar({ title, products, categorySlug }: Top3P
                 {/* Ribbon for first product */}
                 {isFirst && (
                   <div className="top3-card__ribbon" data-testid="product-ribbon">
-                    <div className="top3-card__ribbon-text">Our Recommendation</div>
+                    <div className="top3-card__ribbon-text">{ribbon}</div>
                   </div>
                 )}
 

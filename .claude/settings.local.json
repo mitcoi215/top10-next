@@ -15,7 +15,10 @@
       "Bash(npx tsx:*)",
       "Bash(npx ts-node prisma/seed-hosting.ts)",
       "Bash(timeout:*)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(npm ls:*)",
+      "Bash(node scripts/scrape-comparison.js:*)",
+      "Bash(ls -la \"d:\\\\TOP10v3\\\\top10-next\\\\scripts\\\\scraper\"\" 2>&1 || echo \"Directory not found \")"
     ],
     "additionalDirectories": [
       "\\tmp"

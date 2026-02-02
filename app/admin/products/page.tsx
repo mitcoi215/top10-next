@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, Fragment } from 'react';
 import Link from 'next/link';
 
 interface Product {
@@ -450,18 +450,17 @@ export default function ProductsListPage() {
                 return false;
               })
               .map((page, idx, arr) => (
-                <>
+                <Fragment key={page}>
                   {idx > 0 && arr[idx - 1] !== page - 1 && (
-                    <span key={`ellipsis-${page}`} className="ellipsis">...</span>
+                    <span className="ellipsis">...</span>
                   )}
                   <button
-                    key={page}
                     className={`page-btn ${currentPage === page ? 'active' : ''}`}
                     onClick={() => setCurrentPage(page)}
                   >
                     {page}
                   </button>
-                </>
+                </Fragment>
               ))}
           </div>
 

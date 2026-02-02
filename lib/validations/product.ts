@@ -63,6 +63,9 @@ export const ProductCreateSchema = z.object({
   // Features
   features: z.array(FeatureItemSchema).optional().default([]),
 
+  // Comparison-specific features (separate from review features)
+  comparisonFeatures: z.array(z.string()).optional().nullable(),
+
   // Quote
   quote: QuoteSchema.optional().nullable(),
 

@@ -42,6 +42,8 @@ export interface ScrapedCategory {
   metaTitle?: string;
   metaDescription?: string;
   ogImage?: string;
+  // Redirect: listing page auto-redirects to comparison
+  redirectToComparison?: boolean;
   // Author found on the page
   author?: ScrapedAuthor;
 }
@@ -171,6 +173,60 @@ export interface ArticleListItem {
 }
 
 // ============================================
+// COMPARISON PAGE DATA
+// ============================================
+export interface ScrapedComparisonProduct {
+  position: number;
+  name: string;
+  slug: string;
+  productId?: string;           // data-product-id from card
+  logoUrl?: string;
+  overallScore?: number;
+  scoreLabel?: string;
+  bottomLine?: string;
+  ribbon?: string;
+  features: string[];
+  ctaUrl?: string;              // tracking URL from CTA
+  ctaText?: string;
+  secondaryCtaUrl?: string;
+  secondaryCtaText?: string;
+  reviewCount?: string;
+}
+
+export interface ScrapedMiniReview {
+  position: number;
+  name: string;
+  slug: string;
+  productId?: string;
+  logoUrl?: string;
+  overallScore?: number;
+  scoreLabel?: string;
+  highlight?: string;           // short highlight text
+  bottomLine?: string;
+  description?: string;         // long description paragraph
+  reviewLink?: string;          // "Read X Review" href
+  pros?: string[];
+  cons?: string[];
+  ctaUrl?: string;
+  ctaText?: string;
+}
+
+export interface ScrapedComparison {
+  heroTitle?: string;
+  heroSubtitle?: string;
+  lastUpdated?: string;
+  products: ScrapedComparisonProduct[];
+  // Below-chart content
+  wysiwygContent?: string;      // HTML from data-role="chart-wysiwyg-container"
+  miniReviews?: ScrapedMiniReview[];  // "Our Top 3 Picks" section
+  // Sidebar data
+  socialProofCount?: string;
+  scoreBreakdown?: { name: string; score: number; description?: string }[];
+  // FAQs from comparison page
+  faqs?: { question: string; answer: string }[];
+}
+
+// ============================================
 // Scrape result container
 // ============================================
 export interface ScrapeResult {
@@ -178,4 +234,5 @@ export interface ScrapeResult {
   products: ScrapedProduct[];
   authors: ScrapedAuthor[];
   articles?: ScrapedArticle[];
+  comparison?: ScrapedComparison;
 }

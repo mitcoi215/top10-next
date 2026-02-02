@@ -99,7 +99,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (article) {
     const description = article.excerpt || article.title;
     return {
-      title: `${article.title} | Top10.com`,
+      title: `${article.title} | 10rating`,
       description: description.slice(0, 160),
       openGraph: {
         title: article.title,
@@ -121,7 +121,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   return {
-    title: 'Not Found - Top10.com',
+    title: 'Not Found - 10rating',
     description: 'The requested page could not be found.',
   };
 }

@@ -193,7 +193,7 @@ export default function Tab4FaqSeo() {
           <h3>Xem trước kết quả tìm kiếm</h3>
           <div className="preview-card">
             <div className="preview-url">
-              top10.com › {watch('reviewHref') || 'product-review'}
+              10rating › {watch('reviewHref') || 'product-review'}
             </div>
             <div className="preview-title">
               {watch('metaTitle') || 'Tiêu đề sản phẩm | Top10'}

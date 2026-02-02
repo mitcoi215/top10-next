@@ -336,8 +336,8 @@ export default function TvServicesPage() {
 
         {/* 9. Methodology Section */}
         <MethodologySection
-          compareTitle="Compare With Top10.com, Choose the Best for You"
-          compareDescription="At Top10.com, we recognize the importance of thorough and accurate product and service reviews in guiding your choices. Our team, comprising editors and industry experts, conducts extensive research to provide comprehensive insights. Our content is continually updated to reflect the latest market trends, offering current information. We provide a range of services including comparison lists and in-depth reviews, all tailored to meet your specific needs. Our goal is to empower you to make confident and informed choices."
+          compareTitle="Compare With 10rating, Choose the Best for You"
+          compareDescription="At 10rating, we recognize the importance of thorough and accurate product and service reviews in guiding your choices. Our team, comprising editors and industry experts, conducts extensive research to provide comprehensive insights. Our content is continually updated to reflect the latest market trends, offering current information. We provide a range of services including comparison lists and in-depth reviews, all tailored to meet your specific needs. Our goal is to empower you to make confident and informed choices."
           stats="15 TV Streaming Services Evaluated | 8 Evaluation Criteria | 10 Best TV Streaming Services"
           methodologyTitle="Our Methodology: How We Reviewed the Best TV Streaming Services"
           methodologyIntro="In our search for the best TV streaming services of 2026, we developed a comprehensive review strategy. We evaluated a variety of key aspects, including the enjoyment and quality of the service, as well as its overall value. Our meticulous method guarantees our selections meet diverse tastes and requirements, providing you with a complete understanding of each streaming service's distinct features."
@@ -380,17 +380,17 @@ export default function TvServicesPage() {
           exploreCards={[
             {
               title: 'TV Services With Free Trials',
-              href: 'https://www.top10.com/tv-services/free-trials-streaming-services',
+              href: 'https://www.10rating/tv-services/free-trials-streaming-services',
               image: '/top10-images/TheseStreamingServicesStillOfferFreeTrials-1704703695879.20240125095401.jpg',
             },
             {
               title: 'Sports Streaming Services',
-              href: 'https://www.top10.com/tv-services/best-sports-streaming-services',
+              href: 'https://www.10rating/tv-services/best-sports-streaming-services',
               image: '/top10-images/big-httpswww.instagram.comall_na.tural14.20230124091945.jpg',
             },
             {
               title: 'Movie Streaming Services',
-              href: 'https://www.top10.com/tv-services/best-movie-streaming-services',
+              href: 'https://www.10rating/tv-services/best-movie-streaming-services',
               image: '/top10-images/shutterstock_2302235761-1685699003742.20240117125549.jpg',
             },
           ]}

@@ -69,7 +69,7 @@ export default function ExpertsSection({ experts }: ExpertsSectionProps) {
         overflow: 'visible',
         fontSize: '18px'
       }}>
-        At Top10.com, our team is a dynamic blend of industry experts, passionate writers, and technical specialists. United by a common goal to empower consumers, we handpick our experts based on their extensive experience with the services we review. Each member brings a unique perspective and expertise, ensuring that the insights we offer are well-rounded and thoroughly researched.
+        At 10rating, our team is a dynamic blend of industry experts, passionate writers, and technical specialists. United by a common goal to empower consumers, we handpick our experts based on their extensive experience with the services we review. Each member brings a unique perspective and expertise, ensuring that the insights we offer are well-rounded and thoroughly researched.
       </div>
 
       <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '20px' }}>

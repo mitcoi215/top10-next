@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: PageProps) {
   }
 
   return {
-    title: `In-Depth ${category.name} Reviews | Top10.com`,
+    title: `In-Depth ${category.name} Reviews | 10rating`,
     description: `Our ${category.name.toLowerCase()} reviews, researched and written by industry experts, give you all the information you need to make an informed decision.`,
   };
 }

@@ -1,6 +1,6 @@
 // scripts/scraper/index.ts
 // =====================================================================
-// MAIN ORCHESTRATOR - Cào data Top10.com theo Công Thức Vàng 8 Lớp
+// MAIN ORCHESTRATOR - Cào data 10rating theo Công Thức Vàng 8 Lớp
 // =====================================================================
 //
 // Usage:
@@ -18,6 +18,7 @@
 import { chromium, Browser, Page } from 'playwright';
 import { scrapeListingPage } from './scrape-listing';
 import { scrapeReviewPage } from './scrape-review';
+import { scrapeComparisonPage } from './scrape-comparison';
 import { scrapeArticleListPage } from './scrape-article-list';
 import { scrapeArticlePage } from './scrape-article';
 import type { ScrapedProduct, ScrapedAuthor, ScrapedArticle, ScrapeResult } from './types';
@@ -25,7 +26,7 @@ import { log, sleep, retry } from './utils';
 import * as fs from 'fs';
 import * as path from 'path';
 
-const BASE_URL = 'https://www.top10.com';
+const BASE_URL = 'https://www.10rating';
 
 async function main() {
   const categorySlug = process.argv[2];
@@ -33,7 +34,7 @@ async function main() {
   if (!categorySlug) {
     console.log('');
     console.log('╔══════════════════════════════════════════════════════════════╗');
-    console.log('║  Top10.com Scraper - Công Thức Vàng 8 Lớp                   ║');
+    console.log('║  10rating Scraper - Công Thức Vàng 8 Lớp                   ║');
     console.log('╠══════════════════════════════════════════════════════════════╣');
     console.log('║  Usage:                                                      ║');
     console.log('║    npx tsx scripts/scraper/index.ts <category-slug>          ║');
@@ -46,6 +47,7 @@ async function main() {
     console.log('║                                                              ║');
     console.log('║  Options:                                                    ║');
     console.log('║    --no-reviews    Skip review pages (listing only)          ║');
+    console.log('║    --comparison    Also scrape comparison page               ║');
     console.log('║    --articles      Also scrape articles from top-reads       ║');
     console.log('║    --articles-limit=N  Limit articles to scrape (default 10) ║');
     console.log('║    --limit=N       Limit number of products to scrape        ║');
@@ -57,6 +59,7 @@ async function main() {
 
   // Parse options
   const skipReviews = process.argv.includes('--no-reviews');
+  const scrapeComparison = process.argv.includes('--comparison');
   const scrapeArticles = process.argv.includes('--articles');
   const limitArg = process.argv.find(a => a.startsWith('--limit='));
   const limit = limitArg ? parseInt(limitArg.split('=')[1]) : Infinity;
@@ -67,7 +70,7 @@ async function main() {
   log(`════════════════════════════════════════════════════════════`);
   log(`Starting scraper for category: ${categorySlug}`);
   log(`Options: skipReviews=${skipReviews}, limit=${limit === Infinity ? 'all' : limit}, headless=${headless}`);
-  log(`         articles=${scrapeArticles}, articlesLimit=${articlesLimit}`);
+  log(`         comparison=${scrapeComparison}, articles=${scrapeArticles}, articlesLimit=${articlesLimit}`);
   log(`════════════════════════════════════════════════════════════`);
 
   let browser: Browser | null = null;
@@ -93,12 +96,41 @@ async function main() {
     log('');
     log('═══ STEP 1: Cào trang Category Listing ═══');
     const listingUrl = `${BASE_URL}/${categorySlug}`;
-    const { category, products: listingProducts } = await retry(
-      () => scrapeListingPage(page, listingUrl),
-    );
 
-    log(`→ Category: ${category.name} (${category.slug})`);
-    log(`→ Products found: ${listingProducts.length}`);
+    // Detect redirect: some categories redirect listing → comparison
+    let redirectedToComparison = false;
+    log(`[Listing] Navigating to: ${listingUrl}`);
+    await page.goto(listingUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
+    await page.waitForTimeout(2000);
+
+    const currentUrl = page.url();
+    if (currentUrl.includes('/comparison')) {
+      redirectedToComparison = true;
+      log(`⚠ REDIRECT DETECTED: ${listingUrl} → ${currentUrl}`);
+      log(`  → Auto-enabling comparison scrape, marking comparisonRedirectEnabled`);
+    }
+
+    let category: Partial<import('./types').ScrapedCategory>;
+    let listingProducts: Partial<ScrapedProduct>[];
+
+    if (redirectedToComparison) {
+      // Can't scrape listing page - create minimal category from comparison page
+      category = {
+        slug: categorySlug,
+        name: categorySlug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
+        redirectToComparison: true,
+      };
+      listingProducts = [];
+      log(`→ Category: ${category.name} (listing redirected, will use comparison data)`);
+      log(`→ Products from listing: 0 (redirected)`);
+    } else {
+      // Normal listing scrape (page already loaded)
+      const result = await scrapeListingPage(page, listingUrl, true);
+      category = result.category;
+      listingProducts = result.products;
+      log(`→ Category: ${category.name} (${category.slug})`);
+      log(`→ Products found: ${listingProducts.length}`);
+    }
 
     // =========================================================
     // STEP 2: Cào trang Review cho TỪNG product
@@ -246,6 +278,26 @@ async function main() {
     }
 
     // =========================================================
+    // STEP 3b: Cào trang Comparison (nếu có --comparison flag)
+    // =========================================================
+    let comparisonData: any = undefined;
+
+    if (scrapeComparison || redirectedToComparison) {
+      log('');
+      log('═══ STEP 3b: Cào trang Comparison ═══');
+
+      const comparisonUrl = `${BASE_URL}/${categorySlug}/comparison`;
+      try {
+        comparisonData = await retry(
+          () => scrapeComparisonPage(page, comparisonUrl),
+        );
+        log(`→ Comparison products: ${comparisonData.products.length}`);
+      } catch (err) {
+        log(`✗ Failed to scrape comparison page: ${(err as Error).message}`);
+      }
+    }
+
+    // =========================================================
     // STEP 4: Output result
     // =========================================================
     log('');
@@ -256,6 +308,7 @@ async function main() {
       products: allProducts as any,
       authors: Array.from(allAuthors.values()),
       articles: scrapeArticles ? allArticles as any : undefined,
+      comparison: comparisonData || undefined,
     };
 
     // Save to JSON file
@@ -273,6 +326,7 @@ async function main() {
     log('═══ SUMMARY ═══');
     log(`Category: ${category.name} (${category.slug})`);
     log(`Products: ${allProducts.length}`);
+    log(`Comparison: ${comparisonData ? comparisonData.products.length + ' products' : 'skipped'}`);
     log(`Articles: ${allArticles.length}`);
     log(`Authors:  ${allAuthors.size}`);
     log('');

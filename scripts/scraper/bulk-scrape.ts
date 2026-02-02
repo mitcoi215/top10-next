@@ -12,7 +12,7 @@ const ARTICLES_LIMIT = 10;
  * TỰ ĐỘNG LẤY DANH SÁCH CATEGORY BẰNG PLAYWRIGHT
  */
 async function discoverCategories(): Promise<string[]> {
-  console.log('🔍 [Playwright] Đang quét danh sách Category từ Top10.com...');
+  console.log('🔍 [Playwright] Đang quét danh sách Category từ 10rating...');
   
   const browser = await chromium.launch({ headless: true });
   const context = await browser.newContext({
@@ -23,7 +23,7 @@ async function discoverCategories(): Promise<string[]> {
 
   try {
     // Điều hướng đến trang chủ
-    await page.goto('https://www.top10.com/', { waitUntil: 'networkidle' });
+    await page.goto('https://www.10rating/', { waitUntil: 'networkidle' });
 
     // Lấy tất cả các href từ thẻ <a>
     const hrefs = await page.evaluate(() => {
@@ -56,7 +56,19 @@ async function discoverCategories(): Promise<string[]> {
 
   } catch (error) {
     console.error('❌ Lỗi Playwright khi quét danh sách, dùng danh sách dự phòng.');
-    return ['hosting', 'vpn', 'dating', 'meal-delivery', 'home-security', 'website-builders'];
+    return [
+      // Lifestyle
+      'dating', 'meal-delivery', 'tv-services', 'mobile-plans', 'language-learning',
+      // Health & Wellness
+      'online-therapy', 'medical-alerts', 'hearing-aid', 'dna-testing',
+      // Home
+      'moving-companies', 'home-warranty', 'home-security', 'internet-providers',
+      // Business
+      'crm', 'website-builders', 'hosting', 'legal-services', 'project-management',
+      'voip', 'pos', 'payroll', 'merchant-services', 'accounting-software',
+      // Security
+      'background-check', 'id-theft', 'cyber-security', 'vpn',
+    ];
   } finally {
     await browser.close();
   }
@@ -89,7 +101,7 @@ async function runBulkScrape() {
 
     try {
       // 1. GỌI SCRIPT INDEX.TS (CÀO DỮ LIỆU)
-      let scrapeCmd = `npx tsx scripts/scraper/index.ts ${category} --articles-limit=${ARTICLES_LIMIT}`;
+      let scrapeCmd = `npx tsx scripts/scraper/index.ts ${category} --comparison --articles-limit=${ARTICLES_LIMIT}`;
       if (scrapeArticles) scrapeCmd += ' --articles';
       if (noReviews) scrapeCmd += ' --no-reviews';
       

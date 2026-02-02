@@ -54,15 +54,18 @@ export interface CategoryFormData {
   faqs: FaqItem[];
 
   // ========== TAB 5: COMPARISON PAGE ==========
+  comparisonRedirectEnabled: boolean;
   comparisonTitle: string;
   comparisonSubtitle: string;
   comparisonHeroImage: string;
+  comparisonProductOrder: string[];
 
   // Top 3 Bar
   comparisonTop3Enabled: boolean;
   comparisonTop3Title: string;
   comparisonTop3ProductIds: string[];
   comparisonTop3Ribbon: string;
+  comparisonTop3ProductData: Top3ProductData[];
 
   // Right Sidebar (Best Overall)
   comparisonRightSidebarEnabled: boolean;
@@ -75,6 +78,17 @@ export interface CategoryFormData {
 
   // Below FAQ Content (Rich Text)
   comparisonBelowFaqContent: string;
+}
+
+export interface Top3ProductData {
+  id: string;
+  overallScore: number | null;
+  scoreLabel: string;
+  bottomLine: string;
+  ribbon: string;
+  ctaUrl: string;
+  ctaText: string;
+  features: string[];
 }
 
 export interface ScoreBreakdownItem {
@@ -210,12 +224,14 @@ export const defaultCategoryFormData: CategoryFormData = {
   comparisonTitle: '',
   comparisonSubtitle: '',
   comparisonHeroImage: '',
+  comparisonProductOrder: [],
 
   // Top 3 Bar
   comparisonTop3Enabled: false,
   comparisonTop3Title: '',
   comparisonTop3ProductIds: [],
   comparisonTop3Ribbon: '',
+  comparisonTop3ProductData: [],
 
   // Right Sidebar
   comparisonRightSidebarEnabled: false,

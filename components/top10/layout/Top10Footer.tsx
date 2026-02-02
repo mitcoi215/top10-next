@@ -22,12 +22,13 @@ export default function Top10Footer() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 className="ni-15m83jm"
-                src="/top10-images/logo.20230326195623.20230518090244.20230706064308.svg"
+                src="/logo.png"
                 alt="Top10"
                 loading="lazy"
                 width="320"
                 height="50"
               />
+              <div>Rating</div>
             </a>
           </div>
 
@@ -57,7 +58,7 @@ export default function Top10Footer() {
             <div className="ni-zsrdnm">
               <div className="ni-yj9kw3">
                 <p>
-                  Top10.com is designed to help users make confident decisions online,
+                  10rating is designed to help users make confident decisions online,
                   this website contains information about a wide range of products and services.
                   Certain details, including but not limited to prices and special offers,
                   are provided to us directly from our partners and are dynamic and subject to change

@@ -189,7 +189,7 @@ async function main() {
         title: 'HostGator Alternatives: Top 5 Website Hosting Services in 2026',
         excerpt: 'HostGator is an incredible web hosting provider, but it might not be a good fit for everyone. Here are the best alternatives.',
         content: sampleArticleContent,
-        featuredImage: 'https://images.top10.com/f_auto,q_auto/v1/production/articles/uploads/photo/shutterstock_22060799331.jpg',
+        featuredImage: 'https://images.10rating/f_auto,q_auto/v1/production/articles/uploads/photo/shutterstock_22060799331.jpg',
         status: 'published',
         categoryId: hostingCategory.id,
         publishedAt: new Date(),

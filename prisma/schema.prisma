@@ -104,20 +104,23 @@ model Category {
   bestOfListTitle     String?   // "Our Top 10 Best TV Streaming Services:"
 
   // Category Listing Page - Compare Box (in Methodology section)
-  compareBoxTitle       String?   // "Compare With Top10.com, Choose the Best for You"
+  compareBoxTitle       String?   // "Compare With 10rating, Choose the Best for You"
   compareBoxDescription String?   // Description paragraph
   compareBoxStats       String?   // "15 TV Streaming Services Evaluated | 8 Criteria | 10 Best"
 
   // Comparison Page (/[category]/comparison)
+  comparisonRedirectEnabled Boolean @default(false) // Auto-redirect listing page to comparison page
   comparisonTitle       String?   // Hero title for comparison page
   comparisonSubtitle    String?   // Hero subtitle/description
   comparisonHeroImage   String?   // Hero background image
+  comparisonProductOrder String[] // Custom product ordering for comparison page (array of product IDs)
 
   // Comparison Page - Top 3 Products Bar
   comparisonTop3Enabled     Boolean   @default(false)
   comparisonTop3Title       String?   // "Top 3 Home Security Services"
   comparisonTop3ProductIds  String[]  // ordered product IDs (up to 3)
   comparisonTop3Ribbon      String?   // Ribbon text for #1, e.g. "Our Recommendation"
+  comparisonTop3ProductData Json?     // Per-product overrides for Top3 bar: [{id, overallScore, scoreLabel, bottomLine, ribbon, ctaUrl, ctaText, features}]
 
   // Comparison Page - Right Sidebar (Best Overall)
   comparisonRightSidebarEnabled   Boolean @default(false)
@@ -128,7 +131,7 @@ model Category {
   comparisonSocialProofCount    String?   // "13,810"
   comparisonScoreBreakdown      Json?     // [{ name, description, score }]
 
-  // Comparison Page - Below FAQ Content (Rich Text)
+  // Comparison Page - Below FAQ Content (Rich Text / Wysiwyg from data-role="chart-wysiwyg-container")
   comparisonBelowFaqContent     String?
 
   // Category Listing Page - Closer Look Section
@@ -223,8 +226,11 @@ model Product {
   // Highlights (flexible key-value based on category definitions)
   highlights      Json?     // { "startingPrice": "$19.99", "trialPeriod": "30 days" }
 
-  // Features list for comparison
+  // Features list for listing/review page
   features        Json?     // [{ text: "Live TV channels", bold: true }, ...]
+
+  // Features list for comparison page (separate from review features)
+  comparisonFeatures Json?  // ["AI site creation tools included", "Powers 2M+ websites", ...]
 
   // Customer quote
   quote           Json?     // { text: "Great service!", source: "John D.", date: "2024" }

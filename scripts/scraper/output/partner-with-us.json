@@ -1,12 +1,15 @@
 {
   "category": {
     "slug": "partner-with-us",
-    "metaTitle": "Partner with us | Top10.com",
+    "metaTitle": "Partner with us | 10rating",
     "metaDescription": "how to become a partner",
     "heroTitle": "Become a partner",
     "name": "Partner-with-us"
   },
   "products": [],
   "authors": [],
-  "articles": []
+  "articles": [],
+  "comparison": {
+    "products": []
+  }
 }

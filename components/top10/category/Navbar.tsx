@@ -15,12 +15,15 @@ export default function Navbar({ categorySlug = 'tv-services' }: NavbarProps) {
                 <div data-testid="hybrid-logo" className="css-167poo7">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src="/top10-images/top10-logo.svg"
+                    src="/logo.png"
                     className="light-logo css-7mr6p5"
                     data-testid="hybrid-logo-light"
                     alt="Site Logo"
                     loading="lazy"
                   />
+                  <div className='rating'>
+                    Rating
+                  </div>
                 </div>
               </Link>
             </div>

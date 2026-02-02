@@ -48,7 +48,7 @@ export async function generateMetadata({ params }: PageProps) {
   }
 
   return {
-    title: product.reviewTitle || `${product.name} Review | Top10.com`,
+    title: product.reviewTitle || `${product.name} Review | 10rating`,
     description: product.reviewSubtitle || `Read our in-depth review of ${product.name}`,
   };
 }

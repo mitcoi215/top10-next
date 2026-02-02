@@ -336,12 +336,106 @@ async function main() {
     }
 
     // =========================================================
+    // STEP 5: Seed Comparison data (if any)
+    // =========================================================
+    if (data.comparison && data.comparison.products.length > 0) {
+      console.log('\n═══ STEP 5: Comparison ═══');
+      const comp = data.comparison;
+
+      // Match comparison products to DB products by slug to get IDs
+      const dbProducts = await prisma.product.findMany({
+        where: { categoryId: category.id },
+        select: { id: true, slug: true, name: true },
+      });
+
+      // Update each product with comparison-specific data (score, scoreLabel, bottomLine, ribbon, features, ctaUrl, ctaText)
+      for (const cp of comp.products) {
+        const dbProd = dbProducts.find(p => p.slug === cp.slug);
+        if (!dbProd) {
+          console.log(`  ⚠ No DB match for comparison product: ${cp.name} (${cp.slug})`);
+          continue;
+        }
+
+        await prisma.product.update({
+          where: { id: dbProd.id },
+          data: {
+            overallScore: cp.overallScore ?? undefined,
+            scoreLabel: cp.scoreLabel ?? undefined,
+            bottomLine: cp.bottomLine ?? undefined,
+            ribbon: cp.ribbon ?? undefined,
+            ctaUrl: cp.ctaUrl ?? undefined,
+            ctaText: cp.ctaText || 'Visit Site',
+            reviewCount: cp.reviewCount ?? undefined,
+            // Save comparison-specific features separately from review features
+            comparisonFeatures: cp.features && cp.features.length > 0 ? cp.features : undefined,
+          },
+        });
+        console.log(`  ✓ Updated product: ${dbProd.name} (score: ${cp.overallScore}, compFeatures: ${cp.features?.length || 0})`);
+      }
+
+      // Build Top 3 product data for category-level storage
+      const top3 = comp.products.slice(0, 3);
+      const top3ProductIds: string[] = [];
+      const top3ProductData: any[] = [];
+
+      for (const tp of top3) {
+        const dbProd = dbProducts.find(p => p.slug === tp.slug);
+        if (!dbProd) continue;
+        top3ProductIds.push(dbProd.id);
+        top3ProductData.push({
+          id: dbProd.id,
+          overallScore: tp.overallScore || null,
+          scoreLabel: tp.scoreLabel || '',
+          bottomLine: tp.bottomLine || '',
+          ribbon: tp.ribbon || '',
+          ctaUrl: tp.ctaUrl || '',
+          ctaText: tp.ctaText || 'Visit Site',
+          features: tp.features || [],
+        });
+      }
+
+      // Build comparison product order (the order products appear on comparison page)
+      const comparisonProductOrder: string[] = [];
+      for (const cp of comp.products) {
+        const dbProd = dbProducts.find(p => p.slug === cp.slug);
+        if (dbProd) comparisonProductOrder.push(dbProd.id);
+      }
+
+      // Update category with comparison fields
+      await prisma.category.update({
+        where: { id: category.id },
+        data: {
+          comparisonRedirectEnabled: data.category.redirectToComparison === true,
+          comparisonTitle: comp.heroTitle || undefined,
+          comparisonSubtitle: comp.heroSubtitle || undefined,
+          comparisonProductOrder: comparisonProductOrder,
+          comparisonTop3Enabled: top3ProductIds.length >= 3,
+          comparisonTop3Title: `Top 3 ${category.name} Services`,
+          comparisonTop3ProductIds: top3ProductIds,
+          comparisonTop3Ribbon: top3[0]?.ribbon || 'Our Recommendation',
+          comparisonTop3ProductData: top3ProductData,
+          comparisonLeftSidebarEnabled: true,
+          comparisonSocialProofCount: comp.socialProofCount || undefined,
+          comparisonScoreBreakdown: comp.scoreBreakdown || undefined,
+          comparisonBelowFaqContent: comp.wysiwygContent || undefined,
+          ...(comp.faqs && comp.faqs.length > 0 ? { faqs: comp.faqs } : {}),
+        },
+      });
+
+      console.log(`  ✓ Category comparison fields updated`);
+      console.log(`  ✓ Product order: ${comparisonProductOrder.length} products`);
+      console.log(`  ✓ Top 3: ${top3ProductIds.length} products`);
+      console.log(`  ✓ FAQs: ${comp.faqs?.length || 0}`);
+    }
+
+    // =========================================================
     // SUMMARY
     // =========================================================
     console.log('\n═══ SEED COMPLETE ═══');
     console.log(`Category: ${category.name}`);
     console.log(`Authors:  ${data.authors.length}`);
     console.log(`Products: ${data.products.length}`);
+    console.log(`Comparison: ${data.comparison ? data.comparison.products.length + ' products' : 'none'}`);
     console.log(`Articles: ${articlesSeeded}`);
     console.log('Done!');
   } catch (err) {

@@ -22,7 +22,7 @@ import { toCamelCase, slugify, cleanText, log } from './utils';
 
 /**
  * Cào toàn bộ data từ một trang review product
- * URL pattern: https://www.top10.com/{category}/reviews/{slug}
+ * URL pattern: https://www.10rating/{category}/reviews/{slug}
  */
 export async function scrapeReviewPage(
   page: Page,

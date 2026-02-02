@@ -2,7 +2,7 @@
  * CSS Extractor Script for Author Section (By Author Extended)
  *
  * HOW TO USE:
- * 1. Open https://www.top10.com/hosting in Chrome
+ * 1. Open https://www.10rating/hosting in Chrome
  * 2. Press F12 to open DevTools
  * 3. Go to Console tab
  * 4. Copy and paste this entire script
@@ -115,7 +115,7 @@
 
   // Build the output
   let output = `/* ============================================
-   Author Section CSS - Extracted from top10.com
+   Author Section CSS - Extracted from 10rating
    Generated: ${new Date().toISOString()}
    ============================================ */
 

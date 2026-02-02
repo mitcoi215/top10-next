@@ -1,5 +1,5 @@
 import '@/styles/category.css';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { Metadata } from 'next';
 import prisma from '@/lib/db';
 import SetoffBox from '@/components/top10/category/SetoffBox';
@@ -125,6 +125,11 @@ export default async function CategoryPage({ params }: PageProps) {
 
   if (!category) {
     notFound();
+  }
+
+  // Redirect to comparison page if enabled
+  if (category.comparisonRedirectEnabled) {
+    redirect(`/${categorySlug}/comparison`);
   }
 
   // Fetch all authors for the BottomContentRenderer (experts section)
@@ -272,7 +277,7 @@ export default async function CategoryPage({ params }: PageProps) {
         </div>
 
         <MethodologySection
-          compareTitle={category.compareBoxTitle || 'Compare With Top10.com, Choose the Best for You'}
+          compareTitle={category.compareBoxTitle || 'Compare With 10rating, Choose the Best for You'}
           compareDescription={category.compareBoxDescription || 'Our team of experts evaluates each service to help you make an informed decision.'}
           stats={category.compareBoxStats || `${category.products.length} Services Evaluated`}
           methodologyTitle={category.methodologyTitle || `Our Methodology: How We Reviewed the Best ${category.name}`}

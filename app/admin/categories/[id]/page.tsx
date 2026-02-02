@@ -70,6 +70,7 @@ export default function EditCategoryPage() {
           comparisonTitle: categoryData.comparisonTitle || '',
           comparisonSubtitle: categoryData.comparisonSubtitle || '',
           comparisonHeroImage: categoryData.comparisonHeroImage || '',
+          comparisonProductOrder: categoryData.comparisonProductOrder || [],
           comparisonTop3Enabled: categoryData.comparisonTop3Enabled || false,
           comparisonTop3Title: categoryData.comparisonTop3Title || '',
           comparisonTop3ProductIds: categoryData.comparisonTop3ProductIds || [],

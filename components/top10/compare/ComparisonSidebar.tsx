@@ -103,9 +103,10 @@ export default function ComparisonSidebar({
   reviewProducts = [],
   scoreBreakdown,
 }: ComparisonSidebarProps) {
+  // Use a deterministic fallback to avoid hydration mismatch from Math.random()
   const displayCount = typeof socialProofCount === 'string' && socialProofCount
     ? socialProofCount
-    : (typeof socialProofCount === 'number' ? socialProofCount.toLocaleString() : Math.floor(Math.random() * 15000 + 8000).toLocaleString());
+    : (typeof socialProofCount === 'number' ? socialProofCount.toLocaleString() : '13,810');
 
   return (
     <aside className="compare-left-sidebar">
@@ -115,7 +116,7 @@ export default function ComparisonSidebar({
         <img
           height={72}
           width={72}
-          src="https://images.top10.com/iu/q_auto/v1/production/foundation-entities/uploads/photo/ninja-siteproof.20210211102726.20221108084421.20221122142022.svg"
+          src="https://images.10rating/iu/q_auto/v1/production/foundation-entities/uploads/photo/ninja-siteproof.20210211102726.20221108084421.20221122142022.svg"
           alt="social-proof"
           className="sidebar-social-proof__image"
         />
@@ -124,7 +125,7 @@ export default function ComparisonSidebar({
             {displayCount} people
           </div>
           <div className="sidebar-social-proof__desc" data-testid="description">
-            compared {categoryName.toLowerCase()} services via Top10.com this month
+            compared {categoryName.toLowerCase()} services via 10rating this month
           </div>
         </div>
       </div>
@@ -132,7 +133,7 @@ export default function ComparisonSidebar({
       {/* Score Disclaimer */}
       <div className="sidebar-disclaimer" data-testid="score-disclaimer">
         <div className="sidebar-disclaimer__header">
-          <div className="sidebar-disclaimer__header-title" data-testid="title">Top10.com Total Score</div>
+          <div className="sidebar-disclaimer__header-title" data-testid="title">10rating Total Score</div>
           <div className="sidebar-disclaimer__header-subtitle" data-testid="subtitle">
             Our product scores consist of a combination of the following 3 components:
           </div>
@@ -153,7 +154,7 @@ export default function ComparisonSidebar({
               <DisclaimerRow
                 icon={<PopularityIcon />}
                 title="Popularity"
-                text="Top10.com measures user engagement based on the number of clicks each listed brand received in the past 7 days. The number of clicks to each brand will be measured against other brands listed in the same query."
+                text="10rating measures user engagement based on the number of clicks each listed brand received in the past 7 days. The number of clicks to each brand will be measured against other brands listed in the same query."
               />
               <DisclaimerRow
                 icon={<ReputationIcon />}

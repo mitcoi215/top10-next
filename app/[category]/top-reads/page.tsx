@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: PageProps) {
   }
 
   return {
-    title: `${category.name} Guides and Comparisons | Top10.com`,
+    title: `${category.name} Guides and Comparisons | 10rating`,
     description: `Discover which ${category.name.toLowerCase()} options can help you make an informed decision.`,
   };
 }

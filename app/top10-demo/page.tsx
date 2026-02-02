@@ -12,9 +12,9 @@ import {
 } from '@/components/top10/home';
 
 export const metadata = {
-  title: 'Top 10 Lists of the Best Products and Services | Top10.com',
+  title: 'Top 10 Lists of the Best Products and Services | 10rating',
   description:
-    'Top10.com is a comparison platform that brings you useful top 10 lists covering a wide variety of products and services that can help you save time and money',
+    '10rating is a comparison platform that brings you useful top 10 lists covering a wide variety of products and services that can help you save time and money',
 };
 
 export default function Top10DemoPage() {

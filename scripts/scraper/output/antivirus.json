@@ -1,12 +1,248 @@
 {
   "category": {
     "slug": "antivirus",
-    "metaTitle": "Top 10 Tech Lists | Top10.com",
+    "metaTitle": "Top 10 Tech Lists | 10rating",
     "metaDescription": "Make better decisions on everything from VPN services to headphones, with these trusted sources",
     "heroTitle": "Top 10 Tech Lists",
     "name": "Antivirus"
   },
   "products": [],
   "authors": [],
-  "articles": []
+  "articles": [],
+  "comparison": {
+    "products": [
+      {
+        "position": 1,
+        "name": "Norton",
+        "slug": "norton",
+        "productId": "12645",
+        "logoUrl": "https://images.10rating/iu/f_auto/q_auto/v1/production/products/uploads/photo/thumb-Logo260x100-Norton.20220801122606.png",
+        "overallScore": 9.8,
+        "scoreLabel": "Exceptional",
+        "bottomLine": "Powerful antivirus protection to keep all your devices secure",
+        "ribbon": "Our Most Popular",
+        "features": [
+          "60-day money-back guarantee",
+          "Real-time cyber protection",
+          "Built-in, AI-powered Scam Protection",
+          "Save up to 58% today"
+        ],
+        "ctaUrl": "/v?product_id=12645&url=https%3A%2F%2Fwww.jdoqocy.com%2Fclick-7121518-10506010%3Fsid%3D%5Btracking-subid%5D&rank=1&bi=%7B%22blrs%22%3A94107%2C%22utm_source%22%3A%22Direct%22%7D&comp_iid=eda3fe88-8999-4d22-81e6-7461cb17e5d8&uid=jUSC6QPC9uCO3x603d89&riid=JdKLpK6HiICcRM694rvk&tkn=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiY21zIiwidmVyc2lvbiI6MSwiaGFzaCI6Ii9VOGVJWDdrdWg2ZS9ZWm1MVHFIVUx5c0E3MD0iLCJpYXQiOjE3NzAwNDA1MDQsImV4cCI6MTc3MDEyNjkwNH0.j837BcUjfgRpJwKeF-lTsnxOF-gI8cicrjwt8BIOn3g",
+        "ctaText": "Visit Site"
+      },
+      {
+        "position": 2,
+        "name": "TotalAV",
+        "slug": "totalav",
+        "productId": "12647",
+        "logoUrl": "https://images.10rating/iu/f_auto/q_auto/v1/production/products/uploads/photo/TotalAV.20220323142937.png",
+        "overallScore": 9.3,
+        "scoreLabel": "Excellent",
+        "bottomLine": "Award-Winning Antivirus, for advanced, dynamic, around-the-clock protection",
+        "features": [
+          "Protects Windows, Mac, Android & iOS devices",
+          "Outstanding malware testing performance scores",
+          "Special discount: Get $80 off today"
+        ],
+        "ctaUrl": "/v?product_id=12647&url=http%3A%2F%2Furl.totalav.com%2F68371e9088a98%2Fclick%2FDT_%5Btracking-subid%5D&rank=2&bi=%7B%22blrs%22%3A94713%2C%22utm_source%22%3A%22Direct%22%7D&comp_iid=eda3fe88-8999-4d22-81e6-7461cb17e5d8&uid=jUSC6QPC9uCO3x603d89&riid=JdKLpK6HiICcRM694rvk&tkn=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiY21zIiwidmVyc2lvbiI6MSwiaGFzaCI6ImFGVW9CSUdjU0YzTURldzMzUUJicTFnaWtwTT0iLCJpYXQiOjE3NzAwNDA1MDQsImV4cCI6MTc3MDEyNjkwNH0.7NBd791AXcgDaXhHPmXWrKa0_0jCxo0SXjZZfc9VijI",
+        "ctaText": "Visit Site"
+      },
+      {
+        "position": 3,
+        "name": "McAfee",
+        "slug": "mcafee",
+        "productId": "12644",
+        "logoUrl": "https://images.10rating/iu/f_auto/q_auto/v1/production/products/uploads/photo/McAfee-Logo.20220323142737.png",
+        "overallScore": 9.3,
+        "scoreLabel": "Excellent",
+        "bottomLine": "Comprehensive internet security for the whole family",
+        "features": [
+          "Antivirus software for all operating systems",
+          "Secure VPN & ID Theft Protection included",
+          "30-day money-back guarantee"
+        ],
+        "ctaUrl": "/v?product_id=12644&url=https%3A%2F%2Fwww.kqzyfj.com%2Fclick-9109189-15230470%3Fsid%3D%5Btracking-subid%5D&rank=3&bi=%7B%22blrs%22%3A88713%2C%22utm_source%22%3A%22Direct%22%7D&comp_iid=eda3fe88-8999-4d22-81e6-7461cb17e5d8&uid=jUSC6QPC9uCO3x603d89&riid=JdKLpK6HiICcRM694rvk&tkn=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiY21zIiwidmVyc2lvbiI6MSwiaGFzaCI6InJ3T3lKaC9BWjhqUnBXSjUxeXBCdzNZUFlXZz0iLCJpYXQiOjE3NzAwNDA1MDQsImV4cCI6MTc3MDEyNjkwNH0.rAPmVDsxNvwk0-WUkJl86Mms9Ow7RIndM_5j9q8C-hw",
+        "ctaText": "Visit Site"
+      },
+      {
+        "position": 4,
+        "name": "Avast",
+        "slug": "avast",
+        "productId": "553",
+        "logoUrl": "https://images.10rating/iu/f_auto/q_auto/v1/production/products/uploads/photo/large-6avast_Logo.20211103072126.png",
+        "overallScore": 9.2,
+        "scoreLabel": "Excellent",
+        "bottomLine": "Award-winning antivirus software that provides you with layers of security",
+        "features": [
+          "Shop and bank safely on any device",
+          "Protect against remote access attacks",
+          "Available on PC, Mac, Android, & iPhone/iPad"
+        ],
+        "ctaUrl": "/v?product_id=553&url=http%3A%2F%2Fwww.jdoqocy.com%2Fclick-9109189-17169513%3Fsid%3DNEWROTW_%5Btracking-subid%5D&rank=4&bi=%7B%22blrs%22%3A95486%2C%22utm_source%22%3A%22Direct%22%7D&comp_iid=eda3fe88-8999-4d22-81e6-7461cb17e5d8&uid=jUSC6QPC9uCO3x603d89&riid=JdKLpK6HiICcRM694rvk&tkn=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiY21zIiwidmVyc2lvbiI6MSwiaGFzaCI6ImZqZkxlZ0EyUzJOekNiRk15RUtqOUVXeDhGcz0iLCJpYXQiOjE3NzAwNDA1MDQsImV4cCI6MTc3MDEyNjkwNH0.P7K30aCfru9C1AQljns135RLDhPg1kfyACgZmwNI3EA",
+        "ctaText": "Visit Site"
+      },
+      {
+        "position": 5,
+        "name": "Fortect",
+        "slug": "fortect",
+        "productId": "15822",
+        "logoUrl": "https://images.10rating/iu/q_auto/v1/production/partners/uploads/photo/Fortect-Logo.20251008131432.svg",
+        "overallScore": 8,
+        "scoreLabel": "Good",
+        "bottomLine": "Complete antivirus suite with PC repair, driver updates, and secure VPN",
+        "features": [
+          "Scans and fixes Windows errors and updates drivers & OS",
+          "Includes real-time antivirus protection",
+          "Cross-platform VPN for total digital freedom"
+        ],
+        "ctaUrl": "/v?product_id=15822&url=https%3A%2F%2Fwww.fortect.com%2Fgo%2Froute-ni.php%3Fchannel%3Dni%26gclid%3D%5Btracking-subid%5D%26lpx%3Davbl&rank=5&bi=%7B%22blrs%22%3A95371%2C%22utm_source%22%3A%22Direct%22%7D&comp_iid=eda3fe88-8999-4d22-81e6-7461cb17e5d8&uid=jUSC6QPC9uCO3x603d89&riid=JdKLpK6HiICcRM694rvk&tkn=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiY21zIiwidmVyc2lvbiI6MSwiaGFzaCI6Ii9ZalMwWVB0QkVJVE9EbnV1YVRuM0d3Zm5EST0iLCJpYXQiOjE3NzAwNDA1MDQsImV4cCI6MTc3MDEyNjkwNH0.esFYX6ZoGGJk6bdaTUf5wGI2vRu6XlkWywJ5Tu4EKas",
+        "ctaText": "Visit Site"
+      },
+      {
+        "position": 6,
+        "name": "Eset",
+        "slug": "eset",
+        "productId": "556",
+        "logoUrl": "https://images.10rating/iu/f_auto/q_auto/v1/production/products/uploads/photo/big-ESET-logo--Color-Lozenge%201.20210208062051.png",
+        "overallScore": 9,
+        "scoreLabel": "Excellent",
+        "bottomLine": "All-in-one protection of your digital life with worry-free payments",
+        "features": [
+          "Secure browser mode & privacy extension",
+          "For Windows, MacOS, Android & iOS devices",
+          "Fast scans without interruptions"
+        ],
+        "ctaUrl": "/v?product_id=556&url=https%3A%2F%2Fwww.dpbolvw.net%2Fclick-9109189-15906650%3Fsid%3D%5Btracking-subid%5D&rank=6&bi=%7B%22blrs%22%3A88010%2C%22utm_source%22%3A%22Direct%22%7D&comp_iid=eda3fe88-8999-4d22-81e6-7461cb17e5d8&uid=jUSC6QPC9uCO3x603d89&riid=JdKLpK6HiICcRM694rvk&tkn=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiY21zIiwidmVyc2lvbiI6MSwiaGFzaCI6IldpWmR0L3NZZm12U0VGVTFjQmNWY28xdERvOD0iLCJpYXQiOjE3NzAwNDA1MDQsImV4cCI6MTc3MDEyNjkwNH0.ttKebhQcUuGMthIKIzOBGXPoqH0dzbc96_MjnoamdmM",
+        "ctaText": "Visit Site"
+      },
+      {
+        "position": 7,
+        "name": "AVG",
+        "slug": "avg",
+        "productId": "566",
+        "logoUrl": "https://images.10rating/iu/f_auto/q_auto/v1/production/partners/uploads/photo/avg.20180529143706.png",
+        "overallScore": 8.7,
+        "scoreLabel": "Very good",
+        "bottomLine": "Safeguard your data with performance and security software",
+        "features": [
+          "Blocks fake and unsafe websites",
+          "VPN for private and secure browsing",
+          "30-day money-back guarantee"
+        ],
+        "ctaUrl": "/v?product_id=566&url=https%3A%2F%2Fwww.jdoqocy.com%2Fclick-7121518-15359634%3Fsid%3D%5Btracking-subid%5D&rank=7&bi=%7B%22blrs%22%3A76778%2C%22utm_source%22%3A%22Direct%22%7D&comp_iid=eda3fe88-8999-4d22-81e6-7461cb17e5d8&uid=jUSC6QPC9uCO3x603d89&riid=JdKLpK6HiICcRM694rvk&tkn=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiY21zIiwidmVyc2lvbiI6MSwiaGFzaCI6IlEyVXM5ak9NV0hLazBlcWtEeWF1ZXR6NUFVUT0iLCJpYXQiOjE3NzAwNDA1MDQsImV4cCI6MTc3MDEyNjkwNH0.skHI0p8QuBVVuKEbw2jmydgtqTbxzZZxVvnrT_gA6N8",
+        "ctaText": "Visit Site"
+      },
+      {
+        "position": 8,
+        "name": "Nord",
+        "slug": "nord",
+        "productId": "2965",
+        "logoUrl": "https://images.10rating/iu/f_auto/q_auto/v1/production/products/uploads/photo/Logo260X100-2022-NordNew.20221121105730.png",
+        "overallScore": 8.3,
+        "scoreLabel": "Good",
+        "bottomLine": "Block malware, trackers and ads with secure antivirus software",
+        "features": [
+          "Available on macOS and Windows",
+          "Lightweight and easy-to-use",
+          "Up to 70% OFF with a 2-year plan"
+        ],
+        "ctaUrl": "/v?product_id=2965&url=https%3A%2F%2Fgo.nordvpn.net%2Faff_c%3Foffer_id%3D732%26aff_id%3D508%26url_id%3D22397%26aff_sub%3D%5Btracking-subid%5D&rank=8&bi=%7B%22blrs%22%3A75595%2C%22utm_source%22%3A%22Direct%22%7D&comp_iid=eda3fe88-8999-4d22-81e6-7461cb17e5d8&uid=jUSC6QPC9uCO3x603d89&riid=JdKLpK6HiICcRM694rvk&tkn=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiY21zIiwidmVyc2lvbiI6MSwiaGFzaCI6IkdDb2R0cjFKVVE2MWszbzE3OW42VzA3WmNvST0iLCJpYXQiOjE3NzAwNDA1MDQsImV4cCI6MTc3MDEyNjkwNH0.2Mp3jCAjrIiliQ-PYGsLYK5EeHTJ3OXAAgtVKfHgejY",
+        "ctaText": "Visit Site"
+      },
+      {
+        "position": 9,
+        "name": "Bitdefender",
+        "slug": "bitdefender",
+        "productId": "12636",
+        "logoUrl": "https://images.10rating/iu/f_auto/q_auto/v1/production/products/uploads/photo/Bitdefender.20220323142338.png",
+        "overallScore": 8.9,
+        "scoreLabel": "Very good",
+        "bottomLine": "Detects and blocks cyberthreats in real-time",
+        "features": [
+          "Multi-layered protection",
+          "AI-powered antivirus",
+          "30-day money-back guarantee"
+        ],
+        "ctaUrl": "/v?product_id=12636&url=https%3A%2F%2Fbitdefender.f9tmep.net%2Fc%2F34020%2F926056%2F4466%3FsubId1%3DUS_%5Btracking-subid%5D&rank=9&bi=%7B%22blrs%22%3A74556%2C%22utm_source%22%3A%22Direct%22%7D&comp_iid=eda3fe88-8999-4d22-81e6-7461cb17e5d8&uid=jUSC6QPC9uCO3x603d89&riid=JdKLpK6HiICcRM694rvk&tkn=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiY21zIiwidmVyc2lvbiI6MSwiaGFzaCI6IkJTWFFlTXBBT3JqWEVHSkFxVWZJUm5Vd1k3Zz0iLCJpYXQiOjE3NzAwNDA1MDQsImV4cCI6MTc3MDEyNjkwNH0.ReOfJS_JNQjuD_KqZs6pQI5zw7jMVJpkopasKZ0Ne6U",
+        "ctaText": "Visit Site"
+      }
+    ],
+    "lastUpdated": "Last Updated: Feb 2026",
+    "heroTitle": "Top 10 Antivirus Software of 2026",
+    "wysiwygContent": "<div><span></span><span><h2 data-role=\"main-title\" class=\"ni-198bvhu eal0ukq2\">Who Needs Antivirus Software?</h2><p data-testid=\"wysiwyg-typography\" class=\"ni-mczmtn e1el6ncd2\">These days, everybody needs antivirus software.</p><p data-testid=\"wysiwyg-typography\" class=\"ni-mczmtn e1el6ncd2\">Computer viruses don’t just come from streaming or downloading movies. Many people think that they can avoid potential threats by making sure they don’t visit certain websites or download certain files.</p><p data-testid=\"wysiwyg-typography\" class=\"ni-mczmtn e1el6ncd2\">The truth is computer viruses can make their way onto your computer or any other device in a number of ways. You can pick up viruses and malware simply by checking your email, browsing the web or from putting a USB memory stick into your laptop.</p><p data-testid=\"wysiwyg-typography\" class=\"ni-mczmtn e1el6ncd2\">Virus protection is a requisite of having your own personal computer. Luckily for you, there are hundreds of choices of antivirus software – each with its pros and cons. <script data-testid=\"ui-event-script-tag\" data-ui-event-type=\"click\" data-ui-event-category=\"WYSIWYG\" data-ui-event-action=\"Click on an internal link\" data-ui-event-label=\"Redirect to /antivirus/internet-security\" data-ui-event-non-interaction=\"false\"></script><a data-testid=\"wysiwyg-internal-link\" href=\"/antivirus/internet-security\" target=\"_self\" data-role-id=\"content-link\" data-site-id=\"5a8007577dce0a00014ed216\" data-vertical-id=\"64b8f4a191af9fd705c75ab9\" data-segment-id=\"64be815b8b3c7dc3b3a05af9\" data-page-type-id=\"5c1231afdb2f4e91c6ab4a84\" data-link-media-type=\"url\" data-page-type-name=\"chart\" data-link-type=\"internal\" class=\"e13n9rjo0 ni-1fxr0i0 elzjmzq0\">Making a choice between internet security software</a> can be difficult, but that’s what we’re here for!</p><h2 data-testid=\"wysiwyg-typography\" class=\"ni-14l1ewd e1el6ncd4\">How Antivirus Works</h2></span><span><p data-testid=\"wysiwyg-typography\" class=\"ni-mczmtn e1el6ncd2\">Most antivirus software works on a signature database, monitoring the internet 24 hours a day, 7 days a week. Every time a new virus is reported – it’s indexed, catalogued and added to the software’s database. Once your antivirus software is up-to-date it is equipped to tackle the new virus should it ever reach your device.</p><h2 data-testid=\"wysiwyg-typography\" class=\"ni-14l1ewd e1el6ncd4\">How to Handle Viruses</h2><p data-testid=\"wysiwyg-typography\" class=\"ni-mczmtn e1el6ncd2\">You often have three options when faced with a threat on your computer: delete the threat, quarantine it or ignore it.</p><p data-testid=\"wysiwyg-typography\" class=\"ni-mczmtn e1el6ncd2\">Deleting is almost always the best option, but some viruses make themselves \"un-deletable\" and quarantining becomes your only option. Your quarantine folder will keep the virus isolated and prevent it from spreading or causing damage to other files. Antivirus software can be passive or active – passive requires you to make scheduled or manual virus scans, while active runs in the background; detecting and fighting threats in real-time.</p><h2 data-testid=\"wysiwyg-typography\" class=\"ni-14l1ewd e1el6ncd4\">Free vs Paid Antivirus Software</h2><p data-testid=\"wysiwyg-typography\" class=\"ni-mczmtn e1el6ncd2\">If you are deciding on a new antivirus software and may want to try a free version, keep in mind that there are <script data-testid=\"ui-event-script-tag\" data-ui-event-type=\"click\" data-ui-event-category=\"WYSIWYG\" data-ui-event-action=\"Click on an internal link\" data-ui-event-label=\"Redirect to /antivirus/pros-and-cons-of-paid-vs-free-antivirus-software\" data-ui-event-non-interaction=\"false\"></script><a data-testid=\"wysiwyg-internal-link\" href=\"/antivirus/pros-and-cons-of-paid-vs-free-antivirus-software\" target=\"_self\" data-role-id=\"content-link\" data-site-id=\"5a8007577dce0a00014ed216\" data-vertical-id=\"64b8f4a191af9fd705c75ab9\" data-segment-id=\"64be2c1791af9fd705c7f218\" data-segment-articles-id=\"64cb8571ea65a889bf21442a\" data-page-type-id=\"5a80075772403b000176df35\" data-link-media-type=\"url\" data-page-type-name=\"article\" data-page-type-seg-id=\"64be2c1875912c5793244ee1\" data-link-type=\"internal\" class=\"e13n9rjo0 ni-1fxr0i0 elzjmzq0\">pros and cons for both paid and free versions</a>. Using a free antivirus software can cost you more in the long run and most experts suggest that it’s better to use a paid version. Free versions can be great to try a new software or set of features, but will never provide the same level of protection - and your service most certainly won’t include internet security software.</p><p data-testid=\"wysiwyg-typography\" class=\"ni-mczmtn e1el6ncd2\">Paid versions of antivirus software will cover both online and offline activities, permanently delete sensitive digital files and provide extra encryption to protect your most private files from malware like Trojans, worms and ransomware.</p><p data-testid=\"wysiwyg-typography\" class=\"ni-mczmtn e1el6ncd2\">A paid antivirus software is especially helpful if you have a PC or device that has already been infected. Many paid versions offer virus removal and cleanup tools, in addition to the highest-quality prevention and detection rates.</p><h2 data-testid=\"wysiwyg-typography\" class=\"ni-14l1ewd e1el6ncd4\">Extra Features</h2><p data-testid=\"wysiwyg-typography\" class=\"ni-mczmtn e1el6ncd2\">There are a few key features that you should look out for when looking for antivirus software, and it will vary depending on your needs.</p><p data-testid=\"wysiwyg-typography\" class=\"ni-mczmtn e1el6ncd2\"><strong>Online Protection</strong> - If you’re online, then you probably want an internet security software with a built-in firewall.</p><p data-testid=\"wysiwyg-typography\" class=\"ni-mczmtn e1el6ncd2\"><strong>Email Protection</strong> - If you’re a heavy email user then you’ll want be on the lookout for anti-spam, spyware and phishing.</p><p data-testid=\"wysiwyg-typography\" class=\"ni-mczmtn e1el6ncd2\"><strong>Parental Controls</strong> - Parents need to look for software with easy-to-use parental controls and restrictions.</p><p data-testid=\"wysiwyg-typography\" class=\"ni-mczmtn e1el6ncd2\"><strong>Gaming Protection</strong> - Gamers can look forward to a \"gaming mode,\" which prompts the internet security software to use less resources.</p><p data-testid=\"wysiwyg-typography\" class=\"ni-mczmtn e1el6ncd2\"><strong>Compatibility</strong> - You will want to check the compatibility of your chosen software with your operating system, whether that be <script data-testid=\"ui-event-script-tag\" data-ui-event-type=\"click\" data-ui-event-category=\"WYSIWYG\" data-ui-event-action=\"Click on an internal link\" data-ui-event-label=\"Redirect to /antivirus/windows\" data-ui-event-non-interaction=\"false\"></script><a data-testid=\"wysiwyg-internal-link\" href=\"/antivirus/windows\" target=\"_self\" data-role-id=\"content-link\" data-site-id=\"5a8007577dce0a00014ed216\" data-vertical-id=\"64b8f4a191af9fd705c75ab9\" data-segment-id=\"64bf9b4c75912c579324a68b\" data-page-type-id=\"5c1231afdb2f4e91c6ab4a84\" data-link-media-type=\"url\" data-page-type-name=\"chart\" data-link-type=\"internal\" class=\"e13n9rjo0 ni-1fxr0i0 elzjmzq0\">Windows protection</a>, <script data-testid=\"ui-event-script-tag\" data-ui-event-type=\"click\" data-ui-event-category=\"WYSIWYG\" data-ui-event-action=\"Click on an internal link\" data-ui-event-label=\"Redirect to /antivirus/mac\" data-ui-event-non-interaction=\"false\"></script><a data-testid=\"wysiwyg-internal-link\" href=\"/antivirus/mac\" target=\"_self\" data-role-id=\"content-link\" data-site-id=\"5a8007577dce0a00014ed216\" data-vertical-id=\"64b8f4a191af9fd705c75ab9\" data-segment-id=\"64bf9a1975912c579324a36e\" data-page-type-id=\"5c1231afdb2f4e91c6ab4a84\" data-link-media-type=\"url\" data-page-type-name=\"chart\" data-link-type=\"internal\" class=\"e13n9rjo0 ni-1fxr0i0 elzjmzq0\">Mac OS antivirus</a> and everything in between.</p><h2 data-testid=\"wysiwyg-typography\" class=\"ni-14l1ewd e1el6ncd4\">How We Review &amp; Score</h2><p data-testid=\"wysiwyg-typography\" class=\"ni-mczmtn e1el6ncd2\">Choosing the best antivirus software should be much easier with our expert reviews. Our experts have analyzed some of the best choices on the market, and each review covers a wide range of topics, including:</p><ul data-testid=\"wysiwyg-list\" type=\"ul\" class=\"ni-pw5u2q ehxcx741\"><li class=\"ni-1tenhnd ehxcx742\">Pricing</li><li class=\"ni-1tenhnd ehxcx742\">Features</li><li class=\"ni-1tenhnd ehxcx742\">Ease of use</li><li class=\"ni-1tenhnd ehxcx742\">Overall value for money</li><li class=\"ni-1tenhnd ehxcx742\">Customer support</li><li class=\"ni-1tenhnd ehxcx742\">User experience</li><li class=\"ni-1tenhnd ehxcx742\">Independent testing</li></ul><p data-testid=\"wysiwyg-typography\" class=\"ni-mczmtn e1el6ncd2\">But it’s up to you to decide which is the most applicable for your needs. If you need more help, check out all of our <script data-testid=\"ui-event-script-tag\" data-ui-event-type=\"click\" data-ui-event-category=\"WYSIWYG\" data-ui-event-action=\"Click on an internal link\" data-ui-event-label=\"Redirect to /antivirus/reviews\" data-ui-event-non-interaction=\"false\"></script><a data-testid=\"wysiwyg-internal-link\" href=\"/antivirus/reviews\" target=\"_self\" data-role-id=\"content-link\" data-site-id=\"5a8007577dce0a00014ed216\" data-vertical-id=\"64b8f4a191af9fd705c75ab9\" data-segment-id=\"64be2c1791af9fd705c7f218\" data-page-type-id=\"5a800757f9167500011eddad\" data-link-media-type=\"url\" data-page-type-name=\"reviews\" data-link-type=\"internal\" class=\"e13n9rjo0 ni-1fxr0i0 elzjmzq0\">in-depth, expert reviews</a>. These will help you understand what you should look out for and how to find the perfect antivirus solution.</p></span><p data-testid=\"wysiwyg-typography\" class=\"ni-mczmtn e1el6ncd2\"><br></p><p data-testid=\"wysiwyg-typography\" class=\"ni-mczmtn e1el6ncd2\"><br></p></div>",
+    "miniReviews": [
+      {
+        "position": 1,
+        "name": "Norton",
+        "slug": "norton",
+        "productId": "12645",
+        "logoUrl": "https://images.10rating/iu/f_auto/q_auto/v1/production/products/uploads/photo/thumb-Logo260x100-Norton.20220801122606.png",
+        "overallScore": 9.8,
+        "scoreLabel": "Exceptional",
+        "highlight": "Complete protection for up to 10 devices",
+        "bottomLine": "Complete protection for up to 10 devices",
+        "description": "Norton gives you easy-to-use protection with in-depth parental controls. Depending on the package, Norton Security includes full antivirus protection, firewall protection, identity and financial protection, parental controls, email and spam blocking, password manager, PC optimization tools and 25 GB online backup storage for up to 10 computers or devices.",
+        "reviewLink": "/antivirus/reviews/norton",
+        "pros": [
+          "Easy to install and use",
+          "Protect up to 5 devices",
+          "Includes ID theft, VPN, and more"
+        ],
+        "cons": [
+          "Average detection rates and protection",
+          "Overall, average performance"
+        ],
+        "ctaUrl": "/v?product_id=12645&url=https%3A%2F%2Fwww.jdoqocy.com%2Fclick-7121518-10506010%3Fsid%3D%5Btracking-subid%5D&rank=1&bi=%7B%22blrs%22%3A94107%2C%22utm_source%22%3A%22Direct%22%7D&uid=jUSC6QPC9uCO3x603d89&riid=JdKLpK6HiICcRM694rvk&tkn=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiY21zIiwidmVyc2lvbiI6MSwiaGFzaCI6Ii9VOGVJWDdrdWg2ZS9ZWm1MVHFIVUx5c0E3MD0iLCJpYXQiOjE3NzAwNDA1MDQsImV4cCI6MTc3MDEyNjkwNH0.j837BcUjfgRpJwKeF-lTsnxOF-gI8cicrjwt8BIOn3g&comp_iid=24b2d543-2f16-4a96-aa42-1091bb0ff195",
+        "ctaText": "Shop Now"
+      },
+      {
+        "position": 2,
+        "name": "TotalAV",
+        "slug": "totalav",
+        "productId": "12647",
+        "logoUrl": "https://images.10rating/iu/f_auto/q_auto/v1/production/products/uploads/photo/TotalAV.20220323142937.png",
+        "overallScore": 9.3,
+        "scoreLabel": "Excellent",
+        "highlight": "Antivirus for PC, Mac, Android, and iOS devices",
+        "bottomLine": "Antivirus for PC, Mac, Android, and iOS devices",
+        "description": "TotalAV provides users with a comprehensive defense system to protect their computer and mobile devices from the full gamut of cyber threats. The software is easy to install and use, and with a 30-day money back guarantee and very reliable customer service, trying out TotalAV is about as risk free as it gets.",
+        "reviewLink": "/antivirus/reviews/totalav",
+        "pros": [
+          "Advanced antivirus and malware protection",
+          "Resolves system speed issues",
+          "Identifies and deletes duplicate files"
+        ],
+        "cons": [
+          "Lack of results from third party labs"
+        ],
+        "ctaUrl": "/v?product_id=12647&url=http%3A%2F%2Furl.totalav.com%2F68371e9088a98%2Fclick%2FDT_%5Btracking-subid%5D&rank=2&bi=%7B%22blrs%22%3A94713%2C%22utm_source%22%3A%22Direct%22%7D&uid=jUSC6QPC9uCO3x603d89&riid=JdKLpK6HiICcRM694rvk&tkn=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiY21zIiwidmVyc2lvbiI6MSwiaGFzaCI6ImFGVW9CSUdjU0YzTURldzMzUUJicTFnaWtwTT0iLCJpYXQiOjE3NzAwNDA1MDQsImV4cCI6MTc3MDEyNjkwNH0.7NBd791AXcgDaXhHPmXWrKa0_0jCxo0SXjZZfc9VijI&comp_iid=24b2d543-2f16-4a96-aa42-1091bb0ff195",
+        "ctaText": "Shop Now"
+      },
+      {
+        "position": 3,
+        "name": "McAfee",
+        "slug": "mcafee",
+        "productId": "12644",
+        "logoUrl": "https://images.10rating/iu/f_auto/q_auto/v1/production/products/uploads/photo/McAfee-Logo.20220323142737.png",
+        "overallScore": 9.3,
+        "scoreLabel": "Excellent",
+        "highlight": "Full protection that works on all operating systems",
+        "bottomLine": "Full protection that works on all operating systems",
+        "description": "McAfee is one of the biggest and most trusted names in antivirus software. McAfee provides secure total protection for your computer and devices. No matter which package you choose you will have access to free 24/7 support, parental controls and a 30-day money-back guarantee.",
+        "reviewLink": "/antivirus/reviews/mcafee",
+        "pros": [
+          "Easy to use, install and manage",
+          "Above average detection rates and protection",
+          "100% guaranteed virus removal"
+        ],
+        "cons": [
+          "Above average price to its counterparts",
+          "Uses more system resources than other antivirus packages"
+        ],
+        "ctaUrl": "/v?product_id=12644&url=https%3A%2F%2Fwww.kqzyfj.com%2Fclick-9109189-15230470%3Fsid%3D%5Btracking-subid%5D&rank=3&bi=%7B%22blrs%22%3A88713%2C%22utm_source%22%3A%22Direct%22%7D&uid=jUSC6QPC9uCO3x603d89&riid=JdKLpK6HiICcRM694rvk&tkn=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiY21zIiwidmVyc2lvbiI6MSwiaGFzaCI6InJ3T3lKaC9BWjhqUnBXSjUxeXBCdzNZUFlXZz0iLCJpYXQiOjE3NzAwNDA1MDQsImV4cCI6MTc3MDEyNjkwNH0.rAPmVDsxNvwk0-WUkJl86Mms9Ow7RIndM_5j9q8C-hw&comp_iid=24b2d543-2f16-4a96-aa42-1091bb0ff195",
+        "ctaText": "Shop Now"
+      }
+    ],
+    "socialProofCount": "913"
+  }
 }

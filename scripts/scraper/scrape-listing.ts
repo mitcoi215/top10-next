@@ -24,15 +24,20 @@ import { toCamelCase, slugify, cleanText, log } from './utils';
 
 /**
  * Cào toàn bộ data từ trang category listing
- * URL pattern: https://www.top10.com/{category}
+ * URL pattern: https://www.10rating/{category}
  */
 export async function scrapeListingPage(
   page: Page,
   url: string,
+  skipNavigation = false,
 ): Promise<{ category: Partial<ScrapedCategory>; products: Partial<ScrapedProduct>[] }> {
-  log(`[Listing] Navigating to: ${url}`);
-  await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
-  await page.waitForTimeout(2000);
+  if (!skipNavigation) {
+    log(`[Listing] Navigating to: ${url}`);
+    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+    await page.waitForTimeout(2000);
+  } else {
+    log(`[Listing] Page already loaded, skipping navigation`);
+  }
 
   const category: Partial<ScrapedCategory> = {};
   const products: Partial<ScrapedProduct>[] = [];

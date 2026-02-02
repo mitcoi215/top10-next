@@ -79,8 +79,8 @@ const categoriesData = [
     introContent: '<p>Finding the right TV streaming service can be overwhelming with so many options available. Our team of experts has tested and reviewed the top streaming platforms to help you make an informed decision.</p>',
     sidebarPeopleCount: '167,536',
     bestOfListTitle: 'Our Top 10 Best TV Streaming Services:',
-    compareBoxTitle: 'Compare With Top10.com, Choose the Best for You',
-    compareBoxDescription: 'At Top10.com, we believe that the best decisions are made when you have all the information at your fingertips. That\'s why we provide clear, unbiased comparisons of the top products.',
+    compareBoxTitle: 'Compare With 10rating, Choose the Best for You',
+    compareBoxDescription: 'At 10rating, we believe that the best decisions are made when you have all the information at your fingertips. That\'s why we provide clear, unbiased comparisons of the top products.',
     compareBoxStats: '15 TV Streaming Services Evaluated | 8 Criteria | 10 Best',
     closerLookTitle: 'A Closer Look at the Top 10 TV Streaming Services',
     methodologyTitle: 'Our Methodology: How Did We Rate the Best TV Services?',
@@ -132,7 +132,7 @@ const categoriesData = [
     introContent: '<p>Online dating has become the most popular way to meet new people. Our experts have tested the top dating sites to help you find your perfect match.</p>',
     sidebarPeopleCount: '234,891',
     bestOfListTitle: 'Our Top 10 Best Dating Sites & Apps:',
-    compareBoxTitle: 'Compare With Top10.com, Choose the Best for You',
+    compareBoxTitle: 'Compare With 10rating, Choose the Best for You',
     compareBoxDescription: 'Finding love online starts with choosing the right platform. We\'ve done the research so you don\'t have to.',
     compareBoxStats: '20 Dating Sites Evaluated | 10 Criteria | 10 Best',
     closerLookTitle: 'A Closer Look at the Top 10 Dating Sites',
@@ -185,7 +185,7 @@ const categoriesData = [
     introContent: '<p>A VPN protects your online privacy and security. Our experts have tested the top VPN services to help you choose the right one.</p>',
     sidebarPeopleCount: '189,234',
     bestOfListTitle: 'Our Top 10 Best VPN Services:',
-    compareBoxTitle: 'Compare With Top10.com, Choose the Best VPN',
+    compareBoxTitle: 'Compare With 10rating, Choose the Best VPN',
     compareBoxDescription: 'Online privacy is more important than ever. We\'ve tested the top VPNs to help you stay safe online.',
     compareBoxStats: '25 VPN Services Evaluated | 12 Criteria | 10 Best',
     closerLookTitle: 'A Closer Look at the Top 10 VPN Services',
@@ -475,13 +475,13 @@ const homepageSettingsData = {
 
   // Mission Section
   missionTitle: 'Our Mission',
-  missionContent: 'At Top10.com, our mission is to save you time and money by empowering you to make informed decisions. As a comparison site, we provide all the tools you need to compare options effectively. We are dedicated to thorough research, transparency, and user-focused design, ensuring complex choices are straightforward.',
+  missionContent: 'At 10rating, our mission is to save you time and money by empowering you to make informed decisions. As a comparison site, we provide all the tools you need to compare options effectively. We are dedicated to thorough research, transparency, and user-focused design, ensuring complex choices are straightforward.',
   missionImage: '/top10-images/ourmissionTransparentOnMagenta.20240702082951.png',
   missionCta: '/about-us',
 
   // Method Section
   methodTitle: 'Our Method',
-  methodContent: 'At Top10.com, our methodology is rigorous and transparent. We combine in-depth research with meticulous testing to ensure our product scores and rankings are both reliable and relevant. Each category is evaluated based on criteria tailored to the specific needs and interests of consumers.',
+  methodContent: 'At 10rating, our methodology is rigorous and transparent. We combine in-depth research with meticulous testing to ensure our product scores and rankings are both reliable and relevant. Each category is evaluated based on criteria tailored to the specific needs and interests of consumers.',
   methodImage: '/top10-images/HowWeScore-TransparentOnMagenta.20240702081503.png',
   methodCta: '/how-we-score',
 

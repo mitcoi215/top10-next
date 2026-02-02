@@ -1,10 +1,13 @@
 {
   "category": {
     "slug": "sitemap",
-    "heroTitle": "Top10.com Sitemap",
+    "heroTitle": "10rating Sitemap",
     "name": "Sitemap"
   },
   "products": [],
   "authors": [],
-  "articles": []
+  "articles": [],
+  "comparison": {
+    "products": []
+  }
 }

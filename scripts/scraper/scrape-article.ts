@@ -16,7 +16,7 @@ import { slugify, log } from './utils';
 
 /**
  * Cào toàn bộ data từ một trang article
- * URL pattern: https://www.top10.com/{category}/{article-slug}
+ * URL pattern: https://www.10rating/{category}/{article-slug}
  */
 export async function scrapeArticlePage(
   page: Page,

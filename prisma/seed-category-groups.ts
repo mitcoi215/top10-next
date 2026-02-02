@@ -6,7 +6,7 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-// Category Groups with their categories - matching original top10.com structure
+// Category Groups with their categories - matching original 10rating structure
 const categoryGroupsData = [
   {
     slug: 'lifestyle',

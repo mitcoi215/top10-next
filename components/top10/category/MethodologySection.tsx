@@ -35,7 +35,7 @@ export default function MethodologySection({
   return (
     <section data-role="wysiwyg">
       <div className="charticle__wysiwyg">
-        {/* Compare With Top10.com Box */}
+        {/* Compare With 10rating Box */}
         <div style={{
           margin: '40px 0 0',
           backgroundColor: '#edecf3',

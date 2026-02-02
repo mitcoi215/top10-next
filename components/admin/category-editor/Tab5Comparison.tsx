@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { CategoryFormData, ProductOption, ScoreBreakdownItem } from './types';
+import { CategoryFormData, ProductOption, ScoreBreakdownItem, Top3ProductData } from './types';
 import ImageUpload from './ImageUpload';
 import RichTextEditor from './RichTextEditor';
 
@@ -17,7 +17,7 @@ interface ProductComparisonData {
   ribbon: string;
   ctaUrl: string;
   ctaText: string;
-  features: string[];
+  comparisonFeatures: string[];
 }
 
 interface Tab5Props {
@@ -33,13 +33,15 @@ export default function Tab5Comparison({ products, categoryId }: Tab5Props) {
   const [savingProductId, setSavingProductId] = useState<string | null>(null);
   const [expandedProduct, setExpandedProduct] = useState<string | null>(null);
   const [saveMessages, setSaveMessages] = useState<Record<string, { type: 'success' | 'error'; text: string }>>({});
+  const [dragIndex, setDragIndex] = useState<number | null>(null);
+  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
 
   // Watch form values
   const top3Enabled = watch('comparisonTop3Enabled');
   const top3ProductIds = watch('comparisonTop3ProductIds') || [];
-  const rightSidebarEnabled = watch('comparisonRightSidebarEnabled');
   const leftSidebarEnabled = watch('comparisonLeftSidebarEnabled');
   const scoreBreakdown = watch('comparisonScoreBreakdown') || [];
+  const comparisonProductOrder = watch('comparisonProductOrder') || [];
 
   // Load full product data for comparison editing
   const loadProductData = async () => {
@@ -62,7 +64,7 @@ export default function Tab5Comparison({ products, categoryId }: Tab5Props) {
           ribbon: p.ribbon || '',
           ctaUrl: p.ctaUrl || '',
           ctaText: p.ctaText || 'Visit Site',
-          features: parseFeatures(p.features),
+          comparisonFeatures: parseComparisonFeatures(p.comparisonFeatures),
         }));
       setProductData(prods);
       setLoaded(true);
@@ -73,14 +75,9 @@ export default function Tab5Comparison({ products, categoryId }: Tab5Props) {
     }
   };
 
-  function parseFeatures(features: any): string[] {
-    if (Array.isArray(features)) {
-      return features.map((f: any) => typeof f === 'string' ? f : (f.text || String(f)));
-    }
-    if (features && typeof features === 'object') {
-      return Object.entries(features)
-        .filter(([, v]) => v && v !== 'false')
-        .map(([k, v]) => (typeof v === 'string' && v !== 'true' ? v : k));
+  function parseComparisonFeatures(comparisonFeatures: any): string[] {
+    if (Array.isArray(comparisonFeatures)) {
+      return comparisonFeatures.map((f: any) => typeof f === 'string' ? f : String(f));
     }
     return [];
   }
@@ -92,27 +89,27 @@ export default function Tab5Comparison({ products, categoryId }: Tab5Props) {
     ));
   };
 
-  // Update feature at index
+  // Update comparison feature at index
   const updateFeature = (productId: string, index: number, value: string) => {
     setProductData(prev => prev.map(p => {
       if (p.id !== productId) return p;
-      const newFeatures = [...p.features];
+      const newFeatures = [...p.comparisonFeatures];
       newFeatures[index] = value;
-      return { ...p, features: newFeatures };
+      return { ...p, comparisonFeatures: newFeatures };
     }));
   };
 
   const addFeature = (productId: string) => {
     setProductData(prev => prev.map(p => {
       if (p.id !== productId) return p;
-      return { ...p, features: [...p.features, ''] };
+      return { ...p, comparisonFeatures: [...p.comparisonFeatures, ''] };
     }));
   };
 
   const removeFeature = (productId: string, index: number) => {
     setProductData(prev => prev.map(p => {
       if (p.id !== productId) return p;
-      return { ...p, features: p.features.filter((_, i) => i !== index) };
+      return { ...p, comparisonFeatures: p.comparisonFeatures.filter((_, i) => i !== index) };
     }));
   };
 
@@ -135,7 +132,7 @@ export default function Tab5Comparison({ products, categoryId }: Tab5Props) {
           ribbon: product.ribbon || null,
           ctaUrl: product.ctaUrl || null,
           ctaText: product.ctaText || 'Visit Site',
-          features: product.features.filter(f => f.trim() !== ''),
+          comparisonFeatures: product.comparisonFeatures.filter(f => f.trim() !== ''),
         }),
       });
       if (!res.ok) throw new Error('Save failed');
@@ -188,6 +185,41 @@ export default function Tab5Comparison({ products, categoryId }: Tab5Props) {
     setValue('comparisonScoreBreakdown', scoreBreakdown.filter((_: any, i: number) => i !== index), { shouldDirty: true });
   };
 
+  // Comparison product order helpers
+  const getOrderedProducts = (): ProductComparisonData[] => {
+    if (comparisonProductOrder.length > 0) {
+      // Use custom order
+      const seen = new Set<string>();
+      const ordered = comparisonProductOrder
+        .map((id: string) => productData.find(p => p.id === id))
+        .filter((p): p is ProductComparisonData => {
+          if (!p || seen.has(p.id)) return false;
+          seen.add(p.id);
+          return true;
+        });
+      // Add any products not in the order list at the end
+      const remaining = productData.filter(p => !comparisonProductOrder.includes(p.id));
+      return [...ordered, ...remaining];
+    }
+    // Default: use rank order
+    return productData;
+  };
+
+  const initComparisonOrder = () => {
+    // Initialize from current product data rank order
+    const ids = productData.map(p => p.id);
+    setValue('comparisonProductOrder', ids, { shouldDirty: true });
+  };
+
+  const moveComparisonProduct = (fromIdx: number, toIdx: number) => {
+    // Get current ordered list (either custom or default rank)
+    const currentProducts = getOrderedProducts();
+    const ordered = currentProducts.map(p => p.id);
+    const [item] = ordered.splice(fromIdx, 1);
+    ordered.splice(toIdx, 0, item);
+    setValue('comparisonProductOrder', ordered, { shouldDirty: true });
+  };
+
   // Auto-load on mount
   if (!loaded && !loadingProducts && categoryId) {
     loadProductData();
@@ -200,6 +232,24 @@ export default function Tab5Comparison({ products, categoryId }: Tab5Props) {
 
   return (
     <div className="tab-comparison">
+      {/* Section 0: Redirect toggle */}
+      <div className="section">
+        <div className="section-header-row">
+          <div>
+            <h2 className="section-title">Chuyen huong tu Listing sang Comparison</h2>
+            <p className="section-desc">Khi bat, truy cap /{watch('slug') || 'category'} se tu dong chuyen sang /{watch('slug') || 'category'}/comparison</p>
+          </div>
+          <label className="toggle-switch">
+            <input
+              type="checkbox"
+              checked={watch('comparisonRedirectEnabled') || false}
+              onChange={(e) => setValue('comparisonRedirectEnabled', e.target.checked, { shouldDirty: true })}
+            />
+            <span className="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+
       {/* Section 1: Hero Settings */}
       <div className="section">
         <h2 className="section-title">Hero trang So sanh</h2>
@@ -330,49 +380,140 @@ export default function Tab5Comparison({ products, categoryId }: Tab5Props) {
                   </div>
                 </div>
               )}
+
+              {/* Inline editors for selected Top 3 products - saved with category form */}
+              {top3ProductIds.length > 0 && (
+                <div style={{ marginTop: 16 }}>
+                  <label className="features-label">Chinh sua thong tin Top 3 san pham</label>
+                  <p className="hint" style={{ marginBottom: 12 }}>Thu tu hien thi: #1 o giua, #2 ben trai, #3 ben phai. Du lieu nay duoc luu cung danh muc (khong anh huong san pham goc).</p>
+                  <div className="product-list">
+                    {top3ProductIds.map((id: string, idx: number) => {
+                      const productInfo = productData.find(p => p.id === id) || products.find(p => p.id === id);
+                      if (!productInfo) return null;
+                      const top3Data = (watch('comparisonTop3ProductData') || []) as Top3ProductData[];
+                      const data = top3Data.find(d => d.id === id) || { id, overallScore: null, scoreLabel: '', bottomLine: '', ribbon: '', ctaUrl: '', ctaText: 'Visit Site', features: [] };
+                      const isExpanded = expandedProduct === `top3-${id}`;
+
+                      const updateTop3Field = (field: keyof Top3ProductData, value: any) => {
+                        const current = [...(watch('comparisonTop3ProductData') || [])] as Top3ProductData[];
+                        const existingIdx = current.findIndex(d => d.id === id);
+                        const updated = { ...data, [field]: value };
+                        if (existingIdx >= 0) {
+                          current[existingIdx] = updated;
+                        } else {
+                          current.push(updated);
+                        }
+                        setValue('comparisonTop3ProductData', current, { shouldDirty: true });
+                      };
+
+                      const updateTop3Feature = (fidx: number, value: string) => {
+                        const newFeatures = [...(data.features || [])];
+                        newFeatures[fidx] = value;
+                        updateTop3Field('features', newFeatures);
+                      };
+
+                      const addTop3Feature = () => {
+                        updateTop3Field('features', [...(data.features || []), '']);
+                      };
+
+                      const removeTop3Feature = (fidx: number) => {
+                        updateTop3Field('features', (data.features || []).filter((_: string, i: number) => i !== fidx));
+                      };
+
+                      return (
+                        <div key={id} className={`product-item ${isExpanded ? 'expanded' : ''}`}>
+                          <div className="product-header" onClick={() => setExpandedProduct(isExpanded ? null : `top3-${id}`)}>
+                            <div className="product-header-left">
+                              <span className="selected-product-rank">#{idx + 1}</span>
+                              <span className="product-name-text">{productInfo.name}</span>
+                            </div>
+                            <div className="product-header-right">
+                              {data.overallScore != null && (
+                                <span className="product-score-badge">{Number(data.overallScore).toFixed(1)}</span>
+                              )}
+                              <span className="expand-icon">{isExpanded ? '\u25B2' : '\u25BC'}</span>
+                            </div>
+                          </div>
+                          {isExpanded && (
+                            <div className="product-editor">
+                              <div className="editor-grid">
+                                <div className="form-group">
+                                  <label>Diem tong (0-10)</label>
+                                  <input type="number" min="0" max="10" step="0.1"
+                                    value={data.overallScore ?? ''}
+                                    onChange={(e) => updateTop3Field('overallScore', e.target.value ? parseFloat(e.target.value) : null)}
+                                  />
+                                </div>
+                                <div className="form-group">
+                                  <label>Nhan diem</label>
+                                  <input type="text" value={data.scoreLabel}
+                                    onChange={(e) => updateTop3Field('scoreLabel', e.target.value)}
+                                    placeholder="VD: Exceptional, Excellent..."
+                                  />
+                                </div>
+                                <div className="form-group">
+                                  <label>Bottom Line (tagline)</label>
+                                  <input type="text" value={data.bottomLine}
+                                    onChange={(e) => updateTop3Field('bottomLine', e.target.value)}
+                                    placeholder="VD: Leading home security provider..."
+                                  />
+                                </div>
+                                <div className="form-group">
+                                  <label>Ribbon (nhan dac biet)</label>
+                                  <input type="text" value={data.ribbon}
+                                    onChange={(e) => updateTop3Field('ribbon', e.target.value)}
+                                    placeholder="VD: Special Offer, Editor's Choice"
+                                  />
+                                </div>
+                                <div className="form-group">
+                                  <label>CTA URL (affiliate link)</label>
+                                  <input type="text" value={data.ctaUrl}
+                                    onChange={(e) => updateTop3Field('ctaUrl', e.target.value)}
+                                    placeholder="https://..."
+                                  />
+                                </div>
+                                <div className="form-group">
+                                  <label>CTA Text</label>
+                                  <input type="text" value={data.ctaText}
+                                    onChange={(e) => updateTop3Field('ctaText', e.target.value)}
+                                    placeholder="Visit Site"
+                                  />
+                                </div>
+                              </div>
+                              <div className="features-section">
+                                <label className="features-label">Diem noi bat (Bullet Points)</label>
+                                <div className="features-list">
+                                  {(data.features || []).map((feature: string, fidx: number) => (
+                                    <div key={fidx} className="feature-item">
+                                      <span className="feature-index">{fidx + 1}</span>
+                                      <input type="text" value={feature}
+                                        onChange={(e) => updateTop3Feature(fidx, e.target.value)}
+                                        placeholder="VD: 24/7 professional monitoring"
+                                      />
+                                      <button type="button" className="btn-remove-feature"
+                                        onClick={() => removeTop3Feature(fidx)} title="Xoa">&times;</button>
+                                    </div>
+                                  ))}
+                                  <button type="button" className="btn-add-feature" onClick={() => addTop3Feature()}>
+                                    + Them diem noi bat
+                                  </button>
+                                </div>
+                              </div>
+                              <p className="hint" style={{ marginTop: 8 }}>Du lieu nay se duoc luu khi ban nhan &quot;Luu danh muc&quot; phia tren.</p>
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         )}
       </div>
 
-      {/* Section 3: Right Sidebar (Best Overall) */}
-      <div className="section">
-        <div className="section-header-row">
-          <div>
-            <h2 className="section-title">Sidebar Phai (Best Overall)</h2>
-            <p className="section-desc">Hien thi san pham tot nhat ben phai danh sach so sanh. Neu tat se an di.</p>
-          </div>
-          <label className="toggle-switch">
-            <input
-              type="checkbox"
-              checked={rightSidebarEnabled}
-              onChange={(e) => setValue('comparisonRightSidebarEnabled', e.target.checked, { shouldDirty: true })}
-            />
-            <span className="toggle-slider" />
-            <span className="toggle-label">{rightSidebarEnabled ? 'Hien' : 'An'}</span>
-          </label>
-        </div>
-
-        {rightSidebarEnabled && (
-          <div className="subsection">
-            <div className="form-group">
-              <label>Chon san pham hien thi</label>
-              <select
-                value={watch('comparisonRightSidebarProductId') || ''}
-                onChange={(e) => setValue('comparisonRightSidebarProductId', e.target.value, { shouldDirty: true })}
-              >
-                <option value="">Tu dong (San pham #1 theo rank)</option>
-                {productData.map(p => (
-                  <option key={p.id} value={p.id}>#{p.rank} {p.name}{p.overallScore != null ? ` (${p.overallScore.toFixed(1)})` : ''}</option>
-                ))}
-              </select>
-              <div className="hint">De trong se tu dong hien thi san pham rank #1</div>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Section 4: Left Sidebar */}
+      {/* Section 3: Left Sidebar */}
       <div className="section">
         <div className="section-header-row">
           <div>
@@ -475,12 +616,12 @@ export default function Tab5Comparison({ products, categoryId }: Tab5Props) {
         />
       </div>
 
-      {/* Section 6: Products Comparison Data */}
+      {/* Unified Section: Product ordering + data editing with drag & drop */}
       <div className="section">
-        <h2 className="section-title">Du lieu san pham tren trang So sanh</h2>
+        <h2 className="section-title">San pham trang So sanh</h2>
         <p className="section-desc">
-          Chinh sua thong tin hien thi tren Nissim Card cua tung san pham.
-          Nhan &quot;Luu&quot; o moi san pham de cap nhat.
+          Keo tha de sap xep thu tu, nhan vao san pham de chinh sua thong tin hien thi.
+          Thu tu nay chi ap dung cho trang comparison (khong anh huong trang listing).
         </p>
 
         {loadingProducts && (
@@ -495,152 +636,204 @@ export default function Tab5Comparison({ products, categoryId }: Tab5Props) {
           <div className="empty-state">Chua co san pham nao trong danh muc nay.</div>
         )}
 
-        <div className="product-list">
-          {productData.map((product) => {
-            const isExpanded = expandedProduct === product.id;
-            const msg = saveMessages[product.id];
-            return (
-              <div key={product.id} className={`product-item ${isExpanded ? 'expanded' : ''}`}>
-                {/* Collapsed header */}
-                <div className="product-header" onClick={() => setExpandedProduct(isExpanded ? null : product.id)}>
-                  <div className="product-header-left">
-                    <span className="product-rank">#{product.rank}</span>
-                    {product.logoUrl ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={product.logoUrl} alt={product.name} className="product-logo" />
-                    ) : (
-                      <span className="product-name-text">{product.name}</span>
-                    )}
-                    <span className="product-name-label">{product.name}</span>
-                  </div>
-                  <div className="product-header-right">
-                    {product.overallScore != null && (
-                      <span className="product-score-badge">{product.overallScore.toFixed(1)}</span>
-                    )}
-                    <span className={`product-features-count ${product.features.length === 0 ? 'empty' : ''}`}>
-                      {product.features.length} diem noi bat
-                    </span>
-                    <span className="expand-icon">{isExpanded ? '\u25B2' : '\u25BC'}</span>
-                  </div>
-                </div>
+        {loaded && productData.length > 0 && (
+          <>
+            <div className="order-toolbar">
+              {comparisonProductOrder.length === 0 ? (
+                <button type="button" className="btn-add-feature" onClick={initComparisonOrder}>
+                  Tuy chinh thu tu cho trang So sanh
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  className="btn-add-feature"
+                  onClick={() => setValue('comparisonProductOrder', [], { shouldDirty: true })}
+                >
+                  Dat lai ve thu tu mac dinh (theo rank)
+                </button>
+              )}
+              <span className="hint">{comparisonProductOrder.length > 0 ? 'Thu tu tuy chinh dang duoc ap dung' : 'Dang hien theo rank mac dinh'}</span>
+            </div>
 
-                {/* Expanded editor */}
-                {isExpanded && (
-                  <div className="product-editor">
-                    <div className="editor-grid">
-                      <div className="form-group">
-                        <label>Diem tong (0-10)</label>
-                        <input
-                          type="number"
-                          min="0"
-                          max="10"
-                          step="0.1"
-                          value={product.overallScore ?? ''}
-                          onChange={(e) => updateProductField(product.id, 'overallScore', e.target.value ? parseFloat(e.target.value) : null)}
-                        />
+            <div className="product-list">
+              {getOrderedProducts().map((product, idx) => {
+                const isExpanded = expandedProduct === product.id;
+                const msg = saveMessages[product.id];
+                const isDragging = dragIndex === idx;
+                const isDragOver = dragOverIndex === idx;
+                return (
+                  <div
+                    key={product.id}
+                    className={`product-item ${isExpanded ? 'expanded' : ''} ${isDragging ? 'dragging' : ''} ${isDragOver ? 'drag-over' : ''}`}
+                    draggable={!isExpanded}
+                    onDragStart={(e) => {
+                      setDragIndex(idx);
+                      e.dataTransfer.effectAllowed = 'move';
+                    }}
+                    onDragOver={(e) => {
+                      e.preventDefault();
+                      e.dataTransfer.dropEffect = 'move';
+                      if (dragOverIndex !== idx) setDragOverIndex(idx);
+                    }}
+                    onDragLeave={() => {
+                      if (dragOverIndex === idx) setDragOverIndex(null);
+                    }}
+                    onDrop={(e) => {
+                      e.preventDefault();
+                      if (dragIndex !== null && dragIndex !== idx) {
+                        moveComparisonProduct(dragIndex, idx);
+                      }
+                      setDragIndex(null);
+                      setDragOverIndex(null);
+                    }}
+                    onDragEnd={() => {
+                      setDragIndex(null);
+                      setDragOverIndex(null);
+                    }}
+                  >
+                    {/* Collapsed header */}
+                    <div className="product-header" onClick={() => setExpandedProduct(isExpanded ? null : product.id)}>
+                      <div className="product-header-left">
+                        <span className="drag-handle" title="Keo de sap xep" onMouseDown={(e) => e.stopPropagation()}>&#9776;</span>
+                        <span className="product-rank">#{idx + 1}</span>
+                        {product.logoUrl ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img src={product.logoUrl} alt={product.name} className="product-logo" />
+                        ) : (
+                          <span className="product-name-text">{product.name}</span>
+                        )}
+                        <span className="product-name-label">{product.name}</span>
                       </div>
-                      <div className="form-group">
-                        <label>Nhan diem</label>
-                        <input
-                          type="text"
-                          value={product.scoreLabel}
-                          onChange={(e) => updateProductField(product.id, 'scoreLabel', e.target.value)}
-                          placeholder="VD: Exceptional, Excellent..."
-                        />
-                      </div>
-
-                      <div className="form-group">
-                        <label>Bottom Line (tagline)</label>
-                        <input
-                          type="text"
-                          value={product.bottomLine}
-                          onChange={(e) => updateProductField(product.id, 'bottomLine', e.target.value)}
-                          placeholder="VD: Advanced equipment and custom-built security"
-                        />
-                      </div>
-                      <div className="form-group">
-                        <label>Ribbon (nhan dac biet)</label>
-                        <input
-                          type="text"
-                          value={product.ribbon}
-                          onChange={(e) => updateProductField(product.id, 'ribbon', e.target.value)}
-                          placeholder="VD: Special Offer, Editor's Choice"
-                        />
-                      </div>
-
-                      <div className="form-group">
-                        <label>CTA URL (affiliate link)</label>
-                        <input
-                          type="text"
-                          value={product.ctaUrl}
-                          onChange={(e) => updateProductField(product.id, 'ctaUrl', e.target.value)}
-                          placeholder="https://..."
-                        />
-                      </div>
-                      <div className="form-group">
-                        <label>CTA Text</label>
-                        <input
-                          type="text"
-                          value={product.ctaText}
-                          onChange={(e) => updateProductField(product.id, 'ctaText', e.target.value)}
-                          placeholder="Visit Site"
-                        />
+                      <div className="product-header-right">
+                        {product.overallScore != null && (
+                          <span className="product-score-badge">{product.overallScore.toFixed(1)}</span>
+                        )}
+                        <span className={`product-features-count ${product.comparisonFeatures.length === 0 ? 'empty' : ''}`}>
+                          {product.comparisonFeatures.length} diem noi bat
+                        </span>
+                        <span className="expand-icon">{isExpanded ? '\u25B2' : '\u25BC'}</span>
                       </div>
                     </div>
 
-                    {/* Features */}
-                    <div className="features-section">
-                      <label className="features-label">Diem noi bat (Bullet Points)</label>
-                      <div className="features-list">
-                        {product.features.map((feature, idx) => (
-                          <div key={idx} className="feature-item">
-                            <span className="feature-index">{idx + 1}</span>
+                    {/* Expanded editor */}
+                    {isExpanded && (
+                      <div className="product-editor">
+                        <div className="editor-grid">
+                          <div className="form-group">
+                            <label>Diem tong (0-10)</label>
+                            <input
+                              type="number"
+                              min="0"
+                              max="10"
+                              step="0.1"
+                              value={product.overallScore ?? ''}
+                              onChange={(e) => updateProductField(product.id, 'overallScore', e.target.value ? parseFloat(e.target.value) : null)}
+                            />
+                          </div>
+                          <div className="form-group">
+                            <label>Nhan diem</label>
                             <input
                               type="text"
-                              value={feature}
-                              onChange={(e) => updateFeature(product.id, idx, e.target.value)}
-                              placeholder="VD: 24/7 professional monitoring"
+                              value={product.scoreLabel}
+                              onChange={(e) => updateProductField(product.id, 'scoreLabel', e.target.value)}
+                              placeholder="VD: Exceptional, Excellent..."
                             />
+                          </div>
+
+                          <div className="form-group">
+                            <label>Bottom Line (tagline)</label>
+                            <input
+                              type="text"
+                              value={product.bottomLine}
+                              onChange={(e) => updateProductField(product.id, 'bottomLine', e.target.value)}
+                              placeholder="VD: Advanced equipment and custom-built security"
+                            />
+                          </div>
+                          <div className="form-group">
+                            <label>Ribbon (nhan dac biet)</label>
+                            <input
+                              type="text"
+                              value={product.ribbon}
+                              onChange={(e) => updateProductField(product.id, 'ribbon', e.target.value)}
+                              placeholder="VD: Special Offer, Editor's Choice"
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label>CTA URL (affiliate link)</label>
+                            <input
+                              type="text"
+                              value={product.ctaUrl}
+                              onChange={(e) => updateProductField(product.id, 'ctaUrl', e.target.value)}
+                              placeholder="https://..."
+                            />
+                          </div>
+                          <div className="form-group">
+                            <label>CTA Text</label>
+                            <input
+                              type="text"
+                              value={product.ctaText}
+                              onChange={(e) => updateProductField(product.id, 'ctaText', e.target.value)}
+                              placeholder="Visit Site"
+                            />
+                          </div>
+                        </div>
+
+                        {/* Comparison Features */}
+                        <div className="features-section">
+                          <label className="features-label">Diem noi bat So sanh (Comparison Bullet Points)</label>
+                          <div className="features-list">
+                            {product.comparisonFeatures.map((feature, fidx) => (
+                              <div key={fidx} className="feature-item">
+                                <span className="feature-index">{fidx + 1}</span>
+                                <input
+                                  type="text"
+                                  value={feature}
+                                  onChange={(e) => updateFeature(product.id, fidx, e.target.value)}
+                                  placeholder="VD: 24/7 professional monitoring"
+                                />
+                                <button
+                                  type="button"
+                                  className="btn-remove-feature"
+                                  onClick={() => removeFeature(product.id, fidx)}
+                                  title="Xoa"
+                                >
+                                  &times;
+                                </button>
+                              </div>
+                            ))}
                             <button
                               type="button"
-                              className="btn-remove-feature"
-                              onClick={() => removeFeature(product.id, idx)}
-                              title="Xoa"
+                              className="btn-add-feature"
+                              onClick={() => addFeature(product.id)}
                             >
-                              &times;
+                              + Them diem noi bat
                             </button>
                           </div>
-                        ))}
-                        <button
-                          type="button"
-                          className="btn-add-feature"
-                          onClick={() => addFeature(product.id)}
-                        >
-                          + Them diem noi bat
-                        </button>
-                      </div>
-                    </div>
+                        </div>
 
-                    {/* Save button */}
-                    <div className="product-actions">
-                      {msg?.text && (
-                        <span className={`save-msg ${msg.type}`}>{msg.text}</span>
-                      )}
-                      <button
-                        type="button"
-                        className="btn-save-product"
-                        onClick={() => saveProduct(product)}
-                        disabled={savingProductId === product.id}
-                      >
-                        {savingProductId === product.id ? 'Dang luu...' : `Luu ${product.name}`}
-                      </button>
-                    </div>
+                        {/* Save button */}
+                        <div className="product-actions">
+                          {msg?.text && (
+                            <span className={`save-msg ${msg.type}`}>{msg.text}</span>
+                          )}
+                          <button
+                            type="button"
+                            className="btn-save-product"
+                            onClick={() => saveProduct(product)}
+                            disabled={savingProductId === product.id}
+                          >
+                            {savingProductId === product.id ? 'Dang luu...' : `Luu ${product.name}`}
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
+                );
+              })}
+            </div>
+          </>
+        )}
       </div>
 
       <style jsx>{`
@@ -1002,6 +1195,36 @@ export default function Tab5Comparison({ products, categoryId }: Tab5Props) {
           font-size: 14px;
           color: #FE4A64;
           min-width: 24px;
+        }
+
+        /* Drag & Drop */
+        .drag-handle {
+          cursor: grab;
+          font-size: 16px;
+          color: #9ca3af;
+          padding: 0 2px;
+          user-select: none;
+          flex-shrink: 0;
+        }
+
+        .drag-handle:active {
+          cursor: grabbing;
+        }
+
+        .product-item.dragging {
+          opacity: 0.4;
+        }
+
+        .product-item.drag-over {
+          border-color: #FE4A64;
+          box-shadow: 0 0 0 2px rgba(254, 74, 100, 0.2);
+        }
+
+        .order-toolbar {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          margin-bottom: 12px;
         }
 
         .product-logo {

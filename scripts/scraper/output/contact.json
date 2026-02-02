@@ -6,5 +6,8 @@
   },
   "products": [],
   "authors": [],
-  "articles": []
+  "articles": [],
+  "comparison": {
+    "products": []
+  }
 }

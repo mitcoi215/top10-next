@@ -10,7 +10,7 @@ import { log } from './utils';
 
 /**
  * Cào danh sách articles từ trang top-reads
- * URL pattern: https://www.top10.com/{category}/top-reads
+ * URL pattern: https://www.10rating/{category}/top-reads
  * @param limit Số lượng articles tối đa cần cào (default: 10)
  */
 export async function scrapeArticleListPage(

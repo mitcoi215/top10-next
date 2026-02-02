@@ -39,7 +39,7 @@ export default function StatsSection({
 
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <div style={{ fontSize: '24px', fontWeight: 'bold' }}>{decisionsCount}</div>
-            <div style={{ fontSize: '16px', color: '#555' }}>Decisions made with Top10.com</div>
+            <div style={{ fontSize: '16px', color: '#555' }}>Decisions made with 10rating</div>
           </div>
         </div>
       </div>

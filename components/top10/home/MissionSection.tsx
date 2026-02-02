@@ -11,11 +11,11 @@ interface MissionSectionProps {
 
 export default function MissionSection({
   missionTitle = 'Our Mission',
-  missionContent = 'At Top10.com, our mission is to save you time and money by empowering you to make informed decisions. As a comparison site, we provide all the tools you need to compare options effectively. We are dedicated to thorough research, transparency, and user-focused design, ensuring complex choices are straightforward. We strive to provide you with all the information you need at your fingertips, helping you make decisions with confidence.',
+  missionContent = 'At 10rating, our mission is to save you time and money by empowering you to make informed decisions. As a comparison site, we provide all the tools you need to compare options effectively. We are dedicated to thorough research, transparency, and user-focused design, ensuring complex choices are straightforward. We strive to provide you with all the information you need at your fingertips, helping you make decisions with confidence.',
   missionImage = '/top10-images/ourmissionTransparentOnMagenta.20240702082951.png',
   missionCta = '/about-us',
   methodTitle = 'Our Method',
-  methodContent = 'At Top10.com, our methodology is rigorous and transparent. We combine in-depth research with meticulous testing to ensure our product scores and rankings are both reliable and relevant. Each category is evaluated based on criteria tailored to the specific needs and interests of consumers. Our team of handpicked experts reviews products and services, consults user feedback, and examines industry data to provide clear, unbiased ratings. This thorough approach ensures that when you choose from our top 10 lists, you are making a well-informed decision backed by comprehensive analysis.',
+  methodContent = 'At 10rating, our methodology is rigorous and transparent. We combine in-depth research with meticulous testing to ensure our product scores and rankings are both reliable and relevant. Each category is evaluated based on criteria tailored to the specific needs and interests of consumers. Our team of handpicked experts reviews products and services, consults user feedback, and examines industry data to provide clear, unbiased ratings. This thorough approach ensures that when you choose from our top 10 lists, you are making a well-informed decision backed by comprehensive analysis.',
   methodImage = '/top10-images/HowWeScore-TransparentOnMagenta.20240702081503.png',
   methodCta = '/how-we-score',
 }: MissionSectionProps) {

@@ -6,7 +6,7 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-// Trending items data - exact from original top10.com
+// Trending items data - exact from original 10rating
 const trendingItemsData = [
   {
     rank: 1,

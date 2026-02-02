@@ -46,6 +46,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
             ctaUrl: true,
             ctaText: true,
             features: true,
+            comparisonFeatures: true,
             tagline: true,
             bestFor: true,
           },
@@ -86,6 +87,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
               ctaUrl: true,
               ctaText: true,
               features: true,
+              comparisonFeatures: true,
               tagline: true,
               bestFor: true,
             },
@@ -228,16 +230,21 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
         // FAQs
         ...(validatedData.faqs !== undefined && { faqs: validatedData.faqs }),
 
+        // Comparison Page - Redirect
+        ...(validatedData.comparisonRedirectEnabled !== undefined && { comparisonRedirectEnabled: validatedData.comparisonRedirectEnabled }),
+
         // Comparison Page - Hero
         ...(validatedData.comparisonTitle !== undefined && { comparisonTitle: validatedData.comparisonTitle }),
         ...(validatedData.comparisonSubtitle !== undefined && { comparisonSubtitle: validatedData.comparisonSubtitle }),
         ...(validatedData.comparisonHeroImage !== undefined && { comparisonHeroImage: validatedData.comparisonHeroImage }),
+        ...(validatedData.comparisonProductOrder !== undefined && { comparisonProductOrder: validatedData.comparisonProductOrder }),
 
         // Comparison Page - Top 3 Bar
         ...(validatedData.comparisonTop3Enabled !== undefined && { comparisonTop3Enabled: validatedData.comparisonTop3Enabled }),
         ...(validatedData.comparisonTop3Title !== undefined && { comparisonTop3Title: validatedData.comparisonTop3Title }),
         ...(validatedData.comparisonTop3ProductIds !== undefined && { comparisonTop3ProductIds: validatedData.comparisonTop3ProductIds }),
         ...(validatedData.comparisonTop3Ribbon !== undefined && { comparisonTop3Ribbon: validatedData.comparisonTop3Ribbon }),
+        ...(validatedData.comparisonTop3ProductData !== undefined && { comparisonTop3ProductData: validatedData.comparisonTop3ProductData }),
 
         // Comparison Page - Right Sidebar
         ...(validatedData.comparisonRightSidebarEnabled !== undefined && { comparisonRightSidebarEnabled: validatedData.comparisonRightSidebarEnabled }),
@@ -248,7 +255,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
         ...(validatedData.comparisonSocialProofCount !== undefined && { comparisonSocialProofCount: validatedData.comparisonSocialProofCount }),
         ...(validatedData.comparisonScoreBreakdown !== undefined && { comparisonScoreBreakdown: validatedData.comparisonScoreBreakdown }),
 
-        // Comparison Page - Below FAQ Content
+        // Comparison Page - Below FAQ Content (Wysiwyg)
         ...(validatedData.comparisonBelowFaqContent !== undefined && { comparisonBelowFaqContent: validatedData.comparisonBelowFaqContent }),
 
         // SEO

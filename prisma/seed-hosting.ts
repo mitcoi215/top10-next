@@ -1,6 +1,6 @@
 /**
  * Seed script for Hosting category
- * Data scraped from top10.com/hosting template
+ * Data scraped from 10rating/hosting template
  *
  * Run with: npx ts-node prisma/seed-hosting.ts
  */
@@ -16,7 +16,7 @@ async function seedHostingCategory() {
   const author = await prisma.author.upsert({
     where: { slug: 'cameron-coward' },
     update: {
-      bio: 'Cameron Coward writes for Top10.com and is a former mechanical designer, tech enthusiast, writer and published author. His experience as a tech writer spans 15 years, during which time he has written thousands of articles for a number of leading publications.',
+      bio: 'Cameron Coward writes for 10rating and is a former mechanical designer, tech enthusiast, writer and published author. His experience as a tech writer spans 15 years, during which time he has written thousands of articles for a number of leading publications.',
       socialLinks: {
         website: 'https://cameroncoward.com/',
         twitter: 'https://twitter.com/cameron_coward',
@@ -26,9 +26,9 @@ async function seedHostingCategory() {
     create: {
       slug: 'cameron-coward',
       name: 'Cameron Coward',
-      avatar: 'https://images.top10.com/c_fill,f_auto,g_faces,q_auto,w_88/v1/production/authors/uploads/photo/CameronCoward.20230101074410.jpg',
+      avatar: 'https://images.10rating/c_fill,f_auto,g_faces,q_auto,w_88/v1/production/authors/uploads/photo/CameronCoward.20230101074410.jpg',
       title: 'Tech Writer',
-      bio: 'Cameron Coward writes for Top10.com and is a former mechanical designer, tech enthusiast, writer and published author. His experience as a tech writer spans 15 years, during which time he has written thousands of articles for a number of leading publications.',
+      bio: 'Cameron Coward writes for 10rating and is a former mechanical designer, tech enthusiast, writer and published author. His experience as a tech writer spans 15 years, during which time he has written thousands of articles for a number of leading publications.',
       socialLinks: {
         website: 'https://cameroncoward.com/',
         twitter: 'https://twitter.com/cameron_coward',
@@ -156,7 +156,7 @@ async function seedHostingCategory() {
       methodologyCriteria: methodologyCriteria,
 
       // Compare Box
-      compareBoxTitle: 'Compare With Top10.com, Choose the Best for You',
+      compareBoxTitle: 'Compare With 10rating, Choose the Best for You',
       compareBoxDescription: 'Our team of hosting experts evaluates each service to help you make an informed decision.',
       compareBoxStats: '50+ Hosting Services Evaluated',
 
@@ -200,7 +200,7 @@ async function seedHostingCategory() {
   });
   console.log('Hosting category updated:', category.name);
 
-  // 8. Create/Update Products - Data scraped from top10.com template
+  // 8. Create/Update Products - Data scraped from 10rating template
   // Now includes extended mini-review data: highlights, pros, cons, heroSummary
   const hostingProducts = [
     {
@@ -209,7 +209,7 @@ async function seedHostingCategory() {
       rank: 1,
       ribbon: 'Free Domain',
       bestFor: 'Best Overall Value',
-      logoUrl: 'https://media.top10.com/images/ionos-hosting.svg',
+      logoUrl: 'https://media.10rating/images/ionos-hosting.svg',
       bottomLine: 'Secure WordPress hosting with faster loading speeds & flexible access',
       basePrice: '$1/mo',
       ctaText: 'Visit Site',
@@ -300,7 +300,7 @@ async function seedHostingCategory() {
       name: 'GoDaddy',
       rank: 2,
       bestFor: 'Best for Domain Management',
-      logoUrl: 'https://media.top10.com/images/GoDaddyHosting.svg',
+      logoUrl: 'https://media.10rating/images/GoDaddyHosting.svg',
       bottomLine: 'Reliable hosting with free domain & easy website builder tools',
       basePrice: '$5.99/mo',
       ctaText: 'Visit Site',
@@ -342,7 +342,7 @@ async function seedHostingCategory() {
       rank: 3,
       ribbon: 'WordPress Recommended',
       bestFor: 'Best for WordPress',
-      logoUrl: 'https://media.top10.com/images/bluehost.svg',
+      logoUrl: 'https://media.10rating/images/bluehost.svg',
       bottomLine: 'Official WordPress recommended hosting with easy 1-click install',
       basePrice: '$2.95/mo',
       ctaText: 'Visit Site',
@@ -383,7 +383,7 @@ async function seedHostingCategory() {
       name: 'SiteGround',
       rank: 4,
       bestFor: 'Best for E-commerce',
-      logoUrl: 'https://media.top10.com/images/siteground.svg',
+      logoUrl: 'https://media.10rating/images/siteground.svg',
       bottomLine: 'Premium hosting with AI site-building tools & top-tier support',
       basePrice: '$2.99/mo',
       ctaText: 'Visit Site',
@@ -424,7 +424,7 @@ async function seedHostingCategory() {
       name: 'Network Solutions',
       rank: 5,
       bestFor: 'Best for Domain Services',
-      logoUrl: 'https://media.top10.com/images/NetworkSolutions.svg',
+      logoUrl: 'https://media.10rating/images/NetworkSolutions.svg',
       bottomLine: 'Trusted domain registrar with reliable web hosting solutions',
       basePrice: '$5.69/mo',
       ctaText: 'Visit Site',
@@ -465,7 +465,7 @@ async function seedHostingCategory() {
       name: 'Hostinger',
       rank: 6,
       bestFor: 'Best Budget Option',
-      logoUrl: 'https://media.top10.com/images/hostinger.svg',
+      logoUrl: 'https://media.10rating/images/hostinger.svg',
       bottomLine: 'Affordable hosting with fast performance & 99.9% uptime guarantee',
       basePrice: '$2.99/mo',
       ctaText: 'Visit Site',
@@ -506,7 +506,7 @@ async function seedHostingCategory() {
       name: 'HostGator',
       rank: 7,
       bestFor: 'Best for Beginners',
-      logoUrl: 'https://media.top10.com/images/hostgator.svg',
+      logoUrl: 'https://media.10rating/images/hostgator.svg',
       bottomLine: 'User-friendly hosting with unmetered bandwidth & 45-day guarantee',
       basePrice: '$2.75/mo',
       ctaText: 'Visit Site',
@@ -547,7 +547,7 @@ async function seedHostingCategory() {
       name: 'DreamHost',
       rank: 8,
       bestFor: 'Best for Developers',
-      logoUrl: 'https://media.top10.com/images/dreamhost.svg',
+      logoUrl: 'https://media.10rating/images/dreamhost.svg',
       bottomLine: 'Developer-friendly hosting with 97-day money-back guarantee',
       basePrice: '$2.59/mo',
       ctaText: 'Visit Site',
@@ -588,7 +588,7 @@ async function seedHostingCategory() {
       name: 'A2 Hosting',
       rank: 9,
       bestFor: 'Best for Speed',
-      logoUrl: 'https://media.top10.com/images/a2hosting.svg',
+      logoUrl: 'https://media.10rating/images/a2hosting.svg',
       bottomLine: 'High-speed hosting with Turbo Servers for 20X faster performance',
       basePrice: '$2.99/mo',
       ctaText: 'Visit Site',
@@ -629,7 +629,7 @@ async function seedHostingCategory() {
       name: 'Namecheap',
       rank: 10,
       bestFor: 'Best Transparent Pricing',
-      logoUrl: 'https://media.top10.com/images/namecheap.svg',
+      logoUrl: 'https://media.10rating/images/namecheap.svg',
       bottomLine: 'Budget-friendly hosting with transparent pricing & free SSL',
       basePrice: '$1.58/mo',
       ctaText: 'Visit Site',

@@ -7,7 +7,7 @@ interface TrustSectionProps {
 
 export default function TrustSection({
   title = 'How do I know I can trust this review?',
-  content = 'Top10.com authors, contributors, and editors are serious about research. We combine our own experience with the services we recommend, with reviews that come from verified users–just like you! Together, with reviews from industry experts, we find the Top 10 best products and services to make sure you can choose with confidence and ease.',
+  content = '10rating authors, contributors, and editors are serious about research. We combine our own experience with the services we recommend, with reviews that come from verified users–just like you! Together, with reviews from industry experts, we find the Top 10 best products and services to make sure you can choose with confidence and ease.',
 }: TrustSectionProps) {
   return (
     <div className="trust-section" data-testid="trust-section">

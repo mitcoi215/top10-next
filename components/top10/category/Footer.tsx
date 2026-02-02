@@ -6,17 +6,18 @@ export default function Footer() {
       <section className="css-1uchtww">
         {/* Logo */}
         <div className="css-1h0wnoe">
-          <Link href="/" data-testid="site-logo" className="css-ov1ktg">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              className="css-15m83jm"
-              src="/top10-images/top10-logo.svg"
-              alt="Top10"
-              loading="lazy"
-              width="320"
-              height="50"
-            />
-          </Link>
+          <a href="/" data-testid="site-logo" className="ni-ov1ktg">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                className="ni-15m83jm"
+                src="/logo.png"
+                alt="Top10"
+                loading="lazy"
+                width="320"
+                height="50"
+              />
+              <div>Rating</div>
+            </a>
         </div>
 
         {/* Copyright */}
@@ -46,7 +47,7 @@ export default function Footer() {
           <div data-testid="disclosure-container" className="css-1scy9uy">
             <div className="css-yj9kw3">
               <p>
-                Top10.com is designed to help users make confident decisions online, this website contains information
+                10rating is designed to help users make confident decisions online, this website contains information
                 about a wide range of products and services. Certain details, including but not limited to prices and
                 special offers, are provided to us directly from our partners and are dynamic and subject to change at
                 any time without prior notice. Though based on meticulous research, the information we share does not

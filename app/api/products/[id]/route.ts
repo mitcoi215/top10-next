@@ -173,6 +173,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
         ...(validatedData.scores !== undefined && { scores: validatedData.scores }),
         ...(validatedData.highlights !== undefined && { highlights: validatedData.highlights }),
         ...(validatedData.features !== undefined && { features: validatedData.features }),
+        ...(validatedData.comparisonFeatures !== undefined && { comparisonFeatures: validatedData.comparisonFeatures }),
         ...(validatedData.quote !== undefined && { quote: validatedData.quote }),
 
         // Review Content

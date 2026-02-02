@@ -92,16 +92,21 @@ export const CategoryCreateSchema = z.object({
   // FAQs
   faqs: z.array(FaqItemSchema).optional().default([]),
 
+  // Comparison Page - Redirect
+  comparisonRedirectEnabled: z.boolean().optional().default(false),
+
   // Comparison Page - Hero
   comparisonTitle: z.string().optional().nullable(),
   comparisonSubtitle: z.string().optional().nullable(),
   comparisonHeroImage: z.string().optional().nullable(),
+  comparisonProductOrder: z.array(z.string()).optional().default([]),
 
   // Comparison Page - Top 3 Bar
   comparisonTop3Enabled: z.boolean().optional().default(false),
   comparisonTop3Title: z.string().optional().nullable(),
   comparisonTop3ProductIds: z.array(z.string()).optional().default([]),
   comparisonTop3Ribbon: z.string().optional().nullable(),
+  comparisonTop3ProductData: z.any().optional().nullable(),
 
   // Comparison Page - Right Sidebar
   comparisonRightSidebarEnabled: z.boolean().optional().default(false),
@@ -112,7 +117,7 @@ export const CategoryCreateSchema = z.object({
   comparisonSocialProofCount: z.string().optional().nullable(),
   comparisonScoreBreakdown: z.array(ScoreBreakdownItemSchema).optional().default([]),
 
-  // Comparison Page - Below FAQ Content
+  // Comparison Page - Below FAQ Content (Rich Text / Wysiwyg)
   comparisonBelowFaqContent: z.string().optional().nullable(),
 
   // SEO
