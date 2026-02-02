@@ -205,14 +205,6 @@ export default async function ComparePage({ params }: PageProps) {
       {/* Main Content: 3-column layout (left sidebar | center chart | right sidebar) */}
       <main data-role="chart" className="compare-main">
         <div className="compare-main__row">
-          {/* Left Sidebar (social proof, score disclaimer, must reads, reviews) */}
-          <ComparisonSidebar
-            categoryName={category.name}
-            categorySlug={categorySlug}
-            articles={articles}
-            reviewProducts={reviewProducts}
-          />
-
           <div className="compare-main__center">
 
             {/* Chart Body - Product Cards (vertical stack) */}
@@ -243,7 +235,14 @@ export default async function ComparePage({ params }: PageProps) {
 
           {/* Best Overall Sidebar (desktop only, right side) */}
           <aside className="compare-sidebar">
-            {bestProduct && (
+            {/* Left Sidebar (social proof, score disclaimer, must reads, reviews) */}
+          <ComparisonSidebar
+            categoryName={category.name}
+            categorySlug={categorySlug}
+            articles={articles}
+            reviewProducts={reviewProducts}
+          />
+            {/* {bestProduct && (
               <div className="compare-best-overall">
                 <div className="compare-best-overall__title">
                   Our Best {category.name} Provider
@@ -267,7 +266,7 @@ export default async function ComparePage({ params }: PageProps) {
                   />
                 </div>
               </div>
-            )}
+            )} */}
           </aside>
         </div>
 
