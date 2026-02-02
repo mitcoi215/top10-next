@@ -922,14 +922,31 @@
 }
 
 .top3-card__score-label {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--color-body-1);
+      box-sizing: border-box;
+    margin: 0;
+    min-width: 0;
+    padding: 0;
+    font-family: hurmegeometricsans_no3_6, Gilroy, Almarai, Arial, sans-serif;
+    font-weight: 400;
+    display: block;
+    color: #106197;
+    font-weight: 600;
+    line-height: 14px;
+    text-align: end;
+    max-width: 108px;
+    text-transform: capitalize;
+    width: -webkit-max-content;
+    width: -moz-max-content;
+    width: max-content;
 }
 
 .top3-card__score-stars svg {
   width: 80px;
   height: 16px;
+
 }
 
 .top3-card__score-value-wrap {
