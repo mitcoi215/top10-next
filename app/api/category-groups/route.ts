@@ -19,6 +19,7 @@ export async function GET() {
             name: true,
             slug: true,
             icon: true,
+            showInHero: true,
           },
         },
       },

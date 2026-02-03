@@ -36,6 +36,7 @@ async function getHomepageData() {
         name: true,
         icon: true,
         categories: {
+          where: { showInHero: true },
           orderBy: { order: 'asc' },
           select: {
             id: true,

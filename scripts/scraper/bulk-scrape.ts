@@ -11,9 +11,24 @@ const ARTICLES_LIMIT = 10;
 /**
  * TỰ ĐỘNG LẤY DANH SÁCH CATEGORY BẰNG PLAYWRIGHT
  */
+// Danh sách categories cố định (đảm bảo không bỏ sót)
+const FIXED_CATEGORIES = [
+  // Lifestyle
+  'dating', 'meal-delivery', 'tv-services', 'mobile-plans', 'language-learning',
+  // Health & Wellness
+  'online-therapy', 'medical-alerts', 'hearing-aid', 'dna-testing',
+  // Home
+  'moving-companies', 'home-warranty', 'home-security', 'internet-providers',
+  // Business
+  'crm', 'website-builders', 'hosting', 'legal-services', 'project-management',
+  'voip', 'pos', 'payroll', 'merchant-services', 'accounting-software',
+  // Security
+  'background-check', 'id-theft', 'cyber-security', 'vpn',
+];
+
 async function discoverCategories(): Promise<string[]> {
   console.log('🔍 [Playwright] Đang quét danh sách Category từ 10rating...');
-  
+
   const browser = await chromium.launch({ headless: true });
   const context = await browser.newContext({
     userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
@@ -23,7 +38,7 @@ async function discoverCategories(): Promise<string[]> {
 
   try {
     // Điều hướng đến trang chủ
-    await page.goto('https://www.10rating/', { waitUntil: 'networkidle' });
+    await page.goto('https://www.top10.com/', { waitUntil: 'networkidle' });
 
     // Lấy tất cả các href từ thẻ <a>
     const hrefs = await page.evaluate(() => {
@@ -50,25 +65,16 @@ async function discoverCategories(): Promise<string[]> {
       }
     });
 
+    // Merge discovered categories với danh sách cố định
+    FIXED_CATEGORIES.forEach(cat => categories.add(cat));
+
     const result = Array.from(categories);
-    console.log(`✅ Đã tìm thấy ${result.length} danh mục tự động.`);
+    console.log(`✅ Đã tìm thấy ${result.length} danh mục (discovered + fixed).`);
     return result;
 
   } catch (error) {
-    console.error('❌ Lỗi Playwright khi quét danh sách, dùng danh sách dự phòng.');
-    return [
-      // Lifestyle
-      'dating', 'meal-delivery', 'tv-services', 'mobile-plans', 'language-learning',
-      // Health & Wellness
-      'online-therapy', 'medical-alerts', 'hearing-aid', 'dna-testing',
-      // Home
-      'moving-companies', 'home-warranty', 'home-security', 'internet-providers',
-      // Business
-      'crm', 'website-builders', 'hosting', 'legal-services', 'project-management',
-      'voip', 'pos', 'payroll', 'merchant-services', 'accounting-software',
-      // Security
-      'background-check', 'id-theft', 'cyber-security', 'vpn',
-    ];
+    console.error('❌ Lỗi Playwright khi quét danh sách, dùng danh sách cố định.');
+    return FIXED_CATEGORIES;
   } finally {
     await browser.close();
   }
@@ -101,6 +107,8 @@ async function runBulkScrape() {
 
     try {
       // 1. GỌI SCRIPT INDEX.TS (CÀO DỮ LIỆU)
+      // Lưu ý: không dùng --headless=no trong bulk mode vì sẽ mở quá nhiều browser
+      // Thay vào đó, index.ts đã có waitForTimeout để đợi page load
       let scrapeCmd = `npx tsx scripts/scraper/index.ts ${category} --comparison --articles-limit=${ARTICLES_LIMIT}`;
       if (scrapeArticles) scrapeCmd += ' --articles';
       if (noReviews) scrapeCmd += ' --no-reviews';

@@ -106,6 +106,7 @@ async function main() {
           compareHref: catData.compareHref,
           groupId: group.id,
           order: catOrder,
+          showInHero: true,
         },
         create: {
           slug: catData.slug,
@@ -115,6 +116,7 @@ async function main() {
           compareHref: catData.compareHref,
           groupId: group.id,
           order: catOrder,
+          showInHero: true,
         },
       });
 

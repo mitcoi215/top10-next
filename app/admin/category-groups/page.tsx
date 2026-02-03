@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { CLOUDINARY_CONFIG } from '@/lib/cloudinary.config';
 
@@ -9,6 +9,7 @@ interface Category {
   name: string;
   slug: string;
   icon?: string;
+  showInHero?: boolean;
 }
 
 interface CategoryGroup {
@@ -27,6 +28,8 @@ export default function CategoryGroupsPage() {
   const [editingGroup, setEditingGroup] = useState<CategoryGroup | null>(null);
   const [saving, setSaving] = useState(false);
   const [uploadingIcon, setUploadingIcon] = useState(false);
+  const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
+  const [togglingHero, setTogglingHero] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Form state
@@ -245,6 +248,65 @@ export default function CategoryGroupsPage() {
     }
   };
 
+  const toggleExpand = (groupId: string) => {
+    setExpandedGroups(prev => {
+      const next = new Set(prev);
+      if (next.has(groupId)) next.delete(groupId);
+      else next.add(groupId);
+      return next;
+    });
+  };
+
+  const toggleShowInHero = async (categoryId: string, currentValue: boolean) => {
+    setTogglingHero(categoryId);
+    const token = localStorage.getItem('admin_token');
+    try {
+      const res = await fetch(`/api/categories/${categoryId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ showInHero: !currentValue }),
+      });
+      if (res.ok) {
+        setGroups(groups.map(g => ({
+          ...g,
+          categories: g.categories.map(c =>
+            c.id === categoryId ? { ...c, showInHero: !currentValue } : c
+          ),
+        })));
+      }
+    } catch (error) {
+      console.error('Toggle showInHero failed:', error);
+    } finally {
+      setTogglingHero(null);
+    }
+  };
+
+  const markAllInGroup = async (groupId: string, value: boolean) => {
+    const group = groups.find(g => g.id === groupId);
+    if (!group) return;
+    const token = localStorage.getItem('admin_token');
+    for (const cat of group.categories) {
+      if (cat.showInHero !== value) {
+        await fetch(`/api/categories/${cat.id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ showInHero: value }),
+        });
+      }
+    }
+    setGroups(groups.map(g =>
+      g.id === groupId
+        ? { ...g, categories: g.categories.map(c => ({ ...c, showInHero: value })) }
+        : g
+    ));
+  };
+
   return (
     <div className="groups-page">
       <div className="page-header">
@@ -274,7 +336,8 @@ export default function CategoryGroupsPage() {
       ) : (
         <div className="groups-list">
           {groups.map((group, index) => (
-            <div key={group.id} className="group-card">
+            <React.Fragment key={group.id}>
+            <div className="group-card">
               <div className="group-order">
                 <button
                   onClick={() => moveGroup(group.id, 'up')}
@@ -313,18 +376,16 @@ export default function CategoryGroupsPage() {
                 </span>
               </div>
 
-              <div className="group-categories">
-                {group.categories.slice(0, 3).map(cat => (
-                  <span key={cat.id} className="category-tag">
-                    {cat.icon && !cat.icon.startsWith('/') ? cat.icon : ''} {cat.name}
-                  </span>
-                ))}
-                {group.categories.length > 3 && (
-                  <span className="more-tag">+{group.categories.length - 3} thêm</span>
-                )}
+              <div className="group-categories-summary">
+                <span className="hero-count">
+                  {group.categories.filter(c => c.showInHero).length}/{group.categories.length} hiện Hero
+                </span>
               </div>
 
               <div className="group-actions">
+                <button onClick={() => toggleExpand(group.id)} className="btn-expand">
+                  {expandedGroups.has(group.id) ? '▾ Thu gọn' : '▸ Chi tiết'}
+                </button>
                 <button onClick={() => openEditModal(group)} className="btn-edit">
                   Sửa
                 </button>
@@ -333,6 +394,42 @@ export default function CategoryGroupsPage() {
                 </button>
               </div>
             </div>
+
+            {/* Expanded category list with showInHero toggles */}
+            {expandedGroups.has(group.id) && (
+              <div className="group-expanded">
+                <div className="expanded-header">
+                  <span>Danh mục trong nhóm <strong>{group.name}</strong></span>
+                  <div className="bulk-actions">
+                    <button onClick={() => markAllInGroup(group.id, true)} className="btn-mark-all">Bật tất cả</button>
+                    <button onClick={() => markAllInGroup(group.id, false)} className="btn-mark-all off">Tắt tất cả</button>
+                  </div>
+                </div>
+                {group.categories.length === 0 ? (
+                  <div className="no-cats">Chưa có danh mục nào trong nhóm này</div>
+                ) : (
+                  <div className="cat-list">
+                    {group.categories.map(cat => (
+                      <div key={cat.id} className="cat-row">
+                        <span className="cat-name">{cat.name}</span>
+                        <span className="cat-slug">/{cat.slug}</span>
+                        <label className="toggle-label">
+                          <span className="toggle-text">{cat.showInHero ? 'Hiện' : 'Ẩn'}</span>
+                          <button
+                            className={`toggle-btn ${cat.showInHero ? 'on' : 'off'}`}
+                            onClick={() => toggleShowInHero(cat.id, !!cat.showInHero)}
+                            disabled={togglingHero === cat.id}
+                          >
+                            <span className="toggle-knob" />
+                          </button>
+                        </label>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+            </React.Fragment>
           ))}
         </div>
       )}
@@ -593,30 +690,171 @@ export default function CategoryGroupsPage() {
           color: #6b7280;
         }
 
-        .group-categories {
+        .group-categories-summary {
           flex: 1;
           display: flex;
-          flex-wrap: wrap;
-          gap: 6px;
+          align-items: center;
+          gap: 8px;
         }
 
-        .category-tag {
-          font-size: 12px;
-          background: #f3f4f6;
-          padding: 4px 8px;
-          border-radius: 4px;
-          color: #374151;
-        }
-
-        .more-tag {
-          font-size: 12px;
+        .hero-count {
+          font-size: 13px;
           color: #6b7280;
-          padding: 4px;
+          background: #f0fdf4;
+          border: 1px solid #bbf7d0;
+          padding: 3px 10px;
+          border-radius: 12px;
         }
 
         .group-actions {
           display: flex;
           gap: 8px;
+        }
+
+        .btn-expand {
+          padding: 6px 14px;
+          border-radius: 4px;
+          font-size: 13px;
+          cursor: pointer;
+          background: #eff6ff;
+          color: #2563eb;
+          border: 1px solid #bfdbfe;
+        }
+
+        .btn-expand:hover {
+          background: #dbeafe;
+        }
+
+        .group-expanded {
+          background: #f9fafb;
+          border-radius: 0 0 8px 8px;
+          margin-top: -8px;
+          padding: 16px 20px;
+          border: 1px solid #e5e7eb;
+          border-top: none;
+        }
+
+        .expanded-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 12px;
+          font-size: 13px;
+          color: #374151;
+        }
+
+        .bulk-actions {
+          display: flex;
+          gap: 8px;
+        }
+
+        .btn-mark-all {
+          padding: 4px 12px;
+          font-size: 12px;
+          border-radius: 4px;
+          cursor: pointer;
+          background: #10b981;
+          color: white;
+          border: none;
+        }
+
+        .btn-mark-all.off {
+          background: #6b7280;
+        }
+
+        .btn-mark-all:hover {
+          opacity: 0.9;
+        }
+
+        .no-cats {
+          font-size: 13px;
+          color: #9ca3af;
+          text-align: center;
+          padding: 16px;
+        }
+
+        .cat-list {
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+        }
+
+        .cat-row {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 8px 12px;
+          background: white;
+          border-radius: 6px;
+          border: 1px solid #e5e7eb;
+        }
+
+        .cat-name {
+          font-size: 14px;
+          font-weight: 500;
+          min-width: 180px;
+        }
+
+        .cat-slug {
+          font-size: 12px;
+          color: #9ca3af;
+          font-family: monospace;
+          flex: 1;
+        }
+
+        .toggle-label {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          margin-left: auto;
+        }
+
+        .toggle-text {
+          font-size: 12px;
+          color: #6b7280;
+          min-width: 30px;
+        }
+
+        .toggle-btn {
+          position: relative;
+          width: 40px;
+          height: 22px;
+          border-radius: 11px;
+          border: none;
+          cursor: pointer;
+          transition: background 0.2s;
+          padding: 0;
+        }
+
+        .toggle-btn.on {
+          background: #10b981;
+        }
+
+        .toggle-btn.off {
+          background: #d1d5db;
+        }
+
+        .toggle-btn:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+
+        .toggle-knob {
+          position: absolute;
+          top: 2px;
+          width: 18px;
+          height: 18px;
+          border-radius: 50%;
+          background: white;
+          transition: left 0.2s;
+        }
+
+        .toggle-btn.on .toggle-knob {
+          left: 20px;
+        }
+
+        .toggle-btn.off .toggle-knob {
+          left: 2px;
         }
 
         .btn-edit, .btn-delete {

@@ -94,6 +94,7 @@ export const CategoryCreateSchema = z.object({
 
   // Comparison Page - Redirect
   comparisonRedirectEnabled: z.boolean().optional().default(false),
+  showInHero: z.boolean().optional().default(false),
 
   // Comparison Page - Hero
   comparisonTitle: z.string().optional().nullable(),

@@ -1,7 +1,7 @@
 {
   "category": {
     "slug": "antivirus",
-    "metaTitle": "Top 10 Tech Lists | 10rating",
+    "metaTitle": "Top 10 Tech Lists | Top10.com",
     "metaDescription": "Make better decisions on everything from VPN services to headphones, with these trusted sources",
     "heroTitle": "Top 10 Tech Lists",
     "name": "Antivirus"
@@ -13,63 +13,45 @@
     "products": [
       {
         "position": 1,
-        "name": "Norton",
-        "slug": "norton",
-        "productId": "12645",
-        "logoUrl": "https://images.10rating/iu/f_auto/q_auto/v1/production/products/uploads/photo/thumb-Logo260x100-Norton.20220801122606.png",
-        "overallScore": 9.8,
-        "scoreLabel": "Exceptional",
-        "bottomLine": "Powerful antivirus protection to keep all your devices secure",
-        "ribbon": "Our Most Popular",
-        "features": [
-          "60-day money-back guarantee",
-          "Real-time cyber protection",
-          "Built-in, AI-powered Scam Protection",
-          "Save up to 58% today"
-        ],
-        "ctaUrl": "/v?product_id=12645&url=https%3A%2F%2Fwww.jdoqocy.com%2Fclick-7121518-10506010%3Fsid%3D%5Btracking-subid%5D&rank=1&bi=%7B%22blrs%22%3A94107%2C%22utm_source%22%3A%22Direct%22%7D&comp_iid=eda3fe88-8999-4d22-81e6-7461cb17e5d8&uid=jUSC6QPC9uCO3x603d89&riid=JdKLpK6HiICcRM694rvk&tkn=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiY21zIiwidmVyc2lvbiI6MSwiaGFzaCI6Ii9VOGVJWDdrdWg2ZS9ZWm1MVHFIVUx5c0E3MD0iLCJpYXQiOjE3NzAwNDA1MDQsImV4cCI6MTc3MDEyNjkwNH0.j837BcUjfgRpJwKeF-lTsnxOF-gI8cicrjwt8BIOn3g",
-        "ctaText": "Visit Site"
-      },
-      {
-        "position": 2,
         "name": "TotalAV",
         "slug": "totalav",
         "productId": "12647",
-        "logoUrl": "https://images.10rating/iu/f_auto/q_auto/v1/production/products/uploads/photo/TotalAV.20220323142937.png",
-        "overallScore": 9.3,
-        "scoreLabel": "Excellent",
+        "logoUrl": "https://images.top10.com/iu/f_auto/q_auto/v1/production/products/uploads/photo/TotalAV.20220323142937.png",
+        "overallScore": 9.8,
+        "scoreLabel": "Exceptional",
         "bottomLine": "Award-Winning Antivirus, for advanced, dynamic, around-the-clock protection",
         "features": [
           "Protects Windows, Mac, Android & iOS devices",
           "Outstanding malware testing performance scores",
-          "Special discount: Get $80 off today"
+          "Special discount: Get $80 off today",
+          "Trusted by millions of customers worldwide"
         ],
-        "ctaUrl": "/v?product_id=12647&url=http%3A%2F%2Furl.totalav.com%2F68371e9088a98%2Fclick%2FDT_%5Btracking-subid%5D&rank=2&bi=%7B%22blrs%22%3A94713%2C%22utm_source%22%3A%22Direct%22%7D&comp_iid=eda3fe88-8999-4d22-81e6-7461cb17e5d8&uid=jUSC6QPC9uCO3x603d89&riid=JdKLpK6HiICcRM694rvk&tkn=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiY21zIiwidmVyc2lvbiI6MSwiaGFzaCI6ImFGVW9CSUdjU0YzTURldzMzUUJicTFnaWtwTT0iLCJpYXQiOjE3NzAwNDA1MDQsImV4cCI6MTc3MDEyNjkwNH0.7NBd791AXcgDaXhHPmXWrKa0_0jCxo0SXjZZfc9VijI",
+        "ctaUrl": "/v?product_id=12647&url=http%3A%2F%2Furl.totalav.com%2F68371e9088a98%2Fclick%2FDT_%5Btracking-subid%5D&rank=1&bi=%7B%22blrs%22%3A94713%2C%22utm_source%22%3A%22Direct%22%7D&comp_iid=7d23f385-aaa7-4a9c-9c9f-0ecc5217537a&uid=2WJ9dHSN6jjF29513mlw&riid=EnyY6ikZEJ8jxj350ckt&tkn=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiY21zIiwidmVyc2lvbiI6MSwiaGFzaCI6IituRGs1SjhDWUQ3bk9TRnphVHVtWlZLMnB2WT0iLCJpYXQiOjE3NzAwOTU3MzIsImV4cCI6MTc3MDE4MjEzMn0.iIAJWfoOtD0puEYdJ7fb1OcZgUw-jPz2FyaSWdtAW1c",
+        "ctaText": "Visit Site"
+      },
+      {
+        "position": 2,
+        "name": "Norton",
+        "slug": "norton",
+        "productId": "12645",
+        "logoUrl": "https://images.top10.com/iu/f_auto/q_auto/v1/production/products/uploads/photo/thumb-Logo260x100-Norton.20220801122606.png",
+        "overallScore": 9.3,
+        "scoreLabel": "Excellent",
+        "bottomLine": "Powerful antivirus protection to keep all your devices secure",
+        "features": [
+          "60-day money-back guarantee",
+          "Real-time cyber protection",
+          "Built-in, AI-powered Scam Protection"
+        ],
+        "ctaUrl": "/v?product_id=12645&url=https%3A%2F%2Fwww.jdoqocy.com%2Fclick-7121518-10506010%3Fsid%3D%5Btracking-subid%5D&rank=2&bi=%7B%22blrs%22%3A94107%2C%22utm_source%22%3A%22Direct%22%7D&comp_iid=7d23f385-aaa7-4a9c-9c9f-0ecc5217537a&uid=2WJ9dHSN6jjF29513mlw&riid=EnyY6ikZEJ8jxj350ckt&tkn=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiY21zIiwidmVyc2lvbiI6MSwiaGFzaCI6IkFoWEhyYkpRQzhPTG1zeWhTdjliMnQvR0laST0iLCJpYXQiOjE3NzAwOTU3MzIsImV4cCI6MTc3MDE4MjEzMn0.RNmCthrlvDDibHBEymEYcN9Peyq16aVZm-bBZRwgOS8",
         "ctaText": "Visit Site"
       },
       {
         "position": 3,
-        "name": "McAfee",
-        "slug": "mcafee",
-        "productId": "12644",
-        "logoUrl": "https://images.10rating/iu/f_auto/q_auto/v1/production/products/uploads/photo/McAfee-Logo.20220323142737.png",
-        "overallScore": 9.3,
-        "scoreLabel": "Excellent",
-        "bottomLine": "Comprehensive internet security for the whole family",
-        "features": [
-          "Antivirus software for all operating systems",
-          "Secure VPN & ID Theft Protection included",
-          "30-day money-back guarantee"
-        ],
-        "ctaUrl": "/v?product_id=12644&url=https%3A%2F%2Fwww.kqzyfj.com%2Fclick-9109189-15230470%3Fsid%3D%5Btracking-subid%5D&rank=3&bi=%7B%22blrs%22%3A88713%2C%22utm_source%22%3A%22Direct%22%7D&comp_iid=eda3fe88-8999-4d22-81e6-7461cb17e5d8&uid=jUSC6QPC9uCO3x603d89&riid=JdKLpK6HiICcRM694rvk&tkn=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiY21zIiwidmVyc2lvbiI6MSwiaGFzaCI6InJ3T3lKaC9BWjhqUnBXSjUxeXBCdzNZUFlXZz0iLCJpYXQiOjE3NzAwNDA1MDQsImV4cCI6MTc3MDEyNjkwNH0.rAPmVDsxNvwk0-WUkJl86Mms9Ow7RIndM_5j9q8C-hw",
-        "ctaText": "Visit Site"
-      },
-      {
-        "position": 4,
         "name": "Avast",
         "slug": "avast",
         "productId": "553",
-        "logoUrl": "https://images.10rating/iu/f_auto/q_auto/v1/production/products/uploads/photo/large-6avast_Logo.20211103072126.png",
+        "logoUrl": "https://images.top10.com/iu/f_auto/q_auto/v1/production/products/uploads/photo/large-6avast_Logo.20211103072126.png",
         "overallScore": 9.2,
         "scoreLabel": "Excellent",
         "bottomLine": "Award-winning antivirus software that provides you with layers of security",
@@ -78,50 +60,16 @@
           "Protect against remote access attacks",
           "Available on PC, Mac, Android, & iPhone/iPad"
         ],
-        "ctaUrl": "/v?product_id=553&url=http%3A%2F%2Fwww.jdoqocy.com%2Fclick-9109189-17169513%3Fsid%3DNEWROTW_%5Btracking-subid%5D&rank=4&bi=%7B%22blrs%22%3A95486%2C%22utm_source%22%3A%22Direct%22%7D&comp_iid=eda3fe88-8999-4d22-81e6-7461cb17e5d8&uid=jUSC6QPC9uCO3x603d89&riid=JdKLpK6HiICcRM694rvk&tkn=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiY21zIiwidmVyc2lvbiI6MSwiaGFzaCI6ImZqZkxlZ0EyUzJOekNiRk15RUtqOUVXeDhGcz0iLCJpYXQiOjE3NzAwNDA1MDQsImV4cCI6MTc3MDEyNjkwNH0.P7K30aCfru9C1AQljns135RLDhPg1kfyACgZmwNI3EA",
+        "ctaUrl": "/v?product_id=553&url=http%3A%2F%2Fwww.jdoqocy.com%2Fclick-9109189-17169513%3Fsid%3DNEWROTW_%5Btracking-subid%5D&rank=3&bi=%7B%22blrs%22%3A95486%2C%22utm_source%22%3A%22Direct%22%7D&comp_iid=7d23f385-aaa7-4a9c-9c9f-0ecc5217537a&uid=2WJ9dHSN6jjF29513mlw&riid=EnyY6ikZEJ8jxj350ckt&tkn=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiY21zIiwidmVyc2lvbiI6MSwiaGFzaCI6IkpQRWRqTFVicUxpQ21WSHFzYlV5Vy9rdElRZz0iLCJpYXQiOjE3NzAwOTU3MzIsImV4cCI6MTc3MDE4MjEzMn0.H1pkoWAh5YcnpaT8Pxc5lYc5ohECdu2OTYWfxE0PsI0",
         "ctaText": "Visit Site"
       },
       {
-        "position": 5,
-        "name": "Fortect",
-        "slug": "fortect",
-        "productId": "15822",
-        "logoUrl": "https://images.10rating/iu/q_auto/v1/production/partners/uploads/photo/Fortect-Logo.20251008131432.svg",
-        "overallScore": 8,
-        "scoreLabel": "Good",
-        "bottomLine": "Complete antivirus suite with PC repair, driver updates, and secure VPN",
-        "features": [
-          "Scans and fixes Windows errors and updates drivers & OS",
-          "Includes real-time antivirus protection",
-          "Cross-platform VPN for total digital freedom"
-        ],
-        "ctaUrl": "/v?product_id=15822&url=https%3A%2F%2Fwww.fortect.com%2Fgo%2Froute-ni.php%3Fchannel%3Dni%26gclid%3D%5Btracking-subid%5D%26lpx%3Davbl&rank=5&bi=%7B%22blrs%22%3A95371%2C%22utm_source%22%3A%22Direct%22%7D&comp_iid=eda3fe88-8999-4d22-81e6-7461cb17e5d8&uid=jUSC6QPC9uCO3x603d89&riid=JdKLpK6HiICcRM694rvk&tkn=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiY21zIiwidmVyc2lvbiI6MSwiaGFzaCI6Ii9ZalMwWVB0QkVJVE9EbnV1YVRuM0d3Zm5EST0iLCJpYXQiOjE3NzAwNDA1MDQsImV4cCI6MTc3MDEyNjkwNH0.esFYX6ZoGGJk6bdaTUf5wGI2vRu6XlkWywJ5Tu4EKas",
-        "ctaText": "Visit Site"
-      },
-      {
-        "position": 6,
-        "name": "Eset",
-        "slug": "eset",
-        "productId": "556",
-        "logoUrl": "https://images.10rating/iu/f_auto/q_auto/v1/production/products/uploads/photo/big-ESET-logo--Color-Lozenge%201.20210208062051.png",
-        "overallScore": 9,
-        "scoreLabel": "Excellent",
-        "bottomLine": "All-in-one protection of your digital life with worry-free payments",
-        "features": [
-          "Secure browser mode & privacy extension",
-          "For Windows, MacOS, Android & iOS devices",
-          "Fast scans without interruptions"
-        ],
-        "ctaUrl": "/v?product_id=556&url=https%3A%2F%2Fwww.dpbolvw.net%2Fclick-9109189-15906650%3Fsid%3D%5Btracking-subid%5D&rank=6&bi=%7B%22blrs%22%3A88010%2C%22utm_source%22%3A%22Direct%22%7D&comp_iid=eda3fe88-8999-4d22-81e6-7461cb17e5d8&uid=jUSC6QPC9uCO3x603d89&riid=JdKLpK6HiICcRM694rvk&tkn=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiY21zIiwidmVyc2lvbiI6MSwiaGFzaCI6IldpWmR0L3NZZm12U0VGVTFjQmNWY28xdERvOD0iLCJpYXQiOjE3NzAwNDA1MDQsImV4cCI6MTc3MDEyNjkwNH0.ttKebhQcUuGMthIKIzOBGXPoqH0dzbc96_MjnoamdmM",
-        "ctaText": "Visit Site"
-      },
-      {
-        "position": 7,
+        "position": 4,
         "name": "AVG",
         "slug": "avg",
         "productId": "566",
-        "logoUrl": "https://images.10rating/iu/f_auto/q_auto/v1/production/partners/uploads/photo/avg.20180529143706.png",
-        "overallScore": 8.7,
+        "logoUrl": "https://images.top10.com/iu/f_auto/q_auto/v1/production/partners/uploads/photo/avg.20180529143706.png",
+        "overallScore": 8.9,
         "scoreLabel": "Very good",
         "bottomLine": "Safeguard your data with performance and security software",
         "features": [
@@ -129,7 +77,58 @@
           "VPN for private and secure browsing",
           "30-day money-back guarantee"
         ],
-        "ctaUrl": "/v?product_id=566&url=https%3A%2F%2Fwww.jdoqocy.com%2Fclick-7121518-15359634%3Fsid%3D%5Btracking-subid%5D&rank=7&bi=%7B%22blrs%22%3A76778%2C%22utm_source%22%3A%22Direct%22%7D&comp_iid=eda3fe88-8999-4d22-81e6-7461cb17e5d8&uid=jUSC6QPC9uCO3x603d89&riid=JdKLpK6HiICcRM694rvk&tkn=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiY21zIiwidmVyc2lvbiI6MSwiaGFzaCI6IlEyVXM5ak9NV0hLazBlcWtEeWF1ZXR6NUFVUT0iLCJpYXQiOjE3NzAwNDA1MDQsImV4cCI6MTc3MDEyNjkwNH0.skHI0p8QuBVVuKEbw2jmydgtqTbxzZZxVvnrT_gA6N8",
+        "ctaUrl": "/v?product_id=566&url=https%3A%2F%2Fwww.jdoqocy.com%2Fclick-7121518-15359634%3Fsid%3D%5Btracking-subid%5D&rank=4&bi=%7B%22blrs%22%3A76778%2C%22utm_source%22%3A%22Direct%22%7D&comp_iid=7d23f385-aaa7-4a9c-9c9f-0ecc5217537a&uid=2WJ9dHSN6jjF29513mlw&riid=EnyY6ikZEJ8jxj350ckt&tkn=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiY21zIiwidmVyc2lvbiI6MSwiaGFzaCI6IjJvQUc2QUhOaFV0WVpaUjRiSHlubFhmS0RDOD0iLCJpYXQiOjE3NzAwOTU3MzIsImV4cCI6MTc3MDE4MjEzMn0.7JqLDZAABPbEnwgHI_jsU5XCqbURiRJv8gG1dn7onYM",
+        "ctaText": "Visit Site"
+      },
+      {
+        "position": 5,
+        "name": "McAfee",
+        "slug": "mcafee",
+        "productId": "12644",
+        "logoUrl": "https://images.top10.com/iu/f_auto/q_auto/v1/production/products/uploads/photo/McAfee-Logo.20220323142737.png",
+        "overallScore": 9.3,
+        "scoreLabel": "Excellent",
+        "bottomLine": "Comprehensive internet security for the whole family",
+        "features": [
+          "Antivirus software for all operating systems",
+          "Secure VPN & ID Theft Protection included",
+          "30-day money-back guarantee"
+        ],
+        "ctaUrl": "/v?product_id=12644&url=https%3A%2F%2Fwww.kqzyfj.com%2Fclick-9109189-15230470%3Fsid%3D%5Btracking-subid%5D&rank=5&bi=%7B%22blrs%22%3A88713%2C%22utm_source%22%3A%22Direct%22%7D&comp_iid=7d23f385-aaa7-4a9c-9c9f-0ecc5217537a&uid=2WJ9dHSN6jjF29513mlw&riid=EnyY6ikZEJ8jxj350ckt&tkn=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiY21zIiwidmVyc2lvbiI6MSwiaGFzaCI6InRvRTBucnAzSk8wMkc2WEhvaFA0OWNMeEhHTT0iLCJpYXQiOjE3NzAwOTU3MzIsImV4cCI6MTc3MDE4MjEzMn0.Skv7-9Aj5Mp_l88TDJg7geveHQVTPeGGurnTffx0XY4",
+        "ctaText": "Visit Site"
+      },
+      {
+        "position": 6,
+        "name": "Eset",
+        "slug": "eset",
+        "productId": "556",
+        "logoUrl": "https://images.top10.com/iu/f_auto/q_auto/v1/production/products/uploads/photo/big-ESET-logo--Color-Lozenge%201.20210208062051.png",
+        "overallScore": 8.6,
+        "scoreLabel": "Very good",
+        "bottomLine": "All-in-one protection of your digital life with worry-free payments",
+        "features": [
+          "Secure browser mode & privacy extension",
+          "For Windows, MacOS, Android & iOS devices",
+          "Fast scans without interruptions"
+        ],
+        "ctaUrl": "/v?product_id=556&url=https%3A%2F%2Fwww.dpbolvw.net%2Fclick-9109189-15906650%3Fsid%3D%5Btracking-subid%5D&rank=6&bi=%7B%22blrs%22%3A88010%2C%22utm_source%22%3A%22Direct%22%7D&comp_iid=7d23f385-aaa7-4a9c-9c9f-0ecc5217537a&uid=2WJ9dHSN6jjF29513mlw&riid=EnyY6ikZEJ8jxj350ckt&tkn=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiY21zIiwidmVyc2lvbiI6MSwiaGFzaCI6Imx6MmtvcXFZT1lyQ3BISmQ1Wko2VjV1Z0JxWT0iLCJpYXQiOjE3NzAwOTU3MzIsImV4cCI6MTc3MDE4MjEzMn0.bTJSQ1diVn83iYtSf7C2YqrVYQ5ueRkmEhx6gAR9Pnc",
+        "ctaText": "Visit Site"
+      },
+      {
+        "position": 7,
+        "name": "Fortect",
+        "slug": "fortect",
+        "productId": "15822",
+        "logoUrl": "https://images.top10.com/iu/q_auto/v1/production/partners/uploads/photo/Fortect-Logo.20251008131432.svg",
+        "overallScore": 8.2,
+        "scoreLabel": "Good",
+        "bottomLine": "Complete antivirus suite with PC repair, driver updates, and secure VPN",
+        "features": [
+          "Scans and fixes Windows errors and updates drivers & OS",
+          "Includes real-time antivirus protection",
+          "Cross-platform VPN for total digital freedom"
+        ],
+        "ctaUrl": "/v?product_id=15822&url=https%3A%2F%2Fwww.fortect.com%2Fgo%2Froute-ni.php%3Fchannel%3Dni%26gclid%3D%5Btracking-subid%5D%26lpx%3Davbl&rank=7&bi=%7B%22blrs%22%3A95371%2C%22utm_source%22%3A%22Direct%22%7D&comp_iid=7d23f385-aaa7-4a9c-9c9f-0ecc5217537a&uid=2WJ9dHSN6jjF29513mlw&riid=EnyY6ikZEJ8jxj350ckt&tkn=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiY21zIiwidmVyc2lvbiI6MSwiaGFzaCI6Ik9uRmNqaFZKeE1zY0IrTUNZT3kvTXJBU2VOdz0iLCJpYXQiOjE3NzAwOTU3MzIsImV4cCI6MTc3MDE4MjEzMn0.N-CQJF2LnCPyzgu52B_9TQPN6MeE8yN1JHiS1yzniec",
         "ctaText": "Visit Site"
       },
       {
@@ -137,16 +136,16 @@
         "name": "Nord",
         "slug": "nord",
         "productId": "2965",
-        "logoUrl": "https://images.10rating/iu/f_auto/q_auto/v1/production/products/uploads/photo/Logo260X100-2022-NordNew.20221121105730.png",
-        "overallScore": 8.3,
-        "scoreLabel": "Good",
+        "logoUrl": "https://images.top10.com/iu/f_auto/q_auto/v1/production/products/uploads/photo/Logo260X100-2022-NordNew.20221121105730.png",
+        "overallScore": 8.5,
+        "scoreLabel": "Very good",
         "bottomLine": "Block malware, trackers and ads with secure antivirus software",
         "features": [
           "Available on macOS and Windows",
           "Lightweight and easy-to-use",
           "Up to 70% OFF with a 2-year plan"
         ],
-        "ctaUrl": "/v?product_id=2965&url=https%3A%2F%2Fgo.nordvpn.net%2Faff_c%3Foffer_id%3D732%26aff_id%3D508%26url_id%3D22397%26aff_sub%3D%5Btracking-subid%5D&rank=8&bi=%7B%22blrs%22%3A75595%2C%22utm_source%22%3A%22Direct%22%7D&comp_iid=eda3fe88-8999-4d22-81e6-7461cb17e5d8&uid=jUSC6QPC9uCO3x603d89&riid=JdKLpK6HiICcRM694rvk&tkn=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiY21zIiwidmVyc2lvbiI6MSwiaGFzaCI6IkdDb2R0cjFKVVE2MWszbzE3OW42VzA3WmNvST0iLCJpYXQiOjE3NzAwNDA1MDQsImV4cCI6MTc3MDEyNjkwNH0.2Mp3jCAjrIiliQ-PYGsLYK5EeHTJ3OXAAgtVKfHgejY",
+        "ctaUrl": "/v?product_id=2965&url=https%3A%2F%2Fgo.nordvpn.net%2Faff_c%3Foffer_id%3D732%26aff_id%3D508%26url_id%3D22397%26aff_sub%3D%5Btracking-subid%5D&rank=8&bi=%7B%22blrs%22%3A75595%2C%22utm_source%22%3A%22Direct%22%7D&comp_iid=7d23f385-aaa7-4a9c-9c9f-0ecc5217537a&uid=2WJ9dHSN6jjF29513mlw&riid=EnyY6ikZEJ8jxj350ckt&tkn=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiY21zIiwidmVyc2lvbiI6MSwiaGFzaCI6Imo2N0dubUZuNEZxSGpCUzluTHZDZ0VTalg5ST0iLCJpYXQiOjE3NzAwOTU3MzIsImV4cCI6MTc3MDE4MjEzMn0.Vam8smiwOf7v4jTapfe7p-3lZ9S6doHJL8h3FTGcjzs",
         "ctaText": "Visit Site"
       },
       {
@@ -154,7 +153,7 @@
         "name": "Bitdefender",
         "slug": "bitdefender",
         "productId": "12636",
-        "logoUrl": "https://images.10rating/iu/f_auto/q_auto/v1/production/products/uploads/photo/Bitdefender.20220323142338.png",
+        "logoUrl": "https://images.top10.com/iu/f_auto/q_auto/v1/production/products/uploads/photo/Bitdefender.20220323142338.png",
         "overallScore": 8.9,
         "scoreLabel": "Very good",
         "bottomLine": "Detects and blocks cyberthreats in real-time",
@@ -163,7 +162,7 @@
           "AI-powered antivirus",
           "30-day money-back guarantee"
         ],
-        "ctaUrl": "/v?product_id=12636&url=https%3A%2F%2Fbitdefender.f9tmep.net%2Fc%2F34020%2F926056%2F4466%3FsubId1%3DUS_%5Btracking-subid%5D&rank=9&bi=%7B%22blrs%22%3A74556%2C%22utm_source%22%3A%22Direct%22%7D&comp_iid=eda3fe88-8999-4d22-81e6-7461cb17e5d8&uid=jUSC6QPC9uCO3x603d89&riid=JdKLpK6HiICcRM694rvk&tkn=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiY21zIiwidmVyc2lvbiI6MSwiaGFzaCI6IkJTWFFlTXBBT3JqWEVHSkFxVWZJUm5Vd1k3Zz0iLCJpYXQiOjE3NzAwNDA1MDQsImV4cCI6MTc3MDEyNjkwNH0.ReOfJS_JNQjuD_KqZs6pQI5zw7jMVJpkopasKZ0Ne6U",
+        "ctaUrl": "/v?product_id=12636&url=https%3A%2F%2Fbitdefender.f9tmep.net%2Fc%2F34020%2F926056%2F4466%3FsubId1%3DUS_%5Btracking-subid%5D&rank=9&bi=%7B%22blrs%22%3A74556%2C%22utm_source%22%3A%22Direct%22%7D&comp_iid=7d23f385-aaa7-4a9c-9c9f-0ecc5217537a&uid=2WJ9dHSN6jjF29513mlw&riid=EnyY6ikZEJ8jxj350ckt&tkn=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiY21zIiwidmVyc2lvbiI6MSwiaGFzaCI6IjI5MHZKdUFmTkZGbTl6RFFGSGtQUXpMZy95QT0iLCJpYXQiOjE3NzAwOTU3MzIsImV4cCI6MTc3MDE4MjEzMn0.tCDUzHi75wLdBuueArmweOockwLJEVDZ98WyHHmLlos",
         "ctaText": "Visit Site"
       }
     ],
@@ -173,12 +172,35 @@
     "miniReviews": [
       {
         "position": 1,
+        "name": "TotalAV",
+        "slug": "totalav",
+        "productId": "12647",
+        "logoUrl": "https://images.top10.com/iu/f_auto/q_auto/v1/production/products/uploads/photo/TotalAV.20220323142937.png",
+        "overallScore": 9.8,
+        "scoreLabel": "Exceptional",
+        "highlight": "Antivirus for PC, Mac, Android, and iOS devices",
+        "bottomLine": "Antivirus for PC, Mac, Android, and iOS devices",
+        "description": "TotalAV provides users with a comprehensive defense system to protect their computer and mobile devices from the full gamut of cyber threats. The software is easy to install and use, and with a 30-day money back guarantee and very reliable customer service, trying out TotalAV is about as risk free as it gets.",
+        "reviewLink": "/antivirus/reviews/totalav",
+        "pros": [
+          "Advanced antivirus and malware protection",
+          "Resolves system speed issues",
+          "Identifies and deletes duplicate files"
+        ],
+        "cons": [
+          "Lack of results from third party labs"
+        ],
+        "ctaUrl": "/v?product_id=12647&url=http%3A%2F%2Furl.totalav.com%2F68371e9088a98%2Fclick%2FDT_%5Btracking-subid%5D&rank=1&bi=%7B%22blrs%22%3A94713%2C%22utm_source%22%3A%22Direct%22%7D&uid=2WJ9dHSN6jjF29513mlw&riid=EnyY6ikZEJ8jxj350ckt&tkn=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiY21zIiwidmVyc2lvbiI6MSwiaGFzaCI6IituRGs1SjhDWUQ3bk9TRnphVHVtWlZLMnB2WT0iLCJpYXQiOjE3NzAwOTU3MzIsImV4cCI6MTc3MDE4MjEzMn0.iIAJWfoOtD0puEYdJ7fb1OcZgUw-jPz2FyaSWdtAW1c&comp_iid=079f6b82-d5e5-41e6-9d93-0326745f3495",
+        "ctaText": "Shop Now"
+      },
+      {
+        "position": 2,
         "name": "Norton",
         "slug": "norton",
         "productId": "12645",
-        "logoUrl": "https://images.10rating/iu/f_auto/q_auto/v1/production/products/uploads/photo/thumb-Logo260x100-Norton.20220801122606.png",
-        "overallScore": 9.8,
-        "scoreLabel": "Exceptional",
+        "logoUrl": "https://images.top10.com/iu/f_auto/q_auto/v1/production/products/uploads/photo/thumb-Logo260x100-Norton.20220801122606.png",
+        "overallScore": 9.3,
+        "scoreLabel": "Excellent",
         "highlight": "Complete protection for up to 10 devices",
         "bottomLine": "Complete protection for up to 10 devices",
         "description": "Norton gives you easy-to-use protection with in-depth parental controls. Depending on the package, Norton Security includes full antivirus protection, firewall protection, identity and financial protection, parental controls, email and spam blocking, password manager, PC optimization tools and 25 GB online backup storage for up to 10 computers or devices.",
@@ -192,57 +214,33 @@
           "Average detection rates and protection",
           "Overall, average performance"
         ],
-        "ctaUrl": "/v?product_id=12645&url=https%3A%2F%2Fwww.jdoqocy.com%2Fclick-7121518-10506010%3Fsid%3D%5Btracking-subid%5D&rank=1&bi=%7B%22blrs%22%3A94107%2C%22utm_source%22%3A%22Direct%22%7D&uid=jUSC6QPC9uCO3x603d89&riid=JdKLpK6HiICcRM694rvk&tkn=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiY21zIiwidmVyc2lvbiI6MSwiaGFzaCI6Ii9VOGVJWDdrdWg2ZS9ZWm1MVHFIVUx5c0E3MD0iLCJpYXQiOjE3NzAwNDA1MDQsImV4cCI6MTc3MDEyNjkwNH0.j837BcUjfgRpJwKeF-lTsnxOF-gI8cicrjwt8BIOn3g&comp_iid=24b2d543-2f16-4a96-aa42-1091bb0ff195",
-        "ctaText": "Shop Now"
-      },
-      {
-        "position": 2,
-        "name": "TotalAV",
-        "slug": "totalav",
-        "productId": "12647",
-        "logoUrl": "https://images.10rating/iu/f_auto/q_auto/v1/production/products/uploads/photo/TotalAV.20220323142937.png",
-        "overallScore": 9.3,
-        "scoreLabel": "Excellent",
-        "highlight": "Antivirus for PC, Mac, Android, and iOS devices",
-        "bottomLine": "Antivirus for PC, Mac, Android, and iOS devices",
-        "description": "TotalAV provides users with a comprehensive defense system to protect their computer and mobile devices from the full gamut of cyber threats. The software is easy to install and use, and with a 30-day money back guarantee and very reliable customer service, trying out TotalAV is about as risk free as it gets.",
-        "reviewLink": "/antivirus/reviews/totalav",
-        "pros": [
-          "Advanced antivirus and malware protection",
-          "Resolves system speed issues",
-          "Identifies and deletes duplicate files"
-        ],
-        "cons": [
-          "Lack of results from third party labs"
-        ],
-        "ctaUrl": "/v?product_id=12647&url=http%3A%2F%2Furl.totalav.com%2F68371e9088a98%2Fclick%2FDT_%5Btracking-subid%5D&rank=2&bi=%7B%22blrs%22%3A94713%2C%22utm_source%22%3A%22Direct%22%7D&uid=jUSC6QPC9uCO3x603d89&riid=JdKLpK6HiICcRM694rvk&tkn=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiY21zIiwidmVyc2lvbiI6MSwiaGFzaCI6ImFGVW9CSUdjU0YzTURldzMzUUJicTFnaWtwTT0iLCJpYXQiOjE3NzAwNDA1MDQsImV4cCI6MTc3MDEyNjkwNH0.7NBd791AXcgDaXhHPmXWrKa0_0jCxo0SXjZZfc9VijI&comp_iid=24b2d543-2f16-4a96-aa42-1091bb0ff195",
+        "ctaUrl": "/v?product_id=12645&url=https%3A%2F%2Fwww.jdoqocy.com%2Fclick-7121518-10506010%3Fsid%3D%5Btracking-subid%5D&rank=2&bi=%7B%22blrs%22%3A94107%2C%22utm_source%22%3A%22Direct%22%7D&uid=2WJ9dHSN6jjF29513mlw&riid=EnyY6ikZEJ8jxj350ckt&tkn=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiY21zIiwidmVyc2lvbiI6MSwiaGFzaCI6IkFoWEhyYkpRQzhPTG1zeWhTdjliMnQvR0laST0iLCJpYXQiOjE3NzAwOTU3MzIsImV4cCI6MTc3MDE4MjEzMn0.RNmCthrlvDDibHBEymEYcN9Peyq16aVZm-bBZRwgOS8&comp_iid=079f6b82-d5e5-41e6-9d93-0326745f3495",
         "ctaText": "Shop Now"
       },
       {
         "position": 3,
-        "name": "McAfee",
-        "slug": "mcafee",
-        "productId": "12644",
-        "logoUrl": "https://images.10rating/iu/f_auto/q_auto/v1/production/products/uploads/photo/McAfee-Logo.20220323142737.png",
-        "overallScore": 9.3,
+        "name": "Avast",
+        "slug": "avast",
+        "productId": "553",
+        "logoUrl": "https://images.top10.com/iu/f_auto/q_auto/v1/production/products/uploads/photo/large-6avast_Logo.20211103072126.png",
+        "overallScore": 9.2,
         "scoreLabel": "Excellent",
-        "highlight": "Full protection that works on all operating systems",
-        "bottomLine": "Full protection that works on all operating systems",
-        "description": "McAfee is one of the biggest and most trusted names in antivirus software. McAfee provides secure total protection for your computer and devices. No matter which package you choose you will have access to free 24/7 support, parental controls and a 30-day money-back guarantee.",
-        "reviewLink": "/antivirus/reviews/mcafee",
+        "highlight": "Free antivirus software with firewall",
+        "bottomLine": "Free antivirus software with firewall",
+        "description": "Avast offers a comprehensive cybersecurity suite. Avast’s antivirus scanner has been top-rated in independent testing and offers highly customizable scan options. The full suite includes a VPN, secure browser, password manager, and disk cleaner. You can protect up to 30 devices with Avast One, making it a good option for families and small businesses. Avast provides excellent value for money for anyone looking to protect their devices.",
+        "reviewLink": "/antivirus/reviews/avast",
         "pros": [
-          "Easy to use, install and manage",
-          "Above average detection rates and protection",
-          "100% guaranteed virus removal"
+          "Multiple antivirus scan options",
+          "Free antivirus software includes a firewall",
+          "Protects up to 30 devices"
         ],
         "cons": [
-          "Above average price to its counterparts",
-          "Uses more system resources than other antivirus packages"
+          "Free antivirus software runs a superficial scan only"
         ],
-        "ctaUrl": "/v?product_id=12644&url=https%3A%2F%2Fwww.kqzyfj.com%2Fclick-9109189-15230470%3Fsid%3D%5Btracking-subid%5D&rank=3&bi=%7B%22blrs%22%3A88713%2C%22utm_source%22%3A%22Direct%22%7D&uid=jUSC6QPC9uCO3x603d89&riid=JdKLpK6HiICcRM694rvk&tkn=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiY21zIiwidmVyc2lvbiI6MSwiaGFzaCI6InJ3T3lKaC9BWjhqUnBXSjUxeXBCdzNZUFlXZz0iLCJpYXQiOjE3NzAwNDA1MDQsImV4cCI6MTc3MDEyNjkwNH0.rAPmVDsxNvwk0-WUkJl86Mms9Ow7RIndM_5j9q8C-hw&comp_iid=24b2d543-2f16-4a96-aa42-1091bb0ff195",
+        "ctaUrl": "/v?product_id=553&url=http%3A%2F%2Fwww.jdoqocy.com%2Fclick-9109189-17169513%3Fsid%3DNEWROTW_%5Btracking-subid%5D&rank=3&bi=%7B%22blrs%22%3A95486%2C%22utm_source%22%3A%22Direct%22%7D&uid=2WJ9dHSN6jjF29513mlw&riid=EnyY6ikZEJ8jxj350ckt&tkn=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiY21zIiwidmVyc2lvbiI6MSwiaGFzaCI6IkpQRWRqTFVicUxpQ21WSHFzYlV5Vy9rdElRZz0iLCJpYXQiOjE3NzAwOTU3MzIsImV4cCI6MTc3MDE4MjEzMn0.H1pkoWAh5YcnpaT8Pxc5lYc5ohECdu2OTYWfxE0PsI0&comp_iid=079f6b82-d5e5-41e6-9d93-0326745f3495",
         "ctaText": "Shop Now"
       }
     ],
-    "socialProofCount": "913"
+    "socialProofCount": "258"
   }
 }

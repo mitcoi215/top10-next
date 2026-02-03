@@ -78,6 +78,7 @@ model Category {
 
   // Display settings
   featured    Boolean   @default(false)
+  showInHero  Boolean   @default(false) // Show in homepage hero dropdown
   order       Int       @default(0)
 
   // Homepage hero dropdown links
@@ -397,4 +398,19 @@ model HomepageSettings {
   exploreCategories Json?   // [{ groupSlug, groupName, icon, links: [{ title, href }] }]
 
   updatedAt       DateTime  @updatedAt
+}
+
+// ============================================
+// STATIC PAGE - About Us, Privacy Policy, etc.
+// ============================================
+model StaticPage {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  slug            String   @unique  // "about-us", "privacy-policy", "terms-of-use", "cookie-policy"
+  title           String
+  description     String?
+  content         String   // HTML content
+  metaTitle       String?
+  metaDescription String?
+  updatedAt       DateTime @updatedAt
+  createdAt       DateTime @default(now())
 }

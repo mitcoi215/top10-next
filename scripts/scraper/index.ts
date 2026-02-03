@@ -26,7 +26,7 @@ import { log, sleep, retry } from './utils';
 import * as fs from 'fs';
 import * as path from 'path';
 
-const BASE_URL = 'https://www.10rating';
+const BASE_URL = 'https://www.top10.com';
 
 async function main() {
   const categorySlug = process.argv[2];
@@ -114,15 +114,38 @@ async function main() {
     let listingProducts: Partial<ScrapedProduct>[];
 
     if (redirectedToComparison) {
-      // Can't scrape listing page - create minimal category from comparison page
+      // Can't scrape listing page - create minimal category
       category = {
         slug: categorySlug,
         name: categorySlug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
         redirectToComparison: true,
       };
-      listingProducts = [];
-      log(`→ Category: ${category.name} (listing redirected, will use comparison data)`);
-      log(`→ Products from listing: 0 (redirected)`);
+      log(`→ Category: ${category.name} (listing redirected)`);
+
+      // Navigate to /reviews page to get product list
+      const reviewsListUrl = `${BASE_URL}/${categorySlug}/reviews`;
+      log(`→ Fallback: navigating to ${reviewsListUrl} to get product list...`);
+      await page.goto(reviewsListUrl, { waitUntil: 'load', timeout: 30000 });
+      // Wait for product cards to render (JS needs time)
+      await page.waitForSelector('[data-role="chart-product-card"], a[data-role="read-review"]', { timeout: 5000 }).catch(() => {});
+
+      const reviewsPageUrl = page.url();
+      if (reviewsPageUrl.includes('/reviews')) {
+        // Scrape listing-style data from /reviews page (same structure as listing)
+        const result = await scrapeListingPage(page, reviewsListUrl, true);
+        listingProducts = result.products;
+        // Merge any extra category data from reviews page
+        if (result.category.name && result.category.name !== categorySlug) {
+          category.name = result.category.name;
+        }
+        if (result.category.heroImage) category.heroImage = result.category.heroImage;
+        if (result.category.heroTitle) category.heroTitle = result.category.heroTitle;
+        if (result.category.introContent) category.introContent = result.category.introContent;
+        log(`→ Products from /reviews page: ${listingProducts.length}`);
+      } else {
+        listingProducts = [];
+        log(`→ /reviews page also redirected, no products found`);
+      }
     } else {
       // Normal listing scrape (page already loaded)
       const result = await scrapeListingPage(page, listingUrl, true);

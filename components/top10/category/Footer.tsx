@@ -60,7 +60,7 @@ export default function Footer() {
           {/* Navigation Links */}
           <nav data-testid="navigation-menu" className="css-2xl7tm">
             <Link href="/about-us" data-testid="navigation-menu-link" className="css-art7qp">About Us</Link>
-            <Link href="/cookie" data-testid="navigation-menu-link" className="css-art7qp">Cookie Policy</Link>
+            <Link href="/cookie-policy" data-testid="navigation-menu-link" className="css-art7qp">Cookie Policy</Link>
             <Link href="/terms-of-use" data-testid="navigation-menu-link" className="css-art7qp">Terms of Use</Link>
             <Link href="/privacy-policy" data-testid="navigation-menu-link" className="css-art7qp">Privacy Policy</Link>
             <Link href="/sitemap" data-testid="navigation-menu-link" className="css-art7qp">Sitemap</Link>

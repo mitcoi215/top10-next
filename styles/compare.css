@@ -1350,3 +1350,32 @@
 .sidebar-reviews__see-all:hover {
   color: var(--color-info-hover);
 }
+.line-break-title {
+    padding: 8px;
+    margin: 32px 0px;
+    display: flex;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-align-self: stretch;
+    -ms-flex-item-align: stretch;
+    align-self: stretch;
+    gap: 4px;
+    background-color: #FFEDF0;
+}
+.line-break-title h2 {
+    color: var(--color-black-white);
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.4;
+    margin: 0;
+}
+.line-break-title svg {
+    width: 24px;
+    height: 24px;
+    color: #FF4A64;
+    -webkit-flex-shrink: 0;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+}

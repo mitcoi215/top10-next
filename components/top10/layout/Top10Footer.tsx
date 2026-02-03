@@ -3,7 +3,7 @@
 // Footer links - exact from original HTML
 const footerLinks = [
   { href: '/about-us', label: 'About Us' },
-  { href: '/cookie', label: 'Cookie Policy' },
+  { href: '/cookie-policy', label: 'Cookie Policy' },
   { href: '/terms-of-use', label: 'Terms of Use' },
   { href: '/privacy-policy', label: 'Privacy Policy' },
   { href: '/sitemap', label: 'Sitemap' },

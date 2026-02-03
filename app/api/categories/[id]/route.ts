@@ -230,6 +230,9 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
         // FAQs
         ...(validatedData.faqs !== undefined && { faqs: validatedData.faqs }),
 
+        // Display in Hero
+        ...(validatedData.showInHero !== undefined && { showInHero: validatedData.showInHero }),
+
         // Comparison Page - Redirect
         ...(validatedData.comparisonRedirectEnabled !== undefined && { comparisonRedirectEnabled: validatedData.comparisonRedirectEnabled }),
 

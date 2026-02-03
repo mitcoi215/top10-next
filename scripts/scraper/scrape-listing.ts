@@ -345,6 +345,31 @@ export async function scrapeListingPage(
       });
     }
 
+    // Strategy C: review links page (e.g. /project-management/reviews)
+    // When no product cards found, look for review links
+    if (cards.length === 0) {
+      const reviewLinks = document.querySelectorAll('a[href*="/reviews/"]');
+      const seen = new Set<string>();
+      let rank = 1;
+      reviewLinks.forEach(link => {
+        const href = link.getAttribute('href') || '';
+        const match = href.match(/\/reviews\/([^/?#]+)/);
+        if (match && !seen.has(match[1])) {
+          seen.add(match[1]);
+          const name = link.textContent?.trim() || match[1].replace(/-/g, ' ');
+          // Get logo if there's an img inside or near the link
+          const img = link.querySelector('img') || link.closest('[class*="card"], [class*="item"], li, div')?.querySelector('img');
+          cards.push({
+            rank: rank++,
+            name,
+            slug: match[1],
+            reviewHref: href,
+            logoUrl: img?.getAttribute('src') || '',
+          });
+        }
+      });
+    }
+
     return cards;
   });
 
