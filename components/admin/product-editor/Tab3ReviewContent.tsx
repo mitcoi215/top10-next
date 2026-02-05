@@ -30,14 +30,8 @@ export default function Tab3ReviewContent() {
     name: 'cons' as never,
   });
 
-  const { fields: imageFields, append: appendImage, remove: removeImage } = useFieldArray({
-    control,
-    name: 'images' as never,
-  });
-
   const pros = watch('pros') || [];
   const cons = watch('cons') || [];
-  const images = watch('images') || [];
 
   return (
     <div className="tab-review-content">
@@ -243,59 +237,6 @@ export default function Tab3ReviewContent() {
         </div>
       </div>
 
-      <div className="section">
-        <h2 className="section-title">Kết luận</h2>
-        <p className="section-desc">Kết luận cuối cùng và khuyến nghị</p>
-
-        <div className="form-group">
-          <textarea
-            {...register('verdict')}
-            placeholder="Viết kết luận và khuyến nghị cuối cùng..."
-            rows={4}
-          />
-        </div>
-      </div>
-
-      <div className="section">
-        <h2 className="section-title">Thư viện ảnh</h2>
-        <p className="section-desc">Các ảnh bổ sung cho đánh giá</p>
-
-        <div className="images-list">
-          {images.map((_, index) => (
-            <div key={index} className="image-item">
-              <input
-                type="text"
-                {...register(`images.${index}` as const)}
-                placeholder="URL ảnh..."
-              />
-              <button
-                type="button"
-                className="btn-remove"
-                onClick={() => {
-                  const newImages = [...images];
-                  newImages.splice(index, 1);
-                  setValue('images', newImages);
-                }}
-              >
-                ×
-              </button>
-              {images[index] && (
-                <div className="image-thumb">
-                  <img src={images[index]} alt={`Image ${index + 1}`} />
-                </div>
-              )}
-            </div>
-          ))}
-          <button
-            type="button"
-            className="btn-add"
-            onClick={() => setValue('images', [...images, ''])}
-          >
-            + Thêm ảnh
-          </button>
-        </div>
-      </div>
-
       <style jsx>{`
         .tab-review-content {
           display: flex;
@@ -490,39 +431,6 @@ export default function Tab3ReviewContent() {
           padding: 40px;
           text-align: center;
           color: #6b7280;
-        }
-
-        .images-list {
-          display: flex;
-          flex-direction: column;
-          gap: 12px;
-        }
-
-        .image-item {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 8px;
-          align-items: flex-start;
-          padding: 12px;
-          background: #f9fafb;
-          border-radius: 8px;
-        }
-
-        .image-item input {
-          flex: 1;
-          min-width: 200px;
-        }
-
-        .image-thumb {
-          width: 100%;
-          margin-top: 8px;
-        }
-
-        .image-thumb img {
-          max-width: 200px;
-          max-height: 100px;
-          object-fit: contain;
-          border-radius: 4px;
         }
 
         @media (max-width: 768px) {

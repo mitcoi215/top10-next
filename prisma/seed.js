@@ -388,7 +388,7 @@ async function main() {
 
   // ========== STEP 2: Create admin user ==========
   console.log('👤 Creating admin user...');
-  const hashedPassword = await bcrypt.hash('admin123', 10);
+  const hashedPassword = await bcrypt.hash('123456', 10);
   const existingAdmin = await prisma.admin.findUnique({ where: { username: 'admin' } });
 
   if (!existingAdmin) {
@@ -532,7 +532,7 @@ async function main() {
 
   console.log('\n🔑 Admin credentials:');
   console.log('   Username: admin');
-  console.log('   Password: admin123');
+  console.log('   Password: 123456');
 }
 
 main()

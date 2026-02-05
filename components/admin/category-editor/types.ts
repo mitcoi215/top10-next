@@ -10,6 +10,7 @@ export interface CategoryFormData {
   description: string;
   featured: boolean;
   order: number;
+  groupId: string; // Category Group for Hero Section
 
   // SEO
   metaTitle: string;
@@ -186,6 +187,7 @@ export const defaultCategoryFormData: CategoryFormData = {
   description: '',
   featured: false,
   order: 0,
+  groupId: '',
   metaTitle: '',
   metaDescription: '',
   ogImage: '',

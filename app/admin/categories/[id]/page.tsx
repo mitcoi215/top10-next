@@ -5,6 +5,12 @@ import { useRouter, useParams } from 'next/navigation';
 import { CategoryEditor } from '@/components/admin/category-editor';
 import { CategoryFormData, ProductOption, ArticleOption, AuthorOption } from '@/components/admin/category-editor/types';
 
+interface CategoryGroup {
+  id: string;
+  name: string;
+  slug: string;
+}
+
 export default function EditCategoryPage() {
   const router = useRouter();
   const params = useParams();
@@ -14,17 +20,19 @@ export default function EditCategoryPage() {
   const [products, setProducts] = useState<ProductOption[]>([]);
   const [articles, setArticles] = useState<ArticleOption[]>([]);
   const [authors, setAuthors] = useState<AuthorOption[]>([]);
+  const [categoryGroups, setCategoryGroups] = useState<CategoryGroup[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [categoryRes, productsRes, articlesRes, authorsRes] = await Promise.all([
+        const [categoryRes, productsRes, articlesRes, authorsRes, groupsRes] = await Promise.all([
           fetch(`/api/categories/${categoryId}`),
           fetch('/api/products'),
           fetch('/api/articles'),
           fetch('/api/authors'),
+          fetch('/api/category-groups'),
         ]);
 
         if (!categoryRes.ok) {
@@ -35,6 +43,7 @@ export default function EditCategoryPage() {
         const productsData = await productsRes.json();
         const articlesData = await articlesRes.json();
         const authorsData = await authorsRes.json();
+        const groupsData = await groupsRes.json();
 
         // Transform category data to match form structure
         setCategory({
@@ -45,6 +54,7 @@ export default function EditCategoryPage() {
           description: categoryData.description || '',
           featured: categoryData.featured || false,
           order: categoryData.order || 0,
+          groupId: categoryData.groupId || '',
           metaTitle: categoryData.metaTitle || '',
           metaDescription: categoryData.metaDescription || '',
           ogImage: categoryData.ogImage || '',
@@ -112,6 +122,9 @@ export default function EditCategoryPage() {
           avatar: a.avatar,
           title: a.title,
         })));
+
+        // Category Groups
+        setCategoryGroups(Array.isArray(groupsData) ? groupsData : []);
       } catch (err) {
         console.error('Failed to fetch data:', err);
         setError(err instanceof Error ? err.message : 'Failed to load category');
@@ -226,6 +239,7 @@ export default function EditCategoryPage() {
       products={products}
       articles={articles}
       authors={authors}
+      categoryGroups={categoryGroups}
       onSave={handleSave}
       onCancel={handleCancel}
     />

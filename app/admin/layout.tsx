@@ -3,6 +3,29 @@
 import { useState, useEffect, createContext, useContext } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import {
+  LayoutDashboard,
+  FolderOpen,
+  Package,
+  FileText,
+  Users,
+  Home,
+  TrendingUp,
+  FileCode,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  LogOut,
+  ExternalLink,
+  Bell,
+  Search,
+  Loader2,
+  Menu,
+  X,
+  Plus,
+  Settings,
+  Layers,
+} from 'lucide-react';
 
 // Auth Context
 interface AuthContextType {
@@ -25,24 +48,22 @@ const navItems = [
   {
     title: 'Dashboard',
     href: '/admin',
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-      </svg>
-    ),
+    icon: LayoutDashboard,
   },
   {
     title: 'CONTENT',
     isSection: true,
   },
   {
+    title: 'Quản lý nội dung',
+    href: '/admin/category-manager',
+    icon: Layers,
+    isNew: true,
+  },
+  {
     title: 'Categories',
     href: '/admin/categories',
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
-      </svg>
-    ),
+    icon: FolderOpen,
     children: [
       { title: 'All Categories', href: '/admin/categories' },
       { title: 'Add New', href: '/admin/categories/new' },
@@ -52,11 +73,7 @@ const navItems = [
   {
     title: 'Products',
     href: '/admin/products',
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-      </svg>
-    ),
+    icon: Package,
     children: [
       { title: 'All Products', href: '/admin/products' },
       { title: 'Add New', href: '/admin/products/new' },
@@ -65,11 +82,7 @@ const navItems = [
   {
     title: 'Articles',
     href: '/admin/articles',
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-      </svg>
-    ),
+    icon: FileText,
     children: [
       { title: 'All Articles', href: '/admin/articles' },
       { title: 'Add New', href: '/admin/articles/new' },
@@ -78,11 +91,7 @@ const navItems = [
   {
     title: 'Authors',
     href: '/admin/authors',
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-      </svg>
-    ),
+    icon: Users,
   },
   {
     title: 'SETTINGS',
@@ -91,29 +100,17 @@ const navItems = [
   {
     title: 'Homepage',
     href: '/admin/settings',
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-      </svg>
-    ),
+    icon: Home,
   },
   {
     title: 'Trending',
     href: '/admin/trending',
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-      </svg>
-    ),
+    icon: TrendingUp,
   },
   {
     title: 'Static Pages',
     href: '/admin/static-pages',
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-      </svg>
-    ),
+    icon: FileCode,
   },
 ];
 
@@ -132,46 +129,51 @@ function LoginForm({ onLogin, error, isLoading }: {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800">
-      <div className="bg-white p-8 rounded-2xl shadow-2xl w-[400px]">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-30">
+        <div className="absolute inset-0" style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+        }} />
+      </div>
+
+      <div className="relative bg-white/95 backdrop-blur-xl p-8 rounded-2xl shadow-2xl w-[420px] border border-white/20">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-pink-500 to-rose-500 rounded-2xl mb-4">
-            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
+          <div className="inline-flex items-center justify-center w-16 h-16 gradient-primary rounded-2xl mb-4 shadow-lg">
+            <Layers className="w-8 h-8 text-white" />
           </div>
           <h1 className="text-2xl font-bold text-gray-900">TOP10 Admin</h1>
-          <p className="text-gray-500 mt-1">Sign in to your account</p>
+          <p className="text-gray-500 mt-1">Sign in to your dashboard</p>
         </div>
 
         {error && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl text-sm flex items-center gap-2">
-            <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            {error}
+          <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl text-sm flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
+              <X className="w-5 h-5 text-red-500" />
+            </div>
+            <span>{error}</span>
           </div>
         )}
 
-        <form onSubmit={handleSubmit}>
-          <div className="mb-5">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Username</label>
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">Username</label>
             <input
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-transparent outline-none transition"
+              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
               placeholder="Enter username"
               required
             />
           </div>
-          <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">Password</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-transparent outline-none transition"
+              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
               placeholder="Enter password"
               required
             />
@@ -179,14 +181,11 @@ function LoginForm({ onLogin, error, isLoading }: {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-gradient-to-r from-pink-500 to-rose-500 text-white py-3 rounded-xl font-semibold hover:from-pink-600 hover:to-rose-600 transition disabled:opacity-50 flex items-center justify-center gap-2"
+            className="w-full gradient-primary text-white py-3.5 rounded-xl font-semibold hover:opacity-90 transition-all disabled:opacity-50 flex items-center justify-center gap-2 shadow-lg shadow-primary/25"
           >
             {isLoading ? (
               <>
-                <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                </svg>
+                <Loader2 className="w-5 h-5 animate-spin" />
                 Signing in...
               </>
             ) : (
@@ -195,9 +194,6 @@ function LoginForm({ onLogin, error, isLoading }: {
           </button>
         </form>
 
-        <p className="text-xs text-gray-400 mt-6 text-center">
-          Default credentials: admin / admin123
-        </p>
       </div>
     </div>
   );
@@ -220,40 +216,51 @@ function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => 
   };
 
   return (
-    <aside className={`fixed left-0 top-0 h-full bg-slate-900 text-white transition-all duration-300 z-50 ${collapsed ? 'w-20' : 'w-64'}`}>
+    <aside className={`fixed left-0 top-0 h-full admin-sidebar text-white transition-all duration-300 z-50 flex flex-col ${collapsed ? 'w-[70px]' : 'w-64'}`}>
       {/* Logo */}
-      <div className="h-16 flex items-center justify-between px-4 border-b border-slate-700">
+      <div className="h-16 flex items-center justify-between px-5 border-b border-white/10">
         {!collapsed && (
-          <Link href="/admin" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-r from-pink-500 to-rose-500 rounded-lg flex items-center justify-center">
+          <Link href="/admin" className="flex items-center gap-3">
+            <div className="w-9 h-9 gradient-primary rounded-xl flex items-center justify-center shadow-lg">
               <span className="text-white font-bold text-sm">10</span>
             </div>
-            <span className="font-bold text-lg">TOP10 Admin</span>
+            <div>
+              <span className="font-bold text-base text-white">TOP10</span>
+              <span className="text-xs text-slate-500 block -mt-0.5">Admin Panel</span>
+            </div>
           </Link>
         )}
-        <button
-          onClick={onToggle}
-          className={`p-2 hover:bg-slate-800 rounded-lg transition ${collapsed ? 'mx-auto' : ''}`}
-        >
-          <svg className={`w-5 h-5 transition-transform ${collapsed ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
-          </svg>
-        </button>
+        {collapsed && (
+          <div className="w-9 h-9 gradient-primary rounded-xl flex items-center justify-center mx-auto shadow-lg">
+            <span className="text-white font-bold text-sm">10</span>
+          </div>
+        )}
       </div>
 
+      {/* Toggle Button */}
+      <button
+        onClick={onToggle}
+        className={`absolute -right-3 top-20 w-6 h-6 bg-white rounded-full shadow-md flex items-center justify-center text-slate-600 hover:bg-slate-100 transition z-50`}
+      >
+        {collapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
+      </button>
+
       {/* Navigation */}
-      <nav className="p-4 space-y-1 overflow-y-auto h-[calc(100%-4rem)]">
+      <nav className="flex-1 p-3 space-y-1 overflow-y-auto scrollbar-thin">
         {navItems.map((item, index) => {
           if (item.isSection) {
             return !collapsed ? (
-              <div key={index} className="pt-6 pb-2 px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">
-                {item.title}
+              <div key={index} className="pt-6 pb-2 px-3">
+                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+                  {item.title}
+                </span>
               </div>
             ) : (
-              <div key={index} className="pt-4 border-t border-slate-700 mt-4" />
+              <div key={index} className="my-4 mx-3 border-t border-white/10" />
             );
           }
 
+          const Icon = item.icon!;
           const hasChildren = item.children && item.children.length > 0;
           const isExpanded = expandedItems.includes(item.title);
           const active = isActive(item.href!);
@@ -264,35 +271,26 @@ function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => 
                 <>
                   <button
                     onClick={() => toggleExpand(item.title)}
-                    className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition ${
-                      active ? 'bg-pink-500/20 text-pink-400' : 'bg-slate-900 text-slate-300 hover:bg-slate-800 hover:text-white'
-                    }`}
+                    className={`admin-sidebar-item w-full ${active ? 'active' : ''}`}
                   >
-                    {item.icon}
+                    <Icon className="w-5 h-5 flex-shrink-0" />
                     {!collapsed && (
                       <>
-                        <span className="flex-1 text-left text-sm font-medium">{item.title}</span>
-                        <svg
-                          className={`w-4 h-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                        </svg>
+                        <span className="flex-1 text-left">{item.title}</span>
+                        <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`} />
                       </>
                     )}
                   </button>
                   {!collapsed && isExpanded && (
-                    <div className="mt-1 ml-4 pl-4 border-l border-slate-700 space-y-1">
-                      {item.children.map((child, childIndex) => (
+                    <div className="mt-1 ml-4 pl-4 border-l border-white/10 space-y-1">
+                      {item.children!.map((child, childIndex) => (
                         <Link
                           key={childIndex}
                           href={child.href}
-                          className={`block px-3 py-2 rounded-lg text-sm transition ${
+                          className={`block px-3 py-2 rounded-lg text-sm transition-all ${
                             pathname === child.href
-                              ? 'bg-pink-500/20 text-pink-400'
-                              : 'bg-slate-900 text-slate-400 hover:bg-slate-800 hover:text-white'
+                              ? 'text-primary bg-primary/10 font-medium'
+                              : 'text-slate-400 hover:text-white hover:bg-white/5'
                           }`}
                         >
                           {child.title}
@@ -304,19 +302,39 @@ function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => 
               ) : (
                 <Link
                   href={item.href!}
-                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition ${
-                    active ? 'bg-pink-500/20 text-pink-400' : 'bg-slate-900 text-slate-300 hover:bg-slate-800 hover:text-white'
-                  }`}
+                  className={`admin-sidebar-item ${active ? 'active' : ''}`}
                   title={collapsed ? item.title : undefined}
                 >
-                  {item.icon}
-                  {!collapsed && <span className="text-sm font-medium">{item.title}</span>}
+                  <Icon className="w-5 h-5 flex-shrink-0" />
+                  {!collapsed && (
+                    <>
+                      <span className="flex-1">{item.title}</span>
+                      {item.isNew && (
+                        <span className="px-1.5 py-0.5 text-[10px] font-bold uppercase bg-emerald-500 text-white rounded leading-none">
+                          New
+                        </span>
+                      )}
+                    </>
+                  )}
                 </Link>
               )}
             </div>
           );
         })}
       </nav>
+
+      {/* Quick Add Button */}
+      {!collapsed && (
+        <div className="p-3 border-t border-white/10">
+          <Link
+            href="/admin/articles/new"
+            className="flex items-center justify-center gap-2 w-full py-2.5 gradient-primary rounded-xl text-white text-sm font-medium hover:opacity-90 transition shadow-lg"
+          >
+            <Plus className="w-4 h-4" />
+            New Article
+          </Link>
+        </div>
+      )}
     </aside>
   );
 }
@@ -328,58 +346,112 @@ function Header({ user, onLogout, sidebarCollapsed }: {
   sidebarCollapsed: boolean;
 }) {
   const pathname = usePathname();
+  const [showUserMenu, setShowUserMenu] = useState(false);
 
-  // Get page title from pathname
-  const getPageTitle = () => {
-    if (pathname === '/admin') return 'Dashboard';
-    const segments = pathname.split('/').filter(Boolean);
-    if (segments.length > 1) {
-      const title = segments[segments.length - 1];
-      return title.charAt(0).toUpperCase() + title.slice(1);
+  // Get page info from pathname
+  const getPageInfo = () => {
+    const routes: Record<string, { title: string; description: string }> = {
+      '/admin': { title: 'Dashboard', description: 'Overview of your content' },
+      '/admin/categories': { title: 'Categories', description: 'Manage product categories' },
+      '/admin/products': { title: 'Products', description: 'Manage products and reviews' },
+      '/admin/articles': { title: 'Articles', description: 'Manage blog posts and articles' },
+      '/admin/authors': { title: 'Authors', description: 'Manage content authors' },
+      '/admin/settings': { title: 'Homepage Settings', description: 'Configure homepage layout' },
+      '/admin/trending': { title: 'Trending', description: 'Manage trending content' },
+      '/admin/static-pages': { title: 'Static Pages', description: 'Manage static content pages' },
+    };
+
+    // Check for exact match first
+    if (routes[pathname]) return routes[pathname];
+
+    // Check for partial matches
+    for (const route of Object.keys(routes)) {
+      if (pathname.startsWith(route) && route !== '/admin') {
+        return routes[route];
+      }
     }
-    return 'Admin';
+
+    return { title: 'Admin', description: '' };
   };
 
+  const pageInfo = getPageInfo();
+
   return (
-    <header className={`fixed top-0 right-0 h-16 bg-white border-b border-gray-200 z-40 transition-all duration-300 ${sidebarCollapsed ? 'left-20' : 'left-64'}`}>
+    <header className={`fixed top-0 right-0 h-16 bg-white/80 backdrop-blur-xl border-b border-slate-200/80 z-40 transition-all duration-300 ${sidebarCollapsed ? 'left-[70px]' : 'left-64'}`}>
       <div className="h-full px-6 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <h1 className="text-xl font-semibold text-gray-900">{getPageTitle()}</h1>
+        {/* Page Title */}
+        <div>
+          <h1 className="text-lg font-bold text-slate-800">{pageInfo.title}</h1>
+          {pageInfo.description && (
+            <p className="text-xs text-slate-500 -mt-0.5">{pageInfo.description}</p>
+          )}
         </div>
 
-        <div className="flex items-center gap-4">
-          {/* View Site Link */}
+        {/* Right Side */}
+        <div className="flex items-center gap-1.5">
+          {/* Search */}
+          <button className="w-9 h-9 rounded-lg border-0 bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 hover:text-slate-700 transition-all cursor-pointer">
+            <Search className="w-4 h-4" />
+          </button>
+
+          {/* Notifications */}
+          <button className="w-9 h-9 rounded-lg border-0 bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 hover:text-slate-700 transition-all cursor-pointer relative">
+            <Bell className="w-4 h-4" />
+            <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-rose-500 rounded-full border-2 border-white" />
+          </button>
+
+          {/* View Site */}
           <Link
             href="/"
             target="_blank"
-            className="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition"
+            className="hidden sm:flex items-center gap-1.5 h-9 px-3 text-sm font-medium text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-lg transition-all"
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-            </svg>
-            View Site
+            <ExternalLink className="w-3.5 h-3.5" />
+            <span>View Site</span>
           </Link>
 
+          {/* Divider */}
+          <div className="h-8 w-px bg-slate-200 mx-1.5" />
+
           {/* User Menu */}
-          <div className="flex items-center gap-3 pl-4 border-l border-gray-200">
-            <div className="w-9 h-9 bg-gradient-to-r from-pink-500 to-rose-500 rounded-full flex items-center justify-center">
-              <span className="text-white font-semibold text-sm">
-                {user?.username?.charAt(0).toUpperCase() || 'A'}
-              </span>
-            </div>
-            <div className="hidden sm:block">
-              <p className="text-sm font-medium text-gray-900">{user?.username || 'Admin'}</p>
-              <p className="text-xs text-gray-500">Administrator</p>
-            </div>
+          <div className="relative">
             <button
-              onClick={onLogout}
-              className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition"
-              title="Logout"
+              onClick={() => setShowUserMenu(!showUserMenu)}
+              className="flex items-center gap-2 h-9 pl-1 pr-2.5 rounded-lg border-0 bg-slate-100 hover:bg-slate-200 transition-all cursor-pointer"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-              </svg>
+              <div className="w-7 h-7 gradient-primary rounded-md flex items-center justify-center flex-shrink-0">
+                <span className="text-white font-bold text-[11px]">
+                  {user?.username?.charAt(0).toUpperCase() || 'A'}
+                </span>
+              </div>
+              <span className="hidden sm:inline text-sm font-medium text-slate-700">{user?.username || 'Admin'}</span>
+              <ChevronDown className="w-3.5 h-3.5 text-slate-400 hidden sm:block" />
             </button>
+
+            {/* Dropdown */}
+            {showUserMenu && (
+              <>
+                <div className="fixed inset-0 z-40" onClick={() => setShowUserMenu(false)} />
+                <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-xl shadow-lg border border-slate-200/80 py-1 z-50 animate-scale-in">
+                  <Link
+                    href="/admin/settings"
+                    className="flex items-center gap-2 px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50 transition"
+                    onClick={() => setShowUserMenu(false)}
+                  >
+                    <Settings className="w-4 h-4" />
+                    Settings
+                  </Link>
+                  <hr className="my-1 border-slate-100" />
+                  <button
+                    onClick={() => { onLogout(); setShowUserMenu(false); }}
+                    className="flex items-center gap-2 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition w-full"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    Sign out
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -409,7 +481,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       }
     }
 
-    // Load sidebar state
     const savedCollapsed = localStorage.getItem('admin_sidebar_collapsed');
     if (savedCollapsed) {
       setSidebarCollapsed(savedCollapsed === 'true');
@@ -457,11 +528,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     localStorage.setItem('admin_sidebar_collapsed', String(newState));
   };
 
-  // Show nothing during hydration to prevent flash
   if (!isHydrated) {
     return (
       <div className="min-h-screen bg-slate-900 flex items-center justify-center">
-        <div className="animate-spin w-8 h-8 border-4 border-pink-500 border-t-transparent rounded-full" />
+        <div className="flex flex-col items-center gap-3">
+          <Loader2 className="w-8 h-8 text-primary animate-spin" />
+          <span className="text-slate-400 text-sm">Loading...</span>
+        </div>
       </div>
     );
   }
@@ -472,10 +545,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, user, login: handleLogin, logout: handleLogout }}>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-[hsl(220,14%,96%)]">
         <Sidebar collapsed={sidebarCollapsed} onToggle={toggleSidebar} />
         <Header user={user} onLogout={handleLogout} sidebarCollapsed={sidebarCollapsed} />
-        <main className={`pt-16 min-h-screen transition-all duration-300 ${sidebarCollapsed ? 'pl-20' : 'pl-64'}`}>
+        <main className={`pt-16 min-h-screen transition-all duration-300 ${sidebarCollapsed ? 'pl-[70px]' : 'pl-64'}`}>
           <div className="p-6">
             {children}
           </div>

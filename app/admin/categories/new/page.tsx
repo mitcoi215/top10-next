@@ -3,24 +3,36 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { CategoryEditor } from '@/components/admin/category-editor';
-import { CategoryFormData, ProductOption, ArticleOption } from '@/components/admin/category-editor/types';
+import { CategoryFormData, ProductOption, ArticleOption, AuthorOption } from '@/components/admin/category-editor/types';
+
+interface CategoryGroup {
+  id: string;
+  name: string;
+  slug: string;
+}
 
 export default function NewCategoryPage() {
   const router = useRouter();
   const [products, setProducts] = useState<ProductOption[]>([]);
   const [articles, setArticles] = useState<ArticleOption[]>([]);
+  const [authors, setAuthors] = useState<AuthorOption[]>([]);
+  const [categoryGroups, setCategoryGroups] = useState<CategoryGroup[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [productsRes, articlesRes] = await Promise.all([
+        const [productsRes, articlesRes, authorsRes, groupsRes] = await Promise.all([
           fetch('/api/products'),
           fetch('/api/articles'),
+          fetch('/api/authors'),
+          fetch('/api/category-groups'),
         ]);
 
         const productsData = await productsRes.json();
         const articlesData = await articlesRes.json();
+        const authorsData = await authorsRes.json();
+        const groupsData = await groupsRes.json();
 
         // Products API returns array directly
         const productsArray = Array.isArray(productsData) ? productsData : [];
@@ -38,6 +50,18 @@ export default function NewCategoryPage() {
           title: a.title,
           slug: a.slug,
         })));
+
+        // Authors API returns array directly
+        const authorsArray = Array.isArray(authorsData) ? authorsData : [];
+        setAuthors(authorsArray.map((a: any) => ({
+          id: a.id,
+          name: a.name,
+          avatar: a.avatar,
+          title: a.title,
+        })));
+
+        // Category Groups
+        setCategoryGroups(Array.isArray(groupsData) ? groupsData : []);
       } catch (error) {
         console.error('Failed to fetch data:', error);
       } finally {
@@ -108,6 +132,8 @@ export default function NewCategoryPage() {
     <CategoryEditor
       products={products}
       articles={articles}
+      authors={authors}
+      categoryGroups={categoryGroups}
       onSave={handleSave}
       onCancel={handleCancel}
     />

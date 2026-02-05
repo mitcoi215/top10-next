@@ -4,7 +4,17 @@ import { useFormContext } from 'react-hook-form';
 import { CategoryFormData, COLOR_PRESETS, ICON_PRESETS } from './types';
 import ImageUpload from './ImageUpload';
 
-export default function Tab1GeneralInfo() {
+interface CategoryGroup {
+  id: string;
+  name: string;
+  slug: string;
+}
+
+interface Tab1Props {
+  categoryGroups?: CategoryGroup[];
+}
+
+export default function Tab1GeneralInfo({ categoryGroups = [] }: Tab1Props) {
   const { register, watch, setValue, formState: { errors } } = useFormContext<CategoryFormData>();
 
   const name = watch('name');
@@ -78,6 +88,26 @@ export default function Tab1GeneralInfo() {
               </button>
             </div>
             {errors.slug && <span className="error-msg">{errors.slug.message}</span>}
+          </div>
+
+          {/* Category Group */}
+          <div className="form-group">
+            <label htmlFor="groupId">
+              Nhóm danh mục
+              <span className="tooltip" title="Nhóm hiển thị trong Hero Section trang chủ">?</span>
+            </label>
+            <select
+              id="groupId"
+              {...register('groupId')}
+            >
+              <option value="">-- Không thuộc nhóm nào --</option>
+              {categoryGroups.map((group) => (
+                <option key={group.id} value={group.id}>
+                  {group.name}
+                </option>
+              ))}
+            </select>
+            <span className="help-text">Danh mục sẽ hiển thị trong dropdown Hero Section nếu thuộc một nhóm</span>
           </div>
 
         </div>
@@ -294,6 +324,11 @@ export default function Tab1GeneralInfo() {
         .error-msg {
           font-size: 12px;
           color: #dc2626;
+        }
+
+        .help-text {
+          font-size: 12px;
+          color: #9ca3af;
         }
 
         textarea {

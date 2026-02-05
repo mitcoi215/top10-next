@@ -35,11 +35,17 @@ export async function generateMetadata({ params }: PageProps) {
     where: {
       slug,
       category: { slug: categorySlug },
+      status: 'published',
     },
     select: {
       name: true,
       reviewTitle: true,
       reviewSubtitle: true,
+      metaTitle: true,
+      metaDescription: true,
+      ogImage: true,
+      logoUrl: true,
+      reviewHeroImage: true,
     },
   });
 
@@ -47,9 +53,34 @@ export async function generateMetadata({ params }: PageProps) {
     return { title: 'Review Not Found' };
   }
 
+  const title = product.metaTitle || product.reviewTitle || `${product.name} Review`;
+  const description = product.metaDescription || product.reviewSubtitle || `Read our in-depth review of ${product.name}`;
+  // Fallback: ogImage -> reviewHeroImage -> logoUrl
+  const ogImage = product.ogImage || product.reviewHeroImage || product.logoUrl || null;
+
   return {
-    title: product.reviewTitle || `${product.name} Review | 10rating`,
-    description: product.reviewSubtitle || `Read our in-depth review of ${product.name}`,
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: 'article',
+      siteName: '10rating',
+      ...(ogImage && {
+        images: [{
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: product.name,
+        }]
+      }),
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      ...(ogImage && { images: [ogImage] }),
+    },
   };
 }
 

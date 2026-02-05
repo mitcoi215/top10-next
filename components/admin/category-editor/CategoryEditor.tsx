@@ -8,12 +8,19 @@ import Tab2RankingDisplay from './Tab2RankingDisplay';
 import Tab4ReviewMethodology from './Tab4ReviewMethodology';
 import Tab5Comparison from './Tab5Comparison';
 
+interface CategoryGroup {
+  id: string;
+  name: string;
+  slug: string;
+}
+
 interface CategoryEditorProps {
   categoryId?: string;
   initialData?: Partial<CategoryFormData>;
   products: ProductOption[];
   articles: ArticleOption[];
   authors: AuthorOption[];
+  categoryGroups?: CategoryGroup[];
   onSave: (data: CategoryFormData) => Promise<void>;
   onCancel?: () => void;
 }
@@ -31,6 +38,7 @@ export default function CategoryEditor({
   products,
   articles,
   authors,
+  categoryGroups = [],
   onSave,
   onCancel,
 }: CategoryEditorProps) {
@@ -155,7 +163,7 @@ export default function CategoryEditor({
         {/* Tab Content */}
         <form onSubmit={handleSubmit(onSubmit)} className="editor-form">
           <div className="tab-content">
-            {activeTab === 'general' && <Tab1GeneralInfo />}
+            {activeTab === 'general' && <Tab1GeneralInfo categoryGroups={categoryGroups} />}
             {activeTab === 'ranking' && <Tab2RankingDisplay authors={authors} />}
             {activeTab === 'review-methodology' && <Tab4ReviewMethodology authors={authors} />}
             {activeTab === 'comparison' && <Tab5Comparison products={products} categoryId={categoryId} />}

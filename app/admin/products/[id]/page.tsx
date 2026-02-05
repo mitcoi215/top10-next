@@ -24,24 +24,29 @@ export default function EditProductPage({ params }: EditProductPageProps) {
 
   const fetchData = async () => {
     try {
-      // Fetch categories
-      const catRes = await fetch('/api/categories');
+      // Fetch categories, authors, and product in parallel
+      const [catRes, authorsRes, productRes] = await Promise.all([
+        fetch('/api/categories'),
+        fetch('/api/authors'),
+        fetch(`/api/products/${id}`),
+      ]);
+
       const catData = await catRes.json();
+      const authorsData = await authorsRes.json();
+
       setCategories(catData.map((c: { id: string; name: string; slug: string }) => ({
         id: c.id,
         name: c.name,
         slug: c.slug,
       })));
 
-      // TODO: Fetch authors when API is ready
-      setAuthors([
-        { id: '1', name: 'Phillip Richardson' },
-        { id: '2', name: 'Sarah Johnson' },
-        { id: '3', name: 'Mike Chen' },
-      ]);
+      // Authors API returns array directly
+      const authorsArray = Array.isArray(authorsData) ? authorsData : [];
+      setAuthors(authorsArray.map((a: any) => ({
+        id: a.id,
+        name: a.name,
+      })));
 
-      // Fetch product data
-      const productRes = await fetch(`/api/products/${id}`);
       if (!productRes.ok) {
         throw new Error('Product not found');
       }
@@ -111,8 +116,15 @@ export default function EditProductPage({ params }: EditProductPageProps) {
     });
 
     if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.message || 'Failed to update product');
+      const errorData = await response.json();
+      // Handle validation errors with details (object format: { field: message })
+      if (errorData.details && typeof errorData.details === 'object') {
+        const detailMessages = Object.entries(errorData.details)
+          .map(([field, message]) => `${field}: ${message}`)
+          .join(', ');
+        throw new Error(detailMessages || errorData.error);
+      }
+      throw new Error(errorData.error || errorData.message || 'Failed to update product');
     }
   };
 

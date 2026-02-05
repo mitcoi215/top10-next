@@ -10,6 +10,15 @@ interface Category {
   slug: string;
   icon?: string;
   showInHero?: boolean;
+  groupId?: string | null;
+}
+
+interface AvailableCategory {
+  id: string;
+  name: string;
+  slug: string;
+  icon?: string;
+  groupId?: string | null;
 }
 
 interface CategoryGroup {
@@ -30,6 +39,10 @@ export default function CategoryGroupsPage() {
   const [uploadingIcon, setUploadingIcon] = useState(false);
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
   const [togglingHero, setTogglingHero] = useState<string | null>(null);
+  const [removingCategory, setRemovingCategory] = useState<string | null>(null);
+  const [showAddCategoryModal, setShowAddCategoryModal] = useState<string | null>(null); // groupId
+  const [availableCategories, setAvailableCategories] = useState<AvailableCategory[]>([]);
+  const [addingCategory, setAddingCategory] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Form state
@@ -307,6 +320,92 @@ export default function CategoryGroupsPage() {
     ));
   };
 
+  // Remove category from group
+  const removeCategoryFromGroup = async (categoryId: string, groupId: string) => {
+    if (!confirm('Xóa danh mục này khỏi nhóm?')) return;
+
+    setRemovingCategory(categoryId);
+    const token = localStorage.getItem('admin_token');
+
+    try {
+      const res = await fetch(`/api/categories/${categoryId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ groupId: null }),
+      });
+
+      if (res.ok) {
+        setGroups(groups.map(g =>
+          g.id === groupId
+            ? { ...g, categories: g.categories.filter(c => c.id !== categoryId) }
+            : g
+        ));
+      } else {
+        alert('Không thể xóa danh mục khỏi nhóm');
+      }
+    } catch (error) {
+      console.error('Remove category failed:', error);
+      alert('Lỗi khi xóa danh mục');
+    } finally {
+      setRemovingCategory(null);
+    }
+  };
+
+  // Open add category modal
+  const openAddCategoryModal = async (groupId: string) => {
+    setShowAddCategoryModal(groupId);
+    try {
+      const res = await fetch('/api/categories');
+      const data = await res.json();
+      // Filter categories not in any group or in this group
+      const available = (Array.isArray(data) ? data : []).filter(
+        (cat: AvailableCategory) => !cat.groupId || cat.groupId === groupId
+      );
+      setAvailableCategories(available);
+    } catch (error) {
+      console.error('Failed to fetch categories:', error);
+    }
+  };
+
+  // Add category to group
+  const addCategoryToGroup = async (categoryId: string, groupId: string) => {
+    setAddingCategory(true);
+    const token = localStorage.getItem('admin_token');
+
+    try {
+      const res = await fetch(`/api/categories/${categoryId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ groupId: groupId, showInHero: true }),
+      });
+
+      if (res.ok) {
+        const updatedCategory = await res.json();
+        // Add to local state
+        setGroups(groups.map(g =>
+          g.id === groupId
+            ? { ...g, categories: [...g.categories, { ...updatedCategory, showInHero: true }] }
+            : g
+        ));
+        // Remove from available list
+        setAvailableCategories(availableCategories.filter(c => c.id !== categoryId));
+      } else {
+        alert('Không thể thêm danh mục vào nhóm');
+      }
+    } catch (error) {
+      console.error('Add category failed:', error);
+      alert('Lỗi khi thêm danh mục');
+    } finally {
+      setAddingCategory(false);
+    }
+  };
+
   return (
     <div className="groups-page">
       <div className="page-header">
@@ -401,28 +500,49 @@ export default function CategoryGroupsPage() {
                 <div className="expanded-header">
                   <span>Danh mục trong nhóm <strong>{group.name}</strong></span>
                   <div className="bulk-actions">
+                    <button onClick={() => openAddCategoryModal(group.id)} className="btn-add-cat">+ Thêm danh mục</button>
                     <button onClick={() => markAllInGroup(group.id, true)} className="btn-mark-all">Bật tất cả</button>
                     <button onClick={() => markAllInGroup(group.id, false)} className="btn-mark-all off">Tắt tất cả</button>
                   </div>
                 </div>
                 {group.categories.length === 0 ? (
-                  <div className="no-cats">Chưa có danh mục nào trong nhóm này</div>
+                  <div className="no-cats">
+                    Chưa có danh mục nào trong nhóm này.
+                    <button onClick={() => openAddCategoryModal(group.id)} className="btn-add-first">+ Thêm danh mục đầu tiên</button>
+                  </div>
                 ) : (
                   <div className="cat-list">
                     {group.categories.map(cat => (
                       <div key={cat.id} className="cat-row">
+                        <span className="cat-icon">
+                          {cat.icon && (cat.icon.startsWith('/') || cat.icon.startsWith('http')) ? (
+                            <Image src={cat.icon} alt="" width={20} height={20} className="cat-icon-img" />
+                          ) : (
+                            cat.icon || '📁'
+                          )}
+                        </span>
                         <span className="cat-name">{cat.name}</span>
                         <span className="cat-slug">/{cat.slug}</span>
-                        <label className="toggle-label">
-                          <span className="toggle-text">{cat.showInHero ? 'Hiện' : 'Ẩn'}</span>
+                        <div className="cat-actions">
+                          <label className="toggle-label">
+                            <span className="toggle-text">{cat.showInHero ? 'Hiện' : 'Ẩn'}</span>
+                            <button
+                              className={`toggle-btn ${cat.showInHero ? 'on' : 'off'}`}
+                              onClick={() => toggleShowInHero(cat.id, !!cat.showInHero)}
+                              disabled={togglingHero === cat.id}
+                            >
+                              <span className="toggle-knob" />
+                            </button>
+                          </label>
                           <button
-                            className={`toggle-btn ${cat.showInHero ? 'on' : 'off'}`}
-                            onClick={() => toggleShowInHero(cat.id, !!cat.showInHero)}
-                            disabled={togglingHero === cat.id}
+                            className="btn-remove-cat"
+                            onClick={() => removeCategoryFromGroup(cat.id, group.id)}
+                            disabled={removingCategory === cat.id}
+                            title="Xóa khỏi nhóm"
                           >
-                            <span className="toggle-knob" />
+                            {removingCategory === cat.id ? '...' : '✕'}
                           </button>
-                        </label>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -526,6 +646,50 @@ export default function CategoryGroupsPage() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal for Add Category to Group */}
+      {showAddCategoryModal && (
+        <div className="modal-overlay" onClick={() => setShowAddCategoryModal(null)}>
+          <div className="modal modal-wide" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2>Thêm danh mục vào nhóm</h2>
+              <button onClick={() => setShowAddCategoryModal(null)} className="btn-close">×</button>
+            </div>
+            <div className="modal-body">
+              {availableCategories.filter(c => !c.groupId).length === 0 ? (
+                <div className="no-available">
+                  <p>Không có danh mục nào khả dụng để thêm.</p>
+                  <p className="hint">Tất cả danh mục đã thuộc về một nhóm hoặc chưa có danh mục nào được tạo.</p>
+                </div>
+              ) : (
+                <div className="available-cats">
+                  <p className="available-hint">Chọn danh mục để thêm vào nhóm:</p>
+                  {availableCategories.filter(c => !c.groupId).map(cat => (
+                    <div key={cat.id} className="available-cat-row">
+                      <span className="cat-icon">
+                        {cat.icon && (cat.icon.startsWith('/') || cat.icon.startsWith('http')) ? (
+                          <Image src={cat.icon} alt="" width={20} height={20} className="cat-icon-img" />
+                        ) : (
+                          cat.icon || '📁'
+                        )}
+                      </span>
+                      <span className="cat-name">{cat.name}</span>
+                      <span className="cat-slug">/{cat.slug}</span>
+                      <button
+                        className="btn-add-to-group"
+                        onClick={() => addCategoryToGroup(cat.id, showAddCategoryModal)}
+                        disabled={addingCategory}
+                      >
+                        {addingCategory ? '...' : '+ Thêm'}
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}
@@ -766,11 +930,43 @@ export default function CategoryGroupsPage() {
           opacity: 0.9;
         }
 
+        .btn-add-cat {
+          padding: 4px 12px;
+          font-size: 12px;
+          border-radius: 4px;
+          cursor: pointer;
+          background: #3b82f6;
+          color: white;
+          border: none;
+        }
+
+        .btn-add-cat:hover {
+          background: #2563eb;
+        }
+
         .no-cats {
           font-size: 13px;
           color: #9ca3af;
           text-align: center;
-          padding: 16px;
+          padding: 24px 16px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 12px;
+        }
+
+        .btn-add-first {
+          padding: 8px 16px;
+          font-size: 13px;
+          border-radius: 6px;
+          cursor: pointer;
+          background: #3b82f6;
+          color: white;
+          border: none;
+        }
+
+        .btn-add-first:hover {
+          background: #2563eb;
         }
 
         .cat-list {
@@ -783,16 +979,65 @@ export default function CategoryGroupsPage() {
           display: flex;
           align-items: center;
           gap: 12px;
-          padding: 8px 12px;
+          padding: 10px 12px;
           background: white;
           border-radius: 6px;
           border: 1px solid #e5e7eb;
         }
 
+        .cat-row:hover {
+          border-color: #d1d5db;
+        }
+
+        .cat-icon {
+          font-size: 18px;
+          width: 24px;
+          height: 24px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .cat-icon :global(.cat-icon-img) {
+          width: 20px;
+          height: 20px;
+          object-fit: contain;
+        }
+
         .cat-name {
           font-size: 14px;
           font-weight: 500;
-          min-width: 180px;
+          min-width: 150px;
+        }
+
+        .cat-actions {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          margin-left: auto;
+        }
+
+        .btn-remove-cat {
+          width: 24px;
+          height: 24px;
+          border-radius: 4px;
+          border: none;
+          background: #fee2e2;
+          color: #dc2626;
+          cursor: pointer;
+          font-size: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .btn-remove-cat:hover {
+          background: #fecaca;
+        }
+
+        .btn-remove-cat:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
         }
 
         .cat-slug {
@@ -901,6 +1146,75 @@ export default function CategoryGroupsPage() {
           width: 100%;
           max-width: 400px;
           margin: 20px;
+        }
+
+        .modal.modal-wide {
+          max-width: 550px;
+        }
+
+        .modal-body {
+          padding: 20px;
+          max-height: 400px;
+          overflow-y: auto;
+        }
+
+        .no-available {
+          text-align: center;
+          padding: 24px;
+          color: #6b7280;
+        }
+
+        .no-available .hint {
+          font-size: 13px;
+          color: #9ca3af;
+          margin-top: 8px;
+        }
+
+        .available-cats {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+
+        .available-hint {
+          font-size: 13px;
+          color: #6b7280;
+          margin-bottom: 8px;
+        }
+
+        .available-cat-row {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 10px 12px;
+          background: #f9fafb;
+          border-radius: 6px;
+          border: 1px solid #e5e7eb;
+        }
+
+        .available-cat-row:hover {
+          border-color: #d1d5db;
+          background: #f3f4f6;
+        }
+
+        .btn-add-to-group {
+          margin-left: auto;
+          padding: 6px 14px;
+          font-size: 13px;
+          border-radius: 4px;
+          cursor: pointer;
+          background: #10b981;
+          color: white;
+          border: none;
+        }
+
+        .btn-add-to-group:hover {
+          background: #059669;
+        }
+
+        .btn-add-to-group:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
         }
 
         .modal-header {

@@ -188,7 +188,7 @@ export default function HeroSection({ categoryGroups, heroTagline }: HeroSection
               <div className="ni-9qmydc">
                 {activeData.categories.map((cat, idx) => (
                   <SubcategoryItem
-                    key={cat.name || idx}
+                    key={`${cat.exploreHref || cat.name}-${idx}`}
                     name={cat.name}
                     exploreHref={cat.exploreHref}
                     compareHref={cat.compareHref}

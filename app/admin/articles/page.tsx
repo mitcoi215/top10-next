@@ -1,7 +1,18 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, Fragment } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
+import { Plus, ArrowUpDown, Pencil, Trash2, Search, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, LayoutGrid, LayoutList, FileText, Info, CheckSquare } from 'lucide-react';
+import {
+  Button,
+  Input,
+  Badge,
+  Checkbox,
+  Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+  Card, CardContent,
+} from '@/components/ui';
 
 interface Article {
   id: string;
@@ -28,7 +39,7 @@ interface Article {
 const ARTICLE_TYPE_LABELS: Record<string, string> = {
   charticle: 'Charticle',
   blog: 'Blog',
-  guide: 'Hướng dẫn',
+  guide: 'Huong dan',
 };
 
 type SortField = 'title' | 'updatedAt' | 'status' | 'articleType';
@@ -246,311 +257,399 @@ export default function ArticlesListPage() {
     }
   };
 
-  const SortIcon = ({ field }: { field: SortField }) => {
-    if (sortField !== field) return <span className="sort-icon">↕</span>;
-    return <span className="sort-icon active">{sortDirection === 'asc' ? '↑' : '↓'}</span>;
+  const SortableHeader = ({ field, children }: { field: SortField; children: React.ReactNode }) => (
+    <TableHead
+      className="cursor-pointer hover:bg-muted/50 select-none"
+      onClick={() => handleSort(field)}
+    >
+      <div className="flex items-center gap-1">
+        {children}
+        <ArrowUpDown className={`h-4 w-4 ${sortField === field ? 'text-primary' : 'text-muted-foreground'}`} />
+      </div>
+    </TableHead>
+  );
+
+  const getTypeBadgeVariant = (type: string) => {
+    switch (type) {
+      case 'charticle': return 'default';
+      case 'blog': return 'warning';
+      case 'guide': return 'success';
+      default: return 'secondary';
+    }
   };
 
   return (
-    <div className="articles-page">
-      <div className="page-header">
-        <div className="header-left">
-          <h1>Bài viết</h1>
-          <span className="count">{filteredAndSortedArticles.length} / {articles.length}</span>
+    <div className="space-y-6 animate-fade-in">
+      {/* Header */}
+      <div className="flex justify-between items-center">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 gradient-purple rounded-xl flex items-center justify-center">
+            <FileText className="w-5 h-5 text-white" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-slate-800">Bài viết</h1>
+            <p className="text-sm text-slate-500">Quản lý nội dung và bài viết</p>
+          </div>
         </div>
-        <Link href="/admin/articles/new" className="btn-primary">
-          + Thêm bài viết
-        </Link>
+        <div className="flex items-center gap-2">
+          <span className="admin-badge admin-badge-info">{filteredAndSortedArticles.length} / {articles.length}</span>
+          <Button asChild className="gradient-primary text-white border-0">
+            <Link href="/admin/articles/new">
+              <Plus className="h-4 w-4 mr-2" />
+              Thêm bài viết
+            </Link>
+          </Button>
+        </div>
       </div>
 
       {/* Info Box */}
-      <div className="info-box">
-        📍 <strong>Hiển thị tại:</strong> Trang danh mục (phần bài viết), trang Trending, sidebar sản phẩm, blog listing
+      <div className="flex items-center gap-3 p-4 bg-blue-50 border border-blue-200 rounded-xl">
+        <Info className="w-5 h-5 text-blue-500 flex-shrink-0" />
+        <p className="text-sm text-blue-700">
+          <strong>Hiển thị tại:</strong> Trang danh mục (phần bài viết), trang Trending, sidebar sản phẩm, blog listing
+        </p>
       </div>
 
-      <div className="toolbar">
-        <div className="filters">
-          <input
-            type="text"
+      {/* Filters */}
+      <div className="flex flex-wrap gap-3 items-center">
+        <div className="relative flex-1 min-w-[200px] max-w-[300px]">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+          <Input
             placeholder="Tìm kiếm bài viết..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="search-input"
+            className="pl-9 bg-white border-slate-200 focus:border-primary focus:ring-primary/20"
           />
-          <select
-            value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value as typeof filterStatus)}
-            className="filter-select"
-          >
-            <option value="all">Tất cả trạng thái</option>
-            <option value="draft">Bản nháp</option>
-            <option value="published">Đã xuất bản</option>
-          </select>
-          <select
-            value={filterType}
-            onChange={(e) => setFilterType(e.target.value as typeof filterType)}
-            className="filter-select"
-          >
-            <option value="all">Tất cả loại</option>
-            <option value="charticle">Charticle</option>
-            <option value="blog">Blog</option>
-            <option value="guide">Hướng dẫn</option>
-          </select>
-          <select
-            value={filterCategory}
-            onChange={(e) => setFilterCategory(e.target.value)}
-            className="filter-select"
-          >
-            <option value="all">Tất cả danh mục</option>
-            {categories.map(cat => (
-              <option key={cat.id} value={cat.id}>
-                {cat.icon && !cat.icon.startsWith('/') ? cat.icon + ' ' : ''}{cat.name}
-              </option>
-            ))}
-          </select>
         </div>
+        <Select value={filterStatus} onValueChange={(v) => setFilterStatus(v as typeof filterStatus)}>
+          <SelectTrigger className="w-[160px] bg-white">
+            <SelectValue placeholder="Trạng thái" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Tất cả trạng thái</SelectItem>
+            <SelectItem value="draft">Bản nháp</SelectItem>
+            <SelectItem value="published">Đã xuất bản</SelectItem>
+          </SelectContent>
+        </Select>
+        <Select value={filterType} onValueChange={(v) => setFilterType(v as typeof filterType)}>
+          <SelectTrigger className="w-[140px] bg-white">
+            <SelectValue placeholder="Loại" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Tất cả loại</SelectItem>
+            <SelectItem value="charticle">Charticle</SelectItem>
+            <SelectItem value="blog">Blog</SelectItem>
+            <SelectItem value="guide">Hướng dẫn</SelectItem>
+          </SelectContent>
+        </Select>
+        <Select value={filterCategory} onValueChange={setFilterCategory}>
+          <SelectTrigger className="w-[180px] bg-white">
+            <SelectValue placeholder="Danh mục" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Tất cả danh mục</SelectItem>
+            {categories.map(cat => (
+              <SelectItem key={cat.id} value={cat.id}>
+                {cat.icon && !cat.icon.startsWith('/') ? cat.icon + ' ' : ''}{cat.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
 
-        <div className="view-actions">
-          <div className="view-toggle">
-            <button
-              className={`view-btn ${viewMode === 'table' ? 'active' : ''}`}
-              onClick={() => setViewMode('table')}
-              title="Xem dạng bảng"
-            >
-              ☰
-            </button>
-            <button
-              className={`view-btn ${viewMode === 'grid' ? 'active' : ''}`}
-              onClick={() => setViewMode('grid')}
-              title="Xem dạng lưới"
-            >
-              ⊞
-            </button>
-          </div>
+        {/* View Toggle */}
+        <div className="flex border border-slate-200 rounded-lg overflow-hidden ml-auto bg-white">
+          <Button
+            variant={viewMode === 'table' ? 'secondary' : 'ghost'}
+            size="sm"
+            onClick={() => setViewMode('table')}
+            className="rounded-none"
+          >
+            <LayoutList className="h-4 w-4" />
+          </Button>
+          <Button
+            variant={viewMode === 'grid' ? 'secondary' : 'ghost'}
+            size="sm"
+            onClick={() => setViewMode('grid')}
+            className="rounded-none"
+          >
+            <LayoutGrid className="h-4 w-4" />
+          </Button>
         </div>
       </div>
 
       {/* Bulk Actions Bar */}
       {selectedIds.size > 0 && (
-        <div className="bulk-actions-bar">
-          <span className="selected-count">Đã chọn {selectedIds.size}</span>
-          <div className="bulk-buttons">
-            <button
+        <div className="flex items-center gap-4 p-4 bg-sky-50 border border-sky-200 rounded-xl">
+          <div className="flex items-center gap-2">
+            <CheckSquare className="w-5 h-5 text-sky-500" />
+            <span className="font-medium text-sky-700">Đã chọn {selectedIds.size}</span>
+          </div>
+          <div className="flex gap-2">
+            <Button
+              size="sm"
+              variant="outline"
               onClick={() => handleBulkStatusChange('published')}
               disabled={bulkActionLoading}
-              className="bulk-btn publish"
+              className="bg-emerald-100 text-emerald-700 border-emerald-200 hover:bg-emerald-200"
             >
               Xuất bản
-            </button>
-            <button
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
               onClick={() => handleBulkStatusChange('draft')}
               disabled={bulkActionLoading}
-              className="bulk-btn unpublish"
+              className="bg-amber-100 text-amber-700 border-amber-200 hover:bg-amber-200"
             >
               Gỡ xuất bản
-            </button>
-            <button
+            </Button>
+            <Button
+              size="sm"
+              variant="destructive"
               onClick={handleBulkDelete}
               disabled={bulkActionLoading}
-              className="bulk-btn delete"
             >
               Xóa
-            </button>
-            <button
+            </Button>
+            <Button
+              size="sm"
+              variant="ghost"
               onClick={() => setSelectedIds(new Set())}
-              className="bulk-btn cancel"
             >
               Hủy
-            </button>
+            </Button>
           </div>
         </div>
       )}
 
+      {/* Content */}
       {loading ? (
-        <div className="loading">Đang tải bài viết...</div>
+        <div className="admin-empty-state">
+          <div className="admin-empty-state-icon animate-pulse">
+            <FileText className="w-6 h-6" />
+          </div>
+          <p className="text-slate-500">Đang tải bài viết...</p>
+        </div>
       ) : filteredAndSortedArticles.length === 0 ? (
-        <div className="empty-state">
-          <p>Không tìm thấy bài viết nào.</p>
-          <Link href="/admin/articles/new" className="btn-primary">
-            Tạo bài viết đầu tiên
-          </Link>
+        <div className="admin-empty-state">
+          <div className="admin-empty-state-icon">
+            <FileText className="w-6 h-6" />
+          </div>
+          <p className="admin-empty-state-title">Không tìm thấy bài viết nào</p>
+          <p className="admin-empty-state-text">Viết bài viết đầu tiên để bắt đầu.</p>
+          <Button asChild className="gradient-primary text-white border-0 mt-2">
+            <Link href="/admin/articles/new">
+              <Plus className="w-4 h-4 mr-2" />
+              Tạo bài viết đầu tiên
+            </Link>
+          </Button>
         </div>
       ) : viewMode === 'table' ? (
         /* Table View */
-        <div className="table-container">
-          <table className="articles-table">
-            <thead>
-              <tr>
-                <th className="checkbox-col">
-                  <input
-                    type="checkbox"
+        <div className="admin-card overflow-hidden">
+          <Table className="admin-table">
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-[40px]">
+                  <Checkbox
                     checked={selectedIds.size === paginatedArticles.length && paginatedArticles.length > 0}
-                    onChange={handleSelectAll}
+                    onCheckedChange={handleSelectAll}
                   />
-                </th>
-                <th className="sortable" onClick={() => handleSort('title')}>
-                  Tiêu đề <SortIcon field="title" />
-                </th>
-                <th className="sortable" onClick={() => handleSort('articleType')}>
-                  Loại <SortIcon field="articleType" />
-                </th>
-                <th>Danh mục</th>
-                <th className="sortable" onClick={() => handleSort('status')}>
-                  Trạng thái <SortIcon field="status" />
-                </th>
-                <th>Tác giả</th>
-                <th className="sortable" onClick={() => handleSort('updatedAt')}>
-                  Cập nhật <SortIcon field="updatedAt" />
-                </th>
-                <th>Thao tác</th>
-              </tr>
-            </thead>
-            <tbody>
+                </TableHead>
+                <SortableHeader field="title">Tieu de</SortableHeader>
+                <SortableHeader field="articleType">Loai</SortableHeader>
+                <TableHead>Danh muc</TableHead>
+                <SortableHeader field="status">Trang thai</SortableHeader>
+                <TableHead>Tac gia</TableHead>
+                <SortableHeader field="updatedAt">Cap nhat</SortableHeader>
+                <TableHead>Thao tac</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {paginatedArticles.map((article) => (
-                <tr key={article.id} className={selectedIds.has(article.id) ? 'selected' : ''}>
-                  <td className="checkbox-col">
-                    <input
-                      type="checkbox"
+                <TableRow
+                  key={article.id}
+                  className={selectedIds.has(article.id) ? 'bg-blue-50' : ''}
+                >
+                  <TableCell>
+                    <Checkbox
                       checked={selectedIds.has(article.id)}
-                      onChange={() => handleSelect(article.id)}
+                      onCheckedChange={() => handleSelect(article.id)}
                     />
-                  </td>
-                  <td className="title-cell">
-                    <Link href={`/admin/articles/${article.id}`} className="article-link">
+                  </TableCell>
+                  <TableCell className="max-w-[350px]">
+                    <Link
+                      href={`/admin/articles/${article.id}`}
+                      className="flex items-center gap-3 hover:text-primary transition-colors"
+                    >
                       {article.featuredImage && (
-                        <img src={article.featuredImage} alt="" className="thumbnail" />
+                        <Image
+                          src={article.featuredImage}
+                          alt=""
+                          width={48}
+                          height={36}
+                          className="rounded object-cover"
+                        />
                       )}
-                      <span className="title-text">{article.title}</span>
+                      <span className="font-medium truncate">{article.title}</span>
                     </Link>
-                  </td>
-                  <td>
-                    <span className={`type-badge ${article.articleType}`}>
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant={getTypeBadgeVariant(article.articleType)}>
                       {ARTICLE_TYPE_LABELS[article.articleType] || article.articleType}
-                    </span>
-                  </td>
-                  <td>
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
                     {article.category && (
-                      <span className="category-badge">
+                      <span className="text-sm text-muted-foreground">
                         {article.category.icon && !article.category.icon.startsWith('/') ? article.category.icon + ' ' : ''}
                         {article.category.name}
                       </span>
                     )}
-                  </td>
-                  <td>
-                    <button
-                      className={`status-toggle ${article.status}`}
+                  </TableCell>
+                  <TableCell>
+                    <Badge
+                      variant={article.status === 'published' ? 'success' : 'warning'}
+                      className="cursor-pointer hover:opacity-80 transition-opacity"
                       onClick={() => updateArticleStatus(article.id, article.status === 'published' ? 'draft' : 'published')}
-                      title={`Click to ${article.status === 'published' ? 'unpublish' : 'publish'}`}
                     >
-                      {article.status}
-                    </button>
-                  </td>
-                  <td>
+                      {article.status === 'published' ? 'Published' : 'Draft'}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
                     {article.author && (
-                      <span className="author-name">{article.author.name}</span>
+                      <span className="text-sm text-muted-foreground">{article.author.name}</span>
                     )}
-                  </td>
-                  <td className="date-cell">
+                  </TableCell>
+                  <TableCell className="text-muted-foreground text-sm whitespace-nowrap">
                     {new Date(article.updatedAt).toLocaleDateString()}
-                  </td>
-                  <td className="actions-cell">
-                    <Link href={`/admin/articles/${article.id}`} className="action-btn edit" title="Edit">
-                      ✎
-                    </Link>
-                    <button
-                      onClick={() => deleteArticle(article.id)}
-                      className="action-btn delete"
-                      title="Delete"
-                    >
-                      ✕
-                    </button>
-                  </td>
-                </tr>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex gap-1">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        asChild
+                        className="h-8 w-8"
+                      >
+                        <Link href={`/admin/articles/${article.id}`}>
+                          <Pencil className="h-4 w-4" />
+                        </Link>
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => deleteArticle(article.id)}
+                        className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
       ) : (
         /* Grid View */
-        <div className="articles-grid">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {paginatedArticles.map((article) => (
-            <div key={article.id} className={`article-card ${selectedIds.has(article.id) ? 'selected' : ''}`}>
-              <div className="card-checkbox">
-                <input
-                  type="checkbox"
+            <Card
+              key={article.id}
+              className={`overflow-hidden transition-shadow hover:shadow-lg ${selectedIds.has(article.id) ? 'ring-2 ring-primary' : ''}`}
+            >
+              <div className="absolute top-3 left-3 z-10">
+                <Checkbox
                   checked={selectedIds.has(article.id)}
-                  onChange={() => handleSelect(article.id)}
+                  onCheckedChange={() => handleSelect(article.id)}
+                  className="bg-white"
                 />
               </div>
               {article.featuredImage && (
-                <div className="article-image">
-                  <img src={article.featuredImage} alt={article.title} />
+                <div className="h-[180px] overflow-hidden relative">
+                  <Image
+                    src={article.featuredImage}
+                    alt={article.title}
+                    fill
+                    className="object-cover"
+                  />
                 </div>
               )}
-              <div className="article-content">
-                <div className="article-meta">
-                  <span className={`type-badge ${article.articleType}`}>
+              <CardContent className="p-4">
+                <div className="flex gap-2 mb-3">
+                  <Badge variant={getTypeBadgeVariant(article.articleType)}>
                     {ARTICLE_TYPE_LABELS[article.articleType] || article.articleType}
-                  </span>
-                  <button
-                    className={`status-toggle ${article.status}`}
+                  </Badge>
+                  <Badge
+                    variant={article.status === 'published' ? 'success' : 'warning'}
+                    className="cursor-pointer"
                     onClick={() => updateArticleStatus(article.id, article.status === 'published' ? 'draft' : 'published')}
                   >
-                    {article.status}
-                  </button>
+                    {article.status === 'published' ? 'Published' : 'Draft'}
+                  </Badge>
                 </div>
-                <Link href={`/admin/articles/${article.id}`} className="article-title">
+                <Link
+                  href={`/admin/articles/${article.id}`}
+                  className="block text-lg font-semibold mb-2 hover:text-primary transition-colors line-clamp-2"
+                >
                   {article.title}
                 </Link>
-                <div className="article-info">
+                <div className="flex gap-3 text-sm text-muted-foreground mb-2">
                   {article.category && (
-                    <span className="category">
+                    <span>
                       {article.category.icon && !article.category.icon.startsWith('/') ? article.category.icon : ''} {article.category.name}
                     </span>
                   )}
                   {article.author && (
-                    <span className="author">bởi {article.author.name}</span>
+                    <span>boi {article.author.name}</span>
                   )}
                 </div>
-                <div className="article-date">
-                  Cập nhật {new Date(article.updatedAt).toLocaleDateString()}
+                <div className="text-xs text-muted-foreground mb-3">
+                  Cap nhat {new Date(article.updatedAt).toLocaleDateString()}
                 </div>
-                <div className="article-actions">
-                  <Link href={`/admin/articles/${article.id}`} className="btn-edit">
-                    Sửa
-                  </Link>
-                  <button
+                <div className="flex gap-2">
+                  <Button variant="outline" size="sm" asChild>
+                    <Link href={`/admin/articles/${article.id}`}>Sua</Link>
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
                     onClick={() => deleteArticle(article.id)}
-                    className="btn-delete"
+                    className="text-destructive hover:text-destructive"
                   >
-                    Xóa
-                  </button>
+                    Xoa
+                  </Button>
                 </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           ))}
         </div>
       )}
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="pagination">
-          <button
-            className="page-btn"
+        <div className="flex items-center justify-center gap-2 mt-6 flex-wrap">
+          <Button
+            variant="outline"
+            size="icon"
             onClick={() => setCurrentPage(1)}
             disabled={currentPage === 1}
+            className="h-9 w-9"
           >
-            ««
-          </button>
-          <button
-            className="page-btn"
+            <ChevronsLeft className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
             onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
             disabled={currentPage === 1}
+            className="h-9 w-9"
           >
-            «
-          </button>
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
 
-          <div className="page-numbers">
+          <div className="flex items-center gap-1">
             {Array.from({ length: totalPages }, (_, i) => i + 1)
               .filter(page => {
                 if (totalPages <= 7) return true;
@@ -559,621 +658,46 @@ export default function ArticlesListPage() {
                 return false;
               })
               .map((page, idx, arr) => (
-                <>
+                <Fragment key={page}>
                   {idx > 0 && arr[idx - 1] !== page - 1 && (
-                    <span key={`ellipsis-${page}`} className="ellipsis">...</span>
+                    <span className="px-1 text-muted-foreground">...</span>
                   )}
-                  <button
-                    key={page}
-                    className={`page-btn ${currentPage === page ? 'active' : ''}`}
+                  <Button
+                    variant={currentPage === page ? 'default' : 'outline'}
+                    size="sm"
                     onClick={() => setCurrentPage(page)}
+                    className="h-9 min-w-[36px]"
                   >
                     {page}
-                  </button>
-                </>
+                  </Button>
+                </Fragment>
               ))}
           </div>
 
-          <button
-            className="page-btn"
+          <Button
+            variant="outline"
+            size="icon"
             onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
             disabled={currentPage === totalPages}
+            className="h-9 w-9"
           >
-            »
-          </button>
-          <button
-            className="page-btn"
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
             onClick={() => setCurrentPage(totalPages)}
             disabled={currentPage === totalPages}
+            className="h-9 w-9"
           >
-            »»
-          </button>
+            <ChevronsRight className="h-4 w-4" />
+          </Button>
 
-          <span className="page-info">
+          <span className="ml-4 text-sm text-muted-foreground">
             Trang {currentPage} / {totalPages}
           </span>
         </div>
       )}
-
-      <style jsx>{`
-        .articles-page {
-          max-width: 1400px;
-          margin: 0 auto;
-          padding: 24px;
-        }
-
-        .page-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 24px;
-        }
-
-        .header-left {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-        }
-
-        .header-left h1 {
-          font-size: 28px;
-          font-weight: 700;
-          margin: 0;
-        }
-
-        .count {
-          font-size: 14px;
-          color: #6b7280;
-          background: #f3f4f6;
-          padding: 4px 12px;
-          border-radius: 16px;
-        }
-
-        .info-box {
-          padding: 12px 16px;
-          background: #eff6ff;
-          border: 1px solid #bfdbfe;
-          border-radius: 8px;
-          font-size: 13px;
-          color: #1e40af;
-          margin-bottom: 16px;
-        }
-
-        .btn-primary {
-          padding: 10px 20px;
-          background: #FE4A64;
-          color: white;
-          border: none;
-          border-radius: 6px;
-          font-weight: 600;
-          font-size: 14px;
-          cursor: pointer;
-          text-decoration: none;
-        }
-
-        .btn-primary:hover {
-          background: #e5435b;
-        }
-
-        .toolbar {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 16px;
-          flex-wrap: wrap;
-          gap: 12px;
-        }
-
-        .filters {
-          display: flex;
-          gap: 12px;
-          flex-wrap: wrap;
-          flex: 1;
-        }
-
-        .search-input {
-          min-width: 200px;
-          max-width: 300px;
-          padding: 10px 16px;
-          border: 1px solid #d1d5db;
-          border-radius: 6px;
-          font-size: 14px;
-        }
-
-        .filter-select {
-          padding: 10px 16px;
-          border: 1px solid #d1d5db;
-          border-radius: 6px;
-          font-size: 14px;
-          background: white;
-          min-width: 140px;
-        }
-
-        .view-actions {
-          display: flex;
-          gap: 12px;
-          align-items: center;
-        }
-
-        .view-toggle {
-          display: flex;
-          border: 1px solid #d1d5db;
-          border-radius: 6px;
-          overflow: hidden;
-        }
-
-        .view-btn {
-          padding: 8px 12px;
-          background: white;
-          border: none;
-          cursor: pointer;
-          font-size: 16px;
-        }
-
-        .view-btn.active {
-          background: #f3f4f6;
-        }
-
-        .view-btn:hover {
-          background: #e5e7eb;
-        }
-
-        /* Bulk Actions Bar */
-        .bulk-actions-bar {
-          display: flex;
-          align-items: center;
-          gap: 16px;
-          padding: 12px 16px;
-          background: #f0f9ff;
-          border: 1px solid #bae6fd;
-          border-radius: 8px;
-          margin-bottom: 16px;
-        }
-
-        .selected-count {
-          font-weight: 600;
-          color: #0369a1;
-        }
-
-        .bulk-buttons {
-          display: flex;
-          gap: 8px;
-        }
-
-        .bulk-btn {
-          padding: 6px 12px;
-          border-radius: 4px;
-          font-size: 13px;
-          font-weight: 500;
-          cursor: pointer;
-          border: none;
-        }
-
-        .bulk-btn:disabled {
-          opacity: 0.6;
-          cursor: not-allowed;
-        }
-
-        .bulk-btn.publish {
-          background: #d1fae5;
-          color: #065f46;
-        }
-
-        .bulk-btn.unpublish {
-          background: #fef3c7;
-          color: #92400e;
-        }
-
-        .bulk-btn.delete {
-          background: #fee2e2;
-          color: #dc2626;
-        }
-
-        .bulk-btn.cancel {
-          background: #f3f4f6;
-          color: #374151;
-        }
-
-        .loading, .empty-state {
-          text-align: center;
-          padding: 60px 20px;
-          color: #6b7280;
-        }
-
-        .empty-state p {
-          margin-bottom: 16px;
-        }
-
-        /* Table View */
-        .table-container {
-          background: white;
-          border-radius: 8px;
-          box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-          overflow-x: auto;
-        }
-
-        .articles-table {
-          width: 100%;
-          border-collapse: collapse;
-        }
-
-        .articles-table th {
-          text-align: left;
-          padding: 12px 16px;
-          background: #f9fafb;
-          font-weight: 600;
-          font-size: 13px;
-          color: #6b7280;
-          border-bottom: 1px solid #e5e7eb;
-          white-space: nowrap;
-        }
-
-        .articles-table th.sortable {
-          cursor: pointer;
-          user-select: none;
-        }
-
-        .articles-table th.sortable:hover {
-          background: #f3f4f6;
-        }
-
-        .sort-icon {
-          margin-left: 4px;
-          color: #d1d5db;
-        }
-
-        .sort-icon.active {
-          color: #FE4A64;
-        }
-
-        .articles-table td {
-          padding: 12px 16px;
-          border-bottom: 1px solid #e5e7eb;
-          font-size: 14px;
-        }
-
-        .articles-table tr:hover {
-          background: #f9fafb;
-        }
-
-        .articles-table tr.selected {
-          background: #eff6ff;
-        }
-
-        .checkbox-col {
-          width: 40px;
-        }
-
-        .title-cell {
-          max-width: 350px;
-        }
-
-        .article-link {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          text-decoration: none;
-          color: #1a1a1a;
-        }
-
-        .article-link:hover .title-text {
-          color: #FE4A64;
-        }
-
-        .thumbnail {
-          width: 48px;
-          height: 36px;
-          object-fit: cover;
-          border-radius: 4px;
-        }
-
-        .title-text {
-          font-weight: 500;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
-
-        .type-badge {
-          padding: 4px 10px;
-          border-radius: 12px;
-          font-size: 11px;
-          font-weight: 600;
-          text-transform: uppercase;
-        }
-
-        .type-badge.charticle {
-          background: #dbeafe;
-          color: #1e40af;
-        }
-
-        .type-badge.blog {
-          background: #fef3c7;
-          color: #92400e;
-        }
-
-        .type-badge.guide {
-          background: #d1fae5;
-          color: #065f46;
-        }
-
-        .category-badge {
-          font-size: 13px;
-          color: #6b7280;
-        }
-
-        .status-toggle {
-          padding: 4px 10px;
-          border-radius: 12px;
-          font-size: 11px;
-          font-weight: 600;
-          text-transform: uppercase;
-          border: none;
-          cursor: pointer;
-          transition: transform 0.1s;
-        }
-
-        .status-toggle:hover {
-          transform: scale(1.05);
-        }
-
-        .status-toggle.draft {
-          background: #fef3c7;
-          color: #92400e;
-        }
-
-        .status-toggle.published {
-          background: #d1fae5;
-          color: #065f46;
-        }
-
-        .author-name {
-          font-size: 13px;
-          color: #6b7280;
-        }
-
-        .date-cell {
-          color: #9ca3af;
-          font-size: 13px;
-          white-space: nowrap;
-        }
-
-        .actions-cell {
-          white-space: nowrap;
-        }
-
-        .action-btn {
-          width: 32px;
-          height: 32px;
-          border: none;
-          border-radius: 4px;
-          cursor: pointer;
-          font-size: 14px;
-          margin-right: 4px;
-          text-decoration: none;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .action-btn.edit {
-          background: #f3f4f6;
-          color: #374151;
-        }
-
-        .action-btn.edit:hover {
-          background: #e5e7eb;
-        }
-
-        .action-btn.delete {
-          background: #fee2e2;
-          color: #dc2626;
-        }
-
-        .action-btn.delete:hover {
-          background: #fecaca;
-        }
-
-        /* Grid View */
-        .articles-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-          gap: 24px;
-        }
-
-        .article-card {
-          background: white;
-          border-radius: 8px;
-          box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-          overflow: hidden;
-          transition: box-shadow 0.2s;
-          position: relative;
-        }
-
-        .article-card:hover {
-          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-
-        .article-card.selected {
-          box-shadow: 0 0 0 2px #3b82f6;
-        }
-
-        .card-checkbox {
-          position: absolute;
-          top: 12px;
-          left: 12px;
-          z-index: 10;
-        }
-
-        .card-checkbox input {
-          width: 18px;
-          height: 18px;
-          cursor: pointer;
-        }
-
-        .article-image {
-          height: 180px;
-          overflow: hidden;
-        }
-
-        .article-image img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
-
-        .article-content {
-          padding: 16px;
-        }
-
-        .article-meta {
-          display: flex;
-          gap: 8px;
-          margin-bottom: 12px;
-        }
-
-        .article-title {
-          display: block;
-          font-size: 18px;
-          font-weight: 600;
-          color: #1a1a1a;
-          text-decoration: none;
-          margin-bottom: 8px;
-          line-height: 1.4;
-        }
-
-        .article-title:hover {
-          color: #FE4A64;
-        }
-
-        .article-info {
-          display: flex;
-          gap: 12px;
-          font-size: 13px;
-          color: #6b7280;
-          margin-bottom: 8px;
-        }
-
-        .article-date {
-          font-size: 12px;
-          color: #9ca3af;
-          margin-bottom: 12px;
-        }
-
-        .article-actions {
-          display: flex;
-          gap: 8px;
-        }
-
-        .btn-edit, .btn-delete {
-          padding: 6px 12px;
-          border-radius: 4px;
-          font-size: 13px;
-          cursor: pointer;
-          text-decoration: none;
-        }
-
-        .btn-edit {
-          background: #f3f4f6;
-          color: #374151;
-          border: 1px solid #d1d5db;
-        }
-
-        .btn-edit:hover {
-          background: #e5e7eb;
-        }
-
-        .btn-delete {
-          background: #fee2e2;
-          color: #dc2626;
-          border: none;
-        }
-
-        .btn-delete:hover {
-          background: #fecaca;
-        }
-
-        /* Pagination */
-        .pagination {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 8px;
-          margin-top: 24px;
-          flex-wrap: wrap;
-        }
-
-        .page-numbers {
-          display: flex;
-          align-items: center;
-          gap: 4px;
-        }
-
-        .page-btn {
-          min-width: 36px;
-          height: 36px;
-          padding: 0 8px;
-          border: 1px solid #d1d5db;
-          background: white;
-          border-radius: 6px;
-          cursor: pointer;
-          font-size: 14px;
-        }
-
-        .page-btn:hover:not(:disabled) {
-          background: #f3f4f6;
-        }
-
-        .page-btn:disabled {
-          opacity: 0.5;
-          cursor: not-allowed;
-        }
-
-        .page-btn.active {
-          background: #FE4A64;
-          color: white;
-          border-color: #FE4A64;
-        }
-
-        .ellipsis {
-          padding: 0 4px;
-          color: #9ca3af;
-        }
-
-        .page-info {
-          margin-left: 16px;
-          color: #6b7280;
-          font-size: 14px;
-        }
-
-        @media (max-width: 768px) {
-          .toolbar {
-            flex-direction: column;
-            align-items: stretch;
-          }
-
-          .filters {
-            flex-direction: column;
-          }
-
-          .search-input, .filter-select {
-            max-width: none;
-          }
-
-          .articles-grid {
-            grid-template-columns: 1fr;
-          }
-
-          .table-container {
-            font-size: 13px;
-          }
-
-          .articles-table th,
-          .articles-table td {
-            padding: 8px 12px;
-          }
-        }
-      `}</style>
     </div>
   );
 }

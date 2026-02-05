@@ -70,6 +70,100 @@ export async function scrapeListingPage(
     }) || undefined;
   }
 
+  // --- Hero Banner Image ---
+  // Cấu trúc thực tế trên top10.com:
+  // <section class="charticle__header">
+  //   <div class="container">
+  //     <div class="info">...<img class="by-author__image" (avatar nhỏ 35x35)>...</div>
+  //     <div class="placeholder"></div>
+  //     <img class="img" src="https://images.top10.com/..." (ẢNH BANNER LỚN)>
+  //   </div>
+  // </section>
+  category.heroImage = await layer3_evaluate(page, () => {
+    // Helper: kiểm tra ảnh có phải banner không (không phải avatar/logo/icon nhỏ)
+    const isBannerImg = (img: Element): string | null => {
+      const src = img.getAttribute('src') || img.getAttribute('data-src') || '';
+      if (!src) return null;
+      // Skip ảnh nhỏ: avatar tác giả, logo, icon
+      const w = parseInt(img.getAttribute('width') || '0');
+      const h = parseInt(img.getAttribute('height') || '0');
+      if ((w > 0 && w < 100) || (h > 0 && h < 100)) return null;
+      if (src.includes('/authors/')) return null;
+      if (img.classList.contains('by-author__image')) return null;
+      if (img.className.includes('logo') || img.className.includes('icon') || img.className.includes('avatar')) return null;
+      return src;
+    };
+
+    // Strategy 1: Exact match - img.img trong charticle__header (cấu trúc top10.com)
+    const exactImg = document.querySelector('.charticle__header img.img, section.charticle__header > .container > img');
+    if (exactImg) {
+      const src = isBannerImg(exactImg);
+      if (src) return src;
+    }
+
+    // Strategy 2: Tìm ảnh lớn trong header/hero section (skip avatar)
+    const heroSelectors = [
+      '.charticle__header img',
+      '.charticle__hero img',
+      '.hero img',
+      '[class*="hero"] img',
+      '[data-testid="hero-image"] img',
+      '.header-image img',
+    ];
+    for (const sel of heroSelectors) {
+      const imgs = document.querySelectorAll(sel);
+      for (const img of imgs) {
+        const src = isBannerImg(img);
+        if (src) return src;
+      }
+    }
+
+    // Strategy 3: hero background-image (CSS)
+    const heroBgSelectors = [
+      '.charticle__hero',
+      '.charticle__header',
+      '.hero',
+      '[class*="hero-banner"]',
+      '[class*="header-image"]',
+    ];
+    for (const sel of heroBgSelectors) {
+      const el = document.querySelector(sel);
+      if (el) {
+        const bg = window.getComputedStyle(el).backgroundImage;
+        const match = bg?.match(/url\(["']?([^"')]+)["']?\)/);
+        if (match && match[1] !== 'none') return match[1];
+      }
+    }
+
+    // Strategy 4: <picture> element in hero
+    const pictureSources = document.querySelectorAll('.charticle__header picture source, .charticle__hero picture source, .hero picture source');
+    for (const source of pictureSources) {
+      const srcset = source.getAttribute('srcset');
+      if (srcset) return srcset.split(',')[0]?.trim().split(' ')[0] || null;
+    }
+
+    // Strategy 5: ảnh lớn đầu tiên trên trang (fallback cuối)
+    const allImgs = document.querySelectorAll('img');
+    for (const img of allImgs) {
+      const src = img.getAttribute('src') || '';
+      const w = (img as HTMLImageElement).naturalWidth || parseInt(img.getAttribute('width') || '0');
+      const h = (img as HTMLImageElement).naturalHeight || parseInt(img.getAttribute('height') || '0');
+      if (img.classList.contains('by-author__image')) continue;
+      if (img.className.includes('logo') || img.className.includes('icon')) continue;
+      if (src.includes('/authors/')) continue;
+      if (w > 600 || (h > 200 && w > 400)) return src;
+    }
+
+    return null;
+  }) || undefined;
+
+  // Fallback: use ogImage as heroImage if not found on page
+  if (!category.heroImage && category.ogImage) {
+    category.heroImage = category.ogImage;
+  }
+
+  log(`  → heroImage: ${category.heroImage || 'NOT FOUND'}`);
+
   // Category name from heroTitle (parse: "Top 10 Best Web Hosting..." → "Hosting")
   category.name = category.slug
     ? category.slug.charAt(0).toUpperCase() + category.slug.slice(1)

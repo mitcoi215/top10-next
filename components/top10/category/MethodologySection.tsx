@@ -66,20 +66,23 @@ export default function MethodologySection({
         {/* Methodology Content */}
         <div style={{ paddingLeft: '10px', paddingRight: '10px' }}>
           <h2>{methodologyTitle}</h2>
-          <p>
-            {methodologyIntro}
-          </p>
-          <h4><strong>{criteriaTitle}</strong></h4>
-          {criteria.map((item, index) => (
-            <p key={index}>
-              <strong>{item.title}: </strong>
-              {item.description}
-            </p>
-          ))}
-          <h2>{exploreTitle}</h2>
+          <div dangerouslySetInnerHTML={{ __html: methodologyIntro }} />
+          {criteria.length > 0 && (
+            <>
+              <h4><strong>{criteriaTitle}</strong></h4>
+              {criteria.map((item, index) => (
+                <p key={index}>
+                  <strong>{item.title}: </strong>
+                  {item.description}
+                </p>
+              ))}
+            </>
+          )}
+          {exploreCards.length > 0 && <h2>{exploreTitle}</h2>}
         </div>
 
         {/* Explore Cards */}
+        {exploreCards.length > 0 && (
         <div style={{
           display: 'flex',
           flexWrap: 'nowrap',
@@ -161,6 +164,7 @@ export default function MethodologySection({
             </div>
           ))}
         </div>
+        )}
       </div>
     </section>
   );

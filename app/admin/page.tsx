@@ -2,6 +2,22 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import {
+  FolderOpen,
+  Package,
+  FileText,
+  Users,
+  Plus,
+  ArrowUpRight,
+  TrendingUp,
+  Clock,
+  Eye,
+  Home,
+  Sparkles,
+  Zap,
+  BarChart3,
+  ExternalLink,
+} from 'lucide-react';
 
 interface Stats {
   categories: number;
@@ -30,7 +46,6 @@ export default function AdminDashboard() {
 
   const fetchDashboardData = async () => {
     try {
-      // Fetch stats
       const [categoriesRes, productsRes, articlesRes, authorsRes] = await Promise.all([
         fetch('/api/categories'),
         fetch('/api/products'),
@@ -46,27 +61,27 @@ export default function AdminDashboard() {
       setStats({
         categories: Array.isArray(categories) ? categories.length : 0,
         products: Array.isArray(products) ? products.length : 0,
-        articles: Array.isArray(articles) ? articles.length : 0,
+        articles: Array.isArray(articles.articles) ? articles.articles.length : (Array.isArray(articles) ? articles.length : 0),
         authors: Array.isArray(authors) ? authors.length : 0,
       });
 
-      // Set recent items
-      if (Array.isArray(articles)) {
-        setRecentArticles(articles.slice(0, 5).map((a: { id: string; title: string; slug: string; createdAt: string; status: string }) => ({
+      const articlesList = articles.articles || articles;
+      if (Array.isArray(articlesList)) {
+        setRecentArticles(articlesList.slice(0, 5).map((a: any) => ({
           id: a.id,
           title: a.title,
           slug: a.slug,
-          createdAt: a.createdAt,
+          createdAt: a.createdAt || a.updatedAt,
           status: a.status,
         })));
       }
 
       if (Array.isArray(products)) {
-        setRecentProducts(products.slice(0, 5).map((p: { id: string; name: string; slug: string; createdAt: string; status: string }) => ({
+        setRecentProducts(products.slice(0, 5).map((p: any) => ({
           id: p.id,
           title: p.name,
           slug: p.slug,
-          createdAt: p.createdAt,
+          createdAt: p.createdAt || p.updatedAt,
           status: p.status,
         })));
       }
@@ -79,149 +94,221 @@ export default function AdminDashboard() {
 
   const statCards = [
     {
-      title: 'Danh mục',
+      title: 'Categories',
       value: stats.categories,
-      icon: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
-        </svg>
-      ),
-      color: 'from-blue-500 to-blue-600',
+      icon: FolderOpen,
+      gradient: 'gradient-blue',
       href: '/admin/categories',
+      change: '+2 this week',
     },
     {
-      title: 'Sản phẩm',
+      title: 'Products',
       value: stats.products,
-      icon: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-        </svg>
-      ),
-      color: 'from-emerald-500 to-emerald-600',
+      icon: Package,
+      gradient: 'gradient-green',
       href: '/admin/products',
+      change: '+12 this week',
     },
     {
-      title: 'Bài viết',
+      title: 'Articles',
       value: stats.articles,
-      icon: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-        </svg>
-      ),
-      color: 'from-purple-500 to-purple-600',
+      icon: FileText,
+      gradient: 'gradient-purple',
       href: '/admin/articles',
+      change: '+5 this week',
     },
     {
-      title: 'Tác giả',
+      title: 'Authors',
       value: stats.authors,
-      icon: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-        </svg>
-      ),
-      color: 'from-orange-500 to-orange-600',
+      icon: Users,
+      gradient: 'gradient-orange',
       href: '/admin/authors',
+      change: '+1 this week',
     },
   ];
 
   const quickActions = [
-    { title: 'Thêm bài viết', href: '/admin/articles/new', icon: '📝', color: 'bg-purple-100 text-purple-700 hover:bg-purple-200' },
-    { title: 'Thêm sản phẩm', href: '/admin/products/new', icon: '📦', color: 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200' },
-    { title: 'Thêm danh mục', href: '/admin/categories/new', icon: '📁', color: 'bg-blue-100 text-blue-700 hover:bg-blue-200' },
-    { title: 'Cài đặt trang chủ', href: '/admin/settings', icon: '🏠', color: 'bg-pink-100 text-pink-700 hover:bg-pink-200' },
-    { title: 'Danh mục xu hướng', href: '/admin/trending', icon: '📈', color: 'bg-orange-100 text-orange-700 hover:bg-orange-200' },
-    { title: 'Xem website', href: '/', icon: '🌐', color: 'bg-gray-100 text-gray-700 hover:bg-gray-200', external: true },
+    { title: 'New Article', href: '/admin/articles/new', icon: FileText, color: 'bg-purple-500', desc: 'Write content' },
+    { title: 'New Product', href: '/admin/products/new', icon: Package, color: 'bg-emerald-500', desc: 'Add product' },
+    { title: 'New Category', href: '/admin/categories/new', icon: FolderOpen, color: 'bg-blue-500', desc: 'Create category' },
+    { title: 'Homepage', href: '/admin/settings', icon: Home, color: 'bg-pink-500', desc: 'Edit homepage' },
+    { title: 'Trending', href: '/admin/trending', icon: TrendingUp, color: 'bg-orange-500', desc: 'Manage trending' },
+    { title: 'View Site', href: '/', icon: ExternalLink, color: 'bg-slate-600', desc: 'Open website', external: true },
   ];
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin w-8 h-8 border-4 border-pink-500 border-t-transparent rounded-full" />
+      <div className="flex items-center justify-center h-[60vh]">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 gradient-primary rounded-2xl flex items-center justify-center animate-pulse">
+            <BarChart3 className="w-6 h-6 text-white" />
+          </div>
+          <p className="text-slate-500 text-sm">Loading dashboard...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
-      {/* Welcome Section */}
-      <div className="bg-gradient-to-r from-pink-500 to-rose-500 rounded-2xl p-6 text-white">
-        <h2 className="text-2xl font-bold mb-2">Chào mừng trở lại!</h2>
-        <p className="opacity-90">Quản lý nội dung website của bạn tại đây. Sử dụng sidebar để điều hướng giữa các mục.</p>
+    <div className="space-y-6 animate-fade-in">
+      {/* Welcome Banner */}
+      <div className="relative overflow-hidden gradient-primary rounded-2xl p-6 text-white shadow-xl">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute -right-10 -top-10 w-40 h-40 rounded-full bg-white/20 blur-2xl" />
+          <div className="absolute -left-10 -bottom-10 w-60 h-60 rounded-full bg-white/10 blur-3xl" />
+        </div>
+
+        <div className="relative flex items-center justify-between">
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <Sparkles className="w-5 h-5" />
+              <span className="text-white/80 text-sm font-medium">Welcome back!</span>
+            </div>
+            <h2 className="text-2xl font-bold mb-1">Good to see you, Admin</h2>
+            <p className="text-white/70 text-sm max-w-md">
+              Manage your content, products, and settings from this dashboard. Use the sidebar to navigate.
+            </p>
+          </div>
+          <div className="hidden lg:flex items-center gap-3">
+            <Link
+              href="/admin/articles/new"
+              className="flex items-center gap-2 px-4 py-2.5 bg-white/20 hover:bg-white/30 rounded-xl text-sm font-medium transition backdrop-blur-sm"
+            >
+              <Plus className="w-4 h-4" />
+              New Article
+            </Link>
+            <Link
+              href="/"
+              target="_blank"
+              className="flex items-center gap-2 px-4 py-2.5 bg-white text-primary rounded-xl text-sm font-medium hover:bg-white/90 transition shadow-lg"
+            >
+              <Eye className="w-4 h-4" />
+              View Site
+            </Link>
+          </div>
+        </div>
       </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {statCards.map((stat) => (
-          <Link
-            key={stat.title}
-            href={stat.href}
-            className="bg-white rounded-xl p-5 shadow-sm border border-gray-100 hover:shadow-md transition group"
-          >
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-500 mb-1">{stat.title}</p>
-                <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
+        {statCards.map((stat) => {
+          const Icon = stat.icon;
+          return (
+            <Link
+              key={stat.title}
+              href={stat.href}
+              className="stat-card group"
+              style={{ '--stat-gradient': stat.gradient === 'gradient-blue' ? 'linear-gradient(90deg, #3b82f6, #1d4ed8)' :
+                        stat.gradient === 'gradient-green' ? 'linear-gradient(90deg, #10b981, #059669)' :
+                        stat.gradient === 'gradient-purple' ? 'linear-gradient(90deg, #8b5cf6, #6d28d9)' :
+                        'linear-gradient(90deg, #f97316, #ea580c)' } as React.CSSProperties}
+            >
+              <div className="flex items-start justify-between">
+                <div>
+                  <p className="stat-card-label">{stat.title}</p>
+                  <p className="stat-card-value mt-1">{stat.value}</p>
+                </div>
+                <div className={`stat-card-icon ${stat.gradient}`}>
+                  <Icon className="w-5 h-5" />
+                </div>
               </div>
-              <div className={`w-12 h-12 rounded-xl bg-gradient-to-r ${stat.color} flex items-center justify-center text-white group-hover:scale-110 transition`}>
-                {stat.icon}
+              <div className="flex items-center justify-between mt-4 pt-4 border-t border-slate-100">
+                <span className="text-xs text-emerald-600 font-medium flex items-center gap-1">
+                  <TrendingUp className="w-3 h-3" />
+                  {stat.change}
+                </span>
+                <span className="text-xs text-slate-400 group-hover:text-primary transition flex items-center gap-1">
+                  View all
+                  <ArrowUpRight className="w-3 h-3" />
+                </span>
               </div>
-            </div>
-          </Link>
-        ))}
+            </Link>
+          );
+        })}
       </div>
 
       {/* Quick Actions */}
-      <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Thao tác nhanh</h3>
-        <div className="flex flex-wrap gap-3">
-          {quickActions.map((action) => (
-            <Link
-              key={action.title}
-              href={action.href}
-              target={action.external ? '_blank' : undefined}
-              className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium transition ${action.color}`}
-            >
-              <span>{action.icon}</span>
-              {action.title}
-            </Link>
-          ))}
+      <div className="admin-card">
+        <div className="admin-card-header">
+          <div className="flex items-center gap-2">
+            <Zap className="w-4 h-4 text-primary" />
+            <span className="admin-card-title">Quick Actions</span>
+          </div>
+        </div>
+        <div className="admin-card-body">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+            {quickActions.map((action) => {
+              const Icon = action.icon;
+              return (
+                <Link
+                  key={action.title}
+                  href={action.href}
+                  target={action.external ? '_blank' : undefined}
+                  className="flex flex-col items-center gap-2 p-4 rounded-xl bg-slate-50 hover:bg-slate-100 transition group"
+                >
+                  <div className={`w-10 h-10 ${action.color} rounded-xl flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition`}>
+                    <Icon className="w-5 h-5" />
+                  </div>
+                  <div className="text-center">
+                    <p className="text-sm font-medium text-slate-800">{action.title}</p>
+                    <p className="text-xs text-slate-500">{action.desc}</p>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
         </div>
       </div>
 
       {/* Recent Content */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Recent Articles */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100">
-          <div className="p-4 border-b border-gray-100 flex items-center justify-between">
-            <h3 className="font-semibold text-gray-900">Bài viết gần đây</h3>
-            <Link href="/admin/articles" className="text-sm text-pink-600 hover:text-pink-700 font-medium">
-              Xem tất cả
+        <div className="admin-card">
+          <div className="admin-card-header">
+            <div className="flex items-center gap-2">
+              <FileText className="w-4 h-4 text-purple-500" />
+              <span className="admin-card-title">Recent Articles</span>
+            </div>
+            <Link href="/admin/articles" className="text-xs text-primary hover:underline font-medium">
+              View all
             </Link>
           </div>
-          <div className="divide-y divide-gray-100">
+          <div className="divide-y divide-slate-100">
             {recentArticles.length > 0 ? (
               recentArticles.map((article) => (
                 <Link
                   key={article.id}
                   href={`/admin/articles/${article.id}`}
-                  className="flex items-center justify-between p-4 hover:bg-gray-50 transition"
+                  className="flex items-center justify-between p-4 hover:bg-slate-50 transition group"
                 >
                   <div className="min-w-0 flex-1">
-                    <p className="text-sm font-medium text-gray-900 truncate">{article.title}</p>
-                    <p className="text-xs text-gray-500 mt-0.5">{new Date(article.createdAt).toLocaleDateString()}</p>
+                    <p className="text-sm font-medium text-slate-800 truncate group-hover:text-primary transition">
+                      {article.title}
+                    </p>
+                    <p className="text-xs text-slate-500 mt-0.5 flex items-center gap-1">
+                      <Clock className="w-3 h-3" />
+                      {article.createdAt ? new Date(article.createdAt).toLocaleDateString() : 'N/A'}
+                    </p>
                   </div>
-                  <span className={`ml-3 px-2 py-1 text-xs font-medium rounded-full ${
-                    article.status === 'published' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'
-                  }`}>
-                    {article.status === 'published' ? 'Đã xuất bản' : 'Bản nháp'}
-                  </span>
+                  <div className="flex items-center gap-2 ml-3">
+                    <span className={`admin-badge ${article.status === 'published' ? 'admin-badge-success' : 'admin-badge-warning'}`}>
+                      <span className={`status-dot ${article.status === 'published' ? 'status-dot-live' : 'status-dot-draft'}`} />
+                      {article.status === 'published' ? 'Live' : 'Draft'}
+                    </span>
+                  </div>
                 </Link>
               ))
             ) : (
-              <div className="p-8 text-center text-gray-500">
-                <p>Chưa có bài viết nào</p>
-                <Link href="/admin/articles/new" className="text-pink-600 hover:text-pink-700 font-medium text-sm mt-1 inline-block">
-                  Tạo bài viết đầu tiên
+              <div className="admin-empty-state">
+                <div className="admin-empty-state-icon">
+                  <FileText className="w-6 h-6" />
+                </div>
+                <p className="admin-empty-state-title">No articles yet</p>
+                <p className="admin-empty-state-text">Create your first article to get started.</p>
+                <Link href="/admin/articles/new" className="inline-flex items-center gap-2 px-4 py-2 gradient-primary text-white text-sm font-medium rounded-lg hover:opacity-90 transition">
+                  <Plus className="w-4 h-4" />
+                  Create Article
                 </Link>
               </div>
             )}
@@ -229,37 +316,50 @@ export default function AdminDashboard() {
         </div>
 
         {/* Recent Products */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100">
-          <div className="p-4 border-b border-gray-100 flex items-center justify-between">
-            <h3 className="font-semibold text-gray-900">Sản phẩm gần đây</h3>
-            <Link href="/admin/products" className="text-sm text-pink-600 hover:text-pink-700 font-medium">
-              Xem tất cả
+        <div className="admin-card">
+          <div className="admin-card-header">
+            <div className="flex items-center gap-2">
+              <Package className="w-4 h-4 text-emerald-500" />
+              <span className="admin-card-title">Recent Products</span>
+            </div>
+            <Link href="/admin/products" className="text-xs text-primary hover:underline font-medium">
+              View all
             </Link>
           </div>
-          <div className="divide-y divide-gray-100">
+          <div className="divide-y divide-slate-100">
             {recentProducts.length > 0 ? (
               recentProducts.map((product) => (
                 <Link
                   key={product.id}
                   href={`/admin/products/${product.id}`}
-                  className="flex items-center justify-between p-4 hover:bg-gray-50 transition"
+                  className="flex items-center justify-between p-4 hover:bg-slate-50 transition group"
                 >
                   <div className="min-w-0 flex-1">
-                    <p className="text-sm font-medium text-gray-900 truncate">{product.title}</p>
-                    <p className="text-xs text-gray-500 mt-0.5">{product.slug}</p>
+                    <p className="text-sm font-medium text-slate-800 truncate group-hover:text-primary transition">
+                      {product.title}
+                    </p>
+                    <p className="text-xs text-slate-500 mt-0.5 font-mono">
+                      /{product.slug}
+                    </p>
                   </div>
-                  <span className={`ml-3 px-2 py-1 text-xs font-medium rounded-full ${
-                    product.status === 'published' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'
-                  }`}>
-                    {product.status === 'published' ? 'Đã xuất bản' : 'Bản nháp'}
-                  </span>
+                  <div className="flex items-center gap-2 ml-3">
+                    <span className={`admin-badge ${product.status === 'published' ? 'admin-badge-success' : 'admin-badge-warning'}`}>
+                      <span className={`status-dot ${product.status === 'published' ? 'status-dot-live' : 'status-dot-draft'}`} />
+                      {product.status === 'published' ? 'Live' : 'Draft'}
+                    </span>
+                  </div>
                 </Link>
               ))
             ) : (
-              <div className="p-8 text-center text-gray-500">
-                <p>Chưa có sản phẩm nào</p>
-                <Link href="/admin/products/new" className="text-pink-600 hover:text-pink-700 font-medium text-sm mt-1 inline-block">
-                  Tạo sản phẩm đầu tiên
+              <div className="admin-empty-state">
+                <div className="admin-empty-state-icon">
+                  <Package className="w-6 h-6" />
+                </div>
+                <p className="admin-empty-state-title">No products yet</p>
+                <p className="admin-empty-state-text">Add your first product to get started.</p>
+                <Link href="/admin/products/new" className="inline-flex items-center gap-2 px-4 py-2 gradient-primary text-white text-sm font-medium rounded-lg hover:opacity-90 transition">
+                  <Plus className="w-4 h-4" />
+                  Add Product
                 </Link>
               </div>
             )}
@@ -268,24 +368,21 @@ export default function AdminDashboard() {
       </div>
 
       {/* Help Section */}
-      <div className="bg-slate-900 rounded-xl p-6 text-white">
-        <div className="flex items-start gap-4">
+      <div className="admin-card bg-gradient-to-br from-slate-900 to-slate-800 text-white border-none">
+        <div className="admin-card-body flex items-start gap-4">
           <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center flex-shrink-0">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
+            <Sparkles className="w-6 h-6" />
           </div>
-          <div>
-            <h3 className="font-semibold mb-1">Cần trợ giúp?</h3>
-            <p className="text-sm text-slate-300 mb-3">
-              Sử dụng sidebar để điều hướng giữa các mục quản lý website.
-              Mỗi mục đều có danh sách và form chỉnh sửa riêng.
+          <div className="flex-1">
+            <h3 className="font-semibold mb-1">Need help getting started?</h3>
+            <p className="text-sm text-slate-300 mb-4">
+              Use the sidebar to navigate between different sections. Each section has its own list view and edit forms.
             </p>
-            <div className="flex flex-wrap gap-2 text-sm">
-              <span className="px-2 py-1 bg-white/10 rounded">Danh mục - Quản lý chủ đề</span>
-              <span className="px-2 py-1 bg-white/10 rounded">Sản phẩm - Thêm/sửa sản phẩm</span>
-              <span className="px-2 py-1 bg-white/10 rounded">Bài viết - Viết nội dung</span>
-              <span className="px-2 py-1 bg-white/10 rounded">Trang chủ - Cấu hình homepage</span>
+            <div className="flex flex-wrap gap-2">
+              <span className="px-3 py-1.5 bg-white/10 rounded-lg text-xs font-medium">Categories - Manage topics</span>
+              <span className="px-3 py-1.5 bg-white/10 rounded-lg text-xs font-medium">Products - Add/edit products</span>
+              <span className="px-3 py-1.5 bg-white/10 rounded-lg text-xs font-medium">Articles - Write content</span>
+              <span className="px-3 py-1.5 bg-white/10 rounded-lg text-xs font-medium">Homepage - Configure layout</span>
             </div>
           </div>
         </div>

@@ -17,22 +17,27 @@ export default function NewProductPage() {
 
   const fetchData = async () => {
     try {
-      // Fetch categories
-      const catRes = await fetch('/api/categories');
+      // Fetch categories and authors in parallel
+      const [catRes, authorsRes] = await Promise.all([
+        fetch('/api/categories'),
+        fetch('/api/authors'),
+      ]);
+
       const catData = await catRes.json();
+      const authorsData = await authorsRes.json();
+
       setCategories(catData.map((c: { id: string; name: string; slug: string }) => ({
         id: c.id,
         name: c.name,
         slug: c.slug,
       })));
 
-      // TODO: Fetch authors when API is ready
-      // For now, use sample data
-      setAuthors([
-        { id: '1', name: 'Phillip Richardson' },
-        { id: '2', name: 'Sarah Johnson' },
-        { id: '3', name: 'Mike Chen' },
-      ]);
+      // Authors API returns array directly
+      const authorsArray = Array.isArray(authorsData) ? authorsData : [];
+      setAuthors(authorsArray.map((a: any) => ({
+        id: a.id,
+        name: a.name,
+      })));
     } catch (error) {
       console.error('Failed to fetch data:', error);
     } finally {
@@ -53,8 +58,15 @@ export default function NewProductPage() {
     });
 
     if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.message || 'Failed to create product');
+      const errorData = await response.json();
+      // Handle validation errors with details (object format: { field: message })
+      if (errorData.details && typeof errorData.details === 'object') {
+        const detailMessages = Object.entries(errorData.details)
+          .map(([field, message]) => `${field}: ${message}`)
+          .join(', ');
+        throw new Error(detailMessages || errorData.error);
+      }
+      throw new Error(errorData.error || errorData.message || 'Failed to create product');
     }
 
     const newProduct = await response.json();

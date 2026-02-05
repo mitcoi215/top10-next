@@ -2,6 +2,16 @@
 
 import { useState, useEffect, useMemo, Fragment } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
+import { Plus, ArrowUpDown, Pencil, Trash2, Search, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Package, Info, CheckSquare } from 'lucide-react';
+import {
+  Button,
+  Input,
+  Badge,
+  Checkbox,
+  Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+} from '@/components/ui';
 
 interface Product {
   id: string;
@@ -232,216 +242,281 @@ export default function ProductsListPage() {
     }
   };
 
-  const SortIcon = ({ field }: { field: SortField }) => {
-    if (sortField !== field) return <span className="sort-icon">↕</span>;
-    return <span className="sort-icon active">{sortDirection === 'asc' ? '↑' : '↓'}</span>;
-  };
+  const SortableHeader = ({ field, children }: { field: SortField; children: React.ReactNode }) => (
+    <TableHead
+      className="cursor-pointer hover:bg-muted/50 select-none"
+      onClick={() => handleSort(field)}
+    >
+      <div className="flex items-center gap-1">
+        {children}
+        <ArrowUpDown className={`h-4 w-4 ${sortField === field ? 'text-primary' : 'text-muted-foreground'}`} />
+      </div>
+    </TableHead>
+  );
 
   return (
-    <div className="products-page">
-      <div className="page-header">
-        <div className="header-left">
-          <h1>Sản phẩm</h1>
-          <span className="count">{filteredAndSortedProducts.length} / {products.length}</span>
+    <div className="space-y-6 animate-fade-in">
+      {/* Header */}
+      <div className="flex justify-between items-center">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 gradient-green rounded-xl flex items-center justify-center">
+            <Package className="w-5 h-5 text-white" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-slate-800">Sản phẩm</h1>
+            <p className="text-sm text-slate-500">Quản lý sản phẩm và xếp hạng</p>
+          </div>
         </div>
-        <Link href="/admin/products/new" className="btn-primary">
-          + Thêm sản phẩm
-        </Link>
+        <div className="flex items-center gap-2">
+          <span className="admin-badge admin-badge-info">{filteredAndSortedProducts.length} / {products.length}</span>
+          <Button asChild size="sm" className="gradient-primary text-white border-0">
+            <Link href="/admin/products/new">
+              <Plus className="h-4 w-4 mr-2" />
+              Thêm sản phẩm
+            </Link>
+          </Button>
+        </div>
       </div>
 
       {/* Info Box */}
-      <div className="info-box">
-        📍 <strong>Hiển thị tại:</strong> Trang danh mục (Top 10 list), trang so sánh sản phẩm, trang review chi tiết, sidebar bài viết
+      <div className="flex items-center gap-3 p-4 bg-blue-50 border border-blue-200 rounded-xl">
+        <Info className="w-5 h-5 text-blue-500 flex-shrink-0" />
+        <p className="text-sm text-blue-700">
+          <strong>Hiển thị tại:</strong> Trang danh mục (Top 10 list), trang so sánh sản phẩm, trang review chi tiết, sidebar bài viết
+        </p>
       </div>
 
-      <div className="toolbar">
-        <div className="filters">
-          <input
-            type="text"
+      {/* Filters */}
+      <div className="flex items-center gap-3">
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+            <Search className="h-4 w-4 text-slate-400" />
+          </div>
+          <Input
             placeholder="Tìm kiếm sản phẩm..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="search-input"
+            className="w-[260px] pl-9 h-7 bg-white border-slate-200 rounded-md text-xs"
           />
-          <select
-            value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value as typeof filterStatus)}
-            className="filter-select"
-          >
-            <option value="all">Tất cả trạng thái</option>
-            <option value="draft">Bản nháp</option>
-            <option value="published">Đã xuất bản</option>
-          </select>
-          <select
-            value={filterCategory}
-            onChange={(e) => setFilterCategory(e.target.value)}
-            className="filter-select"
-          >
-            <option value="all">Tất cả danh mục</option>
-            {categories.map(cat => (
-              <option key={cat.id} value={cat.id}>
-                {cat.icon && !cat.icon.startsWith('/') ? cat.icon + ' ' : ''}{cat.name}
-              </option>
-            ))}
-          </select>
         </div>
+        <Select value={filterStatus} onValueChange={(v) => setFilterStatus(v as typeof filterStatus)}>
+          <SelectTrigger className="w-[160px] bg-white h-9 rounded-lg text-sm">
+            <SelectValue placeholder="Trạng thái" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Tất cả trạng thái</SelectItem>
+            <SelectItem value="draft">Bản nháp</SelectItem>
+            <SelectItem value="published">Đã xuất bản</SelectItem>
+          </SelectContent>
+        </Select>
+        <Select value={filterCategory} onValueChange={setFilterCategory}>
+          <SelectTrigger className="w-[200px] bg-white h-9 rounded-lg text-sm">
+            <SelectValue placeholder="Danh mục" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Tất cả danh mục</SelectItem>
+            {categories.map(cat => (
+              <SelectItem key={cat.id} value={cat.id}>
+                {cat.icon && !cat.icon.startsWith('/') ? cat.icon + ' ' : ''}{cat.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       {/* Bulk Actions Bar */}
       {selectedIds.size > 0 && (
-        <div className="bulk-actions-bar">
-          <span className="selected-count">Đã chọn {selectedIds.size}</span>
-          <div className="bulk-buttons">
-            <button
+        <div className="flex items-center gap-4 p-4 bg-sky-50 border border-sky-200 rounded-xl">
+          <div className="flex items-center gap-2">
+            <CheckSquare className="w-5 h-5 text-sky-500" />
+            <span className="font-medium text-sky-700">Đã chọn {selectedIds.size}</span>
+          </div>
+          <div className="flex gap-2">
+            <Button
+              size="sm"
+              variant="outline"
               onClick={() => handleBulkStatusChange('published')}
               disabled={bulkActionLoading}
-              className="bulk-btn publish"
+              className="bg-emerald-100 text-emerald-700 border-emerald-200 hover:bg-emerald-200"
             >
               Xuất bản
-            </button>
-            <button
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
               onClick={() => handleBulkStatusChange('draft')}
               disabled={bulkActionLoading}
-              className="bulk-btn unpublish"
+              className="bg-amber-100 text-amber-700 border-amber-200 hover:bg-amber-200"
             >
               Gỡ xuất bản
-            </button>
-            <button
+            </Button>
+            <Button
+              size="sm"
+              variant="destructive"
               onClick={handleBulkDelete}
               disabled={bulkActionLoading}
-              className="bulk-btn delete"
             >
               Xóa
-            </button>
-            <button
+            </Button>
+            <Button
+              size="sm"
+              variant="ghost"
               onClick={() => setSelectedIds(new Set())}
-              className="bulk-btn cancel"
             >
               Hủy
-            </button>
+            </Button>
           </div>
         </div>
       )}
 
+      {/* Content */}
       {loading ? (
-        <div className="loading">Đang tải sản phẩm...</div>
+        <div className="admin-empty-state">
+          <div className="admin-empty-state-icon animate-pulse">
+            <Package className="w-6 h-6" />
+          </div>
+          <p className="text-slate-500">Đang tải sản phẩm...</p>
+        </div>
       ) : filteredAndSortedProducts.length === 0 ? (
-        <div className="empty-state">
-          <p>Không tìm thấy sản phẩm nào.</p>
-          <Link href="/admin/products/new" className="btn-primary">
-            Tạo sản phẩm đầu tiên
-          </Link>
+        <div className="admin-empty-state">
+          <div className="admin-empty-state-icon">
+            <Package className="w-6 h-6" />
+          </div>
+          <p className="admin-empty-state-title">Không tìm thấy sản phẩm nào</p>
+          <p className="admin-empty-state-text">Thêm sản phẩm đầu tiên để bắt đầu.</p>
+          <Button asChild className="gradient-primary text-white border-0 mt-2">
+            <Link href="/admin/products/new">
+              <Plus className="w-4 h-4 mr-2" />
+              Tạo sản phẩm đầu tiên
+            </Link>
+          </Button>
         </div>
       ) : (
-        <div className="products-table">
-          <table>
-            <thead>
-              <tr>
-                <th className="checkbox-col">
-                  <input
-                    type="checkbox"
+        <div className="admin-card overflow-hidden">
+          <Table className="admin-table">
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-[40px]">
+                  <Checkbox
                     checked={selectedIds.size === paginatedProducts.length && paginatedProducts.length > 0}
-                    onChange={handleSelectAll}
+                    onCheckedChange={handleSelectAll}
                   />
-                </th>
-                <th className="sortable" onClick={() => handleSort('rank')}>
-                  Hạng <SortIcon field="rank" />
-                </th>
-                <th className="sortable" onClick={() => handleSort('name')}>
-                  Tên <SortIcon field="name" />
-                </th>
-                <th className="sortable" onClick={() => handleSort('category')}>
-                  Danh mục <SortIcon field="category" />
-                </th>
-                <th className="sortable" onClick={() => handleSort('status')}>
-                  Trạng thái <SortIcon field="status" />
-                </th>
-                <th className="sortable" onClick={() => handleSort('updatedAt')}>
-                  Cập nhật <SortIcon field="updatedAt" />
-                </th>
-                <th>Thao tác</th>
-              </tr>
-            </thead>
-            <tbody>
+                </TableHead>
+                <SortableHeader field="rank">Hạng</SortableHeader>
+                <SortableHeader field="name">Tên</SortableHeader>
+                <SortableHeader field="category">Danh mục</SortableHeader>
+                <SortableHeader field="status">Trạng thái</SortableHeader>
+                <SortableHeader field="updatedAt">Cập nhật</SortableHeader>
+                <TableHead>Thao tác</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {paginatedProducts.map((product) => (
-                <tr key={product.id} className={selectedIds.has(product.id) ? 'selected' : ''}>
-                  <td className="checkbox-col">
-                    <input
-                      type="checkbox"
+                <TableRow
+                  key={product.id}
+                  className={selectedIds.has(product.id) ? 'bg-blue-50' : ''}
+                >
+                  <TableCell>
+                    <Checkbox
                       checked={selectedIds.has(product.id)}
-                      onChange={() => handleSelect(product.id)}
+                      onCheckedChange={() => handleSelect(product.id)}
                     />
-                  </td>
-                  <td className="rank-cell">#{product.rank}</td>
-                  <td className="name-cell">
-                    <Link href={`/admin/products/${product.id}`} className="product-link">
+                  </TableCell>
+                  <TableCell className="font-semibold text-primary">
+                    #{product.rank}
+                  </TableCell>
+                  <TableCell className="max-w-[350px]">
+                    <Link
+                      href={`/admin/products/${product.id}`}
+                      className="flex items-center gap-3 hover:text-primary transition-colors"
+                    >
                       {product.logo && (
-                        <img src={product.logo} alt="" className="product-logo" />
+                        <Image
+                          src={product.logo}
+                          alt=""
+                          width={40}
+                          height={40}
+                          className="rounded bg-muted p-1 object-contain"
+                        />
                       )}
-                      <div className="product-info">
-                        <span className="product-name">{product.name}</span>
-                        <span className="slug">/{product.slug}</span>
+                      <div className="flex flex-col">
+                        <span className="font-medium">{product.name}</span>
+                        <span className="text-xs text-muted-foreground">/{product.slug}</span>
                       </div>
                     </Link>
-                  </td>
-                  <td>
+                  </TableCell>
+                  <TableCell>
                     {product.category && (
-                      <span className="category-badge">
+                      <span className="text-sm text-muted-foreground">
                         {product.category.icon && !product.category.icon.startsWith('/') ? product.category.icon + ' ' : ''}
                         {product.category.name}
                       </span>
                     )}
-                  </td>
-                  <td>
-                    <button
-                      className={`status-toggle ${product.status}`}
+                  </TableCell>
+                  <TableCell>
+                    <Badge
+                      variant={product.status === 'published' ? 'success' : 'warning'}
+                      className="cursor-pointer hover:opacity-80 transition-opacity"
                       onClick={() => updateProductStatus(product.id, product.status === 'published' ? 'draft' : 'published')}
-                      title={`Click to ${product.status === 'published' ? 'unpublish' : 'publish'}`}
                     >
-                      {product.status}
-                    </button>
-                  </td>
-                  <td className="date-cell">
+                      {product.status === 'published' ? 'Published' : 'Draft'}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="text-muted-foreground text-sm whitespace-nowrap">
                     {new Date(product.updatedAt).toLocaleDateString()}
-                  </td>
-                  <td className="actions-cell">
-                    <Link href={`/admin/products/${product.id}`} className="action-btn edit" title="Edit">
-                      ✎
-                    </Link>
-                    <button
-                      onClick={() => deleteProduct(product.id)}
-                      className="action-btn delete"
-                      title="Delete"
-                    >
-                      ✕
-                    </button>
-                  </td>
-                </tr>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex gap-1">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        asChild
+                        className="h-8 w-8"
+                      >
+                        <Link href={`/admin/products/${product.id}`}>
+                          <Pencil className="h-4 w-4" />
+                        </Link>
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => deleteProduct(product.id)}
+                        className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
       )}
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="pagination">
-          <button
-            className="page-btn"
+        <div className="flex items-center justify-center gap-2 mt-6 flex-wrap">
+          <Button
+            variant="outline"
+            size="icon"
             onClick={() => setCurrentPage(1)}
             disabled={currentPage === 1}
+            className="h-9 w-9"
           >
-            ««
-          </button>
-          <button
-            className="page-btn"
+            <ChevronsLeft className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
             onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
             disabled={currentPage === 1}
+            className="h-9 w-9"
           >
-            «
-          </button>
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
 
-          <div className="page-numbers">
+          <div className="flex items-center gap-1">
             {Array.from({ length: totalPages }, (_, i) => i + 1)
               .filter(page => {
                 if (totalPages <= 7) return true;
@@ -452,459 +527,44 @@ export default function ProductsListPage() {
               .map((page, idx, arr) => (
                 <Fragment key={page}>
                   {idx > 0 && arr[idx - 1] !== page - 1 && (
-                    <span className="ellipsis">...</span>
+                    <span className="px-1 text-muted-foreground">...</span>
                   )}
-                  <button
-                    className={`page-btn ${currentPage === page ? 'active' : ''}`}
+                  <Button
+                    variant={currentPage === page ? 'default' : 'outline'}
+                    size="sm"
                     onClick={() => setCurrentPage(page)}
+                    className="h-9 min-w-[36px]"
                   >
                     {page}
-                  </button>
+                  </Button>
                 </Fragment>
               ))}
           </div>
 
-          <button
-            className="page-btn"
+          <Button
+            variant="outline"
+            size="icon"
             onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
             disabled={currentPage === totalPages}
+            className="h-9 w-9"
           >
-            »
-          </button>
-          <button
-            className="page-btn"
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
             onClick={() => setCurrentPage(totalPages)}
             disabled={currentPage === totalPages}
+            className="h-9 w-9"
           >
-            »»
-          </button>
+            <ChevronsRight className="h-4 w-4" />
+          </Button>
 
-          <span className="page-info">
+          <span className="ml-4 text-sm text-muted-foreground">
             Trang {currentPage} / {totalPages}
           </span>
         </div>
       )}
-
-      <style jsx>{`
-        .products-page {
-          max-width: 1400px;
-          margin: 0 auto;
-          padding: 24px;
-        }
-
-        .page-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 24px;
-        }
-
-        .header-left {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-        }
-
-        .header-left h1 {
-          font-size: 28px;
-          font-weight: 700;
-          margin: 0;
-        }
-
-        .count {
-          font-size: 14px;
-          color: #6b7280;
-          background: #f3f4f6;
-          padding: 4px 12px;
-          border-radius: 16px;
-        }
-
-        .info-box {
-          padding: 12px 16px;
-          background: #eff6ff;
-          border: 1px solid #bfdbfe;
-          border-radius: 8px;
-          font-size: 13px;
-          color: #1e40af;
-          margin-bottom: 16px;
-        }
-
-        .btn-primary {
-          padding: 10px 20px;
-          background: #FE4A64;
-          color: white;
-          border: none;
-          border-radius: 6px;
-          font-weight: 600;
-          font-size: 14px;
-          cursor: pointer;
-          text-decoration: none;
-        }
-
-        .btn-primary:hover {
-          background: #e5435b;
-        }
-
-        .toolbar {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 16px;
-          flex-wrap: wrap;
-          gap: 12px;
-        }
-
-        .filters {
-          display: flex;
-          gap: 12px;
-          flex-wrap: wrap;
-          flex: 1;
-        }
-
-        .search-input {
-          min-width: 200px;
-          max-width: 300px;
-          padding: 10px 16px;
-          border: 1px solid #d1d5db;
-          border-radius: 6px;
-          font-size: 14px;
-        }
-
-        .filter-select {
-          padding: 10px 16px;
-          border: 1px solid #d1d5db;
-          border-radius: 6px;
-          font-size: 14px;
-          background: white;
-          min-width: 140px;
-        }
-
-        /* Bulk Actions Bar */
-        .bulk-actions-bar {
-          display: flex;
-          align-items: center;
-          gap: 16px;
-          padding: 12px 16px;
-          background: #f0f9ff;
-          border: 1px solid #bae6fd;
-          border-radius: 8px;
-          margin-bottom: 16px;
-        }
-
-        .selected-count {
-          font-weight: 600;
-          color: #0369a1;
-        }
-
-        .bulk-buttons {
-          display: flex;
-          gap: 8px;
-        }
-
-        .bulk-btn {
-          padding: 6px 12px;
-          border-radius: 4px;
-          font-size: 13px;
-          font-weight: 500;
-          cursor: pointer;
-          border: none;
-        }
-
-        .bulk-btn:disabled {
-          opacity: 0.6;
-          cursor: not-allowed;
-        }
-
-        .bulk-btn.publish {
-          background: #d1fae5;
-          color: #065f46;
-        }
-
-        .bulk-btn.unpublish {
-          background: #fef3c7;
-          color: #92400e;
-        }
-
-        .bulk-btn.delete {
-          background: #fee2e2;
-          color: #dc2626;
-        }
-
-        .bulk-btn.cancel {
-          background: #f3f4f6;
-          color: #374151;
-        }
-
-        .loading, .empty-state {
-          text-align: center;
-          padding: 60px 20px;
-          color: #6b7280;
-        }
-
-        .empty-state p {
-          margin-bottom: 16px;
-        }
-
-        .products-table {
-          background: white;
-          border-radius: 8px;
-          box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-          overflow-x: auto;
-        }
-
-        table {
-          width: 100%;
-          border-collapse: collapse;
-        }
-
-        th {
-          text-align: left;
-          padding: 12px 16px;
-          background: #f9fafb;
-          font-size: 13px;
-          font-weight: 600;
-          color: #6b7280;
-          border-bottom: 1px solid #e5e7eb;
-          white-space: nowrap;
-        }
-
-        th.sortable {
-          cursor: pointer;
-          user-select: none;
-        }
-
-        th.sortable:hover {
-          background: #f3f4f6;
-        }
-
-        .sort-icon {
-          margin-left: 4px;
-          color: #d1d5db;
-        }
-
-        .sort-icon.active {
-          color: #FE4A64;
-        }
-
-        td {
-          padding: 12px 16px;
-          border-bottom: 1px solid #e5e7eb;
-          font-size: 14px;
-        }
-
-        tr:last-child td {
-          border-bottom: none;
-        }
-
-        tr:hover {
-          background: #f9fafb;
-        }
-
-        tr.selected {
-          background: #eff6ff;
-        }
-
-        .checkbox-col {
-          width: 40px;
-        }
-
-        .rank-cell {
-          font-weight: 600;
-          color: #FE4A64;
-          width: 70px;
-        }
-
-        .name-cell {
-          max-width: 350px;
-        }
-
-        .product-link {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          text-decoration: none;
-          color: #1a1a1a;
-        }
-
-        .product-link:hover .product-name {
-          color: #FE4A64;
-        }
-
-        .product-logo {
-          width: 40px;
-          height: 40px;
-          object-fit: contain;
-          border-radius: 4px;
-          background: #f3f4f6;
-          padding: 4px;
-        }
-
-        .product-info {
-          display: flex;
-          flex-direction: column;
-        }
-
-        .product-name {
-          font-weight: 600;
-        }
-
-        .slug {
-          font-size: 12px;
-          color: #9ca3af;
-        }
-
-        .category-badge {
-          font-size: 13px;
-          color: #6b7280;
-        }
-
-        .status-toggle {
-          padding: 4px 10px;
-          border-radius: 12px;
-          font-size: 11px;
-          font-weight: 600;
-          text-transform: uppercase;
-          border: none;
-          cursor: pointer;
-          transition: transform 0.1s;
-        }
-
-        .status-toggle:hover {
-          transform: scale(1.05);
-        }
-
-        .status-toggle.draft {
-          background: #fef3c7;
-          color: #92400e;
-        }
-
-        .status-toggle.published {
-          background: #d1fae5;
-          color: #065f46;
-        }
-
-        .date-cell {
-          color: #9ca3af;
-          font-size: 13px;
-          white-space: nowrap;
-        }
-
-        .actions-cell {
-          white-space: nowrap;
-        }
-
-        .action-btn {
-          width: 32px;
-          height: 32px;
-          border: none;
-          border-radius: 4px;
-          cursor: pointer;
-          font-size: 14px;
-          margin-right: 4px;
-          text-decoration: none;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .action-btn.edit {
-          background: #f3f4f6;
-          color: #374151;
-        }
-
-        .action-btn.edit:hover {
-          background: #e5e7eb;
-        }
-
-        .action-btn.delete {
-          background: #fee2e2;
-          color: #dc2626;
-        }
-
-        .action-btn.delete:hover {
-          background: #fecaca;
-        }
-
-        /* Pagination */
-        .pagination {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 8px;
-          margin-top: 24px;
-          flex-wrap: wrap;
-        }
-
-        .page-numbers {
-          display: flex;
-          align-items: center;
-          gap: 4px;
-        }
-
-        .page-btn {
-          min-width: 36px;
-          height: 36px;
-          padding: 0 8px;
-          border: 1px solid #d1d5db;
-          background: white;
-          border-radius: 6px;
-          cursor: pointer;
-          font-size: 14px;
-        }
-
-        .page-btn:hover:not(:disabled) {
-          background: #f3f4f6;
-        }
-
-        .page-btn:disabled {
-          opacity: 0.5;
-          cursor: not-allowed;
-        }
-
-        .page-btn.active {
-          background: #FE4A64;
-          color: white;
-          border-color: #FE4A64;
-        }
-
-        .ellipsis {
-          padding: 0 4px;
-          color: #9ca3af;
-        }
-
-        .page-info {
-          margin-left: 16px;
-          color: #6b7280;
-          font-size: 14px;
-        }
-
-        @media (max-width: 768px) {
-          .toolbar {
-            flex-direction: column;
-            align-items: stretch;
-          }
-
-          .filters {
-            flex-direction: column;
-          }
-
-          .search-input, .filter-select {
-            max-width: none;
-          }
-
-          .products-table {
-            font-size: 13px;
-          }
-
-          th, td {
-            padding: 8px 12px;
-          }
-
-          table {
-            min-width: 700px;
-          }
-        }
-      `}</style>
     </div>
   );
 }

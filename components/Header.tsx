@@ -1,49 +1,17 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { SITE_CONFIG } from '@/lib/constants';
 
-// Type for category from API
-interface Category {
-  id: string;
-  slug: string;
-  name: string;
-  icon: string;
-  color: string;
-  featured: boolean;
-}
-
 export default function Header() {
   const router = useRouter();
-  const [featuredCategories, setFeaturedCategories] = useState<Category[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
-
-  // Fetch featured categories from API
-  const fetchCategories = useCallback(async () => {
-    try {
-      const res = await fetch('/api/categories');
-      if (!res.ok) throw new Error('Failed to fetch categories');
-      const data: Category[] = await res.json();
-
-      // Filter featured categories, or take first 4 if none are featured
-      const featured = data.filter(cat => cat.featured);
-      setFeaturedCategories(featured.length > 0 ? featured : data.slice(0, 4));
-    } catch (err) {
-      console.error('Failed to fetch categories:', err);
-    }
-  }, []);
-
-  // Load categories on mount
-  useEffect(() => {
-    fetchCategories();
-  }, [fetchCategories]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      // Navigate to home with search query (we'll implement search later)
       router.push(`/?search=${encodeURIComponent(searchQuery.trim())}`);
       setSearchQuery('');
     }
@@ -67,17 +35,8 @@ export default function Header() {
 
           {/* Navigation + Search - Right Side */}
           <div className="flex items-center gap-6">
-            {/* Featured Categories Navigation */}
+            {/* Navigation */}
             <nav className="hidden md:flex items-center gap-4">
-              {featuredCategories.map((cat) => (
-                <Link
-                  key={cat.id}
-                  href={`/?category=${cat.slug}`}
-                  className="text-sm font-medium text-gray-700 hover:text-red-600 transition"
-                >
-                  {cat.name}
-                </Link>
-              ))}
               <Link
                 href="/about"
                 className="text-sm font-medium text-gray-700 hover:text-red-600 transition"

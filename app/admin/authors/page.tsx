@@ -1,7 +1,17 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
+import Image from 'next/image';
+import { Plus, Pencil, Trash2, Search, Twitter, Linkedin, Globe, Mail, Loader2, User, Users, CheckSquare } from 'lucide-react';
 import { CLOUDINARY_CONFIG } from '@/lib/cloudinary.config';
+import {
+  Button,
+  Input,
+  Badge,
+  Checkbox,
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
+  Label,
+} from '@/components/ui';
 
 interface Author {
   id: string;
@@ -90,7 +100,7 @@ export default function AuthorsPage() {
           comparison = (a._count?.articles || 0) - (b._count?.articles || 0);
           break;
         case 'createdAt':
-          comparison = 0; // Not available in current data
+          comparison = 0;
           break;
       }
       return sortDirection === 'asc' ? comparison : -comparison;
@@ -265,14 +275,6 @@ export default function AuthorsPage() {
   };
 
   // Bulk actions
-  const handleSelectAll = () => {
-    if (selectedIds.size === filteredAndSortedAuthors.length) {
-      setSelectedIds(new Set());
-    } else {
-      setSelectedIds(new Set(filteredAndSortedAuthors.map(a => a.id)));
-    }
-  };
-
   const handleSelect = (id: string) => {
     setSelectedIds(prev => {
       const next = new Set(prev);
@@ -316,54 +318,34 @@ export default function AuthorsPage() {
   const totalArticles = authors.reduce((sum, a) => sum + (a._count?.articles || 0), 0);
 
   return (
-    <div className="authors-page">
+    <div className="space-y-6 animate-fade-in relative">
       {/* Notification Toast */}
       {notification && (
-        <div className={`notification ${notification.type}`}>
+        <div className={`fixed top-20 right-5 px-5 py-3 rounded-xl text-sm font-medium z-[1001] shadow-lg animate-slide-up ${
+          notification.type === 'success'
+            ? 'bg-emerald-100 text-emerald-700 border border-emerald-200'
+            : 'bg-red-100 text-red-700 border border-red-200'
+        }`}>
           {notification.message}
         </div>
       )}
 
-      <div className="page-header">
-        <div className="header-left">
-          <h1>Tác giả / Chuyên gia</h1>
-          <span className="count">{filteredAndSortedAuthors.length} / {authors.length}</span>
+      {/* Header + Toolbar */}
+      <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <h1 className="text-xl font-bold text-slate-800">Tác giả</h1>
+          <span className="text-xs text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full font-medium">{authors.length}</span>
         </div>
-        <button onClick={openCreateModal} className="btn-primary">
-          + Thêm tác giả
-        </button>
-      </div>
-
-      {/* Info Box */}
-      <div className="info-box">
-        📍 <strong>Hiển thị tại:</strong> Trang bài viết (tên tác giả, avatar), trang chủ phần "Chuyên gia", trang review sản phẩm
-      </div>
-
-      {/* Stats Bar */}
-      <div className="stats-bar">
-        <div className="stat-item">
-          <span className="stat-value">{authors.length}</span>
-          <span className="stat-label">Tổng tác giả</span>
-        </div>
-        <div className="stat-item">
-          <span className="stat-value">{totalArticles}</span>
-          <span className="stat-label">Tổng bài viết</span>
-        </div>
-        <div className="stat-item">
-          <span className="stat-value">{authors.filter(a => a.avatar).length}</span>
-          <span className="stat-label">Có avatar</span>
-        </div>
-      </div>
-
-      <div className="toolbar">
-        <div className="filters">
-          <input
-            type="text"
-            placeholder="Tìm kiếm tác giả..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="search-input"
-          />
+        <div className="flex items-center gap-2">
+          <div className="relative">
+            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400" />
+            <input
+              placeholder="Tìm kiếm..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="h-8 w-48 pl-8 pr-3 text-sm border border-slate-200 rounded-lg bg-white placeholder:text-slate-400 focus:outline-none focus:border-blue-500"
+            />
+          </div>
           <select
             value={`${sortField}-${sortDirection}`}
             onChange={(e) => {
@@ -371,914 +353,295 @@ export default function AuthorsPage() {
               setSortField(field);
               setSortDirection(dir);
             }}
-            className="sort-select"
+            className="h-8 px-2.5 text-sm border border-slate-200 rounded-lg bg-white focus:outline-none focus:border-blue-500"
           >
             <option value="name-asc">Tên A-Z</option>
             <option value="name-desc">Tên Z-A</option>
             <option value="articles-desc">Nhiều bài nhất</option>
             <option value="articles-asc">Ít bài nhất</option>
           </select>
+          <Button onClick={openCreateModal} size="sm" className="h-8 gradient-primary text-white border-0 text-xs">
+            <Plus className="h-3.5 w-3.5 mr-1" />
+            Thêm tác giả
+          </Button>
         </div>
-
-        {selectedIds.size > 0 && (
-          <div className="bulk-actions">
-            <span className="selected-count">Đã chọn {selectedIds.size}</span>
-            <button
-              onClick={handleBulkDelete}
-              disabled={bulkActionLoading}
-              className="bulk-btn delete"
-            >
-              Xóa
-            </button>
-            <button
-              onClick={() => setSelectedIds(new Set())}
-              className="bulk-btn cancel"
-            >
-              Hủy
-            </button>
-          </div>
-        )}
       </div>
 
+      {selectedIds.size > 0 && (
+        <div className="flex items-center gap-3 px-3 py-1.5 bg-sky-50 border border-sky-200 rounded-lg">
+          <CheckSquare className="w-4 h-4 text-sky-500" />
+          <span className="text-sm font-medium text-sky-700">Đã chọn {selectedIds.size}</span>
+          <Button size="sm" variant="destructive" onClick={handleBulkDelete} disabled={bulkActionLoading} className="h-7 text-xs">Xóa</Button>
+          <Button size="sm" variant="ghost" onClick={() => setSelectedIds(new Set())} className="h-7 text-xs">Hủy</Button>
+        </div>
+      )}
+
+      {/* Content */}
       {loading ? (
-        <div className="loading">
-          <div className="loading-spinner"></div>
-          <p>Đang tải tác giả...</p>
+        <div className="admin-empty-state">
+          <div className="admin-empty-state-icon animate-pulse">
+            <Loader2 className="w-6 h-6 animate-spin" />
+          </div>
+          <p className="text-slate-500">Đang tải tác giả...</p>
         </div>
       ) : filteredAndSortedAuthors.length === 0 ? (
-        <div className="empty-state">
-          <div className="empty-icon">👤</div>
-          <h3>Chưa có tác giả nào</h3>
-          <p>Thêm tác giả viết bài cho website của bạn.</p>
-          <button onClick={openCreateModal} className="btn-primary">
-            + Tạo tác giả đầu tiên
-          </button>
+        <div className="admin-empty-state">
+          <div className="admin-empty-state-icon">
+            <User className="w-6 h-6" />
+          </div>
+          <p className="admin-empty-state-title">Chưa có tác giả nào</p>
+          <p className="admin-empty-state-text">Thêm tác giả viết bài cho website của bạn.</p>
+          <Button onClick={openCreateModal} className="gradient-primary text-white border-0 mt-2">
+            <Plus className="h-4 w-4 mr-2" />
+            Tạo tác giả đầu tiên
+          </Button>
         </div>
       ) : (
-        <div className="authors-grid">
-          {filteredAndSortedAuthors.map((author) => (
-            <div
-              key={author.id}
-              className={`author-card ${selectedIds.has(author.id) ? 'selected' : ''}`}
-            >
-              <div className="card-checkbox">
-                <input
-                  type="checkbox"
-                  checked={selectedIds.has(author.id)}
-                  onChange={() => handleSelect(author.id)}
-                />
-              </div>
-
-              <div className="author-avatar">
-                {author.avatar ? (
-                  <img src={author.avatar} alt={author.name} />
-                ) : (
-                  <div className="avatar-placeholder">{author.name.charAt(0)}</div>
-                )}
-              </div>
-
-              <div className="author-info">
-                <h3>{author.name}</h3>
-                {author.title && <p className="author-title">{author.title}</p>}
-
-                <div className="author-stats">
-                  <span className="stat">
-                    <strong>{author._count?.articles || 0}</strong> bài viết
-                  </span>
-                </div>
-
-                {/* Social Links */}
-                <div className="social-links">
-                  {author.twitter && (
-                    <a href={author.twitter} target="_blank" rel="noopener noreferrer" className="social-link twitter" title="Twitter">
-                      𝕏
-                    </a>
-                  )}
-                  {author.linkedin && (
-                    <a href={author.linkedin} target="_blank" rel="noopener noreferrer" className="social-link linkedin" title="LinkedIn">
-                      in
-                    </a>
-                  )}
-                  {author.website && (
-                    <a href={author.website} target="_blank" rel="noopener noreferrer" className="social-link website" title="Website">
-                      🔗
-                    </a>
-                  )}
-                  {author.email && (
-                    <a href={`mailto:${author.email}`} className="social-link email" title="Email">
-                      ✉
-                    </a>
-                  )}
-                </div>
-              </div>
-
-              <div className="author-actions">
-                <button onClick={() => openEditModal(author)} className="btn-edit" title="Edit">
-                  ✎
-                </button>
-                <button onClick={() => deleteAuthor(author.id)} className="btn-delete" title="Delete">
-                  ✕
-                </button>
-              </div>
-            </div>
-          ))}
+        <div className="admin-card overflow-hidden">
+          <table className="w-full">
+            <thead>
+              <tr className="border-b border-slate-100 bg-slate-50/50">
+                <th className="w-10 p-3 text-left">
+                  <Checkbox
+                    checked={selectedIds.size === filteredAndSortedAuthors.length && filteredAndSortedAuthors.length > 0}
+                    onCheckedChange={(checked) => {
+                      if (checked) {
+                        setSelectedIds(new Set(filteredAndSortedAuthors.map(a => a.id)));
+                      } else {
+                        setSelectedIds(new Set());
+                      }
+                    }}
+                  />
+                </th>
+                <th className="p-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Tác giả</th>
+                <th className="p-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Chức danh</th>
+                <th className="p-3 text-center text-xs font-semibold text-slate-500 uppercase tracking-wider">Bài viết</th>
+                <th className="p-3 text-center text-xs font-semibold text-slate-500 uppercase tracking-wider">Liên kết</th>
+                <th className="p-3 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider w-24">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredAndSortedAuthors.map((author) => (
+                <tr
+                  key={author.id}
+                  className={`border-b border-slate-50 hover:bg-slate-50/50 transition-colors ${selectedIds.has(author.id) ? 'bg-primary/5' : ''}`}
+                >
+                  <td className="p-3">
+                    <Checkbox
+                      checked={selectedIds.has(author.id)}
+                      onCheckedChange={() => handleSelect(author.id)}
+                    />
+                  </td>
+                  <td className="p-3">
+                    <div className="flex items-center gap-3">
+                      {author.avatar ? (
+                        <Image
+                          src={author.avatar}
+                          alt={author.name}
+                          width={40}
+                          height={40}
+                          className="w-10 h-10 rounded-full object-cover flex-shrink-0"
+                        />
+                      ) : (
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-pink-400 flex items-center justify-center text-sm font-semibold text-white flex-shrink-0">
+                          {author.name.charAt(0)}
+                        </div>
+                      )}
+                      <span className="font-medium text-slate-800">{author.name}</span>
+                    </div>
+                  </td>
+                  <td className="p-3">
+                    <span className="text-sm text-slate-500">{author.title || '—'}</span>
+                  </td>
+                  <td className="p-3 text-center">
+                    <Badge variant="secondary">
+                      {author._count?.articles || 0}
+                    </Badge>
+                  </td>
+                  <td className="p-3">
+                    <div className="flex justify-center gap-1.5">
+                      {author.twitter && (
+                        <a href={author.twitter} target="_blank" rel="noopener noreferrer"
+                           className="w-7 h-7 rounded-full bg-sky-100 text-sky-600 flex items-center justify-center hover:bg-sky-200 transition-colors">
+                          <Twitter className="h-3.5 w-3.5" />
+                        </a>
+                      )}
+                      {author.linkedin && (
+                        <a href={author.linkedin} target="_blank" rel="noopener noreferrer"
+                           className="w-7 h-7 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center hover:bg-blue-200 transition-colors">
+                          <Linkedin className="h-3.5 w-3.5" />
+                        </a>
+                      )}
+                      {author.website && (
+                        <a href={author.website} target="_blank" rel="noopener noreferrer"
+                           className="w-7 h-7 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center hover:bg-slate-200 transition-colors">
+                          <Globe className="h-3.5 w-3.5" />
+                        </a>
+                      )}
+                      {author.email && (
+                        <a href={`mailto:${author.email}`}
+                           className="w-7 h-7 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center hover:bg-slate-200 transition-colors">
+                          <Mail className="h-3.5 w-3.5" />
+                        </a>
+                      )}
+                      {!author.twitter && !author.linkedin && !author.website && !author.email && (
+                        <span className="text-sm text-slate-300">—</span>
+                      )}
+                    </div>
+                  </td>
+                  <td className="p-3">
+                    <div className="flex justify-end gap-1">
+                      <Button variant="ghost" size="icon" onClick={() => openEditModal(author)} className="h-8 w-8 text-slate-500 hover:text-slate-700">
+                        <Pencil className="h-3.5 w-3.5" />
+                      </Button>
+                      <Button variant="ghost" size="icon" onClick={() => deleteAuthor(author.id)}
+                              className="h-8 w-8 text-slate-500 hover:text-red-600 hover:bg-red-50">
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </Button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       )}
 
       {/* Modal for Create/Edit */}
-      {showModal && (
-        <div className="modal-overlay" onClick={closeModal}>
-          <div className="modal" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-              <h2>{editingAuthor ? 'Chỉnh sửa tác giả' : 'Thêm tác giả mới'}</h2>
-              <button onClick={closeModal} className="btn-close">×</button>
+      <Dialog open={showModal} onOpenChange={setShowModal}>
+        <DialogContent className="max-w-md max-h-[85vh] overflow-y-auto !p-4 !gap-3">
+          <DialogHeader>
+            <DialogTitle className="text-base">{editingAuthor ? 'Chỉnh sửa tác giả' : 'Thêm tác giả mới'}</DialogTitle>
+          </DialogHeader>
+
+          <form onSubmit={handleSubmit} className="space-y-3">
+            {/* Avatar Upload */}
+            <div className="flex justify-center">
+              <label className="relative w-16 h-16 cursor-pointer group">
+                {uploadingAvatar ? (
+                  <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center">
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  </div>
+                ) : formData.avatar ? (
+                  <Image src={formData.avatar} alt="Avatar" width={64} height={64} className="w-16 h-16 rounded-full object-cover" />
+                ) : (
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-pink-400 flex items-center justify-center text-xl font-semibold text-white">
+                    {formData.name ? formData.name.charAt(0) : '?'}
+                  </div>
+                )}
+                <div className="absolute inset-0 rounded-full bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-white text-[10px] font-medium">
+                  Upload
+                </div>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleAvatarUpload}
+                  className="hidden"
+                  disabled={uploadingAvatar}
+                />
+              </label>
             </div>
-            <form onSubmit={handleSubmit} className="modal-form">
-              <div className="avatar-section">
-                <label className="avatar-upload-label">
-                  {uploadingAvatar ? (
-                    <div className="avatar-loading">
-                      <div className="spinner" />
-                    </div>
-                  ) : formData.avatar ? (
-                    <img src={formData.avatar} alt="Avatar" className="preview-avatar" />
-                  ) : (
-                    <div className="avatar-placeholder-large">
-                      {formData.name ? formData.name.charAt(0) : '?'}
-                    </div>
-                  )}
-                  <div className="avatar-overlay">
-                    <span>Upload</span>
-                  </div>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleAvatarUpload}
-                    className="hidden-input"
-                    disabled={uploadingAvatar}
-                  />
-                </label>
+
+            {/* Basic Info */}
+            <div className="space-y-2 p-3 bg-slate-50 rounded-lg border border-slate-100">
+              <h4 className="font-semibold text-[11px] text-slate-500 uppercase tracking-wider">Thông tin cơ bản</h4>
+              <div className="space-y-1">
+                <Label htmlFor="name" className="text-xs">Họ tên *</Label>
+                <Input
+                  id="name"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  placeholder="VD: Nguyễn Văn A"
+                  className="h-8 text-sm"
+                  required
+                />
               </div>
+              <div className="space-y-1">
+                <Label htmlFor="title" className="text-xs">Chức danh / Vai trò</Label>
+                <Input
+                  id="title"
+                  value={formData.title}
+                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                  placeholder="VD: Chuyên gia tài chính"
+                  className="h-8 text-sm"
+                />
+              </div>
+              <div className="space-y-1">
+                <Label htmlFor="bio" className="text-xs">Tiểu sử</Label>
+                <textarea
+                  id="bio"
+                  value={formData.bio}
+                  onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+                  placeholder="Mô tả ngắn về tác giả..."
+                  rows={2}
+                  className="w-full px-2.5 py-1.5 border border-slate-200 rounded-md text-sm resize-y focus:outline-none focus:border-blue-500"
+                />
+              </div>
+            </div>
 
-              <div className="form-section">
-                <h4>Thông tin cơ bản</h4>
-                <div className="form-group">
-                  <label htmlFor="name">Họ tên *</label>
-                  <input
-                    id="name"
-                    type="text"
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    placeholder="VD: Nguyễn Văn A"
-                    required
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="title">Chức danh / Vai trò</label>
-                  <input
-                    id="title"
-                    type="text"
-                    value={formData.title}
-                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                    placeholder="VD: Chuyên gia tài chính, Tác giả công nghệ"
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="bio">Tiểu sử</label>
-                  <textarea
-                    id="bio"
-                    value={formData.bio}
-                    onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-                    placeholder="Mô tả ngắn về tác giả..."
-                    rows={3}
+            {/* Social Links */}
+            <div className="space-y-2 p-3 bg-slate-50 rounded-lg border border-slate-100">
+              <h4 className="font-semibold text-[11px] text-slate-500 uppercase tracking-wider">Liên kết mạng xã hội</h4>
+              <div className="grid grid-cols-2 gap-2">
+                <div className="space-y-1">
+                  <Label htmlFor="twitter" className="text-xs">Twitter/X</Label>
+                  <Input
+                    id="twitter"
+                    type="url"
+                    value={formData.twitter}
+                    onChange={(e) => setFormData({ ...formData, twitter: e.target.value })}
+                    placeholder="https://twitter.com/..."
+                    className="h-8 text-sm"
                   />
                 </div>
-              </div>
-
-              <div className="form-section">
-                <h4>Liên kết mạng xã hội</h4>
-                <div className="form-row-2">
-                  <div className="form-group">
-                    <label htmlFor="twitter">Twitter/X</label>
-                    <input
-                      id="twitter"
-                      type="url"
-                      value={formData.twitter}
-                      onChange={(e) => setFormData({ ...formData, twitter: e.target.value })}
-                      placeholder="https://twitter.com/username"
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="linkedin">LinkedIn</label>
-                    <input
-                      id="linkedin"
-                      type="url"
-                      value={formData.linkedin}
-                      onChange={(e) => setFormData({ ...formData, linkedin: e.target.value })}
-                      placeholder="https://linkedin.com/in/username"
-                    />
-                  </div>
+                <div className="space-y-1">
+                  <Label htmlFor="linkedin" className="text-xs">LinkedIn</Label>
+                  <Input
+                    id="linkedin"
+                    type="url"
+                    value={formData.linkedin}
+                    onChange={(e) => setFormData({ ...formData, linkedin: e.target.value })}
+                    placeholder="https://linkedin.com/in/..."
+                    className="h-8 text-sm"
+                  />
                 </div>
-                <div className="form-row-2">
-                  <div className="form-group">
-                    <label htmlFor="website">Website</label>
-                    <input
-                      id="website"
-                      type="url"
-                      value={formData.website}
-                      onChange={(e) => setFormData({ ...formData, website: e.target.value })}
-                      placeholder="https://example.com"
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="email">Email</label>
-                    <input
-                      id="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      placeholder="tacgia@example.com"
-                    />
-                  </div>
+                <div className="space-y-1">
+                  <Label htmlFor="website" className="text-xs">Website</Label>
+                  <Input
+                    id="website"
+                    type="url"
+                    value={formData.website}
+                    onChange={(e) => setFormData({ ...formData, website: e.target.value })}
+                    placeholder="https://example.com"
+                    className="h-8 text-sm"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <Label htmlFor="email" className="text-xs">Email</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    placeholder="tacgia@example.com"
+                    className="h-8 text-sm"
+                  />
                 </div>
               </div>
-
-              <div className="modal-actions">
-                <button type="button" onClick={closeModal} className="btn-cancel">
-                  Hủy
-                </button>
-                <button type="submit" disabled={saving} className="btn-save">
-                  {saving ? 'Đang lưu...' : editingAuthor ? 'Cập nhật' : 'Tạo mới'}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
-      <style jsx>{`
-        .authors-page {
-          max-width: 1400px;
-          margin: 0 auto;
-          padding: 24px;
-          position: relative;
-        }
-
-        /* Notification */
-        .notification {
-          position: fixed;
-          top: 20px;
-          right: 20px;
-          padding: 12px 20px;
-          border-radius: 8px;
-          font-size: 14px;
-          font-weight: 500;
-          z-index: 1001;
-          animation: slideIn 0.3s ease;
-        }
-
-        .notification.success {
-          background: #d1fae5;
-          color: #065f46;
-          border: 1px solid #a7f3d0;
-        }
-
-        .notification.error {
-          background: #fee2e2;
-          color: #dc2626;
-          border: 1px solid #fecaca;
-        }
-
-        @keyframes slideIn {
-          from { transform: translateX(100%); opacity: 0; }
-          to { transform: translateX(0); opacity: 1; }
-        }
-
-        .page-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 20px;
-        }
-
-        .header-left {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-        }
-
-        .header-left h1 {
-          font-size: 28px;
-          font-weight: 700;
-          margin: 0;
-        }
-
-        .count {
-          font-size: 14px;
-          color: #6b7280;
-          background: #f3f4f6;
-          padding: 4px 12px;
-          border-radius: 16px;
-        }
-
-        .btn-primary {
-          padding: 10px 20px;
-          background: #FE4A64;
-          color: white;
-          border: none;
-          border-radius: 6px;
-          font-weight: 600;
-          font-size: 14px;
-          cursor: pointer;
-        }
-
-        .btn-primary:hover {
-          background: #e5435b;
-        }
-
-        /* Info Box */
-        .info-box {
-          padding: 12px 16px;
-          background: #eff6ff;
-          border: 1px solid #bfdbfe;
-          border-radius: 8px;
-          font-size: 13px;
-          color: #1e40af;
-          margin-bottom: 16px;
-        }
-
-        /* Stats Bar */
-        .stats-bar {
-          display: flex;
-          gap: 24px;
-          padding: 16px 20px;
-          background: white;
-          border-radius: 10px;
-          box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-          margin-bottom: 20px;
-        }
-
-        .stat-item {
-          display: flex;
-          flex-direction: column;
-        }
-
-        .stat-value {
-          font-size: 24px;
-          font-weight: 700;
-          color: #1a1a1a;
-        }
-
-        .stat-label {
-          font-size: 13px;
-          color: #6b7280;
-        }
-
-        .toolbar {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 20px;
-          flex-wrap: wrap;
-          gap: 12px;
-        }
-
-        .filters {
-          display: flex;
-          gap: 12px;
-          flex-wrap: wrap;
-        }
-
-        .search-input {
-          min-width: 200px;
-          max-width: 300px;
-          padding: 10px 16px;
-          border: 1px solid #d1d5db;
-          border-radius: 6px;
-          font-size: 14px;
-        }
-
-        .sort-select {
-          padding: 10px 16px;
-          border: 1px solid #d1d5db;
-          border-radius: 6px;
-          font-size: 14px;
-          background: white;
-        }
-
-        .bulk-actions {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          padding: 8px 16px;
-          background: #f0f9ff;
-          border: 1px solid #bae6fd;
-          border-radius: 8px;
-        }
-
-        .selected-count {
-          font-weight: 600;
-          color: #0369a1;
-          font-size: 14px;
-        }
-
-        .bulk-btn {
-          padding: 6px 12px;
-          border-radius: 4px;
-          font-size: 13px;
-          font-weight: 500;
-          cursor: pointer;
-          border: none;
-        }
-
-        .bulk-btn.delete {
-          background: #fee2e2;
-          color: #dc2626;
-        }
-
-        .bulk-btn.cancel {
-          background: #f3f4f6;
-          color: #374151;
-        }
-
-        .loading {
-          text-align: center;
-          padding: 60px 20px;
-          color: #6b7280;
-        }
-
-        .loading-spinner {
-          width: 32px;
-          height: 32px;
-          border: 3px solid #e5e7eb;
-          border-top-color: #FE4A64;
-          border-radius: 50%;
-          animation: spin 0.8s linear infinite;
-          margin: 0 auto 12px;
-        }
-
-        @keyframes spin {
-          to { transform: rotate(360deg); }
-        }
-
-        .empty-state {
-          text-align: center;
-          padding: 80px 20px;
-          background: white;
-          border-radius: 12px;
-          box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        .empty-icon {
-          font-size: 48px;
-          margin-bottom: 16px;
-        }
-
-        .empty-state h3 {
-          margin: 0 0 8px 0;
-          font-size: 20px;
-        }
-
-        .empty-state p {
-          margin: 0 0 24px 0;
-          color: #6b7280;
-        }
-
-        .authors-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-          gap: 20px;
-        }
-
-        .author-card {
-          background: white;
-          border-radius: 12px;
-          padding: 20px;
-          box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-          display: flex;
-          gap: 16px;
-          position: relative;
-          transition: box-shadow 0.2s;
-        }
-
-        .author-card:hover {
-          box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-
-        .author-card.selected {
-          box-shadow: 0 0 0 2px #3b82f6;
-        }
-
-        .card-checkbox {
-          position: absolute;
-          top: 12px;
-          right: 12px;
-        }
-
-        .card-checkbox input {
-          width: 18px;
-          height: 18px;
-          cursor: pointer;
-        }
-
-        .author-avatar {
-          flex-shrink: 0;
-        }
-
-        .author-avatar img {
-          width: 64px;
-          height: 64px;
-          border-radius: 50%;
-          object-fit: cover;
-        }
-
-        .avatar-placeholder {
-          width: 64px;
-          height: 64px;
-          border-radius: 50%;
-          background: linear-gradient(135deg, #FE4A64, #ff8a9d);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 24px;
-          font-weight: 600;
-          color: white;
-        }
-
-        .author-info {
-          flex: 1;
-          min-width: 0;
-        }
-
-        .author-info h3 {
-          margin: 0 0 4px 0;
-          font-size: 16px;
-          font-weight: 600;
-          padding-right: 30px;
-        }
-
-        .author-title {
-          margin: 0 0 8px 0;
-          font-size: 13px;
-          color: #6b7280;
-        }
-
-        .author-stats {
-          margin-bottom: 10px;
-        }
-
-        .author-stats .stat {
-          font-size: 12px;
-          color: #6b7280;
-          background: #f3f4f6;
-          padding: 2px 8px;
-          border-radius: 10px;
-        }
-
-        .author-stats .stat strong {
-          color: #1a1a1a;
-        }
-
-        .social-links {
-          display: flex;
-          gap: 6px;
-        }
-
-        .social-link {
-          width: 28px;
-          height: 28px;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 12px;
-          font-weight: 600;
-          text-decoration: none;
-          transition: transform 0.15s;
-        }
-
-        .social-link:hover {
-          transform: scale(1.1);
-        }
-
-        .social-link.twitter {
-          background: #1da1f2;
-          color: white;
-        }
-
-        .social-link.linkedin {
-          background: #0077b5;
-          color: white;
-        }
-
-        .social-link.website {
-          background: #f3f4f6;
-          color: #374151;
-        }
-
-        .social-link.email {
-          background: #f3f4f6;
-          color: #374151;
-        }
-
-        .author-actions {
-          display: flex;
-          flex-direction: column;
-          gap: 8px;
-          align-self: center;
-        }
-
-        .btn-edit, .btn-delete {
-          width: 32px;
-          height: 32px;
-          border: none;
-          border-radius: 6px;
-          cursor: pointer;
-          font-size: 14px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .btn-edit {
-          background: #f3f4f6;
-          color: #374151;
-        }
-
-        .btn-edit:hover {
-          background: #e5e7eb;
-        }
-
-        .btn-delete {
-          background: #fee2e2;
-          color: #dc2626;
-        }
-
-        .btn-delete:hover {
-          background: #fecaca;
-        }
-
-        /* Modal Styles */
-        .modal-overlay {
-          position: fixed;
-          inset: 0;
-          background: rgba(0, 0, 0, 0.5);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          z-index: 1000;
-          padding: 20px;
-        }
-
-        .modal {
-          background: white;
-          border-radius: 12px;
-          width: 100%;
-          max-width: 560px;
-          max-height: 90vh;
-          overflow-y: auto;
-        }
-
-        .modal-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 20px 24px;
-          border-bottom: 1px solid #e5e7eb;
-          position: sticky;
-          top: 0;
-          background: white;
-          z-index: 1;
-        }
-
-        .modal-header h2 {
-          margin: 0;
-          font-size: 20px;
-          font-weight: 600;
-        }
-
-        .btn-close {
-          background: none;
-          border: none;
-          font-size: 28px;
-          color: #6b7280;
-          cursor: pointer;
-          line-height: 1;
-        }
-
-        .btn-close:hover {
-          color: #1f2937;
-        }
-
-        .modal-form {
-          padding: 24px;
-        }
-
-        .avatar-section {
-          display: flex;
-          justify-content: center;
-          margin-bottom: 24px;
-        }
-
-        .avatar-upload-label {
-          position: relative;
-          width: 100px;
-          height: 100px;
-          cursor: pointer;
-        }
-
-        .preview-avatar {
-          width: 100px;
-          height: 100px;
-          border-radius: 50%;
-          object-fit: cover;
-        }
-
-        .avatar-placeholder-large {
-          width: 100px;
-          height: 100px;
-          border-radius: 50%;
-          background: linear-gradient(135deg, #FE4A64, #ff8a9d);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 36px;
-          font-weight: 600;
-          color: white;
-        }
-
-        .avatar-overlay {
-          position: absolute;
-          inset: 0;
-          border-radius: 50%;
-          background: rgba(0, 0, 0, 0.5);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          opacity: 0;
-          transition: opacity 0.2s;
-          color: white;
-          font-size: 14px;
-          font-weight: 500;
-        }
-
-        .avatar-upload-label:hover .avatar-overlay {
-          opacity: 1;
-        }
-
-        .avatar-loading {
-          width: 100px;
-          height: 100px;
-          border-radius: 50%;
-          background: #f3f4f6;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .spinner {
-          width: 24px;
-          height: 24px;
-          border: 2px solid #e5e7eb;
-          border-top-color: #FE4A64;
-          border-radius: 50%;
-          animation: spin 1s linear infinite;
-        }
-
-        .hidden-input {
-          display: none;
-        }
-
-        .form-section {
-          margin-bottom: 24px;
-          padding: 16px;
-          background: #f9fafb;
-          border-radius: 8px;
-        }
-
-        .form-section h4 {
-          margin: 0 0 16px 0;
-          font-size: 14px;
-          font-weight: 600;
-          color: #374151;
-        }
-
-        .form-row-2 {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 12px;
-        }
-
-        .form-group {
-          margin-bottom: 12px;
-        }
-
-        .form-group:last-child {
-          margin-bottom: 0;
-        }
-
-        .form-group label {
-          display: block;
-          margin-bottom: 6px;
-          font-size: 13px;
-          font-weight: 500;
-          color: #374151;
-        }
-
-        .form-group input,
-        .form-group textarea {
-          width: 100%;
-          padding: 10px 12px;
-          border: 1px solid #d1d5db;
-          border-radius: 6px;
-          font-size: 14px;
-          font-family: inherit;
-          background: white;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-          outline: none;
-          border-color: #FE4A64;
-          box-shadow: 0 0 0 3px rgba(254, 74, 100, 0.1);
-        }
-
-        .form-group textarea {
-          resize: vertical;
-        }
-
-        .modal-actions {
-          display: flex;
-          gap: 12px;
-          justify-content: flex-end;
-          padding-top: 20px;
-          border-top: 1px solid #e5e7eb;
-        }
-
-        .btn-cancel {
-          padding: 10px 20px;
-          background: #f3f4f6;
-          color: #374151;
-          border: 1px solid #d1d5db;
-          border-radius: 6px;
-          font-size: 14px;
-          font-weight: 500;
-          cursor: pointer;
-        }
-
-        .btn-cancel:hover {
-          background: #e5e7eb;
-        }
-
-        .btn-save {
-          padding: 10px 20px;
-          background: #FE4A64;
-          color: white;
-          border: none;
-          border-radius: 6px;
-          font-size: 14px;
-          font-weight: 600;
-          cursor: pointer;
-        }
-
-        .btn-save:hover:not(:disabled) {
-          background: #e5435b;
-        }
-
-        .btn-save:disabled {
-          opacity: 0.6;
-          cursor: not-allowed;
-        }
-
-        @media (max-width: 768px) {
-          .stats-bar {
-            flex-wrap: wrap;
-          }
-
-          .toolbar {
-            flex-direction: column;
-            align-items: stretch;
-          }
-
-          .filters {
-            flex-direction: column;
-          }
-
-          .search-input, .sort-select {
-            max-width: none;
-          }
-
-          .authors-grid {
-            grid-template-columns: 1fr;
-          }
-
-          .form-row-2 {
-            grid-template-columns: 1fr;
-          }
-        }
-      `}</style>
+            </div>
+
+            <DialogFooter>
+              <Button type="button" variant="outline" onClick={closeModal}>
+                Hủy
+              </Button>
+              <Button type="submit" disabled={saving} className="gradient-primary text-white border-0">
+                {saving && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+                {editingAuthor ? 'Cập nhật' : 'Tạo mới'}
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

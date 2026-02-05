@@ -2,6 +2,7 @@
 
 import { useFormContext } from 'react-hook-form';
 import { ProductFormData, FaqItem } from './types';
+import ImageUpload from '../category-editor/ImageUpload';
 
 export default function Tab4FaqSeo() {
   const { register, watch, setValue } = useFormContext<ProductFormData>();
@@ -82,34 +83,6 @@ export default function Tab4FaqSeo() {
       </div>
 
       <div className="section">
-        <h2 className="section-title">Phân tích đánh giá người dùng</h2>
-        <p className="section-desc">Các danh mục đánh giá chi tiết (tùy chọn)</p>
-
-        <div className="ratings-grid">
-          {['Overall', 'Features', 'Value', 'Ease of Use', 'Support'].map((category) => (
-            <div key={category} className="rating-item">
-              <label>{category}</label>
-              <input
-                type="number"
-                step="0.1"
-                min="0"
-                max="5"
-                placeholder="0-5"
-                onChange={(e) => {
-                  const currentRatings = watch('userRatings') || {};
-                  setValue('userRatings', {
-                    ...currentRatings,
-                    [category.toLowerCase().replace(/ /g, '_')]: parseFloat(e.target.value) || 0
-                  });
-                }}
-                defaultValue={watch('userRatings')?.[category.toLowerCase().replace(/ /g, '_')] || ''}
-              />
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="section">
         <h2 className="section-title">Cài đặt SEO</h2>
         <p className="section-desc">Thông tin tối ưu hóa công cụ tìm kiếm</p>
 
@@ -156,21 +129,13 @@ export default function Tab4FaqSeo() {
 
           {/* OG Image */}
           <div className="form-group">
-            <label htmlFor="ogImage">
-              URL ảnh OG
-              <span className="tooltip" title="Ảnh hiển thị khi chia sẻ trên mạng xã hội">?</span>
-            </label>
-            <input
-              id="ogImage"
-              type="text"
-              {...register('ogImage')}
-              placeholder="/images/og/product-review.jpg"
+            <ImageUpload
+              value={watch('ogImage') || ''}
+              onChange={(url) => setValue('ogImage', url)}
+              label="Ảnh OG (Social Share)"
+              placeholder="Nhập URL hoặc upload ảnh OG"
+              folder="products/og"
             />
-            {watch('ogImage') && (
-              <div className="og-preview">
-                <img src={watch('ogImage')} alt="Xem trước ảnh OG" />
-              </div>
-            )}
           </div>
 
           {/* Canonical URL */}
@@ -384,28 +349,6 @@ export default function Tab4FaqSeo() {
           border-color: #9ca3af;
         }
 
-        .ratings-grid {
-          display: grid;
-          grid-template-columns: repeat(5, 1fr);
-          gap: 12px;
-        }
-
-        .rating-item {
-          display: flex;
-          flex-direction: column;
-          gap: 4px;
-        }
-
-        .rating-item label {
-          font-size: 12px;
-          color: #6b7280;
-        }
-
-        .rating-item input {
-          padding: 8px;
-          text-align: center;
-        }
-
         .seo-actions {
           margin-bottom: 20px;
         }
@@ -490,13 +433,8 @@ export default function Tab4FaqSeo() {
         }
 
         @media (max-width: 768px) {
-          .form-grid,
-          .ratings-grid {
+          .form-grid {
             grid-template-columns: 1fr;
-          }
-
-          .ratings-grid {
-            grid-template-columns: repeat(2, 1fr);
           }
         }
       `}</style>
