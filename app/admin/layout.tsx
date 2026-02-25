@@ -25,6 +25,8 @@ import {
   Plus,
   Settings,
   Layers,
+  User,
+  Lock,
 } from 'lucide-react';
 
 // Auth Context
@@ -137,7 +139,7 @@ function LoginForm({ onLogin, error, isLoading }: {
         }} />
       </div>
 
-      <div className="relative bg-white/95 backdrop-blur-xl p-8 rounded-2xl shadow-2xl w-[420px] border border-white/20">
+      <div className="relative bg-white/95 backdrop-blur-xl p-8 rounded-2xl shadow-2xl w-full max-w-[420px] mx-4 border border-white/20 overflow-hidden box-border">
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 gradient-primary rounded-2xl mb-4 shadow-lg">
             <Layers className="w-8 h-8 text-white" />
@@ -155,28 +157,34 @@ function LoginForm({ onLogin, error, isLoading }: {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Username</label>
-            <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
-              placeholder="Enter username"
-              required
-            />
+            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Username</label>
+            <div className="relative">
+              <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+              <input
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="w-full h-10 pl-10 pr-4 bg-slate-50 border border-slate-300 rounded-lg text-sm box-border focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white transition-all placeholder:text-slate-400"
+                placeholder="Enter username"
+                required
+              />
+            </div>
           </div>
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
-              placeholder="Enter password"
-              required
-            />
+            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Password</label>
+            <div className="relative">
+              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full h-10 pl-10 pr-4 bg-slate-50 border border-slate-300 rounded-lg text-sm box-border focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white transition-all placeholder:text-slate-400"
+                placeholder="Enter password"
+                required
+              />
+            </div>
           </div>
           <button
             type="submit"

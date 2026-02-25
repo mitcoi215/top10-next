@@ -12,8 +12,8 @@ interface ReviewHeroProps {
   authorImage: string;
   authorSlug: string;
   authorBio?: string;
-  updatedDate: string;
-  readTime: string;
+  updatedDate?: string;
+  readTime?: string;
   productLogo: string;
   ctaHref: string;
   ctaText?: string;
@@ -147,12 +147,14 @@ export default function ReviewHero({
                     </div>
                   </div>
 
-                  {/* Date and Time */}
+                  {/* Date and Time removed per request (author only) */}
+                  {/*
                   <div className="ni-11ydt2g" data-testid="data-and-time-read">
-                    <p className="ni-177dfrc" data-testid="last-updated">{updatedDate}</p>
-                    <p className="ni-177dfrc"> • </p>
-                    <p className="ni-177dfrc" data-testid="min-read">{readTime}</p>
+                    {readTime && (
+                      <p className="ni-177dfrc" data-testid="min-read">{readTime}</p>
+                    )}
                   </div>
+                  */}
                 </div>
               </div>
             </div>

@@ -161,6 +161,8 @@ export default function ArticleHeader({
                       {authorName}
                     </a>
                   </div>
+                  {/* dates removed per request */}
+                  {/*
                   <div style={{
                     display: 'flex',
                     gap: '4px',
@@ -177,6 +179,7 @@ export default function ArticleHeader({
                       </>
                     )}
                   </div>
+                  */}
                 </div>
               </div>
             </div>

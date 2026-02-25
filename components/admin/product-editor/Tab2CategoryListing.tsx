@@ -46,7 +46,8 @@ export default function Tab2CategoryListing() {
               {...register('rank', {
                 required: 'Xếp hạng là bắt buộc',
                 min: { value: 1, message: 'Xếp hạng tối thiểu là 1' },
-                max: { value: 10, message: 'Xếp hạng tối đa là 10' }
+                max: { value: 10, message: 'Xếp hạng tối đa là 10' },
+                valueAsNumber: true,
               })}
               className={errors.rank ? 'error' : ''}
             />

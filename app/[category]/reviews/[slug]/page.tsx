@@ -191,12 +191,6 @@ export default async function ProductReviewPage({ params }: PageProps) {
         authorName={product.author?.name || 'Top10 Team'}
         authorImage={product.author?.avatar || '/top10-images/default-avatar.png'}
         authorSlug={product.author?.slug || ''}
-        updatedDate={product.updatedAt ? new Date(product.updatedAt).toLocaleDateString('en-US', {
-          month: 'long',
-          day: 'numeric',
-          year: 'numeric',
-        }) : ''}
-        readTime={product.readTime || '5 min'}
         productLogo={product.logoUrl || '/top10-images/placeholder.png'}
         ctaHref={product.ctaUrl || '#'}
         ctaText={product.ctaText || 'Visit Site'}

@@ -708,9 +708,21 @@
 }
 
 .ni-3avijb {
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
+  box-sizing: border-box;
+    background-color: #ffffff;
+    border: 1px solid #eeeeee;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    
+    /* Tăng padding lên 8px hoặc 10px để các logo dài 
+       không bị chạm viền, tạo cảm giác cân bằng thị giác */
+    padding: 8px; 
+    overflow: hidden;
+    min-width: 50px;
 }
 
 .ni-1q6j3a1 {
@@ -1749,7 +1761,7 @@ header{
                 display: -webkit-flex;
                 display: flex;
                 width: 25px;
-                height: 25px;
+                height: auto;
                 background-color: white;
                 background-size: 25px 25px;
                 background-repeat: no-repeat

@@ -74,12 +74,20 @@ export default function ProductEditor({
       // Clean data before saving - convert NaN to null and handle empty strings
       const cleanedData = {
         ...data,
-        // Convert NaN to null for number fields, and clamp rating to 0-5
-        rating: Number.isNaN(data.rating) || data.rating === null || data.rating === undefined
-          ? null
-          : Math.min(5, Math.max(0, data.rating)),
-        overallScore: Number.isNaN(data.overallScore) ? null : data.overallScore,
-        rank: Number.isNaN(data.rank) ? 0 : data.rank,
+        // Convert NaN to null and handle empty strings; cast string values to numbers just in case
+        rating: (() => {
+          const num = Number(data.rating);
+          if (Number.isNaN(num) || data.rating === null || data.rating === undefined) return null;
+          return Math.min(5, Math.max(0, num));
+        })(),
+        overallScore: (() => {
+          const num = Number(data.overallScore);
+          return Number.isNaN(num) ? null : num;
+        })(),
+        rank: (() => {
+          const num = Number(data.rank);
+          return Number.isNaN(num) ? 0 : num;
+        })(),
         // Convert empty strings to null for ObjectID fields
         authorId: data.authorId && data.authorId.trim() !== '' ? data.authorId : null,
         // Filter empty strings from arrays

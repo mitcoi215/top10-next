@@ -36,12 +36,9 @@ export default function ShortChart({
                   alt={product.name}
                   className="ni-1uf4i2"
                   style={{
-                    border: '1px solid #EEEEEE',
-                    borderRadius: '50%',
-                    width: '50px',
-                    maxHeight: '50px',
-                    backgroundColor: '#FFFFFF',
-                    objectFit: 'cover',
+                    maxWidth: '100%',
+                    maxHeight: '100%',
+                    objectFit: 'contain'
                   }}
                 />
               </a>
